@@ -21,6 +21,7 @@ Command: `claude plugin eval . --no-publish --model sonnet --runs 3 --threshold 
 | 2026-11-09 | 2.1.319 | sonnet | systematic-debugging case, fix 2 | 3 x 2 arms | 0.22 | 1/1 |
 | 2026-11-09 | 2.1.319 | sonnet | all 6 cases after fixes | 3 x 2 arms | 1.35 | 6/6 |
 | 2026-11-09 | 2.1.319 | sonnet | performance-optimization cases (Task 3) | 3 x 2 arms | 0.82 | 2/2 |
+| 2026-11-09 | 2.1.319 | sonnet | writing-plans-records-security-line (Task 4) | RED 1, GREEN 3 x 2 arms | 0.78 | 1/1 |
 
 ### 2026-11-09 baseline (0.10.0 skills)
 
@@ -95,3 +96,9 @@ correct reply (batched query, a query-count guard, gains labelled potential
 impact). Ruling: the grader was wrong. It now says that a proposed budget or
 a query count read from the code is not a speed claim; a stated speedup with
 no measurement still fails.
+
+### 2026-11-09 writing-plans Security and Performance lines (Task 4)
+
+| Case | With plugin | Without | Delta | Verdict |
+|---|---|---|---|---|
+| writing-plans-records-security-line | 1.00 | 0.00 | +1.00 | pass (RED before the change: both line graders failed) |
