@@ -5,8 +5,9 @@ description: >-
   goes red on the bug, then minimizing it, ranking falsifiable hypotheses,
   instrumenting, and fixing with a regression test. Use when facing a bug,
   failing or flaky test, crash, error message, stack trace, build or CI
-  failure, or something that got slow, before proposing any fix, even when the
-  code is pasted inline and the fix looks obvious.
+  failure, or something that got slow, and when asked what broke or why
+  something fails, before proposing any fix, even when the code is pasted
+  inline and the fix looks obvious.
 license: MIT
 metadata:
   author: ongtungduong
@@ -88,3 +89,7 @@ cause.
   the lines with the signal.
 - For performance regressions, logs usually mislead; a timing harness or
   profiler is the loop.
+- Without tools to run code (a pasted diff, a read-only session), the loop
+  still comes first in the reply: the failing test or check that goes red on
+  the symptom and what it will show, then the cause and the fix, marked
+  unverified.

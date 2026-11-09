@@ -22,7 +22,8 @@ it. Questions and trivial edits get answered directly, with no skill.
 2. **Classify the request.**
    - Question, explanation, or trivial edit that changes no code behavior
      (typo, comment, docs, formatting): do it directly. No skill, no
-     announcement.
+     announcement. "What broke?" or "why does this fail?" is a bug, not a
+     question.
    - Any change to what code does, however small or fully specified: load
      `legion:executing-plans`. A one-line fix still gets its failing test.
    - Matches a row in the map below: load that skill before acting, say so in

@@ -175,3 +175,6 @@ path is a guess.
   change, not what you verify.
 - "Should", "probably", and "looks good" are claims without evidence; replace
   them with the command and its output.
+- Without tools to write or run code (a pasted snippet, a read-only
+  session), keep the cycle's order in the reply: the failing test and the
+  failure you expect first, then the fix; list the run under `Unverified:`.
