@@ -1,0 +1,18 @@
+{
+  "name": "legion",
+  "version": "0.9.0",
+  "private": true,
+  "description": "Legion skills plugin for Claude Code",
+  "type": "module",
+  "license": "MIT",
+  "scripts": {
+    "validate": "node scripts/validate.mjs",
+    "validate:spec": "node scripts/validate-spec.mjs",
+    "evals:triggers": "node scripts/trigger-evals.mjs",
+    "test:hooks": "bash tests/hooks/test-session-start.sh",
+    "test": "npm run validate && npm run validate:spec && npm run evals:triggers && npm run test:hooks"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

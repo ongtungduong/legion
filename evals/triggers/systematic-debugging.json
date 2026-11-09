@@ -1,0 +1,19 @@
+{
+  "positive": [
+    "The build fails in CI but passes locally, find out why",
+    "This endpoint started throwing a 500 error after yesterday's deploy",
+    "The test is flaky, it fails about one run in ten",
+    "Here is the stack trace, the app crashes on startup",
+    "The search page got three times slower this week"
+  ],
+  "negative": [
+    {
+      "prompt": "Write the implementation plan for the approved spec",
+      "owner": "writing-plans"
+    },
+    {
+      "prompt": "Grill me on my architecture decision",
+      "owner": "brainstorming"
+    }
+  ]
+}

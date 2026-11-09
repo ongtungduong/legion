@@ -1,0 +1,26 @@
+{
+  "positive": [
+    "This module's interface is too complex, how should I design it?",
+    "Refactor this class without changing its behavior",
+    "I need to change this legacy code that has no tests",
+    "Keep our business rules independent of the framework and database",
+    "This service needs timeouts and a circuit breaker before we ship it",
+    "Model the aggregates and domain events for the ordering context",
+    "Clean up this function, it works but is hard to read",
+    "Make this code more maintainable"
+  ],
+  "negative": [
+    {
+      "prompt": "The checkout test fails with a TypeError, find out why",
+      "owner": "systematic-debugging"
+    },
+    {
+      "prompt": "Is this login handler safe against SQL injection?",
+      "owner": "security-and-hardening"
+    },
+    {
+      "prompt": "Add the term Invoice to our GLOSSARY.md",
+      "owner": "defining-terms"
+    }
+  ]
+}

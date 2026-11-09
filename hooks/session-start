@@ -1,0 +1,45 @@
+#!/usr/bin/env bash
+# SessionStart hook for the Legion plugin.
+#
+# Injects the using-legion skill so the agent knows which skills exist and
+# when to reach for them. Adapted from superpowers' hooks/session-start
+# (MIT, Jesse Vincent): bash builtins only, so the hook still works when a
+# startup hook runs with a broken PATH, and no external dependency (jq) is
+# required.
+set -euo pipefail
+
+case "$0" in
+  */*) SCRIPT_DIR="${0%/*}" ;;
+  *) SCRIPT_DIR="." ;;
+esac
+PLUGIN_ROOT="${CLAUDE_PLUGIN_ROOT:-${SCRIPT_DIR}/..}"
+
+skill_md="${PLUGIN_ROOT}/skills/using-legion/SKILL.md"
+content="Legion: could not read skills/using-legion/SKILL.md. Skills are still available through the Skill tool."
+if [ -r "$skill_md" ]; then
+  # read returns 1 at end of file, hence || true.
+  IFS= read -r -d '' content < "$skill_md" || true
+  while [[ $content == *$'\n' ]]; do
+    content="${content%$'\n'}"
+  done
+fi
+
+escape_for_json() {
+  local s="$1"
+  s="${s//\\/\\\\}"
+  s="${s//\"/\\\"}"
+  s="${s//$'\n'/\\n}"
+  s="${s//$'\r'/\\r}"
+  s="${s//$'\t'/\\t}"
+  escaped="$s"
+}
+
+escaped=""
+escape_for_json "$content"
+context="Legion is installed. Its router skill follows; load any other Legion skill with the Skill tool.\n\n${escaped}"
+
+# Claude Code reads hookSpecificOutput.additionalContext.
+# printf instead of a heredoc: bash 5.3 heredocs can hang (superpowers #571).
+trap '' PIPE
+printf '{\n  "hookSpecificOutput": {\n    "hookEventName": "SessionStart",\n    "additionalContext": "%s"\n  }\n}\n' "$context" 2>/dev/null || true
+exit 0

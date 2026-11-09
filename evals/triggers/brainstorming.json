@@ -1,0 +1,25 @@
+{
+  "positive": [
+    "I want to add a notifications feature to the app, can we figure out what it should do?",
+    "Let's design a new onboarding flow before building anything",
+    "I have an idea for a CLI tool that syncs dotfiles, help me shape it",
+    "We need to change how billing behaves for annual plans, not sure of the details yet",
+    "Think through this new feature from first principles before we build it",
+    "Use six thinking hats to compare options for the new sync service",
+    "I already told you what I want and why, just lay out the approaches for the sync tool",
+    "Grill me on this migration plan",
+    "Poke holes in my plan to split the monolith",
+    "Stress-test this decision to drop Redis before I commit to it",
+    "Record an ADR for choosing event sourcing for orders"
+  ],
+  "negative": [
+    {
+      "prompt": "Here is the approved design doc, break it into implementation tasks",
+      "owner": "writing-plans"
+    },
+    {
+      "prompt": "The checkout test is failing with a TypeError, figure out why",
+      "owner": "systematic-debugging"
+    }
+  ]
+}

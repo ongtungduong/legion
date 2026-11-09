@@ -1,0 +1,41 @@
+{
+  "positive": [
+    "Execute the plan in docs/legion/plans/2026-11-09-auth.md",
+    "The plan is ready, implement it task by task",
+    "Run the implementation plan with a subagent per task",
+    "Write a failing test for this bug before fixing it",
+    "Implement the streak calculator using red-green-refactor",
+    "Add unit tests for this function, there are none yet",
+    "Implement a function that splits a bill between people, here is the signature",
+    "Change this function so the page size can never exceed 100",
+    "Are we done? Confirm everything passes before I open the PR",
+    "Before you say it is fixed, prove the tests pass",
+    "Is it ready to commit?"
+  ],
+  "negative": [
+    {
+      "prompt": "Write an implementation plan for this spec",
+      "owner": "writing-plans"
+    },
+    {
+      "prompt": "I want to build a habit tracker, help me figure out what it should do",
+      "owner": "brainstorming"
+    },
+    {
+      "prompt": "Review this pull request for me",
+      "owner": "code-review"
+    },
+    {
+      "prompt": "Add the term Invoice to the glossary",
+      "owner": "defining-terms"
+    },
+    {
+      "prompt": "Find out why the integration test crashes",
+      "owner": "systematic-debugging"
+    },
+    {
+      "prompt": "Help me shape a new reporting feature",
+      "owner": "brainstorming"
+    }
+  ]
+}

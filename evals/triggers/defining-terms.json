@@ -1,0 +1,11 @@
+{
+  "positive": [
+    "We keep saying account and customer interchangeably, which one is right?",
+    "Add the term Settlement to our GLOSSARY.md",
+    "Our terminology for shipment versus delivery is fuzzy, let's pin it down"
+  ],
+  "negative": [
+    { "prompt": "Fix the null pointer in the order service", "owner": "systematic-debugging" },
+    { "prompt": "Is this login handler safe against injection?", "owner": "security-and-hardening" }
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "positive": [
+    "Review this diff before I merge it",
+    "Can you do a proper code review of my branch since main?",
+    "Review this pull request for me",
+    "The reviewer left comments on my PR, help me respond to the review feedback",
+    "Review this PR and check its blast radius on the services that call it"
+  ],
+  "negative": [
+    {
+      "prompt": "Write a failing test for the rounding bug",
+      "owner": "executing-plans"
+    },
+    {
+      "prompt": "Turn the spec into an implementation plan",
+      "owner": "writing-plans"
+    }
+  ]
+}

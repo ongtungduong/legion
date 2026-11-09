@@ -1,0 +1,13 @@
+{
+  "positive": [
+    "Create a new skill for our release checklist",
+    "This skill never triggers, improve its description",
+    "Validate this SKILL.md against the agentskills.io spec",
+    "Turn this prompt into a reusable agent skill",
+    "My skill folder is too big, restructure it"
+  ],
+  "negative": [
+    { "prompt": "Review my pull request", "owner": "code-review" },
+    { "prompt": "Write the implementation plan for the new API", "owner": "writing-plans" }
+  ]
+}

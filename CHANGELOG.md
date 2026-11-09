@@ -1,0 +1,124 @@
+# Changelog
+
+## 0.9.0 - 2026-11-09
+
+- Renamed `domain-modeling` to `defining-terms`: the old name read as
+  entity/aggregate design, which belongs to `coding-principles`. Call it with
+  `legion:defining-terms`.
+- ADRs moved to `brainstorming`, where trade-off decisions are made:
+  `references/adr-format.md`, a direct entry for "record an ADR for X", and
+  the three-test offer (hard to reverse, surprising, real trade-off) when the
+  design doc is written. `defining-terms` now covers `GLOSSARY.md` only.
+
+## 0.8.0 - 2026-11-09
+
+- Subagent dispatch is now concrete in every skill that dispatches one:
+  `subagent_type: "general-purpose"` (never `fork`) and an explicit `model`
+  alias. `executing-plans` maps roles to `haiku` / `sonnet` / `opus`, and
+  escalates a `haiku` implementer that blocks or fails review twice.
+  `code-review`, the brainstorming builder check, and grilling lookups now
+  name their model.
+- Every implementer subagent runs in its own worktree
+  (`isolation: "worktree"`). It checks the isolation first, resets to `BASE`
+  (native worktrees branch from the default branch), and installs
+  dependencies. The controller pins the head as `legion/<plan>/task-N`,
+  confirms its own tree is untouched, reviews `BASE..pin`, then
+  fast-forwards and removes the worktree. A failed isolation check sends the
+  run inline. Reviewers and lookups stay read-only, with no worktree.
+- Mode choice: an XS task stays inline unless context is about half used,
+  and every subagent task is inline when the Agent tool has no worktree
+  isolation. Implementers still run one at a time.
+- Fixed file names `task-N-diff.txt` and `task-N-report.md`, and a
+  `Dispatch:` ledger line, so a run can resume a review after compaction.
+
+## 0.7.0 - 2026-11-09
+
+- Merged `test-driven-development` and `verification-before-completion` into
+  `executing-plans`, now the single skill for any code change (10 skills).
+  It states four rules (spec first, test first, principles, evidence), adds
+  a quick path for work without a plan, and carries the TDD cycle and the
+  evidence gate; test-quality examples moved to
+  `references/test-quality.md`.
+- `executing-plans` chooses inline or subagent work per task itself (plan
+  length, task size, coupling, context left) and adds a fresh task reviewer
+  for risky tasks; `writing-plans` no longer asks the user to pick a mode.
+- Router: one row for all coding; a gotcha keeps the evidence rule for
+  non-code completion claims. `systematic-debugging`,
+  `security-and-hardening`, and `coding-principles` now point at
+  `legion:executing-plans`.
+
+## 0.6.0 - 2026-11-09
+
+- Thinking models placed where they change a decision, with no new skill:
+  - `writing-plans`: Pareto slice order after the tracer bullet (`Slice order`
+    line; the low-value tail is proposed for later, never dropped silently)
+    and a pre-mortem step (inversion): three likely failure reasons, each
+    with a countermeasure. Plan template gains both.
+  - `brainstorming`: a Pareto cut proposed while sizing the work; the Black
+    hat inverts each approach and, for projects, traces second-order effects
+    over a White-hat system map.
+  - `code-review`: a blast-radius checklist item (callers, contracts, data,
+    runtime loops) and Minor findings folded once past five.
+  - `systematic-debugging`: a gotcha for symptoms caused by loops in the
+    system.
+
+## 0.5.0 - 2026-11-09
+
+- Merged `grilling` into `brainstorming` and removed the `grilling` skill. The
+  procedure moved to `skills/brainstorming/references/grilling.md`;
+  brainstorming gains a grill-only entry (step 1) for stress-testing an
+  existing plan, decision, or idea without a design doc, and its description
+  and router row now carry the "grill me" / "poke holes" triggers.
+
+## 0.4.0 - 2026-11-09
+
+- `brainstorming` gains three thinking steps, scaled by work size:
+  a first-principles pass (goal, facts, hard constraints, questioned
+  assumptions, rebuilt approach) before approaches; a Six Thinking Hats
+  evaluation of the approaches (de Bono's "choosing between alternatives"
+  sequence); and a mandatory `legion:grilling` pass on the chosen design.
+  Procedures live in `references/first-principles.md` and
+  `references/six-thinking-hats.md`; the design-doc template records both.
+- Router row and description for `brainstorming` now cover the case where the
+  user already explained what and why and only asks for approaches; a smoke
+  test showed the old "intent not fully settled" wording made the model skip
+  the skill there.
+
+## 0.3.0 - 2026-11-09
+
+- New `coding-principles` skill: picks one primary rule set (plus at most one
+  companion) from 14 classic-book distillations by agent-rules-books, following
+  its compatibility matrix; the `mini` files ship unchanged in `references/`.
+- Spec-driven: TDD starts by pinning acceptance criteria and traces every test
+  to one; plan tasks name the spec requirement they implement.
+- Best practice wired through the pipeline: plans record `Design principles`;
+  executor, implementer, and both reviewers load and check the same sets; TDD
+  refactors by them and starts legacy changes with characterization tests.
+- `trigger-evals --verbose` lists positive prompts that missed rank 1.
+- From real-execution smoke tests: `coding-principles` description now names the
+  verbs users say (refactor, clean up, make readable) after a refactor prompt
+  triggered no skill; gotchas added for skill-relative `references/` paths and
+  for keeping characterization tests in the suite.
+
+## 0.2.0 - 2026-11-09
+
+- Replaced `writing-skills` with `skill-creator` (from duongot-skills; `name`
+  renamed to match its directory, which the original failed).
+- Rewrote every other skill with `skill-creator` to the agentskills.io standard:
+  what-then-when descriptions, Workflow / Gotchas / Output format bodies, long
+  templates moved to `assets/`, when-to-read for every reference, reasons instead
+  of ALL-CAPS rules; `license` and `metadata.author` frontmatter.
+- `npm run validate:spec` runs skill-creator's validator on every skill (needs python3).
+- Repo validator accepts all spec fields and enforces what-then-when descriptions.
+
+## 0.1.0 - 2026-11-09
+
+First skeleton.
+
+- Claude Code plugin manifest and local marketplace (`legion-dev`).
+- SessionStart hook that injects the light `using-legion` router.
+- Twelve skills: using-legion, brainstorming, grilling, domain-modeling,
+  writing-plans, executing-plans, test-driven-development, systematic-debugging,
+  verification-before-completion, code-review, security-and-hardening,
+  writing-skills.
+- Zero-dependency checks: structural validator, lexical trigger evals, hook test.
