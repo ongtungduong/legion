@@ -3,7 +3,7 @@
 ## 0.11.0 - 2026-11-09
 
 Performance and security in every code change, a guard hook, and measured
-skills. Design: `docs/legion/specs/2026-11-09-perf-security-evals-design.md`.
+skills. Design: `.legion/specs/2026-11-09-perf-security-evals-design.md`.
 
 New
 
@@ -42,6 +42,9 @@ Changed
   consumers, data); debugging ranks hypotheses by likelihood for the cost of
   checking; `skill-creator` inverts the trigger with near-miss prompts. A
   skill x model matrix is in `docs/architecture.md`.
+- Specs and plans move from `docs/legion/` to `.legion/specs/` and `.legion/plans/`.
+  They stay committed; the rest of `.legion/` (ledger, briefs, scratch) is
+  gitignored through `.legion/*` with `!.legion/specs/` and `!.legion/plans/`.
 
 Repo
 
@@ -51,6 +54,10 @@ Repo
   root; every hook `hooks.json` runs must exist and be executable; audit
   report skeletons must match. `tests/scripts/` tests each rule.
 - `hooks/session-start` escapes every control character.
+- GitHub: Dependabot for the pinned actions, a release workflow that checks
+  the tag against `package.json` and `CHANGELOG.md`, CI concurrency and
+  timeout, `SECURITY.md`, `CONTRIBUTING.md`, `CODEOWNERS`, issue and PR
+  templates.
 
 ## 0.10.0 - 2026-11-09
 

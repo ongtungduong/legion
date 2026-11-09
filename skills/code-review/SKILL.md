@@ -29,7 +29,7 @@ right thing while breaking them; merging the two axes lets one mask the other.
    `git log --oneline <base>..HEAD; git diff --stat <base>...HEAD; git diff -U10 <base>...HEAD`.
    For a pasted diff with no repo, review the pasted text.
 2. **Find the spec:** issue references in commit messages, a path the user
-   gave, a doc under `docs/legion/` matching the branch, else ask. No spec
+   gave, a doc under `.legion/` matching the branch, else ask. No spec
    means the Spec axis reports "no spec available".
 3. **Find the standards:** `CONTRIBUTING.md`, `CODING_STANDARDS.md`,
    `AGENTS.md`/`CLAUDE.md`, lint configs. Add the design principles: the

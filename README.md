@@ -90,8 +90,8 @@ Documents the agent creates:
 
 | Type | Location |
 |---|---|
-| Design doc | `docs/legion/specs/YYYY-MM-DD-<topic>-design.md` |
-| Plan | `docs/legion/plans/YYYY-MM-DD-<topic>.md` |
+| Design doc | `.legion/specs/YYYY-MM-DD-<topic>-design.md` |
+| Plan | `.legion/plans/YYYY-MM-DD-<topic>.md` |
 | Plan-run ledger (gitignored) | `.legion/runs/<plan>/progress.md` |
 | Shared language | `GLOSSARY.md`, `docs/adr/NNNN-*.md` |
 

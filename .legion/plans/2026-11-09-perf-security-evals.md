@@ -4,7 +4,7 @@
 
 **Goal:** Legion catches performance and security problems while code is written and across a whole system, its own code meets the same three criteria, and every skill has measured evidence that it works.
 **Architecture:** Two domain skills (`performance-optimization` new, `security-and-hardening` extended) are wired into the chain the way `coding-principles` is: spec and plan lines, quick-path triggers, implementer and reviewer checklist paths, and a system-audit mode that `code-review` dispatches. A bash-builtins `PreToolUse` guard protects secret files. Behavioral evals (`claude plugin eval`) grade the code agents produce, logged in `docs/evals.md`.
-**Spec:** `docs/legion/specs/2026-11-09-perf-security-evals-design.md`
+**Spec:** `.legion/specs/2026-11-09-perf-security-evals-design.md`
 **Design principles:** the-pragmatic-programmer - one owner per fact (ROUTER, audit skeleton, trigger lists), automated checks, short feedback loops.
 **Slice order:** Task 1 is the tracer bullet: it proves the eval pipeline end to end and gives the cost every later eval step depends on. Task 2 unblocks the checks later tasks rely on. Tasks 3-5 close the largest gap the repo review found (performance has no hook point; security is checked only after code exists). Then the audits, the guard, the repo's own fixes, the thinking-model gaps, the remaining evals, and the release. Low-value tail: Task 11 (hook escaping, input is Legion's own file).
 
