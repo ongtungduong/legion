@@ -14,5 +14,8 @@
     "code-review",
     "planning",
     "domain-modeling"
-  ]
+  ],
+  "experimental": {
+    "evals": "evals/plugin"
+  }
 }

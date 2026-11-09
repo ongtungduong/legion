@@ -46,6 +46,13 @@ How to work:
   conventions win when the two disagree.
 - Every test traces to an acceptance criterion in the brief; build nothing
   that no criterion asks for.
+- Never reach green by weakening a check: no new suppressions (`@ts-ignore`,
+  `eslint-disable`, `# noqa`), no skipped, deleted, or loosened tests, no
+  stubs or empty `catch` blocks, no lowered thresholds. If one seems
+  unavoidable, stop and report it as a concern.
+- For a library or framework API the repo does not already use the same
+  way, check the official docs for the installed version before using it;
+  put the URL in the report.
 - Commit as the brief says.
 - Do not dispatch subagents of any kind, including reviewers. Review comes
   from the controller after your report.

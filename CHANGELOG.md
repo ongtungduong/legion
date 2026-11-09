@@ -22,6 +22,26 @@ Token cost cuts; no change to the workflow's steps.
   words like the other reviewers'.
 - Fixed a truncated sentence in the brainstorming builder check.
 
+Strengths taken from addyosmani/agent-skills, folded into existing skills; no
+new skill, router row, or description change.
+
+- `executing-plans` evidence gate gains step 4, "check the bar held": new
+  suppressions, skipped or loosened tests, stubs, and lowered thresholds are
+  undone or reported under `Weakened:` (from addy
+  `constraint-driven-development`). The implementer prompt, the task reviewer,
+  the plan's completion contract, and the code-review Standards checklist
+  check the same list.
+- `executing-plans`: an API the repo does not already use the same way is
+  checked against the official docs for the installed version and cited
+  under `Sources:` (from addy `source-driven-development`).
+- `executing-plans/references/doubt-review.md`: a bounded, fresh adversarial
+  review of one decision before an irreversible step or an untestable claim,
+  with an opt-in second model (from addy `doubt-driven-development`).
+- Behavioral evals: six cases under `evals/plugin/` for `claude plugin eval`
+  (fires / stays-quiet pairs, a pressure case, the light router). Not run
+  yet, so no numbers.
+- CI: GitHub Actions runs `npm test` and shellcheck.
+
 ## 0.9.0 - 2026-11-09
 
 - Renamed `domain-modeling` to `defining-terms`: the old name read as

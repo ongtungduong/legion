@@ -6,6 +6,11 @@
   races, state left inconsistent on failure.
 - **Tests:** each test could fail if the behavior broke; assertions on
   behavior at seams, not on mocks; expected values from an independent source.
+- **Weakened bar:** new suppressions (`@ts-ignore`, `eslint-disable`,
+  `# noqa`, `istanbul ignore`, `nosemgrep`), tests skipped or deleted,
+  assertions removed from tests that stayed, stubs or empty `catch` blocks,
+  thresholds lowered or checks dropped from CI config. Each one without a
+  stated, approved reason is Important; tightening a check needs no comment.
 - **Security:** untrusted input validated at the boundary; no injection into
   SQL, shell, HTML, or paths; authorization on every protected resource; no
   secrets or PII in code or logs. Escalate to `legion:security-and-hardening`

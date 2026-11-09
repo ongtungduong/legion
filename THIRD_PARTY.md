@@ -13,7 +13,10 @@ and condensed, not copied wholesale; the table says what came from where.
 | `skills/brainstorming/references/adr-format.md` | mattpocock `ADR-FORMAT.md` |
 | `skills/defining-terms` (+ references) | mattpocock `domain-modeling`, `GLOSSARY-FORMAT.md` |
 | `skills/writing-plans` | superpowers `writing-plans`; addy `planning-and-task-breakdown` (vertical slices, sizing) |
-| `skills/executing-plans` (+ references) | superpowers `executing-plans`, `subagent-driven-development` and its prompts, `test-driven-development`, `verification-before-completion`; mattpocock `tdd` (seams, anti-patterns) |
+| `skills/executing-plans` (+ references) | superpowers `executing-plans`, `subagent-driven-development` and its prompts, `test-driven-development`, `verification-before-completion`; mattpocock `tdd` (seams, anti-patterns); addy `constraint-driven-development` (the "guard the bar" checks), `source-driven-development` (version-sensitive APIs) |
+| `skills/executing-plans/references/doubt-review.md` | addy `doubt-driven-development` (condensed) |
+| `evals/plugin/` | addy `evals/plugin` (case layout and grader patterns) |
+| `.github/workflows/ci.yml` | addy `.github/workflows/test-plugin-install.yml` (reduced to `npm test` and shellcheck) |
 | `skills/systematic-debugging` | mattpocock `diagnosing-bugs`; superpowers `systematic-debugging` |
 | `skills/code-review` (+ references) | mattpocock `code-review` (two axes, smell baseline); addy `code-review-and-quality` (severity labels); superpowers `requesting-code-review`, `receiving-code-review` |
 | `skills/coding-principles/references/*.mini.md` | agent-rules-books `*/<book>.mini.md`, copied unchanged (14 files) |

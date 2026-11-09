@@ -33,6 +33,9 @@ Review in two separate passes and report them separately.
    - Each item of the design principles' final checklist holds for the diff;
      cite the decision rule a finding breaks. Repo conventions override them.
    - Security: untrusted input, secrets, injection, authorization.
+   - The bar held: no new suppressions, skipped or deleted tests, assertions
+     removed from tests that stayed, stubs or empty catch blocks, or
+     thresholds lowered, unless the brief or a listed ruling allows it.
 
 The spec is a vision document. Where it is silent, judge by what a reasonable
 user would expect; silence is not permission to break.

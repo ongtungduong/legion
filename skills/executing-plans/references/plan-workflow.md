@@ -72,7 +72,8 @@ Progress:
    4. After three rounds without convergence, rule on each open finding.
 4. **Completion contract**, all with evidence from this session: every named
    test exists and was seen failing, then passing; the full suite passed on
-   the final run; every expected output was compared; every deviation has a
+   the final run; the bar held (evidence gate step 4) over `BASE..<tip>`;
+   every expected output was compared; every deviation has a
    ruling; the design principles' final checklist is answered for the task's
    code. For a subagent task, inspect the diff yourself; its report is not
    evidence.

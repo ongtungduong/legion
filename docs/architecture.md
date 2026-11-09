@@ -42,7 +42,7 @@ nobody later "fixes" the parts that are deliberate.
 | `using-git-worktrees`, `finishing-a-development-branch` | Reduced to Setup and Finish steps in `executing-plans` | A separate skill was not needed in the first version. |
 | Visual companion and brainstorm server | Dropped | Depends on a JS server; outside the framework's scope. |
 | Issue tracker and `setup-matt-pocock-skills` | Not included yet | Needs a user-invoked setup skill. Recorded in the roadmap. |
-| addy's 25 skills | Only `security-and-hardening` taken | Other domain skills (perf, observability, CI/CD...) will be added when there is a real need. |
+| addy's 25 skills | Only `security-and-hardening` taken as a skill; three process ideas folded into `executing-plans` (see "Folded in from addy") | Other domain skills (perf, observability, CI/CD...) will be added when there is a real need. |
 
 ## The agentskills.io standard (0.2.0)
 
@@ -166,6 +166,27 @@ load about 29.7 KB of skill text (`executing-plans` 17.1 KB, `coding-principles`
 | Descriptions keep the trigger phrases and shorten the "what" | They are always in context. Lexical trigger evals stayed at 56/58 rank-1; real trigger rates are not measured yet |
 | Reviewers read the checklist by path; every reviewer report is capped at 400 words | Pasting a file costs the controller output tokens, and a reviewer's report lands in the controller's context once per task |
 
+## Folded in from addy (Unreleased)
+
+The test for each idea: does it fix something Legion's chain lets through,
+and can it ride on a step the agent already takes? Each one rides on
+`executing-plans`, so the router, the descriptions, and the skill count stay
+as they were. `executing-plans/SKILL.md` grows from 7.8 KB to 9.3 KB.
+
+| Taken | Where | Reason |
+|---|---|---|
+| "Guard the bar" (`constraint-driven-development` step 6): suppressions, skipped or loosened tests, stubs, lowered thresholds | Evidence gate step 4, implementer prompt, task reviewer, completion contract, code-review checklist | The evidence gate trusted a green run; a run made green by weakening a check passed it. One `git diff` scan closes that, with no tooling |
+| Version-sensitive APIs checked in official docs (`source-driven-development`) | One paragraph in the TDD cycle, a `Sources:` report line | Only for an API the repo does not already use the same way, so ordinary changes fetch nothing. Matches the "verify and cite" rule users already give |
+| Fresh adversarial review of one decision (`doubt-driven-development`) | `executing-plans/references/doubt-review.md`, read only before an irreversible step or an untestable claim | Legion reviewed before (pre-mortem) and after (code-review), not at the moment of the decision. The reviewer gets artifact and contract, never the claim; three rounds at most |
+| Paired behavioral evals (`evals/plugin`) | `evals/plugin/`, `experimental.evals` in `plugin.json` | Lexical evals do not show whether a skill fires on a real model; addy saw one case drop from 6/6 to 1/6 across CLI versions |
+
+| Not taken | Reason |
+|---|---|
+| `CONSTRAINTS.md`, thresholds, ratchets | A per-project contract and setup interview; the floor checks give most of the value without a file |
+| Asking about a second model on every doubt cycle; `sdd-cache` hook | Friction and a settings-level install for every user; the second model is opt-in on request |
+| Slash commands, `/build auto`, agent personas | The router and the reviewer prompts already cover them; commands would add a second entry point |
+| `interview-me`, `idea-refine`, `incremental-implementation`, `code-simplification`, `git-workflow-and-versioning` | Covered by brainstorming's grilling, writing-plans' slices, coding-principles, and the plan template's typed commits |
+
 ## Artifact conventions
 
 - `docs/legion/specs/` and `docs/legion/plans/`: committed; the source of truth.
@@ -180,8 +201,9 @@ load about 29.7 KB of skill text (`executing-plans` 17.1 KB, `coding-principles`
 | `scripts/validate.mjs` | Frontmatter, size, dev files leaking into `skills/`, links, `legion:` refs, router and README covering every skill, matching versions, hook is executable | CI, local | 0 |
 | `scripts/trigger-evals.mjs` | Positive prompts must rank their skill in the top 3; negative prompts must not rank the skill first; no two descriptions may be near-duplicates | CI, local | 0 |
 | `tests/hooks/` | The hook emits valid JSON, includes the router without its frontmatter, and falls back when files are missing | CI, local | 0 |
+| shellcheck | `hooks/session-start` and the hook tests | CI, local | 0 |
 | `claude plugin validate --strict` | Manifests and skills against the Claude Code standard | Local | 0 |
-| Behavioral evals (`claude plugin eval`) | Whether a skill actually changes the agent's behavior | Not yet; see the roadmap | Costs tokens |
+| Behavioral evals (`claude plugin eval`, `evals/plugin/`) | Whether a skill fires on a natural prompt and what it adds to the reply, with and without the plugin | Local, on demand | Costs tokens |
 
 Trigger evals are only a vocabulary approximation. They catch descriptions missing
 words users say, but they do **not** prove that a skill actually triggers on a real

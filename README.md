@@ -78,7 +78,7 @@ Documents the agent creates:
 | `brainstorming` | Clarifying intent, first-principles thinking, comparing approaches with the Six Thinking Hats, grilling in rounds (merged from the old grilling skill, including when only a plan needs stress-testing), writing the design doc, recording ADRs | superpowers + addy (spec) + mattpocock (grilling, ADR) + de Bono |
 | `defining-terms` | Terminology, `GLOSSARY.md` | mattpocock |
 | `writing-plans` | Splitting a spec into vertical-slice tasks, ordering slices by value (Pareto), pre-mortem | superpowers + addy (slicing, sizing) + Klein (pre-mortem) |
-| `executing-plans` | All code work, with or without a plan: settle acceptance criteria, TDD, follow coding-principles, evidence gate before reporting done. The agent chooses inline or subagent per task, with a ledger. Implementer subagents run in their own git worktree, with the model chosen by role (haiku/sonnet/opus). Merged from the old TDD and verification skills. | superpowers (executing-plans + SDD + TDD + verification) + mattpocock (seams, anti-patterns) |
+| `executing-plans` | All code work, with or without a plan: settle acceptance criteria, TDD, follow coding-principles, evidence gate before reporting done, including a check that no test or lint was weakened to get there. Before an irreversible step, one decision gets a fresh adversarial review. The agent chooses inline or subagent per task, with a ledger. Implementer subagents run in their own git worktree, with the model chosen by role (haiku/sonnet/opus). Merged from the old TDD and verification skills. | superpowers (executing-plans + SDD + TDD + verification) + mattpocock (seams, anti-patterns) + addy (bar check, docs for version-sensitive APIs, doubt review) |
 | `systematic-debugging` | Bugs, failing tests, slowness, flakiness | mattpocock (feedback loop) + superpowers |
 | `code-review` | Two-axis diff/PR review; receiving review | mattpocock + addy + superpowers |
 | `coding-principles` | Picking 1–2 rule sets from classic books (Clean Code, APoSD, Refactoring, WELC, Clean Architecture, DDD, DDIA, Release It!...) to shape code, avoiding conflicting pairs | agent-rules-books (14 mini editions) |
@@ -92,6 +92,7 @@ npm test                 # validate + validate:spec + trigger evals + hook test
 npm run validate         # repo structure: links, router, README, manifests, versions
 npm run validate:spec    # each skill against agentskills.io (skill-creator validator, needs python3)
 npm run evals:triggers   # vocabulary routing (TF-IDF)
+claude plugin eval . --no-publish   # behavioral evals in evals/plugin/ (costs tokens; pin --model)
 claude plugin validate . --strict
 ```
 

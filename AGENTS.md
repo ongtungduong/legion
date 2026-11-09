@@ -9,6 +9,7 @@ Rules for anyone, human or agent, changing this repo.
 hooks/            hooks.json + session-start (injects skills/using-legion)
 skills/<name>/    SKILL.md (+ references/, assets/, scripts/) - shipped to users
 evals/triggers/   lexical trigger cases, one JSON per skill
+evals/plugin/     behavioral cases for `claude plugin eval` (prompt.md + graders/)
 scripts/          repo checks (Node, no dependencies)
 tests/            shell tests for hooks
 docs/             architecture, roadmap (human-facing)
@@ -64,6 +65,7 @@ npm run validate                    # repo: links, legion: refs, router/README c
 npm run validate:spec               # every skill against agentskills.io (needs python3)
 npm run evals:triggers              # lexical routing; fails on near-duplicate descriptions
 claude plugin validate . --strict
+claude plugin eval . --no-publish  # behavioral, on demand, costs tokens
 ```
 
 When a description changes, re-run `npm run evals:triggers`. When you measure
