@@ -42,7 +42,7 @@ nobody later "fixes" the parts that are deliberate.
 | `using-git-worktrees`, `finishing-a-development-branch` | Reduced to Setup and Finish steps in `executing-plans` | A separate skill was not needed in the first version. |
 | Visual companion and brainstorm server | Dropped | Depends on a JS server; outside the framework's scope. |
 | Issue tracker and `setup-matt-pocock-skills` | Not included yet | Needs a user-invoked setup skill. Recorded in the roadmap. |
-| addy's 25 skills | Only `security-and-hardening` taken as a skill; three process ideas folded into `executing-plans` (see "Folded in from addy") | Other domain skills (perf, observability, CI/CD...) will be added when there is a real need. |
+| addy's 25 skills | `security-and-hardening` and, since 0.11.0, `performance-optimization` taken as skills; three process ideas folded into `executing-plans` (see "Folded in from addy") | Other domain skills (observability, CI/CD, API design...) will be added when there is a real need. |
 
 ## The agentskills.io standard (0.2.0)
 
@@ -104,6 +104,26 @@ not allow cross-skill file references.
 | Systems thinking | `brainstorming` White hat (system map) and Black hat (second-order effects, feedback loops), projects only; `code-review` Blast radius item; `systematic-debugging` gotcha about loops | Stop at the level where the effects still change the choice |
 | Pareto | `brainstorming` step 6 (scope cut); `writing-plans` step 3 (`Slice order`); `code-review` (ranking findings, folding Minor ones) | Proposed only, never cut unilaterally: deferred scope is dropped only when the user agrees |
 
+## Thinking-model matrix
+
+Where each of the four models changes a decision, per skill, as of 0.11.0.
+"n/a" means the model has no decision to change there; it is not a gap.
+`skill-creator`'s checklist asks every new or changed skill to update its row.
+
+| Skill | First principles | Inversion | Systems thinking | Pareto |
+|---|---|---|---|---|
+| `using-legion` | n/a | n/a | n/a | Light router: a skill loads only when it changes the next action |
+| `brainstorming` | Step 7 | Black hat (inverted failures) | White hat (system map), Black hat (second-order effects) | Step 6 (scope cut) |
+| `defining-terms` | Step 4 (concrete scenarios force the boundary) | n/a | n/a | n/a |
+| `writing-plans` | n/a (the spec already rebuilt the approach) | Step 6 (pre-mortem) | Step 5 cross-task references, Interfaces blocks | Step 3 (`Slice order`) |
+| `executing-plans` | Rule 1 (spec first) | RED: name the change that would make the test fail; evidence gate step 4; doubt review | Quick path "List the reach" (callers, consumers, data) | REFACTOR: the smell that most blocks the next change |
+| `systematic-debugging` | Step 2 (a loop of facts before any hypothesis) | Step 4 (falsifiable predictions) | Gotcha on loops in the system | Step 4 (likelihood for the cost of checking) |
+| `code-review` | Spec axis (built only what the spec asks) | n/a | Blast radius item | Ranking findings, folding Minor ones |
+| `coding-principles` | Step 1 (repo standards are facts) | n/a | System-level sets (architecture, data, reliability) | One primary set, at most one companion |
+| `security-and-hardening` | Steps 1-2 (trust boundaries and assets) | Step 3 (STRIDE), step 4 (abuse cases), audit personas | Step 1 (trust boundaries); audit step 4 | Step 7 and audit step 7 (exposure x impact) |
+| `performance-optimization` | Step 3 (measure before naming the bottleneck) | Step 5 (what load breaks it) | Step 4 (queues, retries, caches, pools) | Step 3 (largest share first) |
+| `skill-creator` | Step 1 (what the agent lacks) | Step 6 (near-miss prompts) | n/a | Body: add what the agent lacks, omit what it knows |
+
 ## One skill for all code work (0.7.0)
 
 `test-driven-development` and `verification-before-completion` were merged into
@@ -149,7 +169,7 @@ worktree itself.
 | ADRs moved into `brainstorming` (`references/adr-format.md`) | Trade-off decisions are made there: approaches are compared in step 8 and grilled in step 9. An ADR is offered when the design doc is written, and only when the decision is hard to reverse, surprising without context, and the result of a real trade-off. A direct entry in step 1 handles "record an ADR for X". |
 | No separate ADR skill | It would add a description to the always-on context and a row to the router for a rare task. brainstorming's description gained one trigger phrase instead. |
 
-## Token cuts (Unreleased)
+## Token cuts (0.10.0)
 
 The router sends every code change to `executing-plans`, so its size and the
 skills it pulls in are paid on almost every task. Measured with `wc -c`
@@ -166,7 +186,7 @@ load about 29.7 KB of skill text (`executing-plans` 17.1 KB, `coding-principles`
 | Descriptions keep the trigger phrases and shorten the "what" | They are always in context. Lexical trigger evals stayed at 56/58 rank-1; real trigger rates are not measured yet |
 | Reviewers read the checklist by path; every reviewer report is capped at 400 words | Pasting a file costs the controller output tokens, and a reviewer's report lands in the controller's context once per task |
 
-## Folded in from addy (Unreleased)
+## Folded in from addy (0.10.0)
 
 The test for each idea: does it fix something Legion's chain lets through,
 and can it ride on a step the agent already takes? Each one rides on
@@ -187,7 +207,7 @@ as they were. `executing-plans/SKILL.md` grows from 7.8 KB to 9.3 KB.
 | Slash commands, `/build auto`, agent personas | The router and the reviewer prompts already cover them; commands would add a second entry point |
 | `interview-me`, `idea-refine`, `incremental-implementation`, `code-simplification`, `git-workflow-and-versioning` | Covered by brainstorming's grilling, writing-plans' slices, coding-principles, and the plan template's typed commits |
 
-## Folded in from mattpocock (Unreleased)
+## Folded in from mattpocock (0.10.0)
 
 Legion already took mattpocock's core (grilling, glossary and ADRs, seams,
 the debugging feedback loop, two-axis review). The test for the rest: does it
@@ -206,23 +226,51 @@ that already loads passes; a new skill does not.
 | `handoff`, `retro` | Tried as user-invoked skills, then removed on the maintainer's decision; `handoff` stays on the roadmap |
 | `wait-what`, `teach`, `to-questionnaire`, `research`, `writing-for-agents`, `in-progress/*`, `misc/*` | Outside an engineering workflow, covered by `skill-creator`, or frozen or unfinished upstream |
 
+## Performance, security, and proven skills (0.11.0)
+
+Goal set by the maintainer: Legion catches performance and security problems
+while code is written and across a whole system, its own code meets the same
+three criteria (coding principles, security, performance), and every skill
+has measured evidence that it works. Design doc:
+`.legion/specs/2026-11-09-perf-security-evals-design.md`.
+
+| Decision | Reason |
+|---|---|
+| Performance and security are wired into the chain the way `coding-principles` is | The maintainer's model: standards that `executing-plans` and `code-review` call, not skills that wait to be invoked. The design doc gets a `Non-functional` section, the plan `Security` and `Performance` lines, the quick path loads both before the first test, implementers and reviewers get the checklist paths |
+| The quick path owns the trigger lists | One owner per fact. The router row and the skill descriptions are discovery vocabulary; `code-review` and `writing-plans` point at the quick path's lists |
+| Security loads on any trust-boundary change, whatever its size; performance skips XS | A one-line change can open a hole; a one-line change rarely moves a hot path |
+| A system audit is a mode of each domain skill (`references/audit.md`), dispatched by `code-review` when the target is a whole repo, not a third skill | A separate audit skill would add an always-on description and collide with security and code-review triggers. The two audits share a report skeleton; `validate.mjs` fails if they drift |
+| Metric honesty in `performance-optimization` | A model reading source cannot see runtime cost. No speed claim without a number and its source; otherwise "potential impact" |
+| A first request to skip a safety step keeps the cheap control | Maintainer's decision after two pressure cases failed: the router's "user instructions win" let "skip the validation" and "just add a retry" bypass every skill. Now the cheap control stays with a one-line reason, and is dropped only if the user insists, matching the maintainer's "if I insist, comply" rule |
+| `hooks/guard` (PreToolUse) asks before secret files and denies whole-folder scans of `node_modules`, `dist`, `build` | A convenience guard, not a security boundary: Claude Code's permission rules remain the boundary. Bash builtins only (tested with no `PATH`), fails open, `LEGION_GUARD=off` disables it. Two opus reviews removed false positives on ordinary work; the remaining gaps are listed in the roadmap |
+| Behavioral evals are the bar: a case passes at 2 of 3 runs, quality graders must beat the no-plugin arm | Lexical trigger evals do not show that a skill fires or helps. Every run is logged in `docs/evals.md` with model, Claude Code version, and cost |
+| Graders are never loosened to pass; a correct reply misjudged by a grader gets the grader clarified, with a ruling | The eval is only worth its honesty. Two cases where sonnet already behaves without the plugin are recorded as no-delta rather than tightened |
+| Nothing from claudekit-engineer is used | Its license is proprietary ("All Rights Reserved"); Legion is MIT. The audit personas and the guard were written from general security knowledge and Claude Code's hook contract |
+
+What the evals changed in existing skills: the router routes "what broke?"
+to debugging; `executing-plans` and `systematic-debugging` keep the
+test-first order and the report block in sessions that cannot run code;
+`coding-principles` loads for any new function or module.
+
 ## Artifact conventions
 
-- `docs/legion/specs/` and `docs/legion/plans/`: committed; the source of truth.
-- `.legion/runs/<plan>/`: ledger, briefs, and diff packages. This directory is
-  gitignored and deleted after the user chooses how to integrate.
+- `.legion/specs/` and `.legion/plans/`: committed; the source of truth.
+- `.legion/runs/<plan>/`: ledger, briefs, and diff packages. Everything in
+  `.legion/` except `specs/` and `plans/` is gitignored; `runs/` is deleted
+  after the user chooses how to integrate.
 - `GLOSSARY.md` and `docs/adr/`: created only when there is content, the mattpocock way.
 
 ## Testing
 
 | Layer | What it checks | Where it runs | Cost |
 |---|---|---|---|
-| `scripts/validate.mjs` | Frontmatter, size, dev files leaking into `skills/`, links, `legion:` refs, router and README covering every skill, matching versions, hook is executable | CI, local | 0 |
+| `scripts/validate.mjs` | Frontmatter, size, dev files leaking into `skills/`, links (none leaving a skill's root), `legion:` refs, router and README covering every skill, matching versions, every hook `hooks.json` runs exists and is executable, CI least privilege (permissions block, SHA-pinned actions), matching audit skeletons | CI, local | 0 |
+| `tests/scripts/` | Each `validate.mjs` and `trigger-evals.mjs` rule fails on a copy of the repo with that defect (`LEGION_ROOT`) | CI, local | 0 |
 | `scripts/trigger-evals.mjs` | Positive prompts must rank their skill in the top 3; negative prompts must not rank the skill first; no two descriptions may be near-duplicates | CI, local | 0 |
-| `tests/hooks/` | The hook emits valid JSON, includes the router without its frontmatter, and falls back when files are missing | CI, local | 0 |
-| shellcheck | `hooks/session-start` and the hook tests | CI, local | 0 |
+| `tests/hooks/` | `session-start` emits valid JSON (control characters included), carries the router without its frontmatter, and falls back when files are missing; `guard` makes the right decision on 44 inputs and runs with no `PATH` | CI, local | 0 |
+| shellcheck | Both hooks and every tracked `.sh` file | CI, local | 0 |
 | `claude plugin validate --strict` | Manifests and skills against the Claude Code standard | Local | 0 |
-| Behavioral evals (`claude plugin eval`, `evals/plugin/`) | Whether a skill fires on a natural prompt and what it adds to the reply, with and without the plugin | Local, on demand | Costs tokens |
+| Behavioral evals (`claude plugin eval`, `evals/plugin/`, log in `docs/evals.md`) | Whether each skill fires and stays quiet on natural prompts, holds under pressure, and changes the code it produces, with and without the plugin | Local, on demand | About $0.05 a run |
 
 Trigger evals are only a vocabulary approximation. They catch descriptions missing
 words users say, but they do **not** prove that a skill actually triggers on a real

@@ -34,6 +34,10 @@ Decisions from earlier tasks you cannot see in the brief: [interfaces, rulings]
 My resolution of ambiguities I noticed in the brief: [or "none"]
 Design principles for this code, read before writing it:
   [absolute paths to the chosen skills/coding-principles/references/<set>.mini.md files]
+Security checklist, read before writing code and answer every item:
+  [absolute path to skills/security-and-hardening/references/security-checklist.md, or "not triggered"]
+Performance checklist, read before writing code and answer every item:
+  [absolute path to skills/performance-optimization/references/performance-checklist.md, or "not triggered"]
 Test quality rules, read before the first test:
   [absolute path to skills/executing-plans/references/good-tests.md]
 
@@ -65,8 +69,8 @@ How to work:
 Report:
 - Write the full report to [absolute path to .legion/runs/<plan>/task-N-report.md]:
   what you built, every command you ran with its result, any deviation from
-  the brief and why, your answers to the design principles' final checklist,
-  and concerns.
+  the brief and why, your answers to the design principles' final checklist
+  and to each checklist above that applies, and concerns.
 - Return only: status (DONE / BLOCKED / DONE_WITH_CONCERNS), the worktree
   path, its branch, the full head sha, the commit range from the base, a
   one-line test summary, and concerns.

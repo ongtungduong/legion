@@ -30,4 +30,11 @@ check "router table survives JSON escaping" "$REPO_ROOT" '| Situation | Skill |'
 check "strips the YAML frontmatter" "$REPO_ROOT" "# Using Legion" "disable-model-invocation:"
 check "falls back cleanly when the skill is missing" "/nonexistent-legion-root" "could not read"
 
+# A router containing control characters must still yield valid JSON.
+fixture="$(mktemp -d)"
+trap 'rm -rf "$fixture"' EXIT
+mkdir -p "$fixture/skills/using-legion"
+printf -- '---\nname: using-legion\n---\n# Using Legion\nbell\x07 ff\x0c vt\x0b end\n' > "$fixture/skills/using-legion/SKILL.md"
+check "control characters stay valid JSON" "$fixture" "bell"
+
 exit "$fail"

@@ -18,11 +18,15 @@ it. Questions and trivial edits get answered directly, with no skill.
 
 1. **Apply precedence.** The user's instructions (CLAUDE.md, AGENTS.md, direct
    requests) win over any Legion skill; a loaded Legion skill wins over your
-   default habits.
+   default habits. A request to skip a safety step ("skip the validation",
+   "just add a retry", "skip the test") still loads the skill: keep the
+   cheap control, say why in one line, and drop it only if the user insists
+   after seeing that.
 2. **Classify the request.**
    - Question, explanation, or trivial edit that changes no code behavior
      (typo, comment, docs, formatting): do it directly. No skill, no
-     announcement.
+     announcement. "What broke?" or "why does this fail?" is a bug, not a
+     question.
    - Any change to what code does, however small or fully specified: load
      `legion:executing-plans`. A one-line fix still gets its failing test.
    - Matches a row in the map below: load that skill before acting, say so in
@@ -44,6 +48,7 @@ it. Questions and trivial edits get answered directly, with no skill.
 | Reviewing a diff, branch, or PR; responding to review feedback | `legion:code-review` |
 | Refactoring or cleanup; untested legacy code; designing a module, API, boundary, domain model, data flow, or failure handling | `legion:coding-principles` |
 | Untrusted input, auth, secrets, personal data, or LLM output | `legion:security-and-hardening` |
+| Speeding up code toward a measured goal: profiling, N+1, latency, throughput, memory, bundle size, Core Web Vitals | `legion:performance-optimization` |
 | Creating, editing, or validating a skill | `legion:skill-creator` |
 
 ## Default flow for new work
@@ -51,7 +56,7 @@ it. Questions and trivial edits get answered directly, with no skill.
 ```
 brainstorming ─▶ writing-plans ─▶ executing-plans ─▶ code-review (final)
      │                                  │
-     └─ defining-terms                  └─ spec + TDD + coding-principles + evidence gate in every task,
+     └─ defining-terms                  └─ spec + TDD + coding-principles + security/perf checklists + evidence gate in every task,
                                            inline or subagent per task
 ```
 

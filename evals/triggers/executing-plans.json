@@ -1,6 +1,6 @@
 {
   "positive": [
-    "Execute the plan in docs/legion/plans/2026-11-09-auth.md",
+    "Execute the plan in .legion/plans/2026-11-09-auth.md",
     "The plan is ready, implement it task by task",
     "Run the implementation plan with a subagent per task",
     "Write a failing test for this bug before fixing it",

@@ -53,17 +53,31 @@ take that path once per task; without one, the request is a plan of one task.
 1. **Pin the criteria** from the request, issue, or spec. If there are none and
    the change is not trivial, write them in one to three lines and confirm
    them with the user before coding.
-2. **Load the principles** before the first test when the change adds or
-   reshapes a function, class, module, or interface: call the Skill tool with
-   `legion:coding-principles`; it names the set in one line and its rules
-   shape the GREEN and REFACTOR steps. An XS change inside existing code (a
-   condition, a value, one call) follows the surrounding code's conventions
-   instead; say so in the report's `Principles:` line.
-3. **Run the TDD cycle** below, inline.
-4. **Review if risky.** For a change to auth, secrets, untrusted input,
-   persisted data, money, or concurrency, call the Skill tool with
-   `legion:code-review` before claiming it.
-5. **Run the evidence gate** and report in its format.
+2. **Load the standards** before the first test, with the Skill tool:
+   - `legion:coding-principles` whenever the change adds a function,
+     class, module, or interface, however small, or reshapes one; it names
+     the set in one line and its rules shape GREEN and REFACTOR. The
+     report's `Principles:` line names only a set you loaded. An XS change
+     inside existing code (a condition, a value, one call) follows the
+     surrounding code's conventions instead; say so in that line.
+   - `legion:security-and-hardening` when the change touches untrusted input
+     (requests, forms, uploads, webhooks, values another process wrote),
+     login or sessions, authorization, secrets or API keys, personal data,
+     LLM output, a user-supplied URL fetched server-side, or adds a
+     dependency. An XS change gets it too: a one-line change can open a hole.
+   - `legion:performance-optimization` when it touches a query or network
+     call inside a loop, a hot path (per request, per row, per frame), data
+     that grows with users or time, rendering, or a stated budget. An XS
+     change skips it.
+3. **List the reach.** When the change alters a public signature, behavior
+   other code relies on, or persisted data, list its callers, consumers, and
+   the data it touches, and give a test to each one the change can break.
+4. **Run the TDD cycle** below, inline.
+5. **Review if risky.** When step 2 loaded `legion:security-and-hardening`,
+   or the change touches persisted data, money, or concurrency, call the
+   Skill tool with `legion:code-review` before claiming it, and name the
+   checklists loaded so the reviewer checks against them.
+6. **Run the evidence gate** and report in its format.
 
 ## Plan workflow
 
@@ -137,6 +151,7 @@ a seam). Those tests stay in the suite; they are the point, not scaffolding.
 Verified: `npm test` -> 48 passed, 0 failed; `npm run build` -> exit 0.
 Criteria: <each acceptance criterion> -> <test that proves it>.
 Principles: <set(s)>; final checklist answered. (XS: surrounding conventions)
+Checklists: security <answered | not triggered>; performance <answered | not triggered>.
 Weakened: none.
 Sources: <doc URL per version-sensitive API, if any>.
 Unverified: deploy to staging (needs your credentials).
@@ -175,3 +190,7 @@ path is a guess.
   change, not what you verify.
 - "Should", "probably", and "looks good" are claims without evidence; replace
   them with the command and its output.
+- Without tools to write or run code (a pasted snippet, a read-only
+  session), keep the cycle's order in the reply: the failing test and the
+  failure you expect first, then the fix; still end with the full report
+  block (`Principles:`, `Checklists:`), listing the run under `Unverified:`.

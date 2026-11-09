@@ -5,8 +5,10 @@ description: >-
   goes red on the bug, then minimizing it, ranking falsifiable hypotheses,
   instrumenting, and fixing with a regression test. Use when facing a bug,
   failing or flaky test, crash, error message, stack trace, build or CI
-  failure, or something that got slow, before proposing any fix, even when the
-  code is pasted inline and the fix looks obvious.
+  failure, or something that got slow or slower after a change or deploy,
+  and when asked what broke or why
+  something fails, before proposing any fix, even when the code is pasted
+  inline and the fix looks obvious.
 license: MIT
 metadata:
   author: ongtungduong
@@ -51,6 +53,9 @@ cause.
    time, re-running after each, until every remaining element is load-bearing.
 4. **Hypothesize.** Write three to five ranked hypotheses before testing any,
    each with a prediction ("if X is the cause, changing Y makes it disappear").
+   Rank by likelihood for the cost of checking: a likely cause that a
+   one-line probe settles goes before a slightly likelier one that needs a
+   new environment.
    Check recent changes (`git log`, diffs, dependency and config changes) and
    similar code that works. Show the list to the user without blocking on them;
    they often re-rank it instantly.
@@ -73,6 +78,11 @@ cause.
 
 ## Gotchas
 
+- "Just try a quick fix" (a retry, a sleep, a skip) is the first ask, not
+  insistence. Lead with the loop and the ranked hypotheses; if you also give
+  the stopgap, label it as hiding the cause. Ship the stopgap alone only if
+  the user insists after seeing that.
+
 - Three failed fixes, each revealing a new problem elsewhere, means the design
   is the bug. Stop and discuss the architecture with the user before a fourth.
 - A symptom that moves, recurs elsewhere, or grows under load points to a
@@ -88,3 +98,7 @@ cause.
   the lines with the signal.
 - For performance regressions, logs usually mislead; a timing harness or
   profiler is the loop.
+- Without tools to run code (a pasted diff, a read-only session), the loop
+  still comes first in the reply: the failing test or check that goes red on
+  the symptom and what it will show, then the cause and the fix, marked
+  unverified.

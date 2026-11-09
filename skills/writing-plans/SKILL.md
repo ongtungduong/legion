@@ -29,7 +29,11 @@ and nothing they could decide alone.
    by responsibility, not by technical layer; follow existing patterns.
    **Choose the design principles** with `legion:coding-principles` (call the
    Skill tool with it) and record them in the plan's `Design principles` line,
-   so the implementer and the reviewer apply the same standard.
+   so the implementer and the reviewer apply the same standard. Fill the
+   `Security` and `Performance` lines from the spec's `Non-functional`
+   section, or, when the spec has none, from the trigger lists in
+   `legion:executing-plans`; `none` is a decision, so write it only when no
+   trigger matches. They tell the implementer which checklists to load.
 3. **Slice vertically.** Each task is one complete, testable path through the
    system (schema + logic + interface for one capability). The first task is
    the thinnest end-to-end tracer bullet. Size each task; split anything L or
@@ -49,7 +53,7 @@ and nothing they could decide alone.
    the user agrees.
 
 4. **Write the plan** from [assets/plan-template.md](assets/plan-template.md)
-   into `docs/legion/plans/YYYY-MM-DD-<topic>.md` (unless the user or repo
+   into `.legion/plans/YYYY-MM-DD-<topic>.md` (unless the user or repo
    prefers another place). Copy the spec's project-wide requirements verbatim
    into Global constraints, and list in Review focus up to five inputs the
    spec implies but no test exercises, each with its test added to the owning
