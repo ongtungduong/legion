@@ -68,12 +68,15 @@ take that path once per task; without one, the request is a plan of one task.
      call inside a loop, a hot path (per request, per row, per frame), data
      that grows with users or time, rendering, or a stated budget. An XS
      change skips it.
-3. **Run the TDD cycle** below, inline.
-4. **Review if risky.** When step 2 loaded the security checklist, or the
+3. **List the reach.** When the change alters a public signature, behavior
+   other code relies on, or persisted data, list its callers, consumers, and
+   the data it touches, and give a test to each one the change can break.
+4. **Run the TDD cycle** below, inline.
+5. **Review if risky.** When step 2 loaded the security checklist, or the
    change touches persisted data, money, or concurrency, call the Skill tool
    with `legion:code-review` before claiming it, and name the checklists
    loaded so the reviewer checks against them.
-5. **Run the evidence gate** and report in its format.
+6. **Run the evidence gate** and report in its format.
 
 ## Plan workflow
 

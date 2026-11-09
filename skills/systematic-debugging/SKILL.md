@@ -53,6 +53,9 @@ cause.
    time, re-running after each, until every remaining element is load-bearing.
 4. **Hypothesize.** Write three to five ranked hypotheses before testing any,
    each with a prediction ("if X is the cause, changing Y makes it disappear").
+   Rank by likelihood for the cost of checking: a likely cause that a
+   one-line probe settles goes before a slightly likelier one that needs a
+   new environment.
    Check recent changes (`git log`, diffs, dependency and config changes) and
    similar code that works. Show the list to the user without blocking on them;
    they often re-rank it instantly.

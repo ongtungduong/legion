@@ -104,6 +104,26 @@ not allow cross-skill file references.
 | Systems thinking | `brainstorming` White hat (system map) and Black hat (second-order effects, feedback loops), projects only; `code-review` Blast radius item; `systematic-debugging` gotcha about loops | Stop at the level where the effects still change the choice |
 | Pareto | `brainstorming` step 6 (scope cut); `writing-plans` step 3 (`Slice order`); `code-review` (ranking findings, folding Minor ones) | Proposed only, never cut unilaterally: deferred scope is dropped only when the user agrees |
 
+## Thinking-model matrix
+
+Where each of the four models changes a decision, per skill, as of 0.11.0.
+"n/a" means the model has no decision to change there; it is not a gap.
+`skill-creator`'s checklist asks every new or changed skill to update its row.
+
+| Skill | First principles | Inversion | Systems thinking | Pareto |
+|---|---|---|---|---|
+| `using-legion` | n/a | n/a | n/a | Light router: a skill loads only when it changes the next action |
+| `brainstorming` | Step 7 | Black hat (inverted failures) | White hat (system map), Black hat (second-order effects) | Step 6 (scope cut) |
+| `defining-terms` | Step 4 (concrete scenarios force the boundary) | n/a | n/a | n/a |
+| `writing-plans` | n/a (the spec already rebuilt the approach) | Step 6 (pre-mortem) | Step 5 cross-task references, Interfaces blocks | Step 3 (`Slice order`) |
+| `executing-plans` | Rule 1 (spec first) | RED: name the change that would make the test fail; evidence gate step 4; doubt review | Quick path "List the reach" (callers, consumers, data) | REFACTOR: the smell that most blocks the next change |
+| `systematic-debugging` | Step 2 (a loop of facts before any hypothesis) | Step 4 (falsifiable predictions) | Gotcha on loops in the system | Step 4 (likelihood for the cost of checking) |
+| `code-review` | Spec axis (built only what the spec asks) | n/a | Blast radius item | Ranking findings, folding Minor ones |
+| `coding-principles` | Step 1 (repo standards are facts) | n/a | System-level sets (architecture, data, reliability) | One primary set, at most one companion |
+| `security-and-hardening` | Steps 1-2 (trust boundaries and assets) | Step 3 (STRIDE), step 4 (abuse cases), audit personas | Step 1 (trust boundaries); audit step 4 | Step 7 and audit step 7 (exposure x impact) |
+| `performance-optimization` | Step 3 (measure before naming the bottleneck) | Step 5 (what load breaks it) | Step 4 (queues, retries, caches, pools) | Step 3 (largest share first) |
+| `skill-creator` | Step 1 (what the agent lacks) | Step 6 (near-miss prompts) | n/a | Body: add what the agent lacks, omit what it knows |
+
 ## One skill for all code work (0.7.0)
 
 `test-driven-development` and `verification-before-completion` were merged into

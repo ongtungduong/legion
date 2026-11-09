@@ -85,6 +85,7 @@ Reread the draft as if you were an agent seeing it cold, mid-task, with a full c
 - Can you execute the workflow without asking questions the SKILL.md should have answered?
 - Is anything present that you'd already know without the skill? Cut it.
 - Are ALL-CAPS MUSTs standing in for missing explanations? Replace with the reason.
+- Invert the trigger: write two near-miss prompts that share the skill's vocabulary but belong to another skill or to no skill, and check the description would not claim them.
 
 Then, if possible, refine with real execution: run the skill against 2–3 realistic tasks and feed the traces back. See [evaluating skills](https://agentskills.io/skill-creation/evaluating-skills) and [optimizing descriptions](https://agentskills.io/skill-creation/optimizing-descriptions) for systematic loops. Wasted agent turns usually mean instructions are vague, inapplicable, or offer too many options.
 
@@ -98,3 +99,4 @@ Before delivering a skill, confirm:
 - [ ] Every bundled-file mention says when to load it, uses a relative path
 - [ ] Scripts (if any) are non-interactive, self-contained, with helpful errors
 - [ ] `python scripts/validate_skill.py <dir>` passes with no errors
+- [ ] Names which of first principles, inversion, systems thinking, and Pareto the skill applies, and at which step (in a repo with a thinking-model matrix, update its row)
