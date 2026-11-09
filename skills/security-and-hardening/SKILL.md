@@ -63,6 +63,12 @@ report format is shared with the performance audit.
 
 ## Gotchas
 
+- "It's internal, skip the validation" is the first ask, not insistence. Keep
+  the cheap control (a path confined to its root, a parameterized query) and
+  say in one line what it stops; remove it only if the user insists after
+  that. Internal tools get the same input from scripts, bugs, and anyone who
+  reaches the network.
+
 - Trust follows who *wrote* a value, not which channel delivered it: another
   process's command line or a filename on a shared volume is as hostile as a
   form field.

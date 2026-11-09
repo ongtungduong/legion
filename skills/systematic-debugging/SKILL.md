@@ -78,6 +78,11 @@ cause.
 
 ## Gotchas
 
+- "Just try a quick fix" (a retry, a sleep, a skip) is the first ask, not
+  insistence. Lead with the loop and the ranked hypotheses; if you also give
+  the stopgap, label it as hiding the cause. Ship the stopgap alone only if
+  the user insists after seeing that.
+
 - Three failed fixes, each revealing a new problem elsewhere, means the design
   is the bug. Stop and discuss the architecture with the user before a fourth.
 - A symptom that moves, recurs elsewhere, or grows under load points to a

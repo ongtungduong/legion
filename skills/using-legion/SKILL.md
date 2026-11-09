@@ -18,7 +18,10 @@ it. Questions and trivial edits get answered directly, with no skill.
 
 1. **Apply precedence.** The user's instructions (CLAUDE.md, AGENTS.md, direct
    requests) win over any Legion skill; a loaded Legion skill wins over your
-   default habits.
+   default habits. A request to skip a safety step ("skip the validation",
+   "just add a retry", "skip the test") still loads the skill: keep the
+   cheap control, say why in one line, and drop it only if the user insists
+   after seeing that.
 2. **Classify the request.**
    - Question, explanation, or trivial edit that changes no code behavior
      (typo, comment, docs, formatting): do it directly. No skill, no
