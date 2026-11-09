@@ -77,6 +77,14 @@ expect allow "Read .env.template is allowed"           "$(read_json /p/.env.temp
 expect ask   "Windows path to .env asks"               '{"tool_name":"Read","tool_input":{"file_path":"C:\\p\\.env"}}'
 expect allow "empty Bash command is allowed"           "$(bash_json '')"
 
+# Re-review: the search pattern is not a folder.
+expect allow "Bash rg for the word build in scripts is allowed" "$(bash_json 'rg build scripts')"
+expect allow "Bash grep -rn for dist in .github is allowed" "$(bash_json 'grep -rn dist .github')"
+expect allow "Bash rg -n for node_modules in docs is allowed" "$(bash_json 'rg -n node_modules docs')"
+expect allow "Bash grep -r -e build in src is allowed"  "$(bash_json 'grep -r -e build src')"
+expect deny  "Bash rg -e foo in node_modules is denied" "$(bash_json 'rg -e foo node_modules')"
+expect deny  "Bash grep -rn in node_modules/. is denied" "$(bash_json 'grep -rn foo node_modules/.')"
+
 # Bash builtins only: the hook must work with no PATH at all.
 out="$(printf '%s' "$(read_json /p/.env)" | env PATH=/nonexistent "$BASH" "$HOOK" 2>&1)" || true
 case "$out" in

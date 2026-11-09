@@ -61,6 +61,7 @@ secret_glob() {
 # one of those names, or a package inside one, is a narrower search.
 heavy_target() {
   local p="${1%/}"
+  p="${p%/.}"
   p="${p%/\*}"
   p="${p%/\*\*}"
   case "${p##*/}" in
@@ -86,22 +87,33 @@ deny_scan() { emit deny "Legion guard: broad scan of $1/ blocked; search one pac
 # "--exclude-dir=node_modules" and "-not -path './dist/*'" never count.
 bash_segment() {
   local word prev="" seen_grep="" is_scanner="" seg_heavy=""
+  # A search tool's first positional word is its pattern, not a folder,
+  # unless the pattern came through -e / --regexp / -f.
+  local wants_pattern=""
   local -a words=()
   IFS=$' \t;|&<>()\'"`' read -r -a words <<< "$1" || true
   for word in ${words[@]+"${words[@]}"}; do
     case "$word" in
-      rg | find | fd | ag) is_scanner=1 ;;
-      grep | egrep | fgrep) seen_grep=1 ;;
+      rg | ag) is_scanner=1; wants_pattern=1 ;;
+      find | fd) is_scanner=1 ;;
+      grep | egrep | fgrep) seen_grep=1; wants_pattern=1 ;;
       --recursive) [ -n "$seen_grep" ] && is_scanner=1 ;;
+      -e | --regexp | -f | --file | --regexp=* | --file=*) wants_pattern="" ;;
       --*) ;;
       -*[rR]*) [ -n "$seen_grep" ] && is_scanner=1 ;;
     esac
     case "$prev" in
-      -path | -ipath | -name | -iname | -wholename | -not | '!' | -g | --glob | --exclude | --exclude-dir | --include) ;;
+      -path | -ipath | -name | -iname | -wholename | -not | '!' | -g | --glob | --exclude | --exclude-dir | --include | -e | --regexp | -f | --file | -t | --type | -T | --type-not) ;;
       *)
         case "$word" in
-          -* | '!'*) ;;
-          *) [ -z "$seg_heavy" ] && heavy_target "$word" && seg_heavy="$REPLY" ;;
+          -* | '!'* | rg | ag | grep | egrep | fgrep | find | fd) ;;
+          *)
+            if [ -n "$wants_pattern" ]; then
+              wants_pattern="" # this word is the pattern
+            else
+              [ -z "$seg_heavy" ] && heavy_target "$word" && seg_heavy="$REPLY"
+            fi
+            ;;
         esac
         ;;
     esac
