@@ -42,6 +42,16 @@ new skill, router row, or description change.
   yet, so no numbers.
 - CI: GitHub Actions runs `npm test` and shellcheck.
 
+Strengths taken from mattpocock/skills, folded into existing skills; no new
+skill, router row, or description change.
+
+- `executing-plans/assets/pr-body.md`: PR body with a summary visual,
+  before/after evidence, spec criteria, merge danger (one-way or two-way
+  door, blast radius), and the run's rulings.
+- `systematic-debugging`: a human-in-the-loop loop as the last resort before
+  stopping, with `scripts/hitl-loop.sh`, which the user runs through the `!`
+  prefix.
+
 ## 0.9.0 - 2026-11-09
 
 - Renamed `domain-modeling` to `defining-terms`: the old name read as

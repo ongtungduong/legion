@@ -187,6 +187,25 @@ as they were. `executing-plans/SKILL.md` grows from 7.8 KB to 9.3 KB.
 | Slash commands, `/build auto`, agent personas | The router and the reviewer prompts already cover them; commands would add a second entry point |
 | `interview-me`, `idea-refine`, `incremental-implementation`, `code-simplification`, `git-workflow-and-versioning` | Covered by brainstorming's grilling, writing-plans' slices, coding-principles, and the plan template's typed commits |
 
+## Folded in from mattpocock (Unreleased)
+
+Legion already took mattpocock's core (grilling, glossary and ADRs, seams,
+the debugging feedback loop, two-axis review). The test for the rest: does it
+cost nothing in a session that does not need it? A pointer inside a skill
+that already loads passes; a new skill does not.
+
+| Taken | Where | Reason |
+|---|---|---|
+| `pr` | `executing-plans/assets/pr-body.md`, read only when opening a PR | A separate model-invoked skill would add a description to every session for a rare moment; the evidence and rulings it needs are already in `executing-plans` |
+| HITL loop from `diagnosing-bugs` | `systematic-debugging` step 2 and `scripts/hitl-loop.sh` | The 0.x adaptation dropped it. The script is run by the user with `!`, because the Bash tool has no terminal for its prompts |
+
+| Not taken | Reason |
+|---|---|
+| `setup-matt-pocock-skills`, `to-spec`, `to-tickets`, `triage`, `wayfinder`, `implement-spec` | The issue-tracker flow; still on the roadmap behind a setup skill |
+| `improve-codebase-architecture`, `codebase-design`, `prototype` | `coding-principles` carries the APoSD deep-module rules, and brainstorming allows an agreed spike. Revisit if users ask for a codebase survey |
+| `handoff`, `retro` | Tried as user-invoked skills, then removed on the maintainer's decision; `handoff` stays on the roadmap |
+| `wait-what`, `teach`, `to-questionnaire`, `research`, `writing-for-agents`, `in-progress/*`, `misc/*` | Outside an engineering workflow, covered by `skill-creator`, or frozen or unfinished upstream |
+
 ## Artifact conventions
 
 - `docs/legion/specs/` and `docs/legion/plans/`: committed; the source of truth.

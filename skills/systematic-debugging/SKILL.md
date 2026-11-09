@@ -32,7 +32,12 @@ cause.
    against a dev server; a CLI run diffed against known-good output; a headless
    browser script; a replay of a captured payload; a throwaway harness; a
    fuzz loop for "sometimes wrong"; `git bisect run` when the bug appeared
-   between two known states; a differential run of old vs new.
+   between two known states; a differential run of old vs new; last, when
+   only a person can trigger the bug, a human-in-the-loop script: copy
+   [scripts/hitl-loop.sh](scripts/hitl-loop.sh) to `.legion/`, write the
+   steps, and ask the user to run it with `! bash .legion/<copy>.sh` (your
+   Bash tool cannot answer its prompts); its `KEY=VALUE` output is the loop's
+   verdict.
    Tighten it: faster (narrow scope), sharper (assert the user's exact symptom,
    not "did not crash"), deterministic (pin time, seed randomness, isolate the
    filesystem).

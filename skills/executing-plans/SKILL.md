@@ -142,6 +142,9 @@ Sources: <doc URL per version-sensitive API, if any>.
 Unverified: deploy to staging (needs your credentials).
 ```
 
+Opening a pull request: write its body from
+[assets/pr-body.md](assets/pr-body.md), with this report as its evidence.
+
 ## Rulings, not stalls
 
 Conflicts, ambiguities, and plan defects are yours to decide: the spec is the

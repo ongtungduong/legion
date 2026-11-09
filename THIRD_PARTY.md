@@ -18,6 +18,8 @@ and condensed, not copied wholesale; the table says what came from where.
 | `evals/plugin/` | addy `evals/plugin` (case layout and grader patterns) |
 | `.github/workflows/ci.yml` | addy `.github/workflows/test-plugin-install.yml` (reduced to `npm test` and shellcheck) |
 | `skills/systematic-debugging` | mattpocock `diagnosing-bugs`; superpowers `systematic-debugging` |
+| `skills/systematic-debugging/scripts/hitl-loop.sh` | mattpocock `diagnosing-bugs/scripts/hitl-loop.template.sh` (adapted to Claude Code's `!` prefix) |
+| `skills/executing-plans/assets/pr-body.md` | mattpocock `pr` (itself credited to Humanlayer `show-me`, Dex Horthy) |
 | `skills/code-review` (+ references) | mattpocock `code-review` (two axes, smell baseline); addy `code-review-and-quality` (severity labels); superpowers `requesting-code-review`, `receiving-code-review` |
 | `skills/coding-principles/references/*.mini.md` | agent-rules-books `*/<book>.mini.md`, copied unchanged (14 files) |
 | `skills/coding-principles/SKILL.md` | Routing and conflict rules derived from agent-rules-books `docs/USAGE.md` and `docs/COMPATIBILITY.md` |

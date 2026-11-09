@@ -106,7 +106,8 @@ finding by its effect on a real user, then:
 Run the evidence gate over the whole branch: the full suite, the build, and a
 line-by-line check of the spec's success criteria. In the final message, list
 every `Ruling:` under "Rulings I made" and every deferred minor under
-"Deferred minors", in order and complete. Offer merge locally, open a PR, keep
+"Deferred minors", in order and complete. Offer merge locally, open a PR (body
+from `assets/pr-body.md`, its Rulings section from the ledger), keep
 the branch, or discard it, and wait for the user's choice. Delete
 `.legion/runs/<plan>/` only after they choose.
 
