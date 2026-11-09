@@ -22,4 +22,4 @@ jobs:
         run: npm test
 
       - name: Shellcheck every shell script
-        run: shellcheck hooks/session-start $(git ls-files '*.sh')
+        run: shellcheck hooks/session-start hooks/guard $(git ls-files '*.sh')

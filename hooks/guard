@@ -1,0 +1,96 @@
+#!/usr/bin/env bash
+# PreToolUse guard for the Legion plugin.
+#
+# Asks the user before a tool touches a file that usually holds secrets
+# (.env, .env.*, *.pem, *.key, id_rsa*), and denies broad scans of
+# node_modules, dist, and build, which flood the context with generated code.
+# Everything else is allowed with no output. Set LEGION_GUARD=off to disable.
+#
+# Bash builtins only: the hook runs before every matched tool call, so it
+# forks no process, and it must work with a broken PATH. It fails open: input
+# it cannot read is allowed, because a guard bug must not stop the user's work
+# (Claude Code's own permission rules still apply).
+set -uo pipefail
+set -f # word splitting below must never expand globs from the command text
+
+[ "${LEGION_GUARD:-on}" = off ] && exit 0
+
+input=""
+IFS= read -r -d '' input || true
+
+# json_string <field>: REPLY = the first "<field>": "<string>" value, with its
+# JSON escapes kept, or empty.
+json_string() {
+  local re='"'"$1"'"[[:space:]]*:[[:space:]]*"(([^"\\]|\\.)*)"'
+  if [[ $input =~ $re ]]; then REPLY="${BASH_REMATCH[1]}"; else REPLY=""; fi
+}
+
+# A name that is safe to put in a JSON string: no quotes or backslashes.
+safe() { REPLY="${1//\\/}"; REPLY="${REPLY//\"/}"; }
+
+emit() { # $1 decision, $2 reason
+  printf '{"hookSpecificOutput":{"hookEventName":"PreToolUse","permissionDecision":"%s","permissionDecisionReason":"%s"}}\n' "$1" "$2"
+  exit 0
+}
+
+# secret_name <path>: true when its last segment usually holds secrets.
+secret_name() {
+  local base="${1##*/}"
+  case "$base" in
+    .env.example | .env.sample) return 1 ;;
+    .env | .env.* | *.pem | *.key | id_rsa*) safe "$base"; return 0 ;;
+  esac
+  return 1
+}
+
+# heavy_dir <path or glob>: true when a segment is node_modules, dist, or build.
+heavy_re='/(node_modules|dist|build)/'
+heavy_dir() {
+  if [[ "/$1/" =~ $heavy_re ]]; then REPLY="${BASH_REMATCH[1]}"; return 0; fi
+  return 1
+}
+
+ask_secret() { emit ask "Legion guard: $1 may contain secrets. Allow this $tool call?"; }
+deny_scan() { emit deny "Legion guard: broad scan of $1/ blocked; search a narrower path or read the file directly. Set LEGION_GUARD=off to disable."; }
+
+json_string tool_name
+tool="$REPLY"
+safe "$tool"
+tool="$REPLY"
+
+case "$tool" in
+  Read | Edit | Write)
+    json_string file_path
+    secret_name "$REPLY" && ask_secret "$REPLY"
+    ;;
+  Grep | Glob)
+    json_string path
+    path="$REPLY"
+    if [ "$tool" = Grep ]; then json_string glob; else json_string pattern; fi
+    for target in "$path" "$REPLY"; do
+      [ -n "$target" ] && heavy_dir "$target" && deny_scan "$REPLY"
+    done
+    secret_name "$path" && ask_secret "$REPLY"
+    ;;
+  Bash)
+    json_string command
+    command="$REPLY"
+    scanner="" heavy="" secret=""
+    seen_grep=""
+    # Split on shell syntax as well as blanks; IFS changes for this read only.
+    words=()
+    IFS=$' \t\n;|&<>()=\'"`' read -r -d '' -a words <<< "$command" || true
+    for word in "${words[@]}"; do
+      case "$word" in
+        rg | find | fd | ag) scanner=1 ;;
+        grep | egrep) seen_grep=1 ;;
+        --recursive | -*[rR]*) [ -n "$seen_grep" ] && scanner=1 ;;
+      esac
+      [ -z "$heavy" ] && heavy_dir "$word" && heavy="$REPLY"
+      [ -z "$secret" ] && secret_name "$word" && secret="$REPLY"
+    done
+    [ -n "$scanner" ] && [ -n "$heavy" ] && deny_scan "$heavy"
+    [ -n "$secret" ] && ask_secret "$secret"
+    ;;
+esac
+exit 0

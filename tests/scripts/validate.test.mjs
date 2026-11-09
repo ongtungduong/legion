@@ -60,12 +60,12 @@ test('missing registered hook fails', () => {
   const root = copyRepo();
   edit(root, 'hooks/hooks.json', (t) => {
     const j = JSON.parse(t);
-    j.hooks.PreToolUse = [{ matcher: 'Read', hooks: [{ type: 'command', command: 'bash "${CLAUDE_PLUGIN_ROOT}/hooks/guard"' }] }];
+    j.hooks.Stop = [{ hooks: [{ type: "command", command: "bash \"${CLAUDE_PLUGIN_ROOT}/hooks/not-there\"" }] }];
     return JSON.stringify(j, null, 2);
   });
   const { code, out } = run('validate.mjs', root);
   assert.equal(code, 1, out);
-  assert.match(out, /hooks\/guard is missing/);
+  assert.match(out, /hooks\/not-there is missing/);
 });
 
 test('workflow without a permissions block fails', () => {
