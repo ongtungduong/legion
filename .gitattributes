@@ -1,0 +1,8 @@
+# The hook runs under bash: a CRLF checkout on Windows would break it.
+*.sh text eol=lf
+hooks/session-start text eol=lf
+*.md text eol=lf
+*.json text eol=lf
+*.mjs text eol=lf
+*.py text eol=lf
+*.png binary

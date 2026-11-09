@@ -32,17 +32,39 @@ each part, see [THIRD_PARTY.md](THIRD_PARTY.md) and [docs/architecture.md](docs/
 
 ## Installation
 
-Try it directly from the directory:
+This repo is its own marketplace (`legion-dev`). Inside Claude Code:
+
+```
+/plugin marketplace add ongtungduong/legion
+/plugin install legion@legion-dev
+```
+
+Or from a shell:
+
+```bash
+claude plugin marketplace add ongtungduong/legion
+claude plugin install legion@legion-dev
+```
+
+Start a new session (or run `/clear`): the SessionStart hook injects the router,
+and the skills appear as `legion:<name>`. Check with `claude plugin list`.
+
+Update or remove:
+
+```bash
+claude plugin marketplace update legion-dev   # fetch the latest commit
+claude plugin update legion@legion-dev        # install it (restart Claude Code after)
+claude plugin uninstall legion@legion-dev
+```
+
+Claude Code installs a new copy only when `version` in `plugin.json` changes,
+so every release bumps it. Third-party marketplaces do not auto-update by
+default; turn it on under `/plugin` > Marketplaces > Enable auto-update.
+
+To try a local checkout without installing:
 
 ```bash
 claude --plugin-dir /path/to/legion
-```
-
-Or install through a local marketplace:
-
-```
-/plugin marketplace add /path/to/legion
-/plugin install legion@legion-dev
 ```
 
 > If superpowers is enabled, disable it while using Legion. Both inject a router at

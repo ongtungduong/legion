@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 0.10.0 - 2026-11-09
 
 Token cost cuts; no change to the workflow's steps.
 

@@ -1,10 +1,12 @@
 {
   "name": "legion",
-  "version": "0.9.0",
+  "version": "0.10.0",
   "description": "Disciplined engineering workflow for coding agents: clarify intent, plan in vertical slices, build test-first, review on two axes, verify before claiming done.",
   "author": {
     "name": "Ông Tùng Dương"
   },
+  "homepage": "https://github.com/ongtungduong/legion",
+  "repository": "https://github.com/ongtungduong/legion",
   "license": "MIT",
   "keywords": [
     "skills",
