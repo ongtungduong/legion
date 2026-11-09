@@ -1,161 +1,171 @@
-# Kiến trúc Legion
+# Legion architecture
 
-Ghi lại các quyết định thiết kế của bản 0.1.0 và lý do, để sau này không ai "sửa"
-nhầm những chỗ cố ý.
+Records the design decisions of each version since 0.1.0 and their reasons, so
+nobody later "fixes" the parts that are deliberate.
 
-## Nguyên tắc nền
+## Foundations
 
-1. **Khung của superpowers.** Plugin có hook SessionStart chèn một skill router, cùng
-   một chuỗi skill quy trình (brainstorm → plan → execute → review → verify) có
-   hard gate. Đây là phần mạnh nhất của superpowers nên được giữ.
-2. **Router nhẹ thay cho ép buộc.** superpowers bắt agent kiểm tra skill trước *mọi*
-   phản hồi ("1% chance → MUST"), nên tốn token và chậm với việc nhỏ. Cách làm đó
-   cũng xung đột với quy tắc "Trivial: just answer". Legion chỉ nạp skill khi task
-   khớp rõ ràng. Tuy vậy, skill kỷ luật đã nạp thì không được làm mềm luật cứng.
-3. **Ưu tiên chỉ dẫn của người dùng.** CLAUDE.md và AGENTS.md của người dùng thắng
-   mọi skill. Điều này được ghi ngay đầu router.
-4. **Không phụ thuộc thư viện ngoài.** Hook chỉ dùng bash builtin, script repo chỉ dùng
-   Node có sẵn (không có `node_modules`). Riêng `validate:spec` cần `python3` vì chạy
-   validator của skill-creator (chỉ dùng stdlib).
-5. **Chuẩn agentskills.io cho mọi skill.** Từ 0.2.0, skill được viết và kiểm tra bằng
-   `skill-creator`. Xem mục bên dưới.
+1. **superpowers' framework.** The plugin has a SessionStart hook that injects a router
+   skill, plus a chain of process skills (brainstorm → plan → execute → review → verify)
+   with hard gates. This is the strongest part of superpowers, so it is kept.
+2. **A light router instead of enforcement.** superpowers makes the agent check for
+   skills before *every* response ("1% chance → MUST"), which costs tokens and slows
+   small tasks. It also conflicts with the "Trivial: just answer" rule. Legion loads a
+   skill only when the task clearly matches. Even so, a loaded discipline skill must not
+   have its hard rules softened.
+3. **User instructions first.** The user's CLAUDE.md and AGENTS.md win over every
+   skill. This is stated at the top of the router.
+4. **No external dependencies.** The hook uses only bash builtins, and repo scripts use
+   only stock Node (no `node_modules`). Only `validate:spec` needs `python3`, because it
+   runs the skill-creator validator (stdlib only).
+5. **The agentskills.io standard for every skill.** Since 0.2.0, skills are written and
+   checked with `skill-creator`. See the section below.
 
-## Lấy gì từ đâu
+## What came from where
 
-| Nguồn | Điểm mạnh được lấy | Ở đâu trong Legion |
+| Source | Strengths taken | Where in Legion |
 |---|---|---|
-| superpowers | Hook SessionStart; hard gate trước khi code; plan có Interfaces / Global constraints / Review focus; ledger chống mất trí nhớ khi compaction; "rulings, not stalls" và bốn điểm dừng; iron law TDD và verify; tiếp nhận review không xu nịnh | `hooks/`, `brainstorming`, `writing-plans`, `executing-plans` (gồm cả TDD và verify), `code-review/references/receiving-review.md` |
-| mattpocock | Phỏng vấn theo vòng trên cây quyết định; `GLOSSARY.md` và ADR; seam và các anti-pattern của test; debug bắt đầu từ feedback loop; review hai trục chạy song song; phân biệt user-invoked và model-invoked; gọi skill bằng "Call the Skill tool with" | `brainstorming/references/grilling.md`, `brainstorming/references/adr-format.md`, `defining-terms`, `executing-plans` (TDD), `systematic-debugging`, `code-review`, `AGENTS.md` (quy ước invocation, cross-ref) |
-| addyosmani | Cấu trúc spec (Commands, Testing, Boundaries Always/Ask/Never, Success criteria); lát cắt dọc và bảng size XS–XL; nhãn mức độ review; threat model STRIDE và checklist bảo mật; trigger eval tất định; bài học "even when pasted inline" cho description | `brainstorming`, `writing-plans`, `code-review`, `security-and-hardening`, `scripts/trigger-evals.mjs`, `AGENTS.md` |
-| agent-rules-books | 14 bộ rule mini chắt lọc từ sách kinh điển; quy tắc "một bộ chính, tối đa thêm một"; ma trận tương thích (2 cặp ❌, 11 cặp 🔁) | `coding-principles`, các điểm nối trong writing-plans, executing-plans, code-review |
-| duongot-skills | `skill-creator`: workflow 6 bước, spec và best practices của agentskills.io, template, validator | `skills/skill-creator`, `scripts/validate-spec.mjs` |
+| superpowers | SessionStart hook; hard gate before coding; plans with Interfaces / Global constraints / Review focus; a ledger that survives compaction; "rulings, not stalls" and the four stop points; the TDD and verification iron laws; receiving review without sycophancy | `hooks/`, `brainstorming`, `writing-plans`, `executing-plans` (including TDD and verification), `code-review/references/receiving-review.md` |
+| mattpocock | Interviewing in rounds over a decision tree; `GLOSSARY.md` and ADRs; seams and test anti-patterns; debugging that starts from a feedback loop; two-axis review running in parallel; the user-invoked vs model-invoked distinction; invoking skills with "Call the Skill tool with" | `brainstorming/references/grilling.md`, `brainstorming/references/adr-format.md`, `defining-terms`, `executing-plans` (TDD), `systematic-debugging`, `code-review`, `AGENTS.md` (invocation convention, cross-refs) |
+| addyosmani | Spec structure (Commands, Testing, Boundaries Always/Ask/Never, Success criteria); vertical slices and the XS–XL size table; review severity labels; STRIDE threat model and security checklist; deterministic trigger evals; the "even when pasted inline" lesson for descriptions | `brainstorming`, `writing-plans`, `code-review`, `security-and-hardening`, `scripts/trigger-evals.mjs`, `AGENTS.md` |
+| agent-rules-books | 14 mini rule sets distilled from classic books; the "one primary set, at most one more" rule; the compatibility matrix (2 ❌ pairs, 11 🔁 pairs) | `coding-principles`, and its hook points in writing-plans, executing-plans, code-review |
+| duongot-skills | `skill-creator`: the 6-step workflow, the agentskills.io spec and best practices, template, validator | `skills/skill-creator`, `scripts/validate-spec.mjs` |
 
-## Những gì cố ý bỏ hoặc đổi
+## What was deliberately dropped or changed
 
-| Thứ trong nguồn | Quyết định | Lý do |
+| In the source | Decision | Reason |
 |---|---|---|
-| Hỗ trợ đa harness của superpowers (Codex, Cursor, Gemini...) | Bỏ, chỉ hỗ trợ Claude Code | Bảo trì nhiều manifest và test là chi phí lớn. `skills/` theo chuẩn Agent Skills nên có thể thêm sau mà không phải sửa skill. |
-| `run-hook.cmd` (polyglot cho Windows) | Bỏ | Chỉ cần thiết với Windows. Đã ghi vào roadmap. |
-| Script `sdd-workspace`, `task-brief`, `review-package` | Thay bằng lệnh git và đường dẫn ghi thẳng trong skill | Bớt phần phải bảo trì. Đổi lại agent tự chạy `git diff` vào file. |
-| `subagent-driven-development` tách riêng | Gộp thành một mode trong `executing-plans` | Hai skill dùng chung ledger và vòng lặp. Gộp lại giúp router chỉ còn một lựa chọn. |
-| `using-git-worktrees`, `finishing-a-development-branch` | Rút thành bước Setup và Finish trong `executing-plans` | Ở bản đầu chưa cần skill riêng. |
-| Visual companion và brainstorm server | Bỏ | Phụ thuộc server JS, nằm ngoài phạm vi khung. |
-| Issue tracker và `setup-matt-pocock-skills` | Chưa đưa vào | Cần một skill setup user-invoked. Đã ghi vào roadmap. |
-| 25 skill của addy | Chỉ lấy `security-and-hardening` | Các skill domain khác (perf, observability, CI/CD...) sẽ thêm khi có nhu cầu thật. |
+| superpowers' multi-harness support (Codex, Cursor, Gemini...) | Dropped; Claude Code only | Maintaining many manifests and tests is costly. `skills/` follows the Agent Skills standard, so other harnesses can be added later without touching the skills. |
+| `run-hook.cmd` (Windows polyglot) | Dropped | Only needed on Windows. Recorded in the roadmap. |
+| The `sdd-workspace`, `task-brief`, `review-package` scripts | Replaced by git commands and paths written directly in the skill | Less to maintain. In exchange, the agent runs `git diff` into a file itself. |
+| A separate `subagent-driven-development` | Merged into a mode of `executing-plans` | The two skills share the ledger and the loop. Merging leaves the router a single choice. |
+| `using-git-worktrees`, `finishing-a-development-branch` | Reduced to Setup and Finish steps in `executing-plans` | A separate skill was not needed in the first version. |
+| Visual companion and brainstorm server | Dropped | Depends on a JS server; outside the framework's scope. |
+| Issue tracker and `setup-matt-pocock-skills` | Not included yet | Needs a user-invoked setup skill. Recorded in the roadmap. |
+| addy's 25 skills | Only `security-and-hardening` taken | Other domain skills (perf, observability, CI/CD...) will be added when there is a real need. |
 
-## Chuẩn agentskills.io (0.2.0)
+## The agentskills.io standard (0.2.0)
 
-Mọi skill được viết lại theo workflow của `skill-creator`:
+Every skill was rewritten following the `skill-creator` workflow:
 
-| Quy tắc | Áp dụng trong Legion |
+| Rule | How Legion applies it |
 |---|---|
-| Description nêu *what* rồi mới đến *when*, viết "pushy" | Câu đầu mô tả khả năng của skill, sau đó là "Use when ...", liệt kê cách người dùng hay nói kèm các tình huống model tưởng tự làm được ("even when pasted inline"). Validator chặn description bắt đầu bằng "Use". |
-| Chỉ viết những gì agent chưa biết | Bỏ các phần mang tính kiến thức chung (ví dụ cách hash mật khẩu trong security). Giữ lại gotcha cụ thể lấy từ nguồn, như `HEAD~1` cắt mất commit, diff ba chấm, rate limiter in-memory nhân theo số instance. |
-| Khung Workflow / Gotchas / Output format | Skill nào cũng có Gotchas. Output format chỉ thêm khi đầu ra có cấu trúc (brainstorming/grilling, code-review, verification). |
-| Template dài đặt trong `assets/` | `brainstorming/assets/design-doc-template.md`, `writing-plans/assets/plan-template.md`. |
-| Trỏ tới file phải nói khi nào đọc | Mọi link trong `references/` đều ghi rõ thời điểm cần đọc. |
-| Không dùng ALL-CAPS, luật đi kèm lý do | Bỏ khối "iron law" viết hoa của superpowers, thay bằng câu "**The rule:** ..." kèm lý do. Nội dung luật vẫn giữ nguyên. |
+| Description states *what*, then *when*, written "pushy" | The first sentence describes what the skill can do, followed by "Use when ...", listing how users phrase it plus the situations where the model thinks it can manage alone ("even when pasted inline"). The validator rejects descriptions that start with "Use". |
+| Write only what the agent does not already know | Dropped general-knowledge sections (for example, how to hash passwords in security). Kept concrete gotchas from the sources, such as `HEAD~1` cutting off commits, three-dot diffs, and in-memory rate limiters multiplying with the instance count. |
+| Workflow / Gotchas / Output format structure | Every skill has Gotchas. Output format is added only when the output is structured (grilling, code-review, coding-principles). |
+| Long templates live in `assets/` | `brainstorming/assets/design-doc-template.md`, `writing-plans/assets/plan-template.md`. |
+| Pointers to files must say when to read them | Every link into `references/` states when it needs to be read. |
+| No ALL-CAPS; rules come with their reason | Dropped superpowers' capitalized "iron law" blocks in favor of a "**The rule:** ..." sentence with its reason. The rules themselves are unchanged. |
 
-Đánh đổi cần theo dõi: superpowers đã đo được rằng iron law viết hoa và bảng
-rationalization giúp agent chống lại việc tự bào chữa để bỏ qua bước. Bản 0.2.0
-giữ lại luật nhưng viết nhẹ giọng hơn. Nếu behavioral eval cho thấy TDD hoặc debug
-bị bỏ qua nhiều hơn, cách viết này cần xem lại.
+A trade-off to watch: superpowers measured that capitalized iron laws and
+rationalization tables help the agent resist talking itself out of steps. Version
+0.2.0 keeps the rules but words them more softly. If behavioral evals show TDD or
+debugging being skipped more often, this wording needs revisiting.
 
-## Spec-driven, test-driven, best practice (0.3.0)
+## Spec-driven, test-driven, best practices (0.3.0)
 
-Ba lớp này móc nối với nhau thành một chuỗi, để mỗi tầng kiểm được tầng trước:
+These three layers link into one chain, so each layer can check the one before it:
 
-| Lớp | Ở đâu | Cơ chế |
+| Layer | Where | Mechanism |
 |---|---|---|
-| Spec-driven | `brainstorming` → `writing-plans` → `executing-plans` (luật 1, bước chốt criteria) | Design doc là nguồn sự thật. Mỗi task ghi `Acceptance (spec: ...)`. TDD chốt acceptance criteria trước test đầu tiên, và mỗi test phải truy về một criterion. Trục Spec của review bắt cả phần thiếu lẫn phần thừa. |
-| Test-driven | `executing-plans` (luật 2, TDD cycle) | Không có test fail trước thì không viết code. Gặp code legacy thì viết characterization test trước. Trước khi báo xong phải chạy cả suite. |
-| Best practice | `coding-principles` | Plan ghi `Design principles`. Implementer đọc bộ rule đó trước khi code. REFACTOR theo decision rules của bộ rule. Reviewer kiểm theo final checklist. Thứ tự ưu tiên: chuẩn của repo > bộ rule > smell baseline. |
+| Spec-driven | `brainstorming` → `writing-plans` → `executing-plans` (rule 1, the criteria step) | The design doc is the source of truth. Every task states `Acceptance (spec: ...)`. TDD settles acceptance criteria before the first test, and every test must trace back to a criterion. The Spec axis of review catches both what is missing and what is extra. |
+| Test-driven | `executing-plans` (rule 2, the TDD cycle) | No code without a failing test first. Legacy code gets characterization tests first. The full suite runs before reporting done. |
+| Best practices | `coding-principles` | The plan states `Design principles`. The implementer reads that rule set before coding. REFACTOR follows the set's decision rules. The reviewer checks against its final checklist. Priority: the repo's own standards > the rule set > the smell baseline. |
 
-Lý do chỉ cho phép tối đa hai bộ rule: chính agent-rules-books nhận định model
-không tuân thủ được hàng trăm rule cùng lúc, và nhiều cặp sách trùng nhau hoặc
-kéo ngược chiều nhau (Clean Code nghiêng về hàm nhỏ, APoSD nghiêng về module sâu).
-Chỉ dùng bản `mini` (khoảng 1,3–2k token mỗi bộ, chỉ nạp khi cần), không đưa bản
-`full` vào.
+Why at most two rule sets: agent-rules-books itself observes that a model cannot
+follow hundreds of rules at once, and many pairs of books overlap or pull in opposite
+directions (Clean Code leans toward small functions, APoSD toward deep modules).
+Only the `mini` editions are used (about 1.3–2k tokens each, loaded only when
+needed); the `full` editions are not included.
 
-## Brainstorming nhiều góc nhìn (0.4.0)
+## Multi-perspective brainstorming (0.4.0)
 
-| Kỹ thuật | Vị trí trong flow | Lý do |
+| Technique | Place in the flow | Reason |
 |---|---|---|
-| First principles | Sau playback, trước bước lay out approaches | Ép ít nhất một phương án được dựng lại từ goal, fact và constraint, thay vì chép lời giải quen thuộc. Code, dữ liệu và contract hiện có được coi là fact, không phải assumption. |
-| Six Thinking Hats | Khi so sánh phương án | Dùng chuỗi Blue → White → Green → Yellow → Black → Red → Blue (theo Wikipedia, mục "choosing between alternatives"). Red hat chỉ phản ánh phản ứng của người dùng, không phải của agent. Nghiên cứu chứng minh hiệu quả của phương pháp này còn ít, nên nó được dùng như checklist để không bỏ sót góc nhìn nào, không phải nghi thức. |
-| Grilling | Từ 0.5.0 nằm trong `brainstorming/references/grilling.md`. Chạy sau khi chọn phương án (bắt buộc với project), sớm hơn khi có từ 3 quyết định mở trở lên, hoặc qua lối vào "chỉ grill" ở bước 1 khi người dùng chỉ muốn stress-test một plan hay quyết định sẵn có (lối này không bắt buộc viết design doc). | Gộp vào brainstorming theo yêu cầu: bớt một skill khỏi phần luôn-bật và router, trong khi nội dung grilling vẫn chỉ nằm ở một nơi. Trigger "grill me" và "poke holes" chuyển sang description của brainstorming. |
+| First principles | After the playback, before laying out approaches | Forces at least one approach to be rebuilt from goals, facts, and constraints instead of copying a familiar solution. Existing code, data, and contracts count as facts, not assumptions. |
+| Six Thinking Hats | When comparing approaches | Uses the Blue → White → Green → Yellow → Black → Red → Blue sequence (per Wikipedia, "choosing between alternatives"). The Red hat reflects only the user's reaction, never the agent's. Research evidence for the method is thin, so it is used as a checklist to avoid missing a perspective, not as a ritual. |
+| Grilling | Since 0.5.0 lives in `brainstorming/references/grilling.md`. Runs after an approach is chosen (mandatory for projects), earlier when three or more decisions are open, or through the "grill only" entry in step 1 when the user only wants an existing plan or decision stress-tested (that entry does not require a design doc). | Merged into brainstorming on request: one fewer skill in the always-on part and the router, while the grilling content still lives in one place. The "grill me" and "poke holes" triggers moved into brainstorming's description. |
 
-Độ sâu của cả ba theo kích thước việc. Với thay đổi nhỏ: first principles chỉ
-một dòng, mũ chỉ dùng Yellow và Black, và chỉ grill khi cần. Như vậy các kỹ thuật
-này không làm phình các việc nhỏ.
+The depth of all three scales with the size of the work. For a small change, first
+principles is a single line, only the Yellow and Black hats are used, and grilling
+happens only when needed. That way these techniques do not bloat small tasks.
 
-## Một skill cho mọi việc code (0.7.0)
+## Thinking models (0.6.0)
 
-`test-driven-development` và `verification-before-completion` được gộp vào
-`executing-plans`. Mục tiêu là mọi thay đổi code đi qua cùng một luồng: chốt
-criteria, test fail trước, code tối thiểu, refactor theo principles, cổng bằng
-chứng. Trước đây luồng này cần agent tự nối 3 skill, và mỗi lần nối là một chỗ có
-thể bị bỏ qua.
+Each model sits at the step where it changes a decision; there is no separate
+`mental-models` skill. Such a skill would almost never be invoked by the agent on its
+own, would compete with brainstorming for triggers, and the agentskills standard does
+not allow cross-skill file references.
 
-| Quyết định | Lý do |
+| Model | Location | Form |
+|---|---|---|
+| First principles | `brainstorming` step 7 | Its own step, with `references/first-principles.md` |
+| Inversion | `brainstorming` Black hat; `writing-plans` step 6 (pre-mortem, after Gary Klein, HBR 2007); `security-and-hardening` (STRIDE is already inversion) | Every failure reason in the pre-mortem needs a countermeasure: a test, a Review focus item, a task reorder, or a question for the user |
+| Systems thinking | `brainstorming` White hat (system map) and Black hat (second-order effects, feedback loops), projects only; `code-review` Blast radius item; `systematic-debugging` gotcha about loops | Stop at the level where the effects still change the choice |
+| Pareto | `brainstorming` step 6 (scope cut); `writing-plans` step 3 (`Slice order`); `code-review` (ranking findings, folding Minor ones) | Proposed only, never cut unilaterally: deferred scope is dropped only when the user agrees |
+
+## One skill for all code work (0.7.0)
+
+`test-driven-development` and `verification-before-completion` were merged into
+`executing-plans`. The goal is for every code change to go through the same flow:
+settle criteria, failing test first, minimal code, refactor by principles, evidence
+gate. Before, this flow required the agent to chain three skills itself, and each
+link was a place where a step could be skipped.
+
+| Decision | Reason |
 |---|---|
-| Có "quick path" cho việc không có plan | Yêu cầu là *luôn* spec-driven và test-driven, kể cả fix nhỏ hay hàm được dán vào |
-| Giữ `coding-principles` riêng | `writing-plans` và `code-review` cũng dùng nó; chuẩn agentskills không cho tham chiếu file chéo skill |
-| Agent tự chọn inline hay subagent theo từng task | Dựa trên độ dài plan, độ lớn task, mức phụ thuộc và lượng context còn lại; task rủi ro (auth, dữ liệu, tiền, concurrency) luôn có reviewer mới. Người dùng vẫn có thể chỉ định. |
-| Luật "xong phải có bằng chứng" cho việc không phải code nằm trong router | Một dòng gotcha luôn-bật, rẻ hơn giữ cả một skill riêng |
+| A "quick path" for work without a plan | The requirement is to be spec-driven and test-driven *always*, even for a small fix or a pasted function |
+| Keep `coding-principles` separate | `writing-plans` and `code-review` use it too; the agentskills standard does not allow cross-skill file references |
+| The agent chooses inline or subagent per task | Based on plan length, task size, coupling, and remaining context; risky tasks (auth, data, money, concurrency) always get a fresh reviewer. The user can still choose. |
+| The "done needs evidence" rule for non-code work lives in the router | A single always-on gotcha line is cheaper than keeping a whole separate skill |
 
-## Subagent: khi nào, model nào, worktree nào (0.8.0)
+## Subagents: when, which model, which worktree (0.8.0)
 
-| Quyết định | Lý do |
+| Decision | Reason |
 |---|---|
-| Ghi rõ `subagent_type: "general-purpose"` và không bao giờ dùng `fork` | `fork` chép toàn bộ hội thoại cha vào subagent, nên reviewer mất đúng góc nhìn độc lập mà nó được tạo ra để có |
-| Mọi lần dispatch đều ghi alias model: `haiku` cho task XS-S một file đã được test và signature chốt chặt; `sonnet` cho task M, nhiều file, task `+review`, task reviewer, builder check; `opus` cho final review và reviewer của task rủi ro | Không ghi model thì subagent dùng model của phiên chính, thường là model đắt nhất (thứ tự ưu tiên theo docs: tham số `model` > frontmatter > `CLAUDE_CODE_SUBAGENT_MODEL` > model của phiên chính). Agent tool chỉ nhận alias. `fable` chưa được xếp tier vì chưa xác minh được |
-| Implementer chạy trong worktree riêng (`isolation: "worktree"`), bước đầu tiên là reset về `BASE` | Worktree native mặc định tạo từ default branch, không phải HEAD của feature branch (trừ khi người dùng tự đặt `worktree.baseRef: "head"`). Theo yêu cầu, dùng cơ chế native rồi reset, thay vì để controller tự chạy `git worktree add` |
-| Implementer tự kiểm tra isolation (`--show-toplevel` khác repo chính); nếu kiểm tra thất bại thì cả run chuyển sang inline | Chỉ từ Claude Code 2.1.203 lệnh Bash mới chạy trong worktree của subagent, và workflow script có lỗi bỏ qua isolation (issue #102657). Bước kiểm tra này biến một lỗi âm thầm thành một trạng thái BLOCKED có thể nhìn thấy |
-| Controller pin head bằng `legion/<plan>/task-N`, kiểm tra tree của mình vẫn sạch, review `BASE..pin`, rồi `merge --ff-only` | Worktree có thay đổi sẽ bị harness tự dọn theo chu kỳ, nên phải pin để commit không bị mất. Fast-forward thất bại nghĩa là base đã đổi, và việc đó cần một ruling chứ không được ép |
-| Vẫn chạy tuần tự từng implementer một | Task sau dùng commit của task trước. Worktree chỉ để cô lập file, chưa dùng để chạy song song |
-| Reviewer và tra cứu không có worktree | Chúng chỉ đọc, làm việc trên diff package và đường dẫn tuyệt đối |
-| Task XS chạy inline, trừ khi context đã dùng khoảng một nửa | Chi phí khởi động lại và cài dependency trong worktree mới lớn hơn bản thân task |
+| Always state `subagent_type: "general-purpose"` and never use `fork` | `fork` copies the whole parent conversation into the subagent, so a reviewer loses exactly the independent view it was created for |
+| Every dispatch names a model alias: `haiku` for XS-S single-file tasks that are already tested with tightly fixed signatures; `sonnet` for M tasks, multi-file tasks, `+review` tasks, task reviewers, the builder check; `opus` for the final review and reviewers of risky tasks | Without a model, the subagent uses the main session's model, usually the most expensive one (precedence per the docs: the `model` parameter > frontmatter > `CLAUDE_CODE_SUBAGENT_MODEL` > the main session's model). The Agent tool only accepts aliases. `fable` has no tier yet because it could not be verified |
+| Implementers run in their own worktree (`isolation: "worktree"`), and their first step is a reset to `BASE` | Native worktrees branch from the default branch by default, not from the feature branch's HEAD (unless the user sets `worktree.baseRef: "head"`). As requested, the native mechanism is used and then reset, rather than having the controller run `git worktree add` itself |
+| The implementer checks its own isolation (`--show-toplevel` differs from the main repo); if the check fails, the whole run switches to inline | Only since Claude Code 2.1.203 do Bash commands run inside the subagent's worktree, and workflow scripts have a bug that skips isolation (issue #102657). This check turns a silent failure into a visible BLOCKED state |
+| The controller pins the head as `legion/<plan>/task-N`, confirms its own tree is still clean, reviews `BASE..pin`, then runs `merge --ff-only` | Worktrees with changes get cleaned up periodically by the harness, so the head must be pinned or the commits are lost. A failed fast-forward means the base changed, which needs a ruling, not force |
+| Implementers still run one at a time | Each task builds on the previous task's commits. Worktrees are for file isolation, not yet for parallel runs |
+| Reviewers and lookups get no worktree | They only read, working from the diff package and absolute paths |
+| XS tasks run inline unless about half the context is used | Restarting and installing dependencies in a fresh worktree costs more than the task itself |
 
-Nguồn: [Claude Code - worktrees](https://code.claude.com/docs/en/worktrees),
+Sources: [Claude Code - worktrees](https://code.claude.com/docs/en/worktrees),
 [Claude Code - subagents](https://code.claude.com/docs/en/sub-agents),
 [issue #75451](https://github.com/anthropics/claude-code/issues/75451),
 [issue #102657](https://github.com/anthropics/claude-code/issues/102657).
-Hành vi khi dọn worktree đã có commit và giá trị subagent trả về chưa được docs
-ghi rõ. Skill vì thế không dựa vào chúng: implementer tự báo lại path và sha,
-còn controller tự pin và tự xoá worktree.
+How cleanup treats worktrees that already have commits, and what a subagent
+returns, are not documented. The skill therefore does not rely on them: the
+implementer reports its path and sha itself, and the controller pins and removes the
+worktree itself.
 
-## Mô hình tư duy (0.6.0)
+## Terms and decisions (0.9.0)
 
-Mỗi mô hình được đặt ở bước mà nó làm thay đổi quyết định, không có skill
-`mental-models` riêng. Một skill như vậy hầu như không được agent tự gọi, sẽ
-tranh trigger với brainstorming, và chuẩn agentskills không cho phép tham chiếu
-file chéo giữa các skill.
+| Decision | Reason |
+|---|---|
+| `domain-modeling` renamed to `defining-terms` | In DDD, "domain modeling" reads as designing entities, aggregates, and domain events, which belongs to `coding-principles`. The skill only settles terminology in `GLOSSARY.md`. |
+| ADRs moved into `brainstorming` (`references/adr-format.md`) | Trade-off decisions are made there: approaches are compared in step 8 and grilled in step 9. An ADR is offered when the design doc is written, and only when the decision is hard to reverse, surprising without context, and the result of a real trade-off. A direct entry in step 1 handles "record an ADR for X". |
+| No separate ADR skill | It would add a description to the always-on context and a row to the router for a rare task. brainstorming's description gained one trigger phrase instead. |
 
-| Mô hình | Vị trí | Dạng |
-|---|---|---|
-| First principles | `brainstorming` bước 7 | Bước riêng, có `references/first-principles.md` |
-| Inversion | `brainstorming` mũ Đen; `writing-plans` bước 6 (pre-mortem, theo Gary Klein, HBR 2007); `security-and-hardening` (STRIDE vốn đã là inversion) | Mỗi lý do thất bại trong pre-mortem phải có biện pháp đối phó: test, Review focus, đổi thứ tự task hoặc câu hỏi cho người dùng |
-| Systems thinking | `brainstorming` mũ Trắng (bản đồ hệ thống) và mũ Đen (hệ quả bậc 2, vòng phản hồi), chỉ với project; `code-review` mục Blast radius; `systematic-debugging` gotcha về vòng lặp | Dừng ở mức hệ quả còn làm thay đổi lựa chọn |
-| Pareto | `brainstorming` bước 6 (nhát cắt phạm vi); `writing-plans` bước 3 (`Slice order`); `code-review` (xếp findings, gom Minor) | Chỉ đề xuất, không tự cắt phạm vi: phần bị hoãn chỉ được bỏ khi người dùng đồng ý |
+## Artifact conventions
 
-## Quy ước artifact
+- `docs/legion/specs/` and `docs/legion/plans/`: committed; the source of truth.
+- `.legion/runs/<plan>/`: ledger, briefs, and diff packages. This directory is
+  gitignored and deleted after the user chooses how to integrate.
+- `GLOSSARY.md` and `docs/adr/`: created only when there is content, the mattpocock way.
 
-- `docs/legion/specs/` và `docs/legion/plans/`: được commit, là nguồn sự thật.
-- `.legion/runs/<plan>/`: ledger, brief và gói diff. Thư mục này được gitignore và
-  xoá sau khi người dùng chọn cách tích hợp.
-- `GLOSSARY.md` và `docs/adr/`: chỉ tạo khi có nội dung, theo cách của mattpocock.
+## Testing
 
-## Kiểm thử
-
-| Lớp | Kiểm tra gì | Chạy ở đâu | Chi phí |
+| Layer | What it checks | Where it runs | Cost |
 |---|---|---|---|
-| `scripts/validate.mjs` | Frontmatter, kích thước, file dev lọt vào `skills/`, link, `legion:` ref, router và README phủ đủ skill, version khớp, hook có quyền thực thi | CI, local | 0 |
-| `scripts/trigger-evals.mjs` | Prompt dương phải xếp hạng skill trong top 3; prompt âm không được xếp skill ở hạng 1; không có hai description gần trùng nhau | CI, local | 0 |
-| `tests/hooks/` | Hook xuất JSON hợp lệ, có router, và có fallback khi thiếu file | CI, local | 0 |
-| `claude plugin validate --strict` | Manifest và skill theo chuẩn Claude Code | Local | 0 |
-| Behavioral eval (`claude plugin eval`) | Skill có thực sự đổi hành vi agent không | Chưa có, xem roadmap | Tốn token |
+| `scripts/validate.mjs` | Frontmatter, size, dev files leaking into `skills/`, links, `legion:` refs, router and README covering every skill, matching versions, hook is executable | CI, local | 0 |
+| `scripts/trigger-evals.mjs` | Positive prompts must rank their skill in the top 3; negative prompts must not rank the skill first; no two descriptions may be near-duplicates | CI, local | 0 |
+| `tests/hooks/` | The hook emits valid JSON, includes the router, and falls back when files are missing | CI, local | 0 |
+| `claude plugin validate --strict` | Manifests and skills against the Claude Code standard | Local | 0 |
+| Behavioral evals (`claude plugin eval`) | Whether a skill actually changes the agent's behavior | Not yet; see the roadmap | Costs tokens |
 
-Trigger eval chỉ là phép xấp xỉ theo từ vựng. Nó bắt được trường hợp description
-thiếu từ người dùng hay nói, nhưng **không** chứng minh skill thực sự được kích hoạt
-trên model thật.
+Trigger evals are only a vocabulary approximation. They catch descriptions missing
+words users say, but they do **not** prove that a skill actually triggers on a real
+model.

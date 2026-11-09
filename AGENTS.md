@@ -11,7 +11,7 @@ skills/<name>/    SKILL.md (+ references/, assets/, scripts/) - shipped to users
 evals/triggers/   lexical trigger cases, one JSON per skill
 scripts/          repo checks (Node, no dependencies)
 tests/            shell tests for hooks
-docs/             architecture, roadmap (human-facing, Vietnamese)
+docs/             architecture, roadmap (human-facing)
 ```
 
 ## Writing or changing a skill
@@ -34,7 +34,7 @@ Load `legion:skill-creator` and follow its workflow. Every skill conforms to the
 
 Legion conventions on top of the spec:
 
-- Skill content is English; docs for humans (`README.md`, `docs/`) are Vietnamese.
+- Everything is in English: skill content and docs for humans (`README.md`, `docs/`).
 - Cross-skill instructions say "Call the Skill tool with `legion:<name>`".
 - Subagents start with a fresh context and an explicitly named model.
 - Generated artifacts go under `docs/legion/` (specs, plans) and `.legion/` (scratch).
