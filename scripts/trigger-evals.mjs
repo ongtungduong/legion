@@ -11,13 +11,12 @@
 // judge semantics. Behavioral checks need a real model (see docs/roadmap.md).
 import fs from 'node:fs';
 import path from 'node:path';
-import { TRIGGERS_DIR, listSkills, readSkill } from './lib/skills.mjs';
+import { TRIGGERS_DIR, ROUTER, listSkills, readSkill } from './lib/skills.mjs';
 
 const DEFAULT_TOP_K = 3;
 const COLLISION = 0.5;
 const MIN_POSITIVE = 3;
 const MIN_NEGATIVE = 2;
-const ROUTER = 'using-legion';
 
 const STOP = new Set(('a an and are as at be before by can do does for from has have how i if in into is it its ' +
   'me my no not of on or our so that the their them then there this to us use used was we what when where which ' +
@@ -36,11 +35,14 @@ function stem(w) {
 }
 const tokens = (text) => text.toLowerCase().split(/[^a-z0-9]+/).filter((t) => t && !STOP.has(t)).map(stem);
 
-const skills = listSkills().filter((s) => s !== ROUTER);
-const docs = Object.fromEntries(skills.map((s) => {
-  const fm = readSkill(s).data;
-  return [s, tokens(`${s.replace(/-/g, ' ')} ${fm.description}`)];
-}));
+const errors = [];
+const skills = listSkills().filter((s) => {
+  if (s === ROUTER) return false;
+  if (readSkill(s)?.data?.description) return true;
+  errors.push(`${s}: frontmatter does not parse; run npm run validate`);
+  return false;
+});
+const docs = Object.fromEntries(skills.map((s) => [s, tokens(`${s.replace(/-/g, ' ')} ${readSkill(s).data.description}`)]));
 
 const df = new Map();
 for (const toks of Object.values(docs)) for (const t of new Set(toks)) df.set(t, (df.get(t) ?? 0) + 1);
@@ -66,7 +68,6 @@ const rank = (prompt) => {
   return skills.map((s) => [s, cosine(v, vecs[s])]).sort((a, b) => b[1] - a[1]);
 };
 
-const errors = [];
 const notes = [];
 const VERBOSE = process.argv.includes('--verbose');
 let positives = 0, rank1 = 0;

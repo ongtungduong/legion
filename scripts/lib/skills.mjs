@@ -3,9 +3,14 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-export const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
+// LEGION_ROOT points the checks at another checkout (the script tests use it).
+export const ROOT = process.env.LEGION_ROOT
+  ? path.resolve(process.env.LEGION_ROOT)
+  : path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
 export const SKILLS_DIR = path.join(ROOT, 'skills');
 export const TRIGGERS_DIR = path.join(ROOT, 'evals', 'triggers');
+// The router skill: injected by hooks/session-start, not routed to itself.
+export const ROUTER = 'using-legion';
 
 // Minimal frontmatter parser for the YAML subset agentskills.io skills use:
 // top-level `key: value` scalars, folded/literal block scalars (`>-`, `>`,

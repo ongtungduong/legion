@@ -7,7 +7,7 @@
 //   mattpocock   - cross-skill calls name the Skill tool with a real skill
 import fs from 'node:fs';
 import path from 'node:path';
-import { ROOT, SKILLS_DIR, TRIGGERS_DIR, listSkills, readSkill, walk, rel } from './lib/skills.mjs';
+import { ROOT, SKILLS_DIR, TRIGGERS_DIR, ROUTER, listSkills, readSkill, walk, rel } from './lib/skills.mjs';
 
 const errors = [];
 const warnings = [];
@@ -19,7 +19,6 @@ const ALLOWED_KEYS = new Set(['name', 'description', 'license', 'compatibility',
 const MAX_BYTES = 20000;
 const WARN_LINES = 400;
 const MAX_DESC = 1024;
-const ROUTER = 'using-legion';
 
 const skills = listSkills();
 const known = new Set(skills);
@@ -82,11 +81,16 @@ for (const file of mdFiles) {
     if (!known.has(m[1])) err(`${rel(file)}: reference "legion:${m[1]}" does not match any skill`);
   }
   if (!file.startsWith(SKILLS_DIR)) continue;
+  // agentskills.io: bundled files are referenced from the skill's own root;
+  // a link into another skill breaks when skills are installed separately.
+  const skillRoot = path.join(SKILLS_DIR, path.relative(SKILLS_DIR, file).split(path.sep)[0]);
   const noCode = text.replace(/```[\s\S]*?```/g, '');
   for (const m of noCode.matchAll(/\]\(([^)\s]+)\)/g)) {
     const target = m[1].split('#')[0];
     if (!target || /^[a-z]+:/i.test(target)) continue;
-    if (!fs.existsSync(path.resolve(path.dirname(file), target))) err(`${rel(file)}: broken link "${m[1]}"`);
+    const resolved = path.resolve(path.dirname(file), target);
+    if (path.relative(skillRoot, resolved).startsWith('..')) err(`${rel(file)}: link "${m[1]}" leaves the skill root`);
+    else if (!fs.existsSync(resolved)) err(`${rel(file)}: broken link "${m[1]}"`);
   }
 }
 
@@ -118,7 +122,7 @@ function readJson(p) {
 const plugin = readJson('.claude-plugin/plugin.json');
 const market = readJson('.claude-plugin/marketplace.json');
 const pkg = readJson('package.json');
-readJson('hooks/hooks.json');
+const hooksConfig = readJson('hooks/hooks.json');
 const versions = {
   'plugin.json': plugin?.version,
   'marketplace.json': market?.plugins?.[0]?.version,
@@ -128,9 +132,16 @@ if (new Set(Object.values(versions)).size !== 1) {
   err(`version mismatch: ${Object.entries(versions).map(([k, v]) => `${k}=${v}`).join(', ')}`);
 }
 if (plugin && market && market.plugins?.[0]?.name !== plugin.name) err('marketplace.json plugin name differs from plugin.json');
-const hook = path.join(ROOT, 'hooks', 'session-start');
-if (!fs.existsSync(hook)) err('hooks/session-start is missing');
-else if (!(fs.statSync(hook).mode & 0o111)) err('hooks/session-start is not executable (chmod +x)');
+// Every hook script hooks.json runs must exist and be executable.
+const hookFiles = new Set(
+  [...JSON.stringify(hooksConfig ?? {}).matchAll(/\$\{CLAUDE_PLUGIN_ROOT\}\/(hooks\/[A-Za-z0-9._-]+)/g)].map((m) => m[1]),
+);
+if (!hookFiles.size) err('hooks/hooks.json registers no hook under ${CLAUDE_PLUGIN_ROOT}/hooks/');
+for (const name of hookFiles) {
+  const hook = path.join(ROOT, name);
+  if (!fs.existsSync(hook)) err(`${name} is missing`);
+  else if (!(fs.statSync(hook).mode & 0o111)) err(`${name} is not executable (chmod +x)`);
+}
 
 // --- Report -----------------------------------------------------------------
 for (const w of warnings) console.log(`WARN  ${w}`);
