@@ -35,7 +35,7 @@ modify the working tree, index, or HEAD, and never dispatch subagents.
 
 Review package (commits, stat, diff): [path]
 This repo's standards files: [list of paths]
-Smell baseline: [paste references/review-checklists.md in full]
+Checklist and smell baseline, read first: [absolute path to skills/code-review/references/review-checklists.md]
 Design principles: [paths to the chosen skills/coding-principles/references/<set>.mini.md files]
 
 Report, per file and hunk:

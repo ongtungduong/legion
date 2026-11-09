@@ -14,7 +14,9 @@ for (const name of listSkills()) {
   if (run.error) { console.log(`ERROR python3 not runnable: ${run.error.message}`); process.exit(1); }
   let report;
   try { report = JSON.parse(run.stdout); } catch { console.log(`ERROR ${name}: validator output not JSON: ${run.stderr || run.stdout}`); failed++; continue; }
-  const issues = [...report.errors.map((e) => `ERROR ${e}`), ...report.warnings.map((w) => `WARN  ${w}`)];
+  // disable-model-invocation is the Claude Code extension AGENTS.md allows; the spec does not define it.
+  const warnings = report.warnings.filter((w) => !w.includes("unknown frontmatter field 'disable-model-invocation'"));
+  const issues = [...report.errors.map((e) => `ERROR ${e}`), ...warnings.map((w) => `WARN  ${w}`)];
   if (issues.length) { failed++; for (const i of issues) console.log(`${name}: ${i}`); }
 }
 console.log(`validate-spec: ${listSkills().length} skills checked against agentskills.io, ${failed} with issues`);

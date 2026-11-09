@@ -114,7 +114,7 @@ link was a place where a step could be skipped.
 
 | Decision | Reason |
 |---|---|
-| A "quick path" for work without a plan | The requirement is to be spec-driven and test-driven *always*, even for a small fix or a pasted function |
+| A "quick path" for work without a plan | The requirement is to be spec-driven and test-driven *always*, even for a small fix or a pasted function. Since the token cuts (below), an XS change inside existing code skips `coding-principles` and follows the surrounding code's conventions; tests and the evidence gate still apply |
 | Keep `coding-principles` separate | `writing-plans` and `code-review` use it too; the agentskills standard does not allow cross-skill file references |
 | The agent chooses inline or subagent per task | Based on plan length, task size, coupling, and remaining context; risky tasks (auth, data, money, concurrency) always get a fresh reviewer. The user can still choose. |
 | The "done needs evidence" rule for non-code work lives in the router | A single always-on gotcha line is cheaper than keeping a whole separate skill |
@@ -149,6 +149,23 @@ worktree itself.
 | ADRs moved into `brainstorming` (`references/adr-format.md`) | Trade-off decisions are made there: approaches are compared in step 8 and grilled in step 9. An ADR is offered when the design doc is written, and only when the decision is hard to reverse, surprising without context, and the result of a real trade-off. A direct entry in step 1 handles "record an ADR for X". |
 | No separate ADR skill | It would add a description to the always-on context and a row to the router for a rare task. brainstorming's description gained one trigger phrase instead. |
 
+## Token cuts (Unreleased)
+
+The router sends every code change to `executing-plans`, so its size and the
+skills it pulls in are paid on almost every task. Measured with `wc -c`
+(about 4 bytes per token, not checked with a tokenizer): an XS fix used to
+load about 29.7 KB of skill text (`executing-plans` 17.1 KB, `coding-principles`
+7 KB, one rule set, `good-tests.md`); now about 9.6 KB.
+
+| Decision | Reason |
+|---|---|
+| The plan workflow, inline/subagent choice, model table, and worktree gotchas live in `executing-plans/references/plan-workflow.md` | About 10 KB of `SKILL.md` was needed only when a written plan exists. A plan run pays about 0.7 KB more for the pointer; every quick-path run pays about 10 KB less, and a compaction re-attaches the smaller `SKILL.md` |
+| An XS change inside existing code (a condition, a value, one call) does not load `coding-principles` | The skill plus one rule set costs about 11 KB, and a book rule set has little to shape in a one-line change. Anything that adds or reshapes a function, class, module, or interface still loads it |
+| `using-legion` is `disable-model-invocation: true`, and the hook strips its frontmatter | The hook already injects it; a listed description told the model to load it "at the start of every session", inviting a second copy. `scripts/validate-spec.mjs` ignores the spec's unknown-field warning for this one Claude Code extension, which `AGENTS.md` already allows |
+| The router map names situations in a few words | Skill descriptions are always in context and carry the trigger detail; the map only has to point at the skill |
+| Descriptions keep the trigger phrases and shorten the "what" | They are always in context. Lexical trigger evals stayed at 56/58 rank-1; real trigger rates are not measured yet |
+| Reviewers read the checklist by path; every reviewer report is capped at 400 words | Pasting a file costs the controller output tokens, and a reviewer's report lands in the controller's context once per task |
+
 ## Artifact conventions
 
 - `docs/legion/specs/` and `docs/legion/plans/`: committed; the source of truth.
@@ -162,7 +179,7 @@ worktree itself.
 |---|---|---|---|
 | `scripts/validate.mjs` | Frontmatter, size, dev files leaking into `skills/`, links, `legion:` refs, router and README covering every skill, matching versions, hook is executable | CI, local | 0 |
 | `scripts/trigger-evals.mjs` | Positive prompts must rank their skill in the top 3; negative prompts must not rank the skill first; no two descriptions may be near-duplicates | CI, local | 0 |
-| `tests/hooks/` | The hook emits valid JSON, includes the router, and falls back when files are missing | CI, local | 0 |
+| `tests/hooks/` | The hook emits valid JSON, includes the router without its frontmatter, and falls back when files are missing | CI, local | 0 |
 | `claude plugin validate --strict` | Manifests and skills against the Claude Code standard | Local | 0 |
 | Behavioral evals (`claude plugin eval`) | Whether a skill actually changes the agent's behavior | Not yet; see the roadmap | Costs tokens |
 

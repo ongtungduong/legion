@@ -22,6 +22,14 @@ if [ -r "$skill_md" ]; then
   while [[ $content == *$'\n' ]]; do
     content="${content%$'\n'}"
   done
+  # Drop the YAML frontmatter: the agent needs the body, not the metadata.
+  if [[ $content == ---$'\n'* ]]; then
+    content="${content#---$'\n'}"
+    content="${content#*$'\n'---$'\n'}"
+    while [[ $content == $'\n'* ]]; do
+      content="${content#$'\n'}"
+    done
+  fi
 fi
 
 escape_for_json() {

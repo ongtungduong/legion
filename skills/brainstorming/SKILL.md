@@ -1,19 +1,17 @@
 ---
 name: brainstorming
 description: >-
-  Draws out what the user actually wants and why, questions assumptions from
-  first principles, compares two or three approaches with the Six Thinking
-  Hats, grills the user in rounds until no decision is silently assumed, and
-  gets a design doc approved before any code is written. Use before building
-  or changing anything whose intent is not fully settled: a new feature,
-  component, page, CLI, behavior change, or goal-driven refactor, including
-  requests phrased only as "add X", "build Y", "help me shape Z", or "not sure
-  of the details yet", when the user has already explained what and why and
-  only asks for options, approaches, or a recommendation, when the user says
-  "grill me", "poke holes in this", or wants a plan, decision, or idea
-  stress-tested, when the user asks to think something through from
-  first principles or with six thinking hats, and when a decision should be
-  recorded as an ADR under docs/adr/.
+  Draws out what the user wants and why, questions assumptions from first
+  principles, compares two or three approaches with the Six Thinking Hats,
+  grills open decisions, and gets a design doc approved before any code is
+  written. Use before building or changing anything whose intent is not
+  settled: a new feature, component, page, CLI, flow, or behavior change, even
+  when phrased only as "add X", "help me shape Y", or "not sure of the details
+  yet", or when the user already explained what and why and only wants
+  options, approaches, or a recommendation; also when asked to "grill me",
+  poke holes in or stress-test a plan, decision, or idea, think it through
+  from first principles or with six thinking hats, or record an ADR under
+  docs/adr/.
 license: MIT
 metadata:
   author: ongtungduong
@@ -85,7 +83,7 @@ decisions the way they would.
    [references/adr-format.md](references/adr-format.md).
 11. **Builder check (projects only).** Re-read the doc as a builder who must
     plan from it, or dispatch a fresh, read-only `general-purpose` subagent
-    on `model: "sonnet"` to. Answer what the
+    on `model: "sonnet"` to do it. Answer what the
     conversation already settled, settle minor gaps yourself and mark them as
     your calls, and bring only the real decisions to the user in one message.
 12. **Get approval, then** call the Skill tool with `legion:writing-plans`.

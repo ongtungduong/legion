@@ -1,17 +1,16 @@
 ---
 name: coding-principles
 description: >-
-  Applies engineering rule sets distilled from classic books (Clean Code, A
-  Philosophy of Software Design, Refactoring, Working Effectively with Legacy
-  Code, Clean Architecture, DDD, Release It!, and others): picks the one or
-  two that fit the task, avoids conflicting pairs, and checks the result
-  against their final checklist. Use whenever the user asks to refactor,
-  clean up, simplify, restructure, or make code readable or maintainable
-  without changing behavior; to change legacy code that has no tests; or to
-  design a function, class, module interface, or API, keep business rules
-  independent of framework and database, model aggregates and domain events,
-  handle data consistency, or add timeouts, retries, and circuit breakers,
-  even when the code is pasted inline and the request seems small.
+  Applies rule sets distilled from classic engineering books (Clean Code,
+  Refactoring, legacy code, Clean Architecture, DDD, Release It!, and others),
+  picking the one or two that fit and checking the result against their final
+  checklist. Use when asked to refactor, clean up, simplify, restructure, or
+  make code readable or maintainable without changing behavior; to change
+  legacy code that has no tests; or to design a function, class, module
+  interface, or API, make business rules independent of framework and
+  database, model aggregates and domain events, handle data consistency, or
+  add timeouts, retries, and circuit breakers, even when the code is pasted
+  inline.
 license: MIT
 metadata:
   author: ongtungduong

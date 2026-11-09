@@ -2,7 +2,7 @@
 
 Fill the brackets and dispatch with the Agent tool: `subagent_type:
 "general-purpose"` (a fresh context, never `fork`), no `isolation` (the
-review is read-only), and `model` from the model table in `SKILL.md`.
+review is read-only), and `model` from the model table in `references/plan-workflow.md`.
 
 ```
 You are reviewing one task of a larger plan. Your review is read-only: do not
@@ -45,4 +45,6 @@ Output:
 what is wrong, and why it matters>
 ## Cannot verify from the diff
 <anything you could not check, and what would settle it>
+
+Keep the report under 400 words.
 ```

@@ -30,13 +30,15 @@ right thing while breaking them; merging the two axes lets one mask the other.
    gave, a doc under `docs/legion/` matching the branch, else ask. No spec
    means the Spec axis reports "no spec available".
 3. **Find the standards:** `CONTRIBUTING.md`, `CODING_STANDARDS.md`,
-   `AGENTS.md`/`CLAUDE.md`, lint configs. Then read
-   [references/review-checklists.md](references/review-checklists.md) for the
-   checklist and smell baseline. Add the design principles: the plan's
-   `Design principles` sets, or the ones `legion:coding-principles` picks for
-   this diff (call the Skill tool with it). Precedence: documented repo
-   standard, then design principles, then the smell baseline; skip what
-   tooling already enforces.
+   `AGENTS.md`/`CLAUDE.md`, lint configs. Add the design principles: the
+   plan's `Design principles` sets, or the ones `legion:coding-principles`
+   picks for this diff (call the Skill tool with it; naming the sets is
+   enough, the reviewers read their files). The checklist and smell baseline
+   live in [references/review-checklists.md](references/review-checklists.md):
+   pass its absolute path to the Standards reviewer, and read it yourself only
+   when you review without subagents. Precedence: documented repo standard,
+   then design principles, then the smell baseline; skip what tooling already
+   enforces.
 4. **Review both axes in parallel.** Read
    [references/reviewer-prompts.md](references/reviewer-prompts.md) and
    dispatch the Spec and Standards reviewers at the same time with the Agent

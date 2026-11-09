@@ -1,12 +1,10 @@
 ---
 name: using-legion
 description: >-
-  Routes each task to the right Legion skill and sets the precedence between
-  user instructions, skills, and defaults. Use at the start of every session
-  and whenever a request involves building, planning, implementing, testing,
-  debugging, reviewing, securing, or finishing work, to decide which Legion
-  skill to load, if any.
+  Legion's router: which Legion skill fits which task, and the precedence
+  between user instructions, skills, and defaults. Injected at session start.
 license: MIT
+disable-model-invocation: true
 metadata:
   author: ongtungduong
 ---
@@ -38,14 +36,14 @@ it. Questions and trivial edits get answered directly, with no skill.
 
 | Situation | Skill |
 |---|---|
-| Building something new or changing behavior before any design is approved: clarifying intent, choosing between approaches or tools, or writing the design, even when the user already explained what and why; or a plan, decision, or idea to stress-test ("grill me"); or a decision to record as an ADR | `legion:brainstorming` |
-| Project vocabulary is fuzzy, or a term or GLOSSARY.md is being decided | `legion:defining-terms` |
-| An approved spec or design needs an implementation plan | `legion:writing-plans` |
-| Writing or changing production code, with or without a plan: a feature, a fix, a limit or rule, a pasted function, missing tests; or about to say code work is done, commit, or open a PR | `legion:executing-plans` |
-| A bug, failing test, crash, flaky behavior, or performance regression | `legion:systematic-debugging` |
-| Reviewing a diff, branch, or PR, or responding to review feedback | `legion:code-review` |
-| Refactoring, cleaning up, or making code readable; changing untested legacy code; designing a module, API, architecture boundary, domain model, data flow, or failure handling | `legion:coding-principles` |
-| Code touches untrusted input, auth, secrets, personal data, or LLM output | `legion:security-and-hardening` |
+| New work or a behavior change whose design is not approved: intent, approaches, design doc; "grill me"; recording an ADR | `legion:brainstorming` |
+| Fuzzy or contested terms; GLOSSARY.md | `legion:defining-terms` |
+| An approved spec needs an implementation plan | `legion:writing-plans` |
+| Any production code change, with or without a plan; about to claim done, commit, or open a PR | `legion:executing-plans` |
+| Bug, failing or flaky test, crash, performance regression | `legion:systematic-debugging` |
+| Reviewing a diff, branch, or PR; responding to review feedback | `legion:code-review` |
+| Refactoring or cleanup; untested legacy code; designing a module, API, boundary, domain model, data flow, or failure handling | `legion:coding-principles` |
+| Untrusted input, auth, secrets, personal data, or LLM output | `legion:security-and-hardening` |
 | Creating, editing, or validating a skill | `legion:skill-creator` |
 
 ## Default flow for new work

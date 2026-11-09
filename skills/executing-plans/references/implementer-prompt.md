@@ -2,7 +2,7 @@
 
 Fill the brackets and dispatch with the Agent tool: `subagent_type:
 "general-purpose"` (a fresh context, never `fork`), `isolation: "worktree"`,
-and `model` from the model table in `SKILL.md`. Every path is absolute.
+and `model` from the model table in `references/plan-workflow.md`. Every path is absolute.
 
 ```
 You are implementing one task of a larger plan.

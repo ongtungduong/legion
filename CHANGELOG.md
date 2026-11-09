@@ -1,5 +1,27 @@
 # Changelog
 
+## Unreleased
+
+Token cost cuts; no change to the workflow's steps.
+
+- `executing-plans`: the plan workflow, inline/subagent choice, model table,
+  and worktree gotchas moved to `references/plan-workflow.md`, read only when
+  a written plan exists. `SKILL.md` drops from 17.1 KB to about 8 KB.
+- Quick path: an XS change inside existing code (a condition, a value, one
+  call) follows the surrounding code's conventions instead of loading
+  `coding-principles`; anything that adds or reshapes a function, class,
+  module, or interface still loads it.
+- `using-legion` is `disable-model-invocation: true`: the hook already
+  injects it, so its description no longer sits in the skill listing or
+  invites a second load. The hook strips its frontmatter, and the router map
+  is shorter (descriptions carry the trigger detail).
+- Shorter descriptions for `brainstorming`, `coding-principles`, and
+  `executing-plans`; lexical trigger evals unchanged at 56/58 rank-1.
+- `code-review` passes the checklist's path to the Standards reviewer instead
+  of reading and pasting it; the task reviewer's report is capped at 400
+  words like the other reviewers'.
+- Fixed a truncated sentence in the brainstorming builder check.
+
 ## 0.9.0 - 2026-11-09
 
 - Renamed `domain-modeling` to `defining-terms`: the old name read as
