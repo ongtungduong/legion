@@ -84,6 +84,12 @@ expect allow "Bash rg -n for node_modules in docs is allowed" "$(bash_json 'rg -
 expect allow "Bash grep -r -e build in src is allowed"  "$(bash_json 'grep -r -e build src')"
 expect deny  "Bash rg -e foo in node_modules is denied" "$(bash_json 'rg -e foo node_modules')"
 expect deny  "Bash grep -rn in node_modules/. is denied" "$(bash_json 'grep -rn foo node_modules/.')"
+# Final review: numeric option values are not the pattern.
+expect allow "Bash rg -C 2 for dist in src is allowed" "$(bash_json 'rg -C 2 dist src')"
+expect allow "Bash grep -rn -m 1 for build in scripts is allowed" "$(bash_json 'grep -rn -m 1 build scripts')"
+expect deny  "Bash rg -A 3 foo in node_modules is denied" "$(bash_json 'rg -A 3 foo node_modules')"
+expect allow "Bash fd for the word build is allowed"   "$(bash_json 'fd build')"
+expect deny  "Bash rg --files over dist is denied"     "$(bash_json 'rg --files dist')"
 
 # Bash builtins only: the hook must work with no PATH at all.
 out="$(printf '%s' "$(read_json /p/.env)" | env PATH=/nonexistent "$BASH" "$HOOK" 2>&1)" || true

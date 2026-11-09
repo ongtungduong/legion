@@ -106,11 +106,11 @@ const auditSkeleton = (text) => {
 const audits = skills
   .map((name) => path.join(SKILLS_DIR, name, 'references', 'audit.md'))
   .filter((f) => fs.existsSync(f));
+const firstSkeleton = audits.length ? auditSkeleton(fs.readFileSync(audits[0], 'utf8')) : '';
 for (const f of audits) {
   const sk = auditSkeleton(fs.readFileSync(f, 'utf8'));
   if (!sk) err(`${rel(f)}: no report skeleton under "## Report"`);
-  const first = auditSkeleton(fs.readFileSync(audits[0], 'utf8'));
-  if (sk && sk !== first) err(`audit skeletons differ: ${rel(audits[0])} vs ${rel(f)}`);
+  else if (firstSkeleton && sk !== firstSkeleton) err(`audit skeletons differ: ${rel(audits[0])} vs ${rel(f)}`);
 }
 
 // --- Router, README, trigger files -----------------------------------------

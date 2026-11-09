@@ -73,10 +73,10 @@ take that path once per task; without one, the request is a plan of one task.
    other code relies on, or persisted data, list its callers, consumers, and
    the data it touches, and give a test to each one the change can break.
 4. **Run the TDD cycle** below, inline.
-5. **Review if risky.** When step 2 loaded the security checklist, or the
-   change touches persisted data, money, or concurrency, call the Skill tool
-   with `legion:code-review` before claiming it, and name the checklists
-   loaded so the reviewer checks against them.
+5. **Review if risky.** When step 2 loaded `legion:security-and-hardening`,
+   or the change touches persisted data, money, or concurrency, call the
+   Skill tool with `legion:code-review` before claiming it, and name the
+   checklists loaded so the reviewer checks against them.
 6. **Run the evidence gate** and report in its format.
 
 ## Plan workflow

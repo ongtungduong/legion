@@ -94,8 +94,9 @@ bash_segment() {
   IFS=$' \t;|&<>()\'"`' read -r -a words <<< "$1" || true
   for word in ${words[@]+"${words[@]}"}; do
     case "$word" in
-      rg | ag) is_scanner=1; wants_pattern=1 ;;
-      find | fd) is_scanner=1 ;;
+      rg | ag | fd) is_scanner=1; wants_pattern=1 ;;
+      find) is_scanner=1 ;;
+      --files) wants_pattern="" ;; # rg --files lists paths: no pattern
       grep | egrep | fgrep) seen_grep=1; wants_pattern=1 ;;
       --recursive) [ -n "$seen_grep" ] && is_scanner=1 ;;
       -e | --regexp | -f | --file | --regexp=* | --file=*) wants_pattern="" ;;
@@ -104,6 +105,7 @@ bash_segment() {
     esac
     case "$prev" in
       -path | -ipath | -name | -iname | -wholename | -not | '!' | -g | --glob | --exclude | --exclude-dir | --include | -e | --regexp | -f | --file | -t | --type | -T | --type-not) ;;
+      -A | -B | -C | -m | -M | -j | --context | --after-context | --before-context | --max-count | --max-columns | --threads | -maxdepth | -mindepth) ;;
       *)
         case "$word" in
           -* | '!'* | rg | ag | grep | egrep | fgrep | find | fd) ;;

@@ -38,11 +38,11 @@ right thing while breaking them; merging the two axes lets one mask the other.
    enough, the reviewers read their files). The checklist and smell baseline
    live in [references/review-checklists.md](references/review-checklists.md):
    pass its absolute path to the Standards reviewer, and read it yourself only
-   when you review without subagents. When the diff touches a security or
-   performance trigger (the lists in `legion:executing-plans` quick path step
-   2), also pass the absolute path of `security-checklist.md` from the
-   `security-and-hardening` skill's references folder, or of
-   `performance-checklist.md` from the `performance-optimization` skill's. Precedence: documented repo standard, then design
+   when you review without subagents. When the diff touches what that
+   checklist's Security or Performance item covers, also pass the absolute
+   path of `security-checklist.md` from the `security-and-hardening`
+   skill's references folder, or of `performance-checklist.md` from the
+   `performance-optimization` skill's. Precedence: documented repo standard, then design
    principles, then the smell baseline; skip what tooling already enforces.
 4. **Review both axes in parallel.** Read
    [references/reviewer-prompts.md](references/reviewer-prompts.md) and

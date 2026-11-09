@@ -1,7 +1,7 @@
 // Behavior tests for the repo checks. Each test copies the repo to a temp
 // dir, applies one defect, and runs a script against the copy through
 // LEGION_ROOT. Zero dependencies (node:test).
-import { test } from 'node:test';
+import { test, after } from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import os from 'node:os';
@@ -12,8 +12,12 @@ import { fileURLToPath } from 'node:url';
 const REPO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
 const SKIP = new Set(['.git', 'node_modules', path.join('evals', 'results'), '.legion']);
 
+const copies = [];
+after(() => { for (const dir of copies) fs.rmSync(dir, { recursive: true, force: true }); });
+
 function copyRepo() {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'legion-validate-'));
+  copies.push(dir);
   fs.cpSync(REPO, dir, {
     recursive: true,
     filter: (src) => !SKIP.has(path.relative(REPO, src)),

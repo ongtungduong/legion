@@ -316,3 +316,14 @@ planning, with `deny` as the fallback.
   (within the accepted 1,600), including two eval-driven fixes for sessions
   that cannot run code and one making `coding-principles` load for any new
   function or module.
+- Always-on cost: the router (`using-legion`, injected in every session)
+  grew from 3,608 to 4,086 bytes: the performance row, "what broke?" as a
+  bug, and the skip-a-safety-step rule. The spec's "an XS change touching no
+  trigger loads the same bytes" does not hold; it costs those 478 bytes per
+  session plus the 1,374 in `executing-plans` when that loads.
+- Quality graders with no delta: `executing-plans-batches-queries` (full
+  suite), `executing-plans-loads-security-on-auth-change`,
+  `code-review-flags-n-plus-one`, and `code-review-flags-unmeasured-speed-claim`
+  pass without the plugin too: sonnet already writes and reviews that code
+  well. They are kept as regression guards and recorded as exceptions to
+  "every quality grader shows a positive ablation delta", not tightened.
