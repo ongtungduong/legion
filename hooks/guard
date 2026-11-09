@@ -1,0 +1,165 @@
+#!/usr/bin/env bash
+# PreToolUse guard for the Legion plugin.
+#
+# Asks the user before a tool touches a file that usually holds secrets
+# (.env, .env.*, *.pem, *.key, id_rsa*), and denies broad scans of
+# node_modules, dist, and build, which flood the context with generated code.
+# Everything else is allowed with no output. Set LEGION_GUARD=off to disable.
+#
+# Bash builtins only: the hook runs before every matched tool call, so it
+# forks no process, and it must work with a broken PATH. It fails open: input
+# it cannot read is allowed, because a guard bug must not stop the user's work
+# (Claude Code's own permission rules still apply).
+set -uo pipefail
+set -f # word splitting below must never expand globs from the command text
+
+[ "${LEGION_GUARD:-on}" = off ] && exit 0
+
+input=""
+IFS= read -r -d '' input || true
+
+# json_string <field>: REPLY = the first "<field>": "<string>" value, with its
+# JSON escapes kept, or empty.
+json_string() {
+  local re='"'"$1"'"[[:space:]]*:[[:space:]]*"(([^"\\]|\\.)*)"'
+  if [[ $input =~ $re ]]; then REPLY="${BASH_REMATCH[1]}"; else REPLY=""; fi
+}
+
+# A name that is safe to put in a JSON string: no quotes or backslashes.
+safe() { REPLY="${1//\\/}"; REPLY="${REPLY//\"/}"; }
+
+emit() { # $1 decision, $2 reason
+  printf '{"hookSpecificOutput":{"hookEventName":"PreToolUse","permissionDecision":"%s","permissionDecisionReason":"%s"}}\n' "$1" "$2"
+  exit 0
+}
+
+# secret_name <path>: true when its last segment usually holds secrets.
+# JSON keeps a Windows backslash escaped, so "\\" splits segments too.
+secret_name() {
+  local base="${1##*/}"
+  base="${base##*\\}"
+  case "$base" in
+    .env.example | .env.sample | .env.template | *.pub) return 1 ;;
+    .env | .env.* | *.pem | *.key | id_rsa* | id_ed25519* | id_ecdsa* | id_dsa*)
+      safe "$base"; return 0 ;;
+  esac
+  return 1
+}
+
+# secret_glob <glob>: true when a search glob selects .env files.
+secret_glob() {
+  local base="${1##*/}"
+  case "$base" in
+    .env.example* | .env.sample* | .env.template*) return 1 ;;
+    .env*) REPLY=".env files"; return 0 ;;
+  esac
+  return 1
+}
+
+# heavy_target <path>: true when the path IS node_modules, dist, or build (its
+# last segment), so a search would sweep the whole folder. An ancestor with
+# one of those names, or a package inside one, is a narrower search.
+heavy_target() {
+  local p="${1%/}"
+  p="${p%/.}"
+  p="${p%/\*}"
+  p="${p%/\*\*}"
+  case "${p##*/}" in
+    node_modules | dist | build) REPLY="${p##*/}"; return 0 ;;
+  esac
+  return 1
+}
+
+# heavy_glob <glob>: true when a search glob walks into one of those folders
+# from the top or through "**/". Exclusions ("!...") are what we want.
+heavy_glob_re='(^|\*\*/)(node_modules|dist|build)(/|$)'
+heavy_glob() {
+  case "$1" in '!'*) return 1 ;; esac
+  if [[ $1 =~ $heavy_glob_re ]]; then REPLY="${BASH_REMATCH[2]}"; return 0; fi
+  return 1
+}
+
+ask_secret() { emit ask "Legion guard: $1 may contain secrets. Allow this $tool call?"; }
+deny_scan() { emit deny "Legion guard: broad scan of $1/ blocked; search one package or subfolder, or read the file directly. Set LEGION_GUARD=off to disable."; }
+
+# bash_segment <one command>: sets scanner/heavy/secret for one simple command.
+# Values of options that take a pattern or an exclusion are skipped, so
+# "--exclude-dir=node_modules" and "-not -path './dist/*'" never count.
+bash_segment() {
+  local word prev="" seen_grep="" is_scanner="" seg_heavy=""
+  # A search tool's first positional word is its pattern, not a folder,
+  # unless the pattern came through -e / --regexp / -f.
+  local wants_pattern=""
+  local -a words=()
+  IFS=$' \t;|&<>()\'"`' read -r -a words <<< "$1" || true
+  for word in ${words[@]+"${words[@]}"}; do
+    case "$word" in
+      rg | ag | fd) is_scanner=1; wants_pattern=1 ;;
+      find) is_scanner=1 ;;
+      --files) wants_pattern="" ;; # rg --files lists paths: no pattern
+      grep | egrep | fgrep) seen_grep=1; wants_pattern=1 ;;
+      --recursive) [ -n "$seen_grep" ] && is_scanner=1 ;;
+      -e | --regexp | -f | --file | --regexp=* | --file=*) wants_pattern="" ;;
+      --*) ;;
+      -*[rR]*) [ -n "$seen_grep" ] && is_scanner=1 ;;
+    esac
+    case "$prev" in
+      -path | -ipath | -name | -iname | -wholename | -not | '!' | -g | --glob | --exclude | --exclude-dir | --include | -e | --regexp | -f | --file | -t | --type | -T | --type-not) ;;
+      -A | -B | -C | -m | -M | -j | --context | --after-context | --before-context | --max-count | --max-columns | --threads | -maxdepth | -mindepth) ;;
+      *)
+        case "$word" in
+          -* | '!'* | rg | ag | grep | egrep | fgrep | find | fd) ;;
+          *)
+            if [ -n "$wants_pattern" ]; then
+              wants_pattern="" # this word is the pattern
+            else
+              [ -z "$seg_heavy" ] && heavy_target "$word" && seg_heavy="$REPLY"
+            fi
+            ;;
+        esac
+        ;;
+    esac
+    [ -z "$secret" ] && secret_name "$word" && secret="$REPLY"
+    prev="$word"
+  done
+  if [ -n "$is_scanner" ] && [ -n "$seg_heavy" ]; then heavy="$seg_heavy"; fi
+}
+
+json_string tool_name
+tool="$REPLY"
+safe "$tool"
+tool="$REPLY"
+
+case "$tool" in
+  Read | Edit | Write)
+    json_string file_path
+    secret_name "$REPLY" && ask_secret "$REPLY"
+    ;;
+  Grep | Glob)
+    json_string path
+    path="$REPLY"
+    if [ "$tool" = Grep ]; then json_string glob; else json_string pattern; fi
+    glob="$REPLY"
+    [ -n "$path" ] && heavy_target "$path" && deny_scan "$REPLY"
+    [ -n "$glob" ] && heavy_glob "$glob" && deny_scan "$REPLY"
+    [ -n "$path" ] && secret_name "$path" && ask_secret "$REPLY"
+    [ -n "$glob" ] && secret_glob "$glob" && ask_secret "$REPLY"
+    ;;
+  Bash)
+    json_string command
+    # Only the head of a huge command (a long heredoc) is worth scanning.
+    command="${REPLY:0:8192}"
+    command="${command//\\\"/\"}" # unescape \" so quoted names split cleanly
+    command="${command//\\n/;}"   # an escaped newline separates commands
+    heavy="" secret=""
+    rest="${command//&/;}"
+    rest="${rest//|/;}"
+    while [ -n "$rest" ]; do
+      bash_segment "${rest%%;*}"
+      case "$rest" in *';'*) rest="${rest#*;}" ;; *) rest="" ;; esac
+    done
+    [ -n "$heavy" ] && deny_scan "$heavy"
+    [ -n "$secret" ] && ask_secret "$secret"
+    ;;
+esac
+exit 0

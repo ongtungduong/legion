@@ -1,0 +1,34 @@
+name: Bug report
+description: A skill, the router, or a hook behaves wrongly
+labels: [bug]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened
+      description: Expected versus actual behavior. For a wrong trigger, include the prompt you typed.
+    validations:
+      required: true
+  - type: input
+    id: skill
+    attributes:
+      label: Skill or hook
+      placeholder: legion:executing-plans, hooks/guard, ...
+  - type: input
+    id: legion
+    attributes:
+      label: Legion version
+      placeholder: "0.11.0"
+    validations:
+      required: true
+  - type: input
+    id: claude
+    attributes:
+      label: Claude Code version and model
+      placeholder: "output of `claude --version`, and the model"
+    validations:
+      required: true
+  - type: textarea
+    id: repro
+    attributes:
+      label: Steps to reproduce

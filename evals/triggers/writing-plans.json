@@ -8,7 +8,7 @@
   ],
   "negative": [
     {
-      "prompt": "Execute the plan in docs/legion/plans/2026-11-09-auth.md",
+      "prompt": "Execute the plan in .legion/plans/2026-11-09-auth.md",
       "owner": "executing-plans"
     },
     {

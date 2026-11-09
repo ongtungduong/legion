@@ -13,8 +13,13 @@
   stated, approved reason is Important; tightening a check needs no comment.
 - **Security:** untrusted input validated at the boundary; no injection into
   SQL, shell, HTML, or paths; authorization on every protected resource; no
-  secrets or PII in code or logs. Escalate to `legion:security-and-hardening`
-  when the change touches these areas.
+  secrets or PII in code or logs. When a security checklist path is given,
+  check the diff against each of its items.
+- **Performance:** no query or network call inside a loop over data that
+  grows; no unbounded read into memory; a cache keyed on everything the
+  response varies by and bounded in size; a speed claim comes with a
+  before/after measurement. When a performance checklist path is given,
+  check each of its items.
 - **Design:** follows existing patterns or justifies a new one; module
   boundaries respected; no circular dependencies.
 - **Readability:** names match `GLOSSARY.md` and the codebase; control flow is

@@ -38,7 +38,7 @@ Legion conventions on top of the spec:
 - Everything is in English: skill content and docs for humans (`README.md`, `docs/`).
 - Cross-skill instructions say "Call the Skill tool with `legion:<name>`".
 - Subagents start with a fresh context and an explicitly named model.
-- Generated artifacts go under `docs/legion/` (specs, plans) and `.legion/` (scratch).
+- Generated artifacts go under `.legion/`: `specs/` and `plans/` are committed, everything else (`runs/`, scratch) is gitignored.
 - The router stays light: it never forces a skill onto a question or trivial edit.
 - Nothing under `skills/` may be skill-development material (`test-*.md`,
   `*.scenario.md`, `CREATION-LOG.md`): agents read those folders during real work.

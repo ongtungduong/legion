@@ -39,6 +39,16 @@ escape_for_json() {
   s="${s//$'\n'/\\n}"
   s="${s//$'\r'/\\r}"
   s="${s//$'\t'/\\t}"
+  # JSON forbids every other control character raw (bash strings hold no NUL).
+  local i hex ch code
+  for ((i = 1; i < 32; i++)); do
+    case $i in 9 | 10 | 13) continue ;; esac
+    printf -v hex '%02x' "$i"
+    printf -v ch '%b' "\\x$hex"
+    [[ $s == *"$ch"* ]] || continue
+    printf -v code '\\u%04x' "$i"
+    s="${s//"$ch"/$code}"
+  done
   escaped="$s"
 }
 

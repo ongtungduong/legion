@@ -14,13 +14,18 @@ Progress:
 1. **Branch.** Do not implement on `main`/`master` without explicit consent;
    create a feature branch (or a worktree if the user wants isolation).
 2. **Ledger** at `.legion/runs/<plan-basename>/progress.md`, first line
-   `# Legion ledger - plan: <plan path>`. Add `.legion/` to `.gitignore` if
-   missing and say so. If the ledger already names this plan, every
+   `# Legion ledger - plan: <plan path>`. Add `.legion/*`, `!.legion/specs/`,
+   `!.legion/plans/` to `.gitignore` if missing and say so (specs and plans stay
+   committed; everything else in `.legion/` is scratch). If the ledger already names this plan, every
    `Task N: complete` line is done: resume at the first task without one.
 3. **Read** the plan and the spec it names once; create one todo per task.
-4. **Load the principles:** call the Skill tool with `legion:coding-principles`
+4. **Load the standards:** call the Skill tool with `legion:coding-principles`
    and load the plan's `Design principles` (pick them with that skill and
-   ledger the choice if the plan has none).
+   ledger the choice if the plan has none). When the plan's `Security` or
+   `Performance` line is not `none`, also call the Skill tool with
+   `legion:security-and-hardening` or `legion:performance-optimization`; a
+   plan without those lines gets them from the quick path's trigger lists,
+   ledgered. Each task brief then names the matching checklist paths.
 5. **Pre-flight.** For each task that consumes what an earlier one produces,
    compare their Interfaces blocks and ledger each conflict with your ruling,
    or write `Pre-flight: no shared interfaces`.
@@ -162,7 +167,7 @@ leaves out.
   re-done entire completed task sequences.
 - Cut review ranges from the recorded `BASE`, never `HEAD~1`, which silently
   drops all but the last commit of a multi-commit task.
-- `git clean -fdx` deletes `.legion/` (it is gitignored). Recover state from
+- `git clean -fdx` deletes the gitignored part of `.legion/` (ledger, briefs). Recover state from
   `git log` if that happens.
 - A dispatch with no model named inherits the session's model, usually the
   most expensive one.

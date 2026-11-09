@@ -42,6 +42,10 @@ Which seams get tested and what each test level proves.
 - Ask first:
 - Never:
 
+## Non-functional
+- Security: <trust boundaries and assets the change touches, or "none">
+- Performance: <budget and hot paths, or "none">
+
 ## Success criteria
 Specific, checkable conditions that mean "done".
 

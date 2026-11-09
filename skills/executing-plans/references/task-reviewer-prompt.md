@@ -16,6 +16,10 @@ Inputs:
 - Global constraints that bind this task: [paste verbatim from the plan]
 - Design principles the code must follow: [paths to the chosen
   skills/coding-principles/references/<set>.mini.md files]
+- Security checklist: [absolute path to
+  skills/security-and-hardening/references/security-checklist.md, or "not triggered"]
+- Performance checklist: [absolute path to
+  skills/performance-optimization/references/performance-checklist.md, or "not triggered"]
 
 Review in two separate passes and report them separately.
 
@@ -32,7 +36,11 @@ Review in two separate passes and report them separately.
    - No speculative generality, duplication, or needless abstraction.
    - Each item of the design principles' final checklist holds for the diff;
      cite the decision rule a finding breaks. Repo conventions override them.
-   - Security: untrusted input, secrets, injection, authorization.
+   - Security: untrusted input, secrets, injection, authorization; when a
+     security checklist is given, check the diff against each item.
+   - Performance: no query or remote call inside a loop over growing data,
+     no unbounded read; when a performance checklist is given, check each
+     item, and treat any speed claim without a measurement as a finding.
    - The bar held: no new suppressions, skipped or deleted tests, assertions
      removed from tests that stayed, stubs or empty catch blocks, or
      thresholds lowered, unless the brief or a listed ruling allows it.
