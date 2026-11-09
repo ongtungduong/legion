@@ -2,12 +2,14 @@
 name: code-review
 description: >-
   Reviews a change on two separate axes, Spec (does it do what was asked, no
-  more and no less) and Standards (correctness, tests, security, repo
-  conventions), using parallel fresh-context reviewers and severity labels,
-  and handles responding to review feedback. Use when reviewing a diff,
-  branch, commit range, or pull request, when asked to "review since X" or to
-  check work before merge, when a plan's final review is due, or when
-  addressing reviewer comments, including when the diff is pasted inline.
+  more and no less) and Standards (correctness, tests, security,
+  performance, repo conventions), using parallel fresh-context reviewers and
+  severity labels; audits a whole codebase for security and performance; and
+  handles responding to review feedback. Use when reviewing a diff, branch,
+  commit range, or pull request, when asked to "review since X" or to check
+  work before merge, when a plan's final review is due, when asked to audit
+  or review the whole repo or system, or when addressing reviewer comments,
+  including when the diff is pasted inline.
 license: MIT
 metadata:
   author: ongtungduong
@@ -36,9 +38,12 @@ right thing while breaking them; merging the two axes lets one mask the other.
    enough, the reviewers read their files). The checklist and smell baseline
    live in [references/review-checklists.md](references/review-checklists.md):
    pass its absolute path to the Standards reviewer, and read it yourself only
-   when you review without subagents. Precedence: documented repo standard,
-   then design principles, then the smell baseline; skip what tooling already
-   enforces.
+   when you review without subagents. When the diff touches a security or
+   performance trigger (the lists in `legion:executing-plans` quick path step
+   2), also pass the absolute path of `security-checklist.md` from the
+   `security-and-hardening` skill's references folder, or of
+   `performance-checklist.md` from the `performance-optimization` skill's. Precedence: documented repo standard, then design
+   principles, then the smell baseline; skip what tooling already enforces.
 4. **Review both axes in parallel.** Read
    [references/reviewer-prompts.md](references/reviewer-prompts.md) and
    dispatch the Spec and Standards reviewers at the same time with the Agent
@@ -72,6 +77,24 @@ Lead with what matters: one structural problem *is* the review even when
 there are ten nits. Most of a review's value sits in a few findings, so order
 each axis by severity, and once Minor findings pass five, fold them into one
 line per file so they cannot bury the Critical and Important ones.
+
+## System audit (no diff)
+
+When the target is a whole repository, system, or directory rather than a
+change, skip the Spec and Standards pair: there is no change to judge.
+Dispatch two auditors in parallel with the Agent tool, `subagent_type:
+"general-purpose"` (a fresh context, never `fork`), no worktree:
+
+- `model: "opus"`, told to read and follow `audit.md` from the
+  `security-and-hardening` skill's references folder (absolute path);
+- `model: "sonnet"`, told to read and follow `audit.md` from the
+  `performance-optimization` skill's references folder.
+
+Give each the scope (paths, entry points) and cap each report at 600 words.
+Merge them under `## Security audit` and `## Performance audit`, keeping
+each one's findings table, then one summary line with the count per
+severity. Without a subagent tool, run the two audits one after the other
+yourself and say they were not independent.
 
 ## Receiving feedback
 

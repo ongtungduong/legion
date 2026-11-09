@@ -25,6 +25,7 @@ Command: `claude plugin eval . --no-publish --model sonnet --runs 3 --threshold 
 | 2026-11-09 | 2.1.319 | sonnet | executing-plans-loads-security-on-auth-change (Task 5) | RED 1, GREEN 3 x 2 arms | 0.41 | 1/1, no quality delta |
 | 2026-11-09 | 2.1.319 | sonnet | executing-plans-loads-security-on-auth-change after review fixes | 3 x 2 arms | 0.36 | 1/1 |
 | 2026-11-09 | 2.1.319 | sonnet | security-audit-on-system (Task 6) | RED 1, GREEN 3 x 2 arms twice | 0.77 | 1/1 |
+| 2026-11-09 | 2.1.319 | sonnet | code-review cases (Task 8) | RED 1-2, GREEN 3 x 2 arms | 1.79 | 5/5 |
 
 ### 2026-11-09 baseline (0.10.0 skills)
 
@@ -127,3 +128,18 @@ measured by the pressure case in Task 13.
 Without the plugin the reply finds the injection and does not echo the key,
 but misses the report structure or the not-applicable dependency step. Same
 result after the attacker personas were rewritten (second GREEN run).
+
+### 2026-11-09 code-review performance item and system audit (Task 8)
+
+| Case | With plugin | Without | Delta | Verdict |
+|---|---|---|---|---|
+| code-review-fires | 1.00 | 0.50 | +0.50 | pass |
+| code-review-flags-n-plus-one | 1.00 | 0.67 | +0.33 | pass; passed before the change too |
+| code-review-flags-unmeasured-speed-claim | 1.00 | 1.00 | 0.00 | pass; passed before the change too |
+| code-review-runs-system-audit | 1.00 | 0.00 | +1.00 | pass (RED before: skill not fired, no audit headings) |
+| code-review-stays-quiet-on-commit-message | 1.00 | 1.00 | 0.00 | pass |
+
+The 0.10.0 review already flagged an N+1, an unmeasured speed claim, and a
+cross-tenant cache key in a diff, so the two performance cases never went
+red; they stay as regression guards. The new evidence is the system audit.
+The RED runs cost $0.30 and were cut short once by an account limit.
