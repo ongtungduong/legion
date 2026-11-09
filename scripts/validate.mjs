@@ -143,6 +143,20 @@ for (const name of hookFiles) {
   else if (!(fs.statSync(hook).mode & 0o111)) err(`${name} is not executable (chmod +x)`);
 }
 
+// --- CI workflows -----------------------------------------------------------
+// Least privilege: a read-only token unless a job asks for more, and actions
+// pinned to a commit SHA (a moved tag can ship new code into CI).
+const workflowsDir = path.join(ROOT, '.github', 'workflows');
+if (fs.existsSync(workflowsDir)) {
+  for (const f of fs.readdirSync(workflowsDir).filter((f) => /\.ya?ml$/.test(f))) {
+    const text = fs.readFileSync(path.join(workflowsDir, f), 'utf8');
+    if (!/^permissions:/m.test(text)) err(`.github/workflows/${f}: no top-level permissions block`);
+    for (const m of text.matchAll(/uses:\s*([^\s#]+)/g)) {
+      if (!/@[0-9a-f]{40}$/.test(m[1])) err(`.github/workflows/${f}: ${m[1]} is not pinned to a commit SHA`);
+    }
+  }
+}
+
 // --- Report -----------------------------------------------------------------
 for (const w of warnings) console.log(`WARN  ${w}`);
 for (const e of errors) console.log(`ERROR ${e}`);

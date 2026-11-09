@@ -68,6 +68,22 @@ test('missing registered hook fails', () => {
   assert.match(out, /hooks\/guard is missing/);
 });
 
+test('workflow without a permissions block fails', () => {
+  const root = copyRepo();
+  edit(root, '.github/workflows/ci.yml', (t) => t.replace(/^permissions:[\s\S]*?(?=^jobs:)/m, ''));
+  const { code, out } = run('validate.mjs', root);
+  assert.equal(code, 1, out);
+  assert.match(out, /ci\.yml: no top-level permissions block/);
+});
+
+test('action pinned by tag fails', () => {
+  const root = copyRepo();
+  edit(root, '.github/workflows/ci.yml', (t) => t.replace(/actions\/checkout@\S+/, 'actions/checkout@v6'));
+  const { code, out } = run('validate.mjs', root);
+  assert.equal(code, 1, out);
+  assert.match(out, /ci\.yml: actions\/checkout@v6 is not pinned to a commit SHA/);
+});
+
 test('bad frontmatter is reported, not thrown', () => {
   const root = copyRepo();
   edit(root, 'skills/defining-terms/SKILL.md', (t) => t.replace(/^---\n/, '--\n'));
