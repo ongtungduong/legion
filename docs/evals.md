@@ -22,6 +22,7 @@ Command: `claude plugin eval . --no-publish --model sonnet --runs 3 --threshold 
 | 2026-11-09 | 2.1.319 | sonnet | all 6 cases after fixes | 3 x 2 arms | 1.35 | 6/6 |
 | 2026-11-09 | 2.1.319 | sonnet | performance-optimization cases (Task 3) | 3 x 2 arms | 0.82 | 2/2 |
 | 2026-11-09 | 2.1.319 | sonnet | writing-plans-records-security-line (Task 4) | RED 1, GREEN 3 x 2 arms | 0.78 | 1/1 |
+| 2026-11-09 | 2.1.319 | sonnet | executing-plans-loads-security-on-auth-change (Task 5) | RED 1, GREEN 3 x 2 arms | 0.41 | 1/1, no quality delta |
 
 ### 2026-11-09 baseline (0.10.0 skills)
 
@@ -102,3 +103,15 @@ no measurement still fails.
 | Case | With plugin | Without | Delta | Verdict |
 |---|---|---|---|---|
 | writing-plans-records-security-line | 1.00 | 0.00 | +1.00 | pass (RED before the change: both line graders failed) |
+
+### 2026-11-09 quick path loads the standards (Task 5)
+
+| Case | With plugin | Without | Delta | Verdict |
+|---|---|---|---|---|
+| executing-plans-loads-security-on-auth-change | 1.00 | 1.00 | 0.00 | pass; skill loaded 3/3 (0/1 before the change) |
+
+The quality grader (parameterized query, email validated) passes without the
+plugin too: sonnet writes a safe lookup unprompted. The case proves the
+wiring (security loads before the code), not an effect on the code. The
+grader was not made stricter to manufacture a delta; the security effect is
+measured by the pressure case in Task 13.

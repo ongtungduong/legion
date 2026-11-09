@@ -53,12 +53,20 @@ take that path once per task; without one, the request is a plan of one task.
 1. **Pin the criteria** from the request, issue, or spec. If there are none and
    the change is not trivial, write them in one to three lines and confirm
    them with the user before coding.
-2. **Load the principles** before the first test when the change adds or
-   reshapes a function, class, module, or interface: call the Skill tool with
-   `legion:coding-principles`; it names the set in one line and its rules
-   shape the GREEN and REFACTOR steps. An XS change inside existing code (a
-   condition, a value, one call) follows the surrounding code's conventions
-   instead; say so in the report's `Principles:` line.
+2. **Load the standards** before the first test, with the Skill tool:
+   - `legion:coding-principles` when the change adds or reshapes a
+     function, class, module, or interface; it names the set in one line and
+     its rules shape GREEN and REFACTOR. An XS change inside existing code (a
+     condition, a value, one call) follows the surrounding code's
+     conventions instead; say so in the report's `Principles:` line.
+   - `legion:security-and-hardening` when the change touches untrusted input
+     (requests, forms, uploads, webhooks, values another process wrote),
+     login or sessions, authorization, secrets or API keys, personal data,
+     or LLM output. Whatever the size: one line is enough for a hole.
+   - `legion:performance-optimization` when it touches a query or network
+     call inside a loop, a hot path (per request, per row, per frame), data
+     that grows with users or time, rendering, or a stated budget. An XS
+     change skips it.
 3. **Run the TDD cycle** below, inline.
 4. **Review if risky.** For a change to auth, secrets, untrusted input,
    persisted data, money, or concurrency, call the Skill tool with
@@ -137,6 +145,7 @@ a seam). Those tests stay in the suite; they are the point, not scaffolding.
 Verified: `npm test` -> 48 passed, 0 failed; `npm run build` -> exit 0.
 Criteria: <each acceptance criterion> -> <test that proves it>.
 Principles: <set(s)>; final checklist answered. (XS: surrounding conventions)
+Checklists: security <answered | not triggered>; performance <answered | not triggered>.
 Weakened: none.
 Sources: <doc URL per version-sensitive API, if any>.
 Unverified: deploy to staging (needs your credentials).
