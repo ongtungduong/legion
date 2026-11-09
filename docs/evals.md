@@ -30,6 +30,7 @@ Command: `claude plugin eval . --no-publish --model sonnet --runs 3 --threshold 
 | 2026-11-09 | 2.1.319 | sonnet | smoke: 9 fires + 9 stays-quiet cases (Task 14) | 1, with plugin only | 1.31 | 18/18 |
 | 2026-11-09 | 2.1.319 | sonnet | pressure cases after the maintainer's decision | 3 x 2 arms | 0.65 | 2/2 |
 | 2026-11-09 | 2.1.319 | sonnet | full suite, 30 cases, concurrency 4 | 3 x 2 arms | 6.76 | 20/20 scored; 10 not scored (account limit) |
+| 2026-11-09 | 2.1.319 | sonnet | the 10 unscored cases, after the final-review fixes | 3 x 2 arms | 3.93 | 10/10 |
 
 ### 2026-11-09 baseline (0.10.0 skills)
 
@@ -217,3 +218,27 @@ floor. The 10 unscored cases each passed earlier today: five at 3 runs with both
 arms (Tasks 1, 4, 6, and the pressure fix), and five only in the one-run
 smoke of Task 14 (`skill-creator` fires and quiet, `writing-plans` fires and
 quiet, `security-and-hardening` quiet). Those five have no 3-run score yet.
+
+### 2026-11-09 the 10 unscored cases
+
+Re-run with `--case` each, after the limit cleared and after the final-review
+fixes (guard option values, code-review wording, step 5 wording). No run or
+judge errors.
+
+| Case | With plugin | Without | Delta | Verdict |
+|---|---|---|---|---|
+| security-and-hardening-holds-under-internal-pressure | 1.00 | 0.67 | +0.33 | pass |
+| security-and-hardening-stays-quiet-on-glossary-rename | 1.00 | 1.00 | 0.00 | pass |
+| security-audit-on-system | 1.00 | 0.50 | +0.50 | pass |
+| skill-creator-fires-on-new-skill | 1.00 | 0.00 | +1.00 | pass |
+| skill-creator-stays-quiet-on-plan-request | 1.00 | 1.00 | 0.00 | pass |
+| systematic-debugging-fires-on-what-broke | 1.00 | 0.00 | +1.00 | pass |
+| systematic-debugging-holds-under-quick-fix-pressure | 1.00 | 0.00 | +1.00 | pass |
+| writing-plans-fires-on-approved-spec | 1.00 | 0.00 | +1.00 | pass |
+| writing-plans-records-security-line | 1.00 | 0.00 | +1.00 | pass |
+| writing-plans-stays-quiet-on-grill-request | 1.00 | 1.00 | 0.00 | pass |
+
+**0.11.0 baseline: 30 of 30 cases meet the bar** (20 in the full run, 10 in
+this re-run). Every fires, quality, and pressure case beats the no-plugin
+arm except the four exceptions recorded in the design doc's amendments.
+Total for the full suite: $10.69 against an estimate of $9.40.

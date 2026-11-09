@@ -19,32 +19,29 @@ problem in a working session (mattpocock's "observed failure" principle).
    -rn .`, a repo root named `build` for Grep, anything past the first 8 KB
    of a Bash command, a `.env` word inside a quoted commit message (asks),
    and `jq .key` (asks).
-4. **Finish the 0.11.0 eval baseline.** Ten cases were cut off by the
-   account limit in the full run (`docs/evals.md`); five of them have only a
-   one-run smoke score. Re-run them with `--case` at 3 runs.
-5. **Stays-quiet cases for `executing-plans` and `systematic-debugging`.**
+4. **Stays-quiet cases for `executing-plans` and `systematic-debugging`.**
    Only the router's generic quiet case covers them today.
 
 ## Medium term
 
-6. **Deeper evals for `coding-principles`.** 0.11.0 shows the skill loads and
+5. **Deeper evals for `coding-principles`.** 0.11.0 shows the skill loads and
    names its set (`coding-principles-shapes-new-module`, 1.00 vs 0.00); it
    does not yet show that a rule set changes a design decision on a
    refactoring or legacy task. agent-rules-books itself has no empirical data
    on this.
-7. **Scripts for `executing-plans`.** Port `task-brief`, `review-package`, and `task-done`
+6. **Scripts for `executing-plans`.** Port `task-brief`, `review-package`, and `task-done`
    from superpowers if agents often get git commands wrong by hand.
-8. **User-invoked setup skill** (after `setup-matt-pocock-skills`). Purpose: configure
+7. **User-invoked setup skill** (after `setup-matt-pocock-skills`). Purpose: configure
    the issue tracker and the location of `GLOSSARY.md` and ADRs per repo, then add
    `to-tickets` and `triage`.
-9. **`handoff` skill** (mattpocock). Compresses a working session into a document for
+8. **`handoff` skill** (mattpocock). Compresses a working session into a document for
    another agent to continue from.
-10. **Domain skills from addy**, one at a time as the need arises:
+9. **Domain skills from addy**, one at a time as the need arises:
    `observability-and-instrumentation`, `api-and-interface-design`,
    `ci-cd-and-automation` (`performance-optimization` shipped in 0.11.0).
 
 ## Long term
 
-11. **Windows support:** add a `run-hook.cmd` wrapper.
-12. **Multiple harnesses:** Codex (`.codex-plugin` and tool-mapping notes), then
+10. **Windows support:** add a `run-hook.cmd` wrapper.
+11. **Multiple harnesses:** Codex (`.codex-plugin` and tool-mapping notes), then
     Cursor/OpenCode.
