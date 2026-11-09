@@ -12,7 +12,9 @@ checked it against the code; an unverified suspicion goes under Not checked.
    audit, if any, so a known and accepted risk is not reported as new.
 2. **Secrets.** Search for committed credentials, printing only file names,
    never matching lines: the Grep tool with `output_mode:
-   "files_with_matches"`, or `git grep -l -E '<pattern>'`. Patterns:
+   "files_with_matches"`, or `git grep -l -E -e '<pattern>'` (the `-e`
+   keeps a pattern that starts with `-` from being read as an option; exit
+   1 means no match, 129 means the command itself failed). Patterns:
    `AKIA[0-9A-Z]{16}`, `gh[pousr]_[A-Za-z0-9_]{36,}`, `github_pat_`,
    `sk_live_`, `rk_live_`, `xox[baprs]-`, `AIza[0-9A-Za-z_-]{35}`,
    `sk-ant-`, `-----BEGIN [A-Z ]*PRIVATE KEY-----`, and assignments to
@@ -30,7 +32,7 @@ checked it against the code; an unverified suspicion goes under Not checked.
 4. **Threat model.** Walk STRIDE over each trust boundary from step 1, then
    check the OWASP Top 10 categories it exposes (and the OWASP Top 10 for LLM
    Applications if the system calls a model). Use the checklist in
-   [security-checklist.md](security-checklist.md) as the item list.
+   [references/security-checklist.md](security-checklist.md) as the item list.
 5. **Attacker personas.** STRIDE asks what can go wrong at a boundary; a
    persona asks who would make it go wrong, and each sees what the others
    do not. Take one pass as each, asking "what is the cheapest way in from
