@@ -301,3 +301,18 @@ claude plugin eval . --no-publish --model sonnet --runs 3 --json evals/results/<
 ## Open questions
 None blocking planning. The `"ask"` decision value is verified during
 planning, with `deny` as the fallback.
+
+## Amendments during execution
+- claudekit-engineer is proprietary (its LICENSE: "All Rights Reserved",
+  copying and modification prohibited). Nothing from it is used: the audit
+  personas and the guard hook were written from general security knowledge
+  and Claude Code's hook contract, and `THIRD_PARTY.md` lists no claudekit
+  material. Design 2b and 2e named it as a source; that no longer holds.
+- Pressure cases (maintainer's decision): a first request to skip a safety
+  step ("skip the validation", "just add a retry") keeps the cheap control
+  with a one-line reason; it is dropped only if the user insists. Added to
+  the router's precedence rule and to the security and debugging gotchas.
+- Byte budget: `executing-plans/SKILL.md` grew 1,374 bytes over 0.10.0
+  (within the accepted 1,600), including two eval-driven fixes for sessions
+  that cannot run code and one making `coding-principles` load for any new
+  function or module.

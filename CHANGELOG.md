@@ -1,5 +1,57 @@
 # Changelog
 
+## 0.11.0 - 2026-11-09
+
+Performance and security in every code change, a guard hook, and measured
+skills. Design: `docs/legion/specs/2026-11-09-perf-security-evals-design.md`.
+
+New
+
+- `performance-optimization` skill: budget, baseline with its source,
+  profile to the dominant cost, fix test-first, re-measure, guard. No speed
+  claim without a number and its source. `references/` holds patterns, a
+  checklist, a web front-end reference, and a system audit.
+- `security-and-hardening` gains a system audit (`references/audit.md`):
+  secret scan that prints file names only, dependency audit, STRIDE and
+  OWASP, four attacker personas, findings verified against the code and
+  ranked by exposure x impact. From addy upstream: registry signatures, a
+  staged-secret scan that never echoes values, session cookies.
+- `code-review` audits a whole repo or system: security (opus) and
+  performance (sonnet) auditors in parallel, one shared report format. The
+  Standards checklist gains a Performance item.
+- `hooks/guard` (PreToolUse): asks before secret files, denies whole-folder
+  scans of `node_modules`, `dist`, `build`. Bash builtins only, fails open,
+  `LEGION_GUARD=off` disables it.
+- Behavioral evals for every skill (30 cases) and `docs/evals.md`, the log
+  of every run with model, Claude Code version, and cost.
+
+Changed
+
+- The chain loads security and performance the way it loads
+  `coding-principles`: a `Non-functional` section in the design doc,
+  `Security` and `Performance` lines in the plan, both loaded before the
+  first test on the quick path (security whatever the size), checklist paths
+  for implementers and reviewers.
+- A first request to skip a safety step keeps the cheap control and says
+  why; it is dropped only if the user insists (maintainer's decision).
+- Eval-driven fixes: the router sends "what broke?" to
+  `systematic-debugging`; `executing-plans` and `systematic-debugging` keep
+  the test-first order and the report block when code cannot run;
+  `coding-principles` loads for any new function or module.
+- Thinking models: the quick path lists a change's reach (callers,
+  consumers, data); debugging ranks hypotheses by likelihood for the cost of
+  checking; `skill-creator` inverts the trigger with near-miss prompts. A
+  skill x model matrix is in `docs/architecture.md`.
+
+Repo
+
+- CI: read-only token, actions pinned to commit SHAs, shellcheck on every
+  shell script; `validate.mjs` enforces the first two.
+- `validate.mjs`: `ROUTER` has one owner; links may not leave a skill's
+  root; every hook `hooks.json` runs must exist and be executable; audit
+  report skeletons must match. `tests/scripts/` tests each rule.
+- `hooks/session-start` escapes every control character.
+
 ## 0.10.0 - 2026-11-09
 
 Token cost cuts; no change to the workflow's steps.

@@ -24,11 +24,14 @@ each part, see [THIRD_PARTY.md](THIRD_PARTY.md) and [docs/architecture.md](docs/
   failed fixes, question the architecture" is kept.
 - **Best practices from classic books.** `coding-principles` picks one primary rule set (plus at most one companion) from the 14 in agent-rules-books, by task type and a compatibility matrix. The rule set is written into the plan, the implementer applies it while coding and during REFACTOR, and the reviewer checks against that set's own checklist.
 - **Multi-perspective brainstorming.** Reduce the problem to what *must be true* (first principles), compare approaches with de Bono's Six Thinking Hats "choosing between alternatives" sequence, then grill the design in rounds until no decision is left implicit. Depth scales with the size of the work.
-- **Thinking models placed where decisions are made.** First principles lives in brainstorming. Inversion is the Black hat in brainstorming and the pre-mortem step in writing-plans. Systems thinking is the system map and second-order effects in brainstorming, blast radius in code-review, and feedback loops in debugging. Pareto is the scope cut in brainstorming, slice order in writing-plans, and how findings are ranked in code-review.
+- **Thinking models placed where decisions are made.** First principles lives in brainstorming. Inversion is the Black hat in brainstorming and the pre-mortem step in writing-plans. Systems thinking is the system map and second-order effects in brainstorming, blast radius in code-review, and feedback loops in debugging. Pareto is the scope cut in brainstorming, slice order in writing-plans, and how findings are ranked in code-review. The full skill x model matrix is in [docs/architecture.md](docs/architecture.md).
+- **Security and performance in every code change.** Like the book rule sets, `security-and-hardening` and `performance-optimization` are loaded by the chain: the spec and plan name the trust boundaries and the performance budget, the quick path loads both before the first test when a change touches them, and reviewers check against their checklists. A whole-repo target in `code-review` runs both as system audits with one shared report format. A first request to skip a safety step keeps the cheap control and says why.
+- **A guard hook.** `hooks/guard` asks before a tool touches `.env`, keys, or certificates, and blocks whole-folder scans of `node_modules`, `dist`, and `build`. Bash builtins only; `LEGION_GUARD=off` turns it off. It is a convenience, not a security boundary.
 - **Spec-driven and test-driven throughout.** TDD starts by settling acceptance criteria; every test traces back to a criterion; every task in a plan states which spec requirement it implements.
 - **agentskills.io standard.** Every skill was rewritten with `skill-creator`: the description states both *what* and *when*, the body follows the Workflow / Gotchas structure, long templates live in `assets/`, and the skill-creator validator runs in `npm test`.
 - **Deterministic trigger evals.** Following addy: CI checks that descriptions
   contain the vocabulary users actually use.
+- **Measured behavior.** Every skill has behavioral evals (`claude plugin eval`): it fires, stays quiet on near misses, holds under pressure, and changes the code it produces compared with no plugin. Results, model, CLI version, and cost are logged in [docs/evals.md](docs/evals.md).
 
 ## Installation
 
@@ -76,7 +79,7 @@ claude --plugin-dir /path/to/legion
 ```
 brainstorming ─▶ writing-plans ─▶ executing-plans ─▶ code-review (final)
      │                                  │
-     └─ defining-terms                  └─ spec + TDD + coding-principles + evidence gate in every task,
+     └─ defining-terms                  └─ spec + TDD + coding-principles + security/perf checklists + evidence gate in every task,
                                            inline or subagent chosen by the agent per task
 ```
 
@@ -111,11 +114,11 @@ Documents the agent creates:
 ## Development
 
 ```bash
-npm test                 # validate + validate:spec + trigger evals + hook test
+npm test                 # validate + validate:spec + trigger evals + hook and script tests
 npm run validate         # repo structure: links, router, README, manifests, versions
 npm run validate:spec    # each skill against agentskills.io (skill-creator validator, needs python3)
 npm run evals:triggers   # vocabulary routing (TF-IDF)
-claude plugin eval . --no-publish   # behavioral evals in evals/plugin/ (costs tokens; pin --model)
+claude plugin eval . --no-publish --model sonnet   # behavioral evals in evals/plugin/ (about $0.05 a run); log results in docs/evals.md
 claude plugin validate . --strict
 ```
 

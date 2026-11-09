@@ -56,7 +56,7 @@ it. Questions and trivial edits get answered directly, with no skill.
 ```
 brainstorming ─▶ writing-plans ─▶ executing-plans ─▶ code-review (final)
      │                                  │
-     └─ defining-terms                  └─ spec + TDD + coding-principles + evidence gate in every task,
+     └─ defining-terms                  └─ spec + TDD + coding-principles + security/perf checklists + evidence gate in every task,
                                            inline or subagent per task
 ```
 
