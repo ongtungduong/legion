@@ -53,7 +53,7 @@ and nothing they could decide alone.
    the user agrees.
 
 4. **Write the plan** from [assets/plan-template.md](assets/plan-template.md)
-   into `docs/legion/plans/YYYY-MM-DD-<topic>.md` (unless the user or repo
+   into `.legion/plans/YYYY-MM-DD-<topic>.md` (unless the user or repo
    prefers another place). Copy the spec's project-wide requirements verbatim
    into Global constraints, and list in Review focus up to five inputs the
    spec implies but no test exercises, each with its test added to the owning

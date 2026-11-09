@@ -232,7 +232,7 @@ Goal set by the maintainer: Legion catches performance and security problems
 while code is written and across a whole system, its own code meets the same
 three criteria (coding principles, security, performance), and every skill
 has measured evidence that it works. Design doc:
-`docs/legion/specs/2026-11-09-perf-security-evals-design.md`.
+`.legion/specs/2026-11-09-perf-security-evals-design.md`.
 
 | Decision | Reason |
 |---|---|
@@ -254,9 +254,10 @@ test-first order and the report block in sessions that cannot run code;
 
 ## Artifact conventions
 
-- `docs/legion/specs/` and `docs/legion/plans/`: committed; the source of truth.
-- `.legion/runs/<plan>/`: ledger, briefs, and diff packages. This directory is
-  gitignored and deleted after the user chooses how to integrate.
+- `.legion/specs/` and `.legion/plans/`: committed; the source of truth.
+- `.legion/runs/<plan>/`: ledger, briefs, and diff packages. Everything in
+  `.legion/` except `specs/` and `plans/` is gitignored; `runs/` is deleted
+  after the user chooses how to integrate.
 - `GLOSSARY.md` and `docs/adr/`: created only when there is content, the mattpocock way.
 
 ## Testing

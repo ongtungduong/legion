@@ -75,7 +75,7 @@ decisions the way they would.
    any step, when three or more decisions are open at once or the user says
    "grill me".
 10. **Write the design doc.** Copy [assets/design-doc-template.md](assets/design-doc-template.md)
-   to `docs/legion/specs/YYYY-MM-DD-<topic>-design.md` (unless the repo or
+   to `.legion/specs/YYYY-MM-DD-<topic>-design.md` (unless the repo or
    user prefers another place) and fill it, including the first-principles
    and hats results. Offer an ADR for the chosen approach or a grilled
    decision only when all three hold: hard to reverse, surprising without
