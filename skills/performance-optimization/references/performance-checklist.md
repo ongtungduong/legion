@@ -34,4 +34,4 @@ impact".
 ## Proof
 - [ ] A hot-path change comes with a before/after measurement, same conditions
 - [ ] A countable cost (queries, calls, allocations) is asserted in a test
-- [ ] Frontend change: read `references/web.md` and check its budgets
+- [ ] Frontend change: `references/web.md` budgets checked

@@ -74,6 +74,13 @@ or rendering), skip steps 1, 2, and 7: apply the patterns and answer
 [references/performance-checklist.md](references/performance-checklist.md)
 item by item.
 
+For browser-facing work (page load, interaction latency, layout shift,
+bundle size, rendering), read [references/web.md](references/web.md) at
+step 1 for its targets and tools. To audit a whole system, directory, or
+repository rather than one change (no diff), read
+[references/audit.md](references/audit.md) and follow it; its report format
+is shared with the security audit.
+
 ## Gotchas
 
 - A cold-cache baseline against a warm-cache result measures the cache.

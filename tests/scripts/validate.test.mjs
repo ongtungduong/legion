@@ -84,6 +84,14 @@ test('action pinned by tag fails', () => {
   assert.match(out, /ci\.yml: actions\/checkout@v6 is not pinned to a commit SHA/);
 });
 
+test('audit skeletons must match', () => {
+  const root = copyRepo();
+  edit(root, 'skills/security-and-hardening/references/audit.md', (t) => t.replace('### Not checked', '### Gaps'));
+  const { code, out } = run('validate.mjs', root);
+  assert.equal(code, 1, out);
+  assert.match(out, /audit skeletons differ/);
+});
+
 test('bad frontmatter is reported, not thrown', () => {
   const root = copyRepo();
   edit(root, 'skills/defining-terms/SKILL.md', (t) => t.replace(/^---\n/, '--\n'));
