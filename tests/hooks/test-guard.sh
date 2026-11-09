@@ -58,4 +58,30 @@ expect ask   "Write to .env asks without echoing content" '{"tool_name":"Write",
 expect ask   "path with an escaped quote still asks"   '{"tool_name":"Read","tool_input":{"file_path":"/p/a\"b/.env"}}'
 expect deny  "Bash find over dist is denied"           "$(bash_json 'find dist -name *.js')"
 
+# Review findings: ordinary work must not be blocked.
+expect allow "Grep under an ancestor named build is allowed" '{"tool_name":"Grep","tool_input":{"pattern":"foo","path":"/Users/x/build/app/src"}}'
+expect allow "Grep in a monorepo package named build is allowed" '{"tool_name":"Grep","tool_input":{"pattern":"foo","path":"/p/packages/build/src"}}'
+expect allow "Glob inside a source folder named build is allowed" '{"tool_name":"Glob","tool_input":{"pattern":"src/build/**/*.ts"}}'
+expect allow "Grep in one package inside node_modules is allowed" '{"tool_name":"Grep","tool_input":{"pattern":"foo","path":"/p/node_modules/lodash"}}'
+expect allow "Grep with a glob that excludes dist is allowed" '{"tool_name":"Grep","tool_input":{"pattern":"foo","path":"/p","glob":"!**/dist/**"}}'
+expect allow "Bash grep --exclude-dir=node_modules is allowed" "$(bash_json 'grep --exclude-dir=node_modules -rn foo .')"
+expect allow "Bash find with -not -path node_modules is allowed" "$(bash_json "find . -not -path './node_modules/*' -name x")"
+expect allow "Bash grep -r inside one package is allowed" "$(bash_json 'grep -r foo node_modules/lodash/lib')"
+expect allow "Bash make build then rg in src is allowed" "$(bash_json 'make build && rg foo src')"
+expect allow "Bash grep --color in one dist file is allowed" "$(bash_json 'grep --color=never foo dist/app.js')"
+expect deny  "Bash rg after cd into the repo still denies node_modules" "$(bash_json 'cd /p; rg foo node_modules')"
+expect ask   "Grep with a .env glob asks"              '{"tool_name":"Grep","tool_input":{"pattern":"KEY","path":"/p","glob":".env*"}}'
+expect ask   "Read an ed25519 key asks"                "$(read_json /p/.ssh/id_ed25519)"
+expect allow "Read a public key is allowed"            "$(read_json /p/.ssh/id_rsa.pub)"
+expect allow "Read .env.template is allowed"           "$(read_json /p/.env.template)"
+expect ask   "Windows path to .env asks"               '{"tool_name":"Read","tool_input":{"file_path":"C:\\p\\.env"}}'
+expect allow "empty Bash command is allowed"           "$(bash_json '')"
+
+# Bash builtins only: the hook must work with no PATH at all.
+out="$(printf '%s' "$(read_json /p/.env)" | env PATH=/nonexistent "$BASH" "$HOOK" 2>&1)" || true
+case "$out" in
+  *'"permissionDecision":"ask"'*) echo "PASS: works with no PATH (no external command)" ;;
+  *) echo "FAIL: works with no PATH (no external command) (output: $out)" >&2; fail=1 ;;
+esac
+
 exit "$fail"

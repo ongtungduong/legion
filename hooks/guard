@@ -34,24 +34,82 @@ emit() { # $1 decision, $2 reason
 }
 
 # secret_name <path>: true when its last segment usually holds secrets.
+# JSON keeps a Windows backslash escaped, so "\\" splits segments too.
 secret_name() {
   local base="${1##*/}"
+  base="${base##*\\}"
   case "$base" in
-    .env.example | .env.sample) return 1 ;;
-    .env | .env.* | *.pem | *.key | id_rsa*) safe "$base"; return 0 ;;
+    .env.example | .env.sample | .env.template | *.pub) return 1 ;;
+    .env | .env.* | *.pem | *.key | id_rsa* | id_ed25519* | id_ecdsa* | id_dsa*)
+      safe "$base"; return 0 ;;
   esac
   return 1
 }
 
-# heavy_dir <path or glob>: true when a segment is node_modules, dist, or build.
-heavy_re='/(node_modules|dist|build)/'
-heavy_dir() {
-  if [[ "/$1/" =~ $heavy_re ]]; then REPLY="${BASH_REMATCH[1]}"; return 0; fi
+# secret_glob <glob>: true when a search glob selects .env files.
+secret_glob() {
+  local base="${1##*/}"
+  case "$base" in
+    .env.example* | .env.sample* | .env.template*) return 1 ;;
+    .env*) REPLY=".env files"; return 0 ;;
+  esac
+  return 1
+}
+
+# heavy_target <path>: true when the path IS node_modules, dist, or build (its
+# last segment), so a search would sweep the whole folder. An ancestor with
+# one of those names, or a package inside one, is a narrower search.
+heavy_target() {
+  local p="${1%/}"
+  p="${p%/\*}"
+  p="${p%/\*\*}"
+  case "${p##*/}" in
+    node_modules | dist | build) REPLY="${p##*/}"; return 0 ;;
+  esac
+  return 1
+}
+
+# heavy_glob <glob>: true when a search glob walks into one of those folders
+# from the top or through "**/". Exclusions ("!...") are what we want.
+heavy_glob_re='(^|\*\*/)(node_modules|dist|build)(/|$)'
+heavy_glob() {
+  case "$1" in '!'*) return 1 ;; esac
+  if [[ $1 =~ $heavy_glob_re ]]; then REPLY="${BASH_REMATCH[2]}"; return 0; fi
   return 1
 }
 
 ask_secret() { emit ask "Legion guard: $1 may contain secrets. Allow this $tool call?"; }
-deny_scan() { emit deny "Legion guard: broad scan of $1/ blocked; search a narrower path or read the file directly. Set LEGION_GUARD=off to disable."; }
+deny_scan() { emit deny "Legion guard: broad scan of $1/ blocked; search one package or subfolder, or read the file directly. Set LEGION_GUARD=off to disable."; }
+
+# bash_segment <one command>: sets scanner/heavy/secret for one simple command.
+# Values of options that take a pattern or an exclusion are skipped, so
+# "--exclude-dir=node_modules" and "-not -path './dist/*'" never count.
+bash_segment() {
+  local word prev="" seen_grep="" is_scanner="" seg_heavy=""
+  local -a words=()
+  IFS=$' \t;|&<>()\'"`' read -r -a words <<< "$1" || true
+  for word in ${words[@]+"${words[@]}"}; do
+    case "$word" in
+      rg | find | fd | ag) is_scanner=1 ;;
+      grep | egrep | fgrep) seen_grep=1 ;;
+      --recursive) [ -n "$seen_grep" ] && is_scanner=1 ;;
+      --*) ;;
+      -*[rR]*) [ -n "$seen_grep" ] && is_scanner=1 ;;
+    esac
+    case "$prev" in
+      -path | -ipath | -name | -iname | -wholename | -not | '!' | -g | --glob | --exclude | --exclude-dir | --include) ;;
+      *)
+        case "$word" in
+          -* | '!'*) ;;
+          *) [ -z "$seg_heavy" ] && heavy_target "$word" && seg_heavy="$REPLY" ;;
+        esac
+        ;;
+    esac
+    [ -z "$secret" ] && secret_name "$word" && secret="$REPLY"
+    prev="$word"
+  done
+  if [ -n "$is_scanner" ] && [ -n "$seg_heavy" ]; then heavy="$seg_heavy"; fi
+}
 
 json_string tool_name
 tool="$REPLY"
@@ -67,29 +125,26 @@ case "$tool" in
     json_string path
     path="$REPLY"
     if [ "$tool" = Grep ]; then json_string glob; else json_string pattern; fi
-    for target in "$path" "$REPLY"; do
-      [ -n "$target" ] && heavy_dir "$target" && deny_scan "$REPLY"
-    done
-    secret_name "$path" && ask_secret "$REPLY"
+    glob="$REPLY"
+    [ -n "$path" ] && heavy_target "$path" && deny_scan "$REPLY"
+    [ -n "$glob" ] && heavy_glob "$glob" && deny_scan "$REPLY"
+    [ -n "$path" ] && secret_name "$path" && ask_secret "$REPLY"
+    [ -n "$glob" ] && secret_glob "$glob" && ask_secret "$REPLY"
     ;;
   Bash)
     json_string command
-    command="$REPLY"
-    scanner="" heavy="" secret=""
-    seen_grep=""
-    # Split on shell syntax as well as blanks; IFS changes for this read only.
-    words=()
-    IFS=$' \t\n;|&<>()=\'"`' read -r -d '' -a words <<< "$command" || true
-    for word in "${words[@]}"; do
-      case "$word" in
-        rg | find | fd | ag) scanner=1 ;;
-        grep | egrep) seen_grep=1 ;;
-        --recursive | -*[rR]*) [ -n "$seen_grep" ] && scanner=1 ;;
-      esac
-      [ -z "$heavy" ] && heavy_dir "$word" && heavy="$REPLY"
-      [ -z "$secret" ] && secret_name "$word" && secret="$REPLY"
+    # Only the head of a huge command (a long heredoc) is worth scanning.
+    command="${REPLY:0:8192}"
+    command="${command//\\\"/\"}" # unescape \" so quoted names split cleanly
+    command="${command//\\n/;}"   # an escaped newline separates commands
+    heavy="" secret=""
+    rest="${command//&/;}"
+    rest="${rest//|/;}"
+    while [ -n "$rest" ]; do
+      bash_segment "${rest%%;*}"
+      case "$rest" in *';'*) rest="${rest#*;}" ;; *) rest="" ;; esac
     done
-    [ -n "$scanner" ] && [ -n "$heavy" ] && deny_scan "$heavy"
+    [ -n "$heavy" ] && deny_scan "$heavy"
     [ -n "$secret" ] && ask_secret "$secret"
     ;;
 esac
