@@ -45,6 +45,7 @@ it. Questions and trivial edits get answered directly, with no skill.
 | Reviewing a diff, branch, or PR; responding to review feedback | `legion:code-review` |
 | Refactoring or cleanup; untested legacy code; designing a module, API, boundary, domain model, data flow, or failure handling | `legion:coding-principles` |
 | Untrusted input, auth, secrets, personal data, or LLM output | `legion:security-and-hardening` |
+| Speeding up code toward a measured goal: profiling, N+1, latency, throughput, memory, bundle size, Core Web Vitals | `legion:performance-optimization` |
 | Creating, editing, or validating a skill | `legion:skill-creator` |
 
 ## Default flow for new work

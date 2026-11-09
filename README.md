@@ -105,6 +105,7 @@ Documents the agent creates:
 | `code-review` | Two-axis diff/PR review; receiving review | mattpocock + addy + superpowers |
 | `coding-principles` | Picking 1–2 rule sets from classic books (Clean Code, APoSD, Refactoring, WELC, Clean Architecture, DDD, DDIA, Release It!...) to shape code, avoiding conflicting pairs | agent-rules-books (14 mini editions) |
 | `security-and-hardening` | Untrusted input, auth, secrets, PII, LLM output | addy (condensed) |
+| `performance-optimization` | Speeding code up toward a measured budget: baseline, profile, fix the dominant bottleneck test-first, re-measure; no speed claim without a number and its source | addy (`performance-optimization`, `web-performance-auditor`, condensed) |
 | `skill-creator` | Creating, editing, and validating skills against agentskills.io | duongot-skills/skill-creator |
 
 ## Development

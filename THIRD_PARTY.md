@@ -24,6 +24,7 @@ and condensed, not copied wholesale; the table says what came from where.
 | `skills/coding-principles/references/*.mini.md` | agent-rules-books `*/<book>.mini.md`, copied unchanged (14 files) |
 | `skills/coding-principles/SKILL.md` | Routing and conflict rules derived from agent-rules-books `docs/USAGE.md` and `docs/COMPATIBILITY.md` |
 | `skills/security-and-hardening` (+ references) | addy `security-and-hardening`, `references/security-checklist.md` |
+| `skills/performance-optimization` (+ references) | addy `performance-optimization` and its `references/optimization-patterns.md`, `references/performance-checklist.md`, `agents/web-performance-auditor.md` (metric-honesty rule), condensed and rewritten |
 | `skills/skill-creator` | Same author: `duongot-skills/skill-creator` (MIT, ongtungduong), copied unchanged except `name`, renamed to match its directory |
 | `scripts/validate-spec.mjs` | Wraps `skills/skill-creator/scripts/validate_skill.py` |
 | `scripts/validate.mjs`, `tests/` | superpowers `tests/skill-size`, `tests/skill-layout`; addy `scripts/validate-skills.js` |

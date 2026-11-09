@@ -20,6 +20,7 @@ Command: `claude plugin eval . --no-publish --model sonnet --runs 3 --threshold 
 | 2026-11-09 | 2.1.319 | sonnet | 2 failing cases, fix 1 | 3 x 2 arms | 0.49 | 1/2 |
 | 2026-11-09 | 2.1.319 | sonnet | systematic-debugging case, fix 2 | 3 x 2 arms | 0.22 | 1/1 |
 | 2026-11-09 | 2.1.319 | sonnet | all 6 cases after fixes | 3 x 2 arms | 1.35 | 6/6 |
+| 2026-11-09 | 2.1.319 | sonnet | performance-optimization cases (Task 3) | 3 x 2 arms | 0.82 | 2/2 |
 
 ### 2026-11-09 baseline (0.10.0 skills)
 
@@ -80,3 +81,17 @@ case's score is a coarse signal.
 About 29 cases x 3 runs x 2 arms = 174 runs, at about $0.037 a run: about
 $6.50 for one full run (Task 15), plus about $3 for the per-task RED and
 GREEN runs before it.
+
+### 2026-11-09 performance-optimization (Task 3)
+
+| Case | With plugin | Without | Delta | Verdict |
+|---|---|---|---|---|
+| performance-optimization-fires-on-slow-endpoint | 1.00 | 0.00 | +1.00 | pass |
+| performance-optimization-stays-quiet-on-regression | 1.00 | 1.00 | 0.00 | pass |
+
+Two runs, $0.29 and $0.53. In the first, the quiet case failed to load
+(unquoted `: ` in its YAML frontmatter) and one judge panel split 1-2 on a
+correct reply (batched query, a query-count guard, gains labelled potential
+impact). Ruling: the grader was wrong. It now says that a proposed budget or
+a query count read from the code is not a speed claim; a stated speedup with
+no measurement still fails.

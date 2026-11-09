@@ -5,7 +5,8 @@ description: >-
   goes red on the bug, then minimizing it, ranking falsifiable hypotheses,
   instrumenting, and fixing with a regression test. Use when facing a bug,
   failing or flaky test, crash, error message, stack trace, build or CI
-  failure, or something that got slow, and when asked what broke or why
+  failure, or something that got slow or slower after a change or deploy,
+  and when asked what broke or why
   something fails, before proposing any fix, even when the code is pasted
   inline and the fix looks obvious.
 license: MIT
