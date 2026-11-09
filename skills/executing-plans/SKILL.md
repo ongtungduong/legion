@@ -62,15 +62,17 @@ take that path once per task; without one, the request is a plan of one task.
    - `legion:security-and-hardening` when the change touches untrusted input
      (requests, forms, uploads, webhooks, values another process wrote),
      login or sessions, authorization, secrets or API keys, personal data,
-     or LLM output. Whatever the size: one line is enough for a hole.
+     LLM output, a user-supplied URL fetched server-side, or adds a
+     dependency. An XS change gets it too: a one-line change can open a hole.
    - `legion:performance-optimization` when it touches a query or network
      call inside a loop, a hot path (per request, per row, per frame), data
      that grows with users or time, rendering, or a stated budget. An XS
      change skips it.
 3. **Run the TDD cycle** below, inline.
-4. **Review if risky.** For a change to auth, secrets, untrusted input,
-   persisted data, money, or concurrency, call the Skill tool with
-   `legion:code-review` before claiming it.
+4. **Review if risky.** When step 2 loaded the security checklist, or the
+   change touches persisted data, money, or concurrency, call the Skill tool
+   with `legion:code-review` before claiming it, and name the checklists
+   loaded so the reviewer checks against them.
 5. **Run the evidence gate** and report in its format.
 
 ## Plan workflow
