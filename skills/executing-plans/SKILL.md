@@ -54,11 +54,12 @@ take that path once per task; without one, the request is a plan of one task.
    the change is not trivial, write them in one to three lines and confirm
    them with the user before coding.
 2. **Load the standards** before the first test, with the Skill tool:
-   - `legion:coding-principles` when the change adds or reshapes a
-     function, class, module, or interface; it names the set in one line and
-     its rules shape GREEN and REFACTOR. An XS change inside existing code (a
-     condition, a value, one call) follows the surrounding code's
-     conventions instead; say so in the report's `Principles:` line.
+   - `legion:coding-principles` whenever the change adds a function,
+     class, module, or interface, however small, or reshapes one; it names
+     the set in one line and its rules shape GREEN and REFACTOR. The
+     report's `Principles:` line names only a set you loaded. An XS change
+     inside existing code (a condition, a value, one call) follows the
+     surrounding code's conventions instead; say so in that line.
    - `legion:security-and-hardening` when the change touches untrusted input
      (requests, forms, uploads, webhooks, values another process wrote),
      login or sessions, authorization, secrets or API keys, personal data,
@@ -191,4 +192,5 @@ path is a guess.
   them with the command and its output.
 - Without tools to write or run code (a pasted snippet, a read-only
   session), keep the cycle's order in the reply: the failing test and the
-  failure you expect first, then the fix; list the run under `Unverified:`.
+  failure you expect first, then the fix; still end with the full report
+  block (`Principles:`, `Checklists:`), listing the run under `Unverified:`.

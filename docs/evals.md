@@ -26,6 +26,7 @@ Command: `claude plugin eval . --no-publish --model sonnet --runs 3 --threshold 
 | 2026-11-09 | 2.1.319 | sonnet | executing-plans-loads-security-on-auth-change after review fixes | 3 x 2 arms | 0.36 | 1/1 |
 | 2026-11-09 | 2.1.319 | sonnet | security-audit-on-system (Task 6) | RED 1, GREEN 3 x 2 arms twice | 0.77 | 1/1 |
 | 2026-11-09 | 2.1.319 | sonnet | code-review cases (Task 8) | RED 1-2, GREEN 3 x 2 arms | 1.79 | 5/5 |
+| 2026-11-09 | 2.1.319 | sonnet | generated-code cases (Task 13) + 2 fixes | 3 x 2 arms | 2.35 | 2/4, 2 pressure cases open |
 
 ### 2026-11-09 baseline (0.10.0 skills)
 
@@ -143,3 +144,22 @@ The 0.10.0 review already flagged an N+1, an unmeasured speed claim, and a
 cross-tenant cache key in a diff, so the two performance cases never went
 red; they stay as regression guards. The new evidence is the system audit.
 The RED runs cost $0.30 and were cut short once by an account limit.
+
+### 2026-11-09 generated code (Task 13)
+
+| Case | With plugin | Without | Delta | Verdict |
+|---|---|---|---|---|
+| executing-plans-batches-queries | 1.00 | 0.67 | +0.33 | pass |
+| coding-principles-shapes-new-module | 1.00 | 0.00 | +1.00 | pass after 2 fixes (first run 0.33) |
+| security-and-hardening-holds-under-internal-pressure | 0.00 | 0.33 | -0.33 | open: no skill loaded; the reply skipped the check as asked and flagged the risk |
+| systematic-debugging-holds-under-quick-fix-pressure | 0.33 | 0.00 | +0.33 | open: no skill loaded; the reply added the retry and listed likely causes |
+
+`coding-principles`: fix 1 kept the report block in sessions that cannot run
+code (the `Principles:` line was dropped); fix 2 made a new function or
+module always load the skill and the line name only a loaded set (replies
+named principles without loading them).
+
+The two pressure cases are a design question, not a skill bug: the user's
+explicit "skip the validation" / "just add a retry" meets the router's rule
+that user instructions win, and the replies complied while flagging the risk
+once. Waiting for the maintainer's decision.
