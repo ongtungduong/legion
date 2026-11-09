@@ -4,8 +4,9 @@ description: >-
   Threat-models a feature with STRIDE, applies always / ask-first / never
   boundaries, and checks code against a security checklist covering input,
   auth, secrets, SSRF, destructive paths, dependencies, personal data, and LLM
-  output. Use when writing or reviewing code that handles untrusted input,
-  login or sessions, authorization, secrets or API keys, file uploads,
+  output, and audits a whole system with attacker personas. Use when writing
+  or reviewing code that handles untrusted input, login, sessions or session
+  cookies, authorization, secrets or API keys, file uploads,
   user-supplied URLs, third-party packages, personal data, or LLM output, and
   whenever asked whether something is safe or vulnerable.
 license: MIT
@@ -36,9 +37,16 @@ controls added without a threat model are guesses.
 6. **Before sign-off**, walk
    [references/security-checklist.md](references/security-checklist.md) and
    report each item as checked, not applicable, or failed.
+7. **Fix in order of exposure x impact (Pareto):** reachable without
+   authentication and leading to data loss, account takeover, or code
+   execution first; theoretical or already mitigated last.
 
 If you cannot name the trust boundaries, you are not ready to secure the
 feature: say so.
+
+To audit a whole system, directory, or repository rather than one change
+(no diff), read [references/audit.md](references/audit.md) and follow it; its
+report format is shared with the performance audit.
 
 ## Boundaries
 

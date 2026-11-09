@@ -16,6 +16,7 @@ Mark each item checked, not applicable, or failed, with evidence.
 
 ## Secrets and data
 - [ ] No secrets in source or git history; `.env*` gitignored; `.env.example` has placeholders
+- [ ] Staged changes scanned without printing values: `git diff --cached -i -G'password|secret|api_key|token' --name-only`
 - [ ] No secrets, tokens, or personal data in logs or telemetry
 - [ ] Personal data classified, collected for a stated purpose, with retention and a deletion path
 - [ ] Responses strip sensitive fields; errors are generic to users
@@ -27,6 +28,7 @@ Mark each item checked, not applicable, or failed, with evidence.
 
 ## Dependencies
 - [ ] Native audit run against the committed lockfile; critical/high triaged by reachability
+- [ ] Registry signatures verified where supported (`npm audit signatures`); a missing signature is a lead to investigate, not proof of compromise
 - [ ] New dependencies reviewed (owner, release age, install scripts, typosquats)
 - [ ] One lockfile per install boundary; installs reproducible
 

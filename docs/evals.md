@@ -23,6 +23,8 @@ Command: `claude plugin eval . --no-publish --model sonnet --runs 3 --threshold 
 | 2026-11-09 | 2.1.319 | sonnet | performance-optimization cases (Task 3) | 3 x 2 arms | 0.82 | 2/2 |
 | 2026-11-09 | 2.1.319 | sonnet | writing-plans-records-security-line (Task 4) | RED 1, GREEN 3 x 2 arms | 0.78 | 1/1 |
 | 2026-11-09 | 2.1.319 | sonnet | executing-plans-loads-security-on-auth-change (Task 5) | RED 1, GREEN 3 x 2 arms | 0.41 | 1/1, no quality delta |
+| 2026-11-09 | 2.1.319 | sonnet | executing-plans-loads-security-on-auth-change after review fixes | 3 x 2 arms | 0.36 | 1/1 |
+| 2026-11-09 | 2.1.319 | sonnet | security-audit-on-system (Task 6) | RED 1, GREEN 3 x 2 arms twice | 0.77 | 1/1 |
 
 ### 2026-11-09 baseline (0.10.0 skills)
 
@@ -115,3 +117,13 @@ plugin too: sonnet writes a safe lookup unprompted. The case proves the
 wiring (security loads before the code), not an effect on the code. The
 grader was not made stricter to manufacture a delta; the security effect is
 measured by the pressure case in Task 13.
+
+### 2026-11-09 security system audit (Task 6)
+
+| Case | With plugin | Without | Delta | Verdict |
+|---|---|---|---|---|
+| security-audit-on-system | 1.00 | 0.50 | +0.50 | pass (RED before: report grader failed) |
+
+Without the plugin the reply finds the injection and does not echo the key,
+but misses the report structure or the not-applicable dependency step. Same
+result after the attacker personas were rewritten (second GREEN run).
