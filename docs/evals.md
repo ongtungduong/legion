@@ -28,6 +28,8 @@ Command: `claude plugin eval . --no-publish --model sonnet --runs 3 --threshold 
 | 2026-11-09 | 2.1.319 | sonnet | code-review cases (Task 8) | RED 1-2, GREEN 3 x 2 arms | 1.79 | 5/5 |
 | 2026-11-09 | 2.1.319 | sonnet | generated-code cases (Task 13) + 2 fixes | 3 x 2 arms | 2.35 | 2/4, 2 pressure cases open |
 | 2026-11-09 | 2.1.319 | sonnet | smoke: 9 fires + 9 stays-quiet cases (Task 14) | 1, with plugin only | 1.31 | 18/18 |
+| 2026-11-09 | 2.1.319 | sonnet | pressure cases after the maintainer's decision | 3 x 2 arms | 0.65 | 2/2 |
+| 2026-11-09 | 2.1.319 | sonnet | full suite, 30 cases, concurrency 4 | 3 x 2 arms | 6.76 | 20/20 scored; 10 not scored (account limit) |
 
 ### 2026-11-09 baseline (0.10.0 skills)
 
@@ -163,4 +165,55 @@ named principles without loading them).
 The two pressure cases are a design question, not a skill bug: the user's
 explicit "skip the validation" / "just add a retry" meets the router's rule
 that user instructions win, and the replies complied while flagging the risk
-once. Waiting for the maintainer's decision.
+once. Maintainer's decision: keep the cheap control on a first request and drop
+it only if the user insists. After the router, security, and debugging
+changes: security pressure 1.00 vs 0.67, debugging pressure 1.00 vs 0.00
+($0.65).
+
+### 2026-11-09 full suite (0.11.0 skills)
+
+Command as above with `-j 4 --max-cost-usd 15`; 570 s. After about 126 runs
+the account's 5-hour limit cut in: 54 runs and 2 judge calls failed with
+"You've hit your 5-hour limit" and scored 0 without grading. Those cases are
+marked not scored and must be re-run with `--case` after the limit resets.
+
+| Case | With plugin | Without | Delta | Verdict |
+|---|---|---|---|---|
+| brainstorming-fires-on-new-feature | 1.00 | 0.00 | +1.00 | pass |
+| brainstorming-stays-quiet-on-approved-design | 1.00 | 1.00 | +0.00 | pass |
+| code-review-fires | 1.00 | 0.50 | +0.50 | pass |
+| code-review-flags-n-plus-one | 1.00 | 1.00 | +0.00 | pass |
+| code-review-flags-unmeasured-speed-claim | 1.00 | 1.00 | +0.00 | pass |
+| code-review-runs-system-audit | 0.67 | 0.00 | +0.67 | pass |
+| code-review-stays-quiet-on-commit-message | 1.00 | 1.00 | +0.00 | pass |
+| coding-principles-fires-on-refactor | 1.00 | 0.00 | +1.00 | pass |
+| coding-principles-shapes-new-module | 0.67 | 0.00 | +0.67 | pass |
+| coding-principles-stays-quiet-on-glossary | 1.00 | 1.00 | +0.00 | pass |
+| defining-terms-fires-on-conflicting-terms | 1.00 | 0.00 | +1.00 | pass |
+| defining-terms-stays-quiet-on-security-question | 1.00 | 1.00 | +0.00 | pass |
+| executing-plans-batches-queries | 1.00 | 1.00 | +0.00 | pass |
+| executing-plans-fires-on-pasted-bug | 1.00 | 0.00 | +1.00 | pass |
+| executing-plans-holds-bar-under-pressure | 1.00 | 1.00 | +0.00 | pass |
+| executing-plans-loads-security-on-auth-change | 1.00 | 1.00 | +0.00 | pass |
+| performance-optimization-fires-on-slow-endpoint | 1.00 | 0.00 | +1.00 | pass |
+| performance-optimization-stays-quiet-on-regression | 1.00 | 1.00 | +0.00 | pass |
+| router-stays-quiet-on-question | 1.00 | 1.00 | +0.00 | pass |
+| security-and-hardening-fires-on-is-this-safe | 1.00 | 0.00 | +1.00 | pass |
+| security-and-hardening-holds-under-internal-pressure | (0.33) | (0.00) | - | not scored: 2 of 3 judge calls hit the account limit; the graded run passed |
+| security-and-hardening-stays-quiet-on-glossary-rename | - | - | - | not scored: every run hit the account limit |
+| security-audit-on-system | - | - | - | not scored: every run hit the account limit |
+| skill-creator-fires-on-new-skill | - | - | - | not scored: every run hit the account limit |
+| skill-creator-stays-quiet-on-plan-request | - | - | - | not scored: every run hit the account limit |
+| systematic-debugging-fires-on-what-broke | - | - | - | not scored: every run hit the account limit |
+| systematic-debugging-holds-under-quick-fix-pressure | - | - | - | not scored: every run hit the account limit |
+| writing-plans-fires-on-approved-spec | - | - | - | not scored: every run hit the account limit |
+| writing-plans-records-security-line | - | - | - | not scored: every run hit the account limit |
+| writing-plans-stays-quiet-on-grill-request | - | - | - | not scored: every run hit the account limit |
+
+Every scored case meets the bar. Two cases that scored 1.00 alone earlier
+in the day scored 0.67 here (`code-review-runs-system-audit`,
+`coding-principles-shapes-new-module`): at 3 runs, one run is the noise
+floor. The 10 unscored cases each passed earlier today: five at 3 runs with both
+arms (Tasks 1, 4, 6, and the pressure fix), and five only in the one-run
+smoke of Task 14 (`skill-creator` fires and quiet, `writing-plans` fires and
+quiet, `security-and-hardening` quiet). Those five have no 3-run score yet.
