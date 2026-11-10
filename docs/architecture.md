@@ -82,7 +82,7 @@ needed); the `full` editions are not included.
 
 | Technique | Place in the flow | Reason |
 |---|---|---|
-| First principles | After the playback, before laying out approaches | Forces at least one approach to be rebuilt from goals, facts, and constraints instead of copying a familiar solution. Existing code, data, and contracts count as facts, not assumptions. |
+| First principles | After the playback, before laying out approaches; now the White and Green hats rather than a separate step | Forces at least one approach to be rebuilt from goals, facts, and constraints instead of copying a familiar solution. Existing code, data, and contracts count as facts, not assumptions. |
 | Six Thinking Hats | When comparing approaches | Uses the Blue → White → Green → Yellow → Black → Red → Blue sequence (per Wikipedia, "choosing between alternatives"). The Red hat reflects only the user's reaction, never the agent's. Research evidence for the method is thin, so it is used as a checklist to avoid missing a perspective, not as a ritual. |
 | Grilling | Since 0.5.0 lives in `brainstorming/references/grilling.md`. Runs after an approach is chosen (mandatory for projects), earlier when three or more decisions are open, or through the "grill only" entry in step 1 when the user only wants an existing plan or decision stress-tested (that entry does not require a design doc). | Merged into brainstorming on request: one fewer skill in the always-on part and the router, while the grilling content still lives in one place. The "grill me" and "poke holes" triggers moved into brainstorming's description. |
 
@@ -99,10 +99,10 @@ not allow cross-skill file references.
 
 | Model | Location | Form |
 |---|---|---|
-| First principles | `brainstorming` step 7 | Its own step, with `references/first-principles.md` |
-| Inversion | `brainstorming` Black hat; `writing-plans` step 6 (pre-mortem, after Gary Klein, HBR 2007); `security-principles` (STRIDE is already inversion) | Every failure reason in the pre-mortem needs a countermeasure: a test, a Review focus item, a task reorder, or a question for the user |
-| Systems thinking | `brainstorming` White hat (system map) and Black hat (second-order effects, feedback loops), projects only; `code-review` Blast radius item; `systematic-debugging` gotcha about loops | Stop at the level where the effects still change the choice |
-| Pareto | `brainstorming` step 6 (scope cut); `writing-plans` step 3 (`Slice order`); `code-review` (ranking findings, folding Minor ones) | Proposed only, never cut unilaterally: deferred scope is dropped only when the user agrees |
+| First principles | `brainstorming` White and Green hats (step 7); grilling builds the tree only from goals and constraints | Part of `references/six-thinking-hats.md` (White-hat procedure), no longer a step of its own |
+| Inversion | `brainstorming` Black hat and grilling ("Wrong if" on every recommendation, inverting the settled tree); `writing-plans` step 6 (pre-mortem, after Gary Klein, HBR 2007); `security-principles` (STRIDE is already inversion) | Every failure reason in the pre-mortem needs a countermeasure: a test, a Review focus item, a task reorder, or a question for the user |
+| Systems thinking | `brainstorming` White hat (system map) and Black hat (second-order effects, feedback loops), projects only, and grilling (each decision adds the branches it sets off); `code-review` Blast radius item; `systematic-debugging` gotcha about loops | Stop at the level where the effects still change the choice |
+| Pareto | `brainstorming` step 6 (scope cut), Blue hat (deciding criteria), Yellow hat (share of the goal for the cost), grilling (frontier by leverage, default the rest); `writing-plans` step 3 (`Slice order`); `code-review` (ranking findings, folding Minor ones) | Proposed only, never cut unilaterally: deferred scope is dropped only when the user agrees |
 
 ## Thinking-model matrix
 
@@ -113,7 +113,7 @@ Where each of the four models changes a decision, per skill, as of 0.11.0.
 | Skill | First principles | Inversion | Systems thinking | Pareto |
 |---|---|---|---|---|
 | `using-legion` | n/a | n/a | n/a | Light router: a skill loads only when it changes the next action |
-| `brainstorming` | Step 7 | Black hat (inverted failures) | White hat (system map), Black hat (second-order effects) | Step 6 (scope cut) |
+| `brainstorming` | White hat (truths, assumptions questioned), Green hat (rebuild); grilling tree | Black hat (inverted failures); grilling "Wrong if" and inverted tree | White hat (system map), Black hat (second-order effects); grilling branches | Step 6 (scope cut); Blue and Yellow hats; grilling order |
 | `writing-plans` | n/a (the spec already rebuilt the approach) | Step 6 (pre-mortem) | Step 5 cross-task references, Interfaces blocks | Step 3 (`Slice order`) |
 | `executing-plans` | Rule 1 (spec first) | RED: name the change that would make the test fail; evidence gate step 4; doubt review | Quick path "List the reach" (callers, consumers, data) | REFACTOR: the smell that most blocks the next change |
 | `systematic-debugging` | Step 2 (a loop of facts before any hypothesis) | Step 4 (falsifiable predictions) | Gotcha on loops in the system | Step 4 (likelihood for the cost of checking) |
