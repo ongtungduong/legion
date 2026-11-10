@@ -64,7 +64,11 @@ question before creating files: a full audit spends many agent invocations.
    test (call the Skill tool with `legion:executing-plans`). An abuse case
    names the lower-trust principal, the input it sends, and the result the
    code must refuse.
-5. **Implement within the boundaries** below.
+5. **Implement within the boundaries** below. Where the controls live
+   (which layer validates, authorizes, and holds secrets) is a design
+   decision: settle it with the `system-design` reference of
+   `legion:coding-principles` (call the Skill tool with it) before coding,
+   not after.
 6. **Before sign-off**, walk
    [references/security-checklist.md](references/security-checklist.md) and
    report each item as checked, not applicable, or failed.

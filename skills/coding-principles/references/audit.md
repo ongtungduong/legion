@@ -13,9 +13,9 @@ impact", and no number appears in the report unless a tool produced it.
    `PERF.md`, so a known trade-off is not reported as new.
 2. **Measure what you can.** Run the project's own benchmarks, profilers, or
    load tests if they exist; read query plans for the heaviest queries; for a
-   web front end, read [references/web.md](web.md) and use its tools. Record each number with its
+   web front end, read [references/performance-web.md](performance-web.md) and use its tools. Record each number with its
    source and conditions. Nothing runnable: say so and continue from source.
-3. **Scan the source** for the signatures in [references/patterns.md](patterns.md):
+3. **Scan the source** for the signatures in [references/performance.md](performance.md):
    queries and remote calls inside loops, unbounded reads, nested scans over
    growing collections, blocking work on latency paths, unbounded
    concurrency, retries without caps, caches without bounds or with keys
