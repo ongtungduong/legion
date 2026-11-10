@@ -523,3 +523,110 @@ Read the numbers with these limits:
   delta shows the plugin helps here, not that the quoted line is the cause.
   Before a cut, confirm by ablation: remove the quoted lines on a scratch
   branch and re-run that case.
+
+
+### B2: Six Thinking Hats A/B
+
+**Hypothesis (to test, not to assume):** the Six Thinking Hats step in
+`brainstorming` (workflow step 7, `references/six-thinking-hats.md`, and the
+hats column of the thinking-system table) does not choose a better approach
+than a plain step: "lay out two or three real alternatives grounded in the
+existing code, give the trade-offs of each, recommend one, and say what fact
+would flip the recommendation".
+
+**Arms.** `scripts/make-eval-variant.mjs` writes both targets from the same
+checkout, so they differ only in the variant:
+
+- `baseline`: the plugin as it is (hats).
+- `no-hats`: step 7 replaced by the plain step; the hats column, the other
+  hats mentions (description, intro, step 3, step 9, size table, the Red hat
+  gotcha, `grilling.md` line 6, the design-doc template's hats table), and
+  `references/six-thinking-hats.md` removed. Everything else is
+  byte-identical (`tests/scripts/make-eval-variant.test.mjs` checks the
+  approval gate, steps 1, 2, 4 to 6, 8, 10, 11, and every other skill). Each
+  edit is an exact anchor; if the skill changes, the script fails and writes
+  nothing, so update its edits before measuring.
+
+**Cases** (`evals/plugin/brainstorming-ab-*`): each prompt gives the what,
+the why, and a code excerpt and asks for approaches and a recommendation, so
+the first reply is the approach comparison.
+
+| Case | Shape | Expected recommendation |
+|---|---|---|
+| `brainstorming-ab-dominant-reuse` | one approach dominates | reuse the existing Redis-backed `limiter`, keyed by `req.user.id` after `requireAuth`, 5 per minute |
+| `brainstorming-ab-tradeoff-polling` | constraint makes the unconventional option right | poll the existing endpoint every 30 to 60 s; not WebSockets, SSE, long polling, or new infra |
+| `brainstorming-ab-hidden-conflict` | the code contradicts the request | flag that `erasureWorker` calls `deleteUser` (72-hour legal erasure vs 30-day restore) before recommending; keep erasure on a hard delete separate from the soft delete |
+| `brainstorming-ab-small-flag` | small change, heavy analysis is wrong-sized | a `--json` (or `--output json`) flag on `status` only, table stays the default |
+
+Outcome graders, blind to the method (none mentions hats): `recommendation`
+(states the expected answer), `conflict-first` (hidden-conflict case only),
+`real-alternatives` (no strawman, grounded in the given code),
+`flip-condition`, `no-filler-question` (lists what the prompt already
+answers), `no-code` and `no-files` (nothing built before approval),
+`proportionate`. `skill-fired` is a validity check, not an outcome: the
+variant's description no longer says "Six Thinking Hats", so a trigger
+difference would confound the comparison.
+
+**Commands** (scratch dir outside the repo; same model, 5 runs each):
+
+```bash
+AB=$(mktemp -d)
+node scripts/make-eval-variant.mjs baseline "$AB/hats" --cases brainstorming-ab-
+node scripts/make-eval-variant.mjs no-hats "$AB/no-hats" --cases brainstorming-ab-
+LEGION_ROOT="$AB/no-hats" node scripts/validate.mjs
+claude --version
+claude plugin eval "$AB/hats" --no-publish --model sonnet --runs 5 --threshold 0.67 --max-cost-usd 4 --trust-plugin --json "$AB/hats.json"
+claude plugin eval "$AB/no-hats" --no-publish --model sonnet --runs 5 --threshold 0.67 --max-cost-usd 4 --trust-plugin --json "$AB/no-hats.json"
+```
+
+`--cases` copies only the A/B cases, so neither run needs `--case`. A path
+target also runs a no-plugin arm; it is the same in both runs, so its spread
+between the two is a free noise estimate. If `claude plugin eval --help`
+offers a flag that drops that arm (the brief named `--ablation none`), it
+halves the cost; this was not verified (see below). Estimate: 4 cases x 5
+runs x 2 arms x 2 targets = 80 runs, about $3 to $6 at the suite's earlier
+$0.037 a run plus longer brainstorming replies.
+
+**Compare**, per case and target: passes out of 5 for each outcome grader;
+`skill-fired` out of 5; mean output tokens, cost, and duration per run (from
+the `--json` files). Record the Claude Code version and model here.
+
+**Decision rule (fixed before the run):**
+
+1. Valid only if `skill-fired` is at least 4/5 for every case in both
+   targets. Otherwise fix triggering first and re-run.
+2. A grader "differs" when one target passes it in at least 2 more runs out
+   of 5 than the other; a 1-run gap is noise at 5 runs.
+3. If hats wins `recommendation` or `conflict-first` on the trade-off or
+   hidden-conflict case, keep Six Hats and record the numbers.
+4. Otherwise, if no outcome grader differs in favour of hats and hats costs
+   more output tokens or dollars per run, move Six Hats out of step 7: the
+   plain step becomes the default, and the hats procedure becomes a
+   reference loaded only for projects or when the user asks for six thinking
+   hats. The same holds if no-hats wins any outcome grader (for example
+   `proportionate` or `no-filler-question` on the small case).
+5. Mixed results (hats wins one grader and loses another): re-run those
+   cases at 10 runs before deciding. A full tie at equal cost: the simpler
+   skill wins, so move it as in 4.
+
+**Known limitations.** The cases are single-turn: they measure the
+approach-comparison message only, not the full multi-turn conversation
+(intent questions, grilling rounds, the design doc, and the approval gate
+over several turns). The prompts are synthetic: the code exists only in the
+prompt, so a `Read` finds nothing. Five runs per arm detect only large
+effects. Graders are LLM judges and can be wrong; read a sample of
+transcripts from each arm before acting on a difference.
+
+**Verified vs assumed about `claude plugin eval`.** Verified from
+`claude plugin --help`: the case layout (`prompt.md` plus `graders/*.md`, or
+`case.yaml`), that the eval dir comes from the manifest (`evals/plugin`
+here), that a path target adds a no-plugin baseline arm, and that
+`--trust-plugin` exists. Verified from earlier runs in this log:
+`--no-publish`, `--model`, `--runs`, `--threshold`, `--json`,
+`--max-cost-usd`, `-j`, `--case`. Not verified (the sandbox refused
+`claude plugin eval --help`): an `--ablation` flag, glob support in
+`--case`, multi-turn or scripted-user cases, the JSON field names for
+tokens, cost, and duration, and whether an `llm` grader sees tool calls
+(`no-files` uses `tool_used` for that reason). `allowed_tools` includes
+`Write` so that building before approval is possible and therefore
+measurable; whether the sandbox prompts for it is not verified.
