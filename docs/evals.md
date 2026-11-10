@@ -32,6 +32,8 @@ Command: `claude plugin eval . --no-publish --model sonnet --runs 3 --threshold 
 | 2026-11-09 | 2.1.319 | sonnet | full suite, 30 cases, concurrency 4 | 3 x 2 arms | 6.76 | 20/20 scored; 10 not scored (account limit) |
 | 2026-11-09 | 2.1.319 | sonnet | the 10 unscored cases, after the final-review fixes | 3 x 2 arms | 3.93 | 10/10 |
 | 2026-11-10 | 2.1.322 | sonnet | full suite, 29 cases, concurrency 3 (0.12.0 skills) | 3 x 2 arms | 10.16 | 27/29 at score >= 0.67; 2 below the bar |
+| 2026-11-10 | 2.1.322 | sonnet | B2 hats arm only (4 brainstorming-ab cases, baseline copy), concurrency 1 | 5 x 2 arms | 2.32 | not a pass/fail run; no-hats arm not run, rule not applied |
+| 2026-11-10 | 2.1.322 | sonnet | B1 smoke (1 run) | 1 x 2 arms | 0.00 | no case executed; CLI refused Bash grant (3 s) |
 
 ### 2026-11-09 baseline (0.10.0 skills)
 
@@ -433,6 +435,24 @@ licenses a design change, not a claim about every one-line fix. Record the
 Claude Code version, the model, and the cost in the runs table above, and the
 verdict here.
 
+**Result (2026-11-10): not run.** Only a smoke was attempted (Claude Code
+2.1.322): `claude plugin eval . --no-publish --model sonnet --runs 1
+--threshold 0.66 --case 'executing-plans-cost-on-one-line-fix*' --max-cost-usd 1
+--scaffold --trust-plugin --keep-temp --allow-tools Write Edit Bash --json
+evals/results/2026-11-10-b1-smoke.json`. It executed no case: both arms came
+back with 0 turns, $0, 2 s (3 s for the whole command) and this `error`: "a credentials file in this
+environment (the AWS config / shared credentials file, the GCP
+application-default credentials, a kubeconfig, or an Anthropic profile config)
+could not be followed (EACCES), so the Bash sandbox cannot exclude the files it
+points at - a Bash-granting evaluation cannot run here". So the CLI refuses any
+run that grants `Bash` on this machine until the unreadable credentials file is
+fixed; this is not a wiring fault in `case.yaml`, `fixture.sh`, or the flags,
+and nothing was changed. Which file it is was not identified (inspecting
+credential files was denied in the measuring session). Neither the fixture
+seeding nor the tool grants were exercised, and the decision rule was not
+applied. Next step for the maintainer: make the file readable or absent, rerun
+the smoke (`--runs 1`, `--max-cost-usd 1`), then the 5 runs with `-j 3`.
+
 **Sibling case not written.** A "skip the test, it's one character" variant
 would reuse the fixture but mostly repeat the pressure that
 `executing-plans-holds-bar-under-pressure` and the router's recorded decision
@@ -524,6 +544,11 @@ Read the numbers with these limits:
   Before a cut, confirm by ablation: remove the quoted lines on a scratch
   branch and re-run that case.
 
+**Result (2026-11-10): not run.** None of (i), (ii), or (iii) was launched;
+the measurements were paused after the B2 hats arm. The commands above need
+`-j 3` (concurrency defaults to 1) and `--threshold 0.66` (the CLI compares
+2/3 = 0.6667 against 0.67 and fails it). Check that `-j 3` is accepted with
+`--max-cost-usd` before relying on the caps.
 
 ### B2: Six Thinking Hats A/B
 
@@ -608,6 +633,66 @@ the `--json` files). Record the Claude Code version and model here.
 5. Mixed results (hats wins one grader and loses another): re-run those
    cases at 10 runs before deciding. A full tie at equal cost: the simpler
    skill wins, so move it as in 4.
+
+**Result (2026-11-10): partial, paused.** Only the hats (baseline-copy) arm
+ran; the no-hats arm was not run, so the decision rule cannot be applied yet.
+
+Commands run (Claude Code 2.1.322, sonnet; variant dirs are in the session
+scratchpad, outside the repo):
+
+```bash
+node scripts/make-eval-variant.mjs baseline "$AB/hats" --cases brainstorming-ab-
+node scripts/make-eval-variant.mjs no-hats "$AB/no-hats" --cases brainstorming-ab-   # generated and validated (0 errors), never evaluated
+claude plugin eval "$AB/hats" --no-publish --model sonnet --runs 5 --threshold 0.66 --max-cost-usd 4 --trust-plugin --report "$AB/hats-report.html" --json evals/results/2026-11-10-b2-hats.json
+```
+
+Adjustments: `--threshold 0.66` instead of 0.67 (the CLI fails 2/3 against
+0.67); `--report` added to keep the HTML out of the repo; default ablation
+(with-without) kept, so the run includes the no-plugin arm; no `-j`, so
+concurrency was 1 and the run took 2107 s. Lesson: pass `-j 3` on every launch
+(the full suite ran 174 runs in 1037 s at `-j 3`). Not `partial`, no `error`
+and no `skippedPaidGraders` in any run. `--keep-temp` was not passed, so no
+transcripts were kept and no grader was read against a transcript.
+
+Hats arm, passes out of 5 per grader (with plugin | no-plugin arm); cost,
+turns, and duration are means per run (with | no-plugin):
+
+| Case | recommendation | conflict-first | real-alternatives | flip-condition | no-filler-question | no-code | no-files | proportionate | skill-fired | cost USD | turns | seconds |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| dominant-reuse | 5 \| 5 | n/a | 4 \| 3 | 5 \| 5 | 2 \| 0 | 0 \| 0 | 5 \| 5 | 0 \| 0 | **3**/5 | 0.070 \| 0.045 | 2.2 \| 1.0 | 61 \| 52 |
+| tradeoff-polling | 5 \| 5 | n/a | 1 \| 1 | 5 \| 5 | 2 \| 5 | 4 \| 0 | 5 \| 5 | 3 \| 2 | 5/5 | 0.073 \| 0.045 | 3.0 \| 1.0 | 47 \| 45 |
+| hidden-conflict | 5 \| 5 | 5 \| 5 | 3 \| 3 | 5 \| 5 | 1 \| 4 | 5 \| 4 | 5 \| 5 | 1 \| 4 | 5/5 | 0.078 \| 0.043 | 3.0 \| 1.0 | 66 \| 52 |
+| small-flag | 4 \| 3 | n/a | 5 \| 5 | 5 \| 5 | 0 \| 1 | 5 \| 0 | 5 \| 5 | 0 \| 0 | 5/5 | 0.070 \| 0.041 | 4.8 \| 1.0 | 52 \| 47 |
+
+Run total $2.32 for 40 agent runs plus judges. The JSON has no token field,
+so output tokens were not compared; `costUsd` is the proxy.
+
+Validity (rule 1): `skill-fired` is 3/5 on `brainstorming-ab-dominant-reuse`,
+below the required 4/5. Rule 1 says: the result is invalid for that case, fix
+triggering first and re-run. It is 5/5 on the other three cases. Separate
+from the rule: several cells are at 0/5 (`no-code` for the hats arm on
+`dominant-reuse` and for the no-plugin arm on `tradeoff-polling`,
+`dominant-reuse`, and `small-flag`; `proportionate` for both arms on
+`dominant-reuse` and `small-flag`). They were not read against a transcript,
+so it is not known whether those graders are strict or the replies really
+fail them.
+
+Outcome under the pre-registered rule: not applicable. Rules 2 to 5 compare
+the hats arm with the no-hats arm, and the no-hats arm has not been run. The
+hats-arm numbers above are the baseline half of that comparison only; the
+no-plugin column is not a substitute (it removes the whole plugin, not the
+hats). Sample size is 5 runs per cell, so a one-run difference is noise.
+
+To resume (use `-j 3`; reuse the same `$AB` directories or regenerate them
+with the two `make-eval-variant.mjs` commands above; the hats arm may be
+re-run for a like-for-like concurrency, since results do not depend on it):
+
+```bash
+claude plugin eval "$AB/no-hats" --no-publish --model sonnet --runs 5 --threshold 0.66 --max-cost-usd 4 --trust-plugin -j 3 --json evals/results/2026-11-10-b2-nohats.json
+```
+
+First fix or explain the `dominant-reuse` skill-fired rate (3/5) in the hats
+arm, since rule 1 invalidates that case in both targets until it reaches 4/5.
 
 **Known limitations.** The cases are single-turn: they measure the
 approach-comparison message only, not the full multi-turn conversation
