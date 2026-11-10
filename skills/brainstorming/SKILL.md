@@ -11,7 +11,9 @@ description: >-
   already explained what and why and only wants options, approaches, or a
   recommendation; also when asked to "grill me", poke holes in or stress-test
   a plan, decision, or idea, think it through from first principles or with
-  six thinking hats, or record an ADR under docs/adr/.
+  six thinking hats, or record an ADR under docs/adr/; and when terminology is
+  fuzzy or contested (one word for two concepts, two words for one) or a
+  definition belongs in GLOSSARY.md.
 license: MIT
 metadata:
   author: ongtungduong
@@ -49,7 +51,10 @@ changes what gets built; past that point it is philosophy, not design.
    confirmed playback; a design doc follows only if something is to be built.
    If the user only wants a decision already made recorded ("record an ADR
    for X"), read [references/adr-format.md](references/adr-format.md), write
-   it, and stop. Otherwise continue with step 2.
+   it, and stop. If the user only wants terms pinned down ("account or
+   customer?", "add X to GLOSSARY.md"), read
+   [references/glossary-format.md](references/glossary-format.md), settle and
+   record them, and stop. Otherwise continue with step 2.
 2. **Decide whether this applies.** If everything that matters is in the
    request ("rename the flag to `--dry-run`"), skip this skill: do it and say
    what you did. A user who explained what and why but not how still gets
