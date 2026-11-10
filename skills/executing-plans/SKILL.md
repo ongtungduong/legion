@@ -48,6 +48,9 @@ take that path once per task; without one, the request is a plan of one task.
 | No plan, several independent pieces, or the design is still open | Call the Skill tool with `legion:brainstorming` (intent unsettled) or `legion:writing-plans` (spec settled), then come back |
 | A bug whose cause is unknown | Call the Skill tool with `legion:systematic-debugging` first; its regression test is your first RED |
 
+A cause is known when a reproduction or the user's evidence confirms it. A
+cause that only looks obvious from reading the code is still unknown.
+
 ## Quick path
 
 1. **Pin the criteria** from the request, issue, or spec. If there are none and
@@ -73,12 +76,17 @@ take that path once per task; without one, the request is a plan of one task.
 3. **List the reach.** When the change alters a public signature, behavior
    other code relies on, or persisted data, list its callers, consumers, and
    the data it touches, and give a test to each one the change can break.
-4. **Run the TDD cycle** below, inline.
-5. **Review if risky.** When step 2 loaded `legion:security-principles`,
+4. **Take the baseline.** Note the starting commit (`git rev-parse HEAD`) and
+   run the full suite once before changing anything. Failures here are
+   pre-existing: name them in the report and leave them alone unless the
+   request covers them. Without a baseline you cannot tell a failure you
+   caused from one you inherited.
+5. **Run the TDD cycle** below, inline.
+6. **Review if risky.** When step 2 loaded `legion:security-principles`,
    or the change touches persisted data, money, or concurrency, call the
    Skill tool with `legion:code-review` before claiming it, and name the
    checklists loaded so the reviewer checks against them.
-6. **Run the evidence gate** and report in its format.
+7. **Run the evidence gate** and report in its format.
 
 ## Plan workflow
 
@@ -104,7 +112,7 @@ compaction; the ledger it defines is how you resume.
 4. **GREEN:** the simplest code that passes. No options, parameters, or
    features the test does not demand.
 5. **Verify GREEN:** run the test, then the project's **full** suite. Report
-   every failure by name, including ones you did not cause.
+   every failure by name, marking the ones already in the baseline.
 6. **REFACTOR** only while green, by the loaded principles: remove the smell
    that most blocks the next change, re-run after each step, add no behavior.
 7. **Next slice:** one seam, one test, one minimal implementation per cycle.
@@ -118,8 +126,8 @@ use. Cite the URL in the report's `Sources:` line, or list the API under
 
 For a bug, the first test reproduces the reported symptom. For existing code
 without tests, first write characterization tests that pin what it does today,
-even where that looks wrong, then change it (the
-`working-effectively-with-legacy-code` set covers breaking dependencies to get
+even where that looks wrong, then change it (the `coding-existing-code`
+reference of `legion:coding-principles` covers breaking dependencies to get
 a seam). Those tests stay in the suite; they are the point, not scaffolding.
 
 ## The evidence gate
@@ -129,7 +137,9 @@ a seam). Those tests stay in the suite; they are the point, not scaffolding.
 3. **Read** the whole output: exit code, failure count, warnings.
 4. **Check the bar held.** Green reached by weakening a check is not green,
    and it is the cheapest road an agent takes past a red run. Scan the added
-   and removed lines of the change (`git diff <base>`) for: new suppressions
+   and removed lines of the change (`git diff <base>` from the starting
+   commit, plus the untracked files in `git status --porcelain`, which a
+   diff does not show) for: new suppressions
    (`@ts-ignore`, `eslint-disable`, `# noqa`, `# type: ignore`,
    `istanbul ignore`, `nosemgrep`); tests skipped, deleted, or loosened
    (`.skip`, `xit`, assertions removed from a test that stayed); a stub, a
