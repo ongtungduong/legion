@@ -1,6 +1,6 @@
 ---
 description: 'A slow endpoint with a per-order query inside a loop. The skill should fire, fix the N+1 with one batched query or join, and talk about measuring instead of inventing a speedup.'
-expected_outcome: 'The per-order items query is replaced by one batched query or join; the reply says how to measure before and after; no speedup figure is claimed without a measurement; legion:performance-principles is invoked.'
+expected_outcome: 'The per-order items query is replaced by one batched query or join; the reply says how to measure before and after; no speedup figure is claimed without a measurement; legion:coding-principles is invoked.'
 max_turns: 12
 allowed_tools: [Read, Glob, Grep, Skill]
 ---

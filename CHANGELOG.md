@@ -15,13 +15,24 @@ Changed
   critical/high/medium/low/informational. `code-review` runs the security
   half of a system audit in the main session, since the audit dispatches its
   own subagents.
-- Renamed `security-and-hardening` to `security-principles` and
-  `performance-optimization` to `performance-principles`. Load them as
-  `legion:security-principles` and `legion:performance-principles`.
+- Renamed `security-and-hardening` to `security-principles`. Load it as
+  `legion:security-principles`.
+- `coding-principles` is rebuilt around topics instead of books. Three
+  references synthesized from the 14 agent-rules-books rule sets replace
+  the per-book files: `system-design` (boundaries, domain model, data and
+  consistency, integration and failure), `coding` (with
+  `coding-existing-code` for refactoring and untested code), and
+  `performance` (with `performance-optimization`, `performance-web`, and
+  the system `audit`). The workflow answers the design questions before
+  the first test and calls `security-principles` at the design step when a
+  change crosses a trust boundary. The "one primary set, at most one
+  companion" rule and the conflicts list are gone: the references settle
+  the conflicts. A plan's `Design principles` line now names references
+  ("coding + system-design"), not books.
 - `writing-plans` without an approved spec or design doc now calls
   `brainstorming` first.
-- `systematic-debugging` loads `security-principles`,
-  `performance-principles`, or `coding-principles` at the fix step, by cause.
+- `systematic-debugging` loads `security-principles` or
+  `coding-principles` at the fix step, by cause.
 - `brainstorming` is built on two methods, the Six Thinking Hats (choose the
   approach) and grilling (settle the open decisions), with a Thinking system
   table placing first principles, inversion, systems thinking, and Pareto in
@@ -35,6 +46,11 @@ Changed
 
 Removed
 
+- `performance-optimization` skill (briefly `performance-principles`). Its
+  workflow, patterns, checklist, web reference, and system audit moved into
+  `coding-principles/references/`; `legion:performance-optimization` no
+  longer loads. `executing-plans`, `code-review`, `writing-plans`, and
+  `systematic-debugging` point at the new paths.
 - `defining-terms` skill. The router no longer routes terminology work;
   `GLOSSARY.md` is still read by `brainstorming`, `executing-plans`, and
   `code-review` when it exists.
