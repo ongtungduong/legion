@@ -122,7 +122,7 @@ Where each of the four models changes a decision, per skill, as of 0.11.0.
 | `code-review` | Spec axis (built only what the spec asks) | Step 6 (a fresh verifier tries to refute each Critical and Important finding); removed-behavior pass | Callers pass and Blast radius item | Depth table; ranking findings, folding Minor ones |
 | `coding-principles` | Step 1 (repo standards are facts); optimization step 3 (measure before naming the bottleneck) | Step 5 (break the design once); optimization step 5 (what load breaks it) | Step 3 (design questions: owner, direction, truth, failure, load); optimization step 4 (queues, retries, caches, pools) | Step 5 (effort on the one hard-to-reverse decision); only the references the change needs; optimization step 3 (largest share first) |
 | `security-principles` | Steps 1-2 (trust boundaries and assets); core principle "require a boundary and result" | Step 3 (STRIDE), step 4 (abuse cases); audit verifiers try to refute each candidate; critic personas | Step 1 (trust boundaries); audit coverage ledger and chained-boundary class | Step 7 (exposure x impact); audit hunter priority order and severity anchors |
-| `skill-creator` | Step 1 (what the agent lacks) | Step 6 (near-miss prompts) | n/a | Body: add what the agent lacks, omit what it knows |
+| `skill-creator` | Step 1 (what the agent lacks); step 2 (observed baseline failures are the spec) | Steps 2 and 7 (near-miss prompts) | n/a | Step 5 (write only what fixes observed failures); step 7 (cut instructions with no delta) |
 
 ## One skill for all code work (0.7.0)
 
