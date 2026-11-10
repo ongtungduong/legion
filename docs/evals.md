@@ -242,3 +242,115 @@ judge errors.
 this re-run). Every fires, quality, and pressure case beats the no-plugin
 arm except the four exceptions recorded in the design doc's amendments.
 Total for the full suite: $10.69 against an estimate of $9.40.
+
+## Open measurements
+
+Questions the suite has not answered yet. Each block states its decision rule
+before the run, so the result cannot pick its own bar.
+
+### B1: quick-path cost on a one-line fix
+
+**Hypothesis (to test, not assumed).** The router's "A one-line fix still gets
+its failing test" plus the quick path (load coding-principles, full-suite
+baseline, TDD, evidence gate, 7-line report) is too heavy for an XS change.
+
+**Case.** `evals/plugin/executing-plans-cost-on-one-line-fix`. A fully
+specified one-line fix with the cause stated (`>` to `>=` in `isHeavy`, so a
+20 kg parcel gets the two-person label), in a 5-file Node project that
+`fixture.sh` seeds with a green `node --test` suite and one git commit. The
+request does not mention tests. The domain is not money, auth, or input
+handling, so the quick path's security and risky-change review steps stay out
+of the measurement; a money-adjacent variant is a separate question.
+
+**Wiring.** Per `claude plugin eval` documentation
+(code.claude.com/docs/en/plugin-evals), not run here: the fixture comes from
+`context.scaffold_script` in `case.yaml`, which runs only with `--scaffold`;
+`Write`, `Edit`, and `Bash` are removed from every run unless granted on the
+command line with `--allow-tools` (the case's `allowed_tools` only names
+them); granted `Bash` runs under the OS sandbox, confined to the run's
+workspace. Both arms get the same fixture and grants. No existing case uses
+fixtures or these grants (they list only `Read`, `Glob`, `Grep`, `Skill`, and once `Agent`),
+so this wiring is unverified until the first run.
+
+**Command.**
+
+```bash
+claude plugin eval . --no-publish --model sonnet --runs 5 --threshold 0.67 \
+  --case 'executing-plans-cost-on-one-line-fix*' --max-cost-usd 3 \
+  --scaffold --trust-plugin --allow-tools Write Edit Bash \
+  --json evals/results/<file>.json
+```
+
+Compared with the plain command: `--scaffold` and `--allow-tools Write Edit Bash`
+are required for the fixture and for editing and running tests;
+`--trust-plugin` is required because `--json` cannot answer the trust prompt
+(drop it if this directory is already trusted). `--allow-tools` takes a list,
+so `--json` stays last. About 10 agent runs plus judge calls; at an
+unverified $0.10 to $0.25 a run the $3 ceiling may cut the suite short. If the
+result says `partial: true`, rerun with a higher ceiling instead of reading it.
+
+**Where the numbers are.** Per run, under `cases[0].arms.with[]` and
+`cases[0].arms.without[]` (field names read from existing files in
+`evals/results/`, schemaVersion 1):
+
+| Measure | Field | Status |
+|---|---|---|
+| Turns | `turns` | verified |
+| Cost | `costUsd` (agent run) and `judgeCostUsd` (graders); use `costUsd` | verified |
+| Duration | `durationSeconds` | verified |
+| Outcome and ceremony | `graders[].name`, `graders[].passed` | verified |
+| Run health | `error`, `skippedPaidGraders` | `error` verified; `skippedPaidGraders` per the docs |
+| Tokens | no field in any existing result file | unverified; use `costUsd` as the proxy (same model, so cost scales with tokens) |
+| Tool calls | no field; count `tool_use` entries in the file at `tracePath` (`trace.jsonl`) | unverified; those temp files are gone for old runs, so add `--keep-temp` |
+
+The case's own score and pass/fail are not the measure: the graders mix
+outcome and ceremony. Read the per-grader pass counts.
+
+**Graders.**
+
+| Grader | Question | Kind |
+|---|---|---|
+| `boundary-fixed` | Is 20 kg heavy, and is nothing else in `src/parcel.js` changed? | outcome |
+| `regression-test` | Does `test/parcel.test.js` test exactly 20? | outcome (regex; a test put in a new file scores as missing, in both arms) |
+| `suite-green` | Did the reply show a fresh whole-suite run with 0 failures? | outcome |
+| `proportionate` | Is the reply about a dozen lines plus a verification block? | ceremony |
+| `no-doc-files` | Did the run create no `.md` or `.legion/` files? | ceremony |
+| `skill-fired` | Did `legion:executing-plans` load? | with-plugin indicator, not scored |
+
+Whether the new test failed before the fix is not graded; read it from the
+trace of a few runs.
+
+**Decision rule (written before the run).** Let M be the median `costUsd`
+over the 5 runs of an arm. "Outcome equal" means each of the three outcome
+graders passes in the with arm at least as often as in the without arm, minus
+one. Apply in order:
+
+0. Invalid, rerun: `partial` is true; more than one run per arm has a
+   non-null `error`; or `skippedPaidGraders` is true anywhere; or
+   `skill-fired` passes in fewer than 4 of 5 with-arm runs (the plugin arm did
+   not exercise the quick path).
+1. The ceremony pays for itself: the without arm passes `regression-test` or
+   `suite-green` in 3 of 5 runs or fewer, while the with arm passes it in 4 or
+   more. Keep the quick path. An XS tier may trim loading and the report, never
+   the test or the fresh run.
+2. The quick path needs an XS tier: M(with) is more than 2x M(without) and
+   outcome is equal. Design the tier: keep the failing test and one fresh
+   full run, drop the rest for a one-line change; then rerun this case.
+3. The report is the cost: `proportionate` passes in 2 of 5 with-arm runs or
+   fewer and in 4 or more without-arm runs, whatever the cost ratio. Shorten
+   the XS report only.
+4. Otherwise, no change. A ratio from 1.25 to 2 is recorded as the price of
+   the test and the evidence; a ratio under 1.25 rejects the hypothesis.
+
+Limits: one task shape, one model, 5 runs per arm. A rule 1 or 2 outcome
+licenses a design change, not a claim about every one-line fix. Record the
+Claude Code version, the model, and the cost in the runs table above, and the
+verdict here.
+
+**Sibling case not written.** A "skip the test, it's one character" variant
+would reuse the fixture but mostly repeat the pressure that
+`executing-plans-holds-bar-under-pressure` and the router's recorded decision
+(keep the cheap control, drop it if the user insists) already cover, and the
+`executing-plans-cost-on-one-line-fix*` glob would double the cost of this
+run. Add it only if the B1 result motivates an XS tier that must still hold
+under that pressure.
