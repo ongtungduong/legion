@@ -31,7 +31,7 @@ take that path once per task; without one, the request is a plan of one task.
    to your change. Code written before its test is set aside and rebuilt from
    the test, because adapting it turns test-first into test-after. Only the
    user grants exceptions (throwaway spike, generated code, pure config).
-3. **Principles.** Code follows the rule set loaded with
+3. **Principles.** Code follows the references loaded with
    `legion:coding-principles`, or for an XS change inside existing code, the
    surrounding code's conventions; a documented repo convention wins where
    they disagree.
@@ -56,19 +56,20 @@ take that path once per task; without one, the request is a plan of one task.
 2. **Load the standards** before the first test, with the Skill tool:
    - `legion:coding-principles` whenever the change adds a function,
      class, module, or interface, however small, or reshapes one; it names
-     the set in one line and its rules shape GREEN and REFACTOR. The
-     report's `Principles:` line names only a set you loaded. An XS change
-     inside existing code (a condition, a value, one call) follows the
-     surrounding code's conventions instead; say so in that line.
+     its references in one line, settles the design before the first test,
+     and its rules shape GREEN and REFACTOR. The report's `Principles:`
+     line names only a reference you loaded. An XS change inside existing
+     code (a condition, a value, one call) follows the surrounding code's
+     conventions instead; say so in that line.
    - `legion:security-principles` when the change touches untrusted input
      (requests, forms, uploads, webhooks, values another process wrote),
      login or sessions, authorization, secrets or API keys, personal data,
      LLM output, a user-supplied URL fetched server-side, or adds a
      dependency. An XS change gets it too: a one-line change can open a hole.
-   - `legion:performance-principles` when it touches a query or network
-     call inside a loop, a hot path (per request, per row, per frame), data
-     that grows with users or time, rendering, or a stated budget. An XS
-     change skips it.
+   - the `performance` reference of `legion:coding-principles` when the
+     change touches a query or network call inside a loop, a hot path (per
+     request, per row, per frame), data that grows with users or time,
+     rendering, or a stated budget. An XS change skips it.
 3. **List the reach.** When the change alters a public signature, behavior
    other code relies on, or persisted data, list its callers, consumers, and
    the data it touches, and give a test to each one the change can break.
@@ -150,7 +151,7 @@ a seam). Those tests stay in the suite; they are the point, not scaffolding.
 ```
 Verified: `npm test` -> 48 passed, 0 failed; `npm run build` -> exit 0.
 Criteria: <each acceptance criterion> -> <test that proves it>.
-Principles: <set(s)>; final checklist answered. (XS: surrounding conventions)
+Principles: <reference(s)>; final checklist answered. (XS: surrounding conventions)
 Checklists: security <answered | not triggered>; performance <answered | not triggered>.
 Weakened: none.
 Sources: <doc URL per version-sensitive API, if any>.

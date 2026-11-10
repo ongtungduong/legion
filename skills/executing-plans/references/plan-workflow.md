@@ -21,11 +21,11 @@ Progress:
 3. **Read** the plan and the spec it names once; create one todo per task.
 4. **Load the standards:** call the Skill tool with `legion:coding-principles`
    and load the plan's `Design principles` (pick them with that skill and
-   ledger the choice if the plan has none). When the plan's `Security` or
-   `Performance` line is not `none`, also call the Skill tool with
-   `legion:security-principles` or `legion:performance-principles`; a
-   plan without those lines gets them from the quick path's trigger lists,
-   ledgered. Each task brief then names the matching checklist paths.
+   ledger the choice if the plan has none). When the plan's `Performance`
+   line is not `none`, also read that skill's `performance` reference; when
+   its `Security` line is not `none`, also call the Skill tool with
+   `legion:security-principles`. A plan without those lines gets them from
+   the quick path's trigger lists, ledgered. Each task brief then names the matching checklist paths.
 5. **Pre-flight.** For each task that consumes what an earlier one produces,
    compare their Interfaces blocks and ledger each conflict with your ruling,
    or write `Pre-flight: no shared interfaces`.

@@ -15,11 +15,11 @@ Inputs:
 - Implementer's worktree, to read code around the diff: [path, or "inline task"]
 - Global constraints that bind this task: [paste verbatim from the plan]
 - Design principles the code must follow: [paths to the chosen
-  skills/coding-principles/references/<set>.mini.md files]
+  skills/coding-principles/references/<name>.md files]
 - Security checklist: [absolute path to
   skills/security-principles/references/security-checklist.md, or "not triggered"]
 - Performance checklist: [absolute path to
-  skills/performance-principles/references/performance-checklist.md, or "not triggered"]
+  skills/coding-principles/references/performance.md (its final checklist), or "not triggered"]
 
 Review in two separate passes and report them separately.
 
@@ -35,7 +35,7 @@ Review in two separate passes and report them separately.
    - Readability and naming consistent with the codebase and GLOSSARY.md.
    - No speculative generality, duplication, or needless abstraction.
    - Each item of the design principles' final checklist holds for the diff;
-     cite the decision rule a finding breaks. Repo conventions override them.
+     cite the rule a finding breaks. Repo conventions override them.
    - Security: untrusted input, secrets, injection, authorization; when a
      security checklist is given, check the diff against each item.
    - Performance: no query or remote call inside a loop over growing data,

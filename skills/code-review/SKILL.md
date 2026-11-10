@@ -33,16 +33,16 @@ right thing while breaking them; merging the two axes lets one mask the other.
    means the Spec axis reports "no spec available".
 3. **Find the standards:** `CONTRIBUTING.md`, `CODING_STANDARDS.md`,
    `AGENTS.md`/`CLAUDE.md`, lint configs. Add the design principles: the
-   plan's `Design principles` sets, or the ones `legion:coding-principles`
-   picks for this diff (call the Skill tool with it; naming the sets is
-   enough, the reviewers read their files). The checklist and smell baseline
+   plan's `Design principles` references, or the ones
+   `legion:coding-principles` picks for this diff (call the Skill tool with
+   it; naming them is enough, the reviewers read the files). The checklist and smell baseline
    live in [references/review-checklists.md](references/review-checklists.md):
    pass its absolute path to the Standards reviewer, and read it yourself only
    when you review without subagents. When the diff touches what that
    checklist's Security or Performance item covers, also pass the absolute
    path of `security-checklist.md` from the `security-principles`
-   skill's references folder, or of `performance-checklist.md` from the
-   `performance-principles` skill's. Precedence: documented repo standard, then design
+   skill's references folder, or of `performance.md` (for its final
+   checklist) from the `coding-principles` skill's. Precedence: documented repo standard, then design
    principles, then the smell baseline; skip what tooling already enforces.
 4. **Review both axes in parallel.** Read
    [references/reviewer-prompts.md](references/reviewer-prompts.md) and
@@ -87,7 +87,7 @@ Run the two audits side by side:
 - **Performance:** dispatch one auditor with the Agent tool,
   `subagent_type: "general-purpose"` (a fresh context, never `fork`), no
   worktree, `model: "sonnet"`, told to read and follow `audit.md` from the
-  `performance-principles` skill's references folder (absolute path). Give
+  `coding-principles` skill's references folder (absolute path). Give
   it the scope (paths, entry points) and cap its report at 600 words.
 - **Security:** call the Skill tool with `legion:security-principles` and
   run its full audit mode yourself. It dispatches its own hunters and
