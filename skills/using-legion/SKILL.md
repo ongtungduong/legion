@@ -41,22 +41,21 @@ it. Questions and trivial edits get answered directly, with no skill.
 | Situation | Skill |
 |---|---|
 | New work or a behavior change whose design is not approved: intent, approaches, design doc; "grill me"; recording an ADR | `legion:brainstorming` |
-| Fuzzy or contested terms; GLOSSARY.md | `legion:defining-terms` |
 | An approved spec needs an implementation plan | `legion:writing-plans` |
 | Any production code change, with or without a plan; about to claim done, commit, or open a PR | `legion:executing-plans` |
 | Bug, failing or flaky test, crash, performance regression | `legion:systematic-debugging` |
 | Reviewing a diff, branch, or PR; responding to review feedback | `legion:code-review` |
 | Refactoring or cleanup; untested legacy code; designing a module, API, boundary, domain model, data flow, or failure handling | `legion:coding-principles` |
-| Untrusted input, auth, secrets, personal data, or LLM output | `legion:security-and-hardening` |
-| Speeding up code toward a measured goal: profiling, N+1, latency, throughput, memory, bundle size, Core Web Vitals | `legion:performance-optimization` |
+| Untrusted input, auth, secrets, personal data, or LLM output; a security audit, pen-test, or vulnerability hunt | `legion:security-principles` |
+| Speeding up code toward a measured goal: profiling, N+1, latency, throughput, memory, bundle size, Core Web Vitals | `legion:performance-principles` |
 | Creating, editing, or validating a skill | `legion:skill-creator` |
 
 ## Default flow for new work
 
 ```
 brainstorming ─▶ writing-plans ─▶ executing-plans ─▶ code-review (final)
-     │                                  │
-     └─ defining-terms                  └─ spec + TDD + coding-principles + security/perf checklists + evidence gate in every task,
+                                        │
+                                        └─ spec + TDD + coding-principles + security/perf checklists + evidence gate in every task,
                                            inline or subagent per task
 ```
 
