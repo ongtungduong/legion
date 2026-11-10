@@ -22,6 +22,16 @@ Changed
   `brainstorming` first.
 - `systematic-debugging` loads `security-principles`,
   `performance-principles`, or `coding-principles` at the fix step, by cause.
+- `brainstorming` is built on two methods, the Six Thinking Hats (choose the
+  approach) and grilling (settle the open decisions), with a Thinking system
+  table placing first principles, inversion, systems thinking, and Pareto in
+  each. First principles is now the White-hat procedure and the Green-hat
+  rebuild, not a step of its own; `references/first-principles.md` is merged
+  into `references/six-thinking-hats.md`. Grilling builds its tree only from
+  goals and constraints, adds the branches each decision sets off, asks the
+  highest-leverage decisions first and defaults the rest, gives every
+  recommendation a "Wrong if" line, and inverts the settled tree before the
+  playback.
 
 Removed
 
