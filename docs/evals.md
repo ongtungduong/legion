@@ -31,6 +31,7 @@ Command: `claude plugin eval . --no-publish --model sonnet --runs 3 --threshold 
 | 2026-11-09 | 2.1.319 | sonnet | pressure cases after the maintainer's decision | 3 x 2 arms | 0.65 | 2/2 |
 | 2026-11-09 | 2.1.319 | sonnet | full suite, 30 cases, concurrency 4 | 3 x 2 arms | 6.76 | 20/20 scored; 10 not scored (account limit) |
 | 2026-11-09 | 2.1.319 | sonnet | the 10 unscored cases, after the final-review fixes | 3 x 2 arms | 3.93 | 10/10 |
+| 2026-11-10 | 2.1.322 | sonnet | full suite, 29 cases, concurrency 3 (0.12.0 skills) | 3 x 2 arms | 10.16 | 27/29 at score >= 0.67; 2 below the bar |
 
 ### 2026-11-09 baseline (0.10.0 skills)
 
@@ -242,3 +243,88 @@ judge errors.
 this re-run). Every fires, quality, and pressure case beats the no-plugin
 arm except the four exceptions recorded in the design doc's amendments.
 Total for the full suite: $10.69 against an estimate of $9.40.
+
+### 2026-11-10 full suite (0.12.0 skills)
+
+Command as above with `-j 3 --max-cost-usd 15`; 1037 s, $10.16, Claude Code
+2.1.322. 174 runs, no run or judge errors, no account-limit failures: every
+case is scored. The CLI exits 1 because it compares the 2-of-3 score
+(0.6667) with the strictly larger threshold 0.67; the bar in this file is
+"2 of 3 runs", so a 0.67 below is 0.6667. The tool's own passed count is
+24 of 29: it also fails the three cases at 0.6667 (one of them,
+`coding-principles-shapes-new-module`, has a pass rate of 1 of 3).
+
+| Case | With plugin | Without | Delta | Verdict |
+|---|---|---|---|---|
+| brainstorming-fires-on-new-feature | 1.00 | 0.00 | +1.00 | pass |
+| brainstorming-records-glossary-term | 1.00 | 0.00 | +1.00 | pass |
+| brainstorming-stays-quiet-on-approved-design | 1.00 | 1.00 | 0.00 | pass |
+| code-review-fires | 1.00 | 0.50 | +0.50 | pass |
+| code-review-flags-n-plus-one | 1.00 | 0.67 | +0.33 | pass |
+| code-review-flags-unmeasured-speed-claim | 0.67 | 1.00 | -0.33 | pass; negative delta (1 of 3 runs failed) |
+| code-review-runs-system-audit | 0.00 | 0.00 | 0.00 | fail: see ruling below |
+| code-review-stays-quiet-on-commit-message | 1.00 | 1.00 | 0.00 | pass |
+| coding-principles-fires-on-refactor | 1.00 | 0.00 | +1.00 | pass |
+| coding-principles-fires-on-slow-endpoint | 1.00 | 0.33 | +0.67 | pass |
+| coding-principles-shapes-new-module | 0.67 | 0.00 | +0.67 | pass on score; 1 of 3 runs fully green, 2 failed the `shape` grader |
+| coding-principles-stays-quiet-on-glossary | 1.00 | 1.00 | 0.00 | pass |
+| coding-principles-stays-quiet-on-regression | 1.00 | 1.00 | 0.00 | pass |
+| executing-plans-batches-queries | 0.67 | 1.00 | -0.33 | pass; negative delta (1 of 3 runs failed) |
+| executing-plans-fires-on-pasted-bug | 1.00 | 0.00 | +1.00 | pass |
+| executing-plans-holds-bar-under-pressure | 1.00 | 0.67 | +0.33 | pass |
+| executing-plans-loads-security-on-auth-change | 1.00 | 1.00 | 0.00 | pass |
+| router-stays-quiet-on-question | 1.00 | 1.00 | 0.00 | pass |
+| security-audit-on-system | 0.50 | 0.50 | 0.00 | fail: see ruling below |
+| security-principles-fires-on-is-this-safe | 1.00 | 0.00 | +1.00 | pass |
+| security-principles-holds-under-internal-pressure | 1.00 | 0.33 | +0.67 | pass |
+| security-principles-stays-quiet-on-glossary-rename | 1.00 | 1.00 | 0.00 | pass |
+| skill-creator-fires-on-new-skill | 1.00 | 0.00 | +1.00 | pass |
+| skill-creator-stays-quiet-on-plan-request | 1.00 | 1.00 | 0.00 | pass |
+| systematic-debugging-fires-on-what-broke | 1.00 | 0.00 | +1.00 | pass |
+| systematic-debugging-holds-under-quick-fix-pressure | 1.00 | 0.00 | +1.00 | pass |
+| writing-plans-fires-on-approved-spec | 1.00 | 0.00 | +1.00 | pass |
+| writing-plans-records-security-line | 1.00 | 0.00 | +1.00 | pass |
+| writing-plans-stays-quiet-on-grill-request | 1.00 | 1.00 | 0.00 | pass |
+
+27 of 29 cases meet the bar; mean delta +0.43. Both renamed
+`coding-principles` cases are scored for the first time (slow endpoint 1.00
+vs 0.33, quiet on a regression 1.00 vs 1.00), as is
+`brainstorming-records-glossary-term` (1.00 vs 0.00). The three
+`security-principles-*` cases keep the with-plugin scores of their 0.11.0
+`security-and-hardening-*` predecessors.
+
+Quality cases with a zero or negative delta: `code-review-runs-system-audit`
+(0.00, both arms), `security-audit-on-system` (0.00, both arms),
+`executing-plans-loads-security-on-auth-change` (0.00, 1.00 in both arms),
+`code-review-flags-unmeasured-speed-claim` (-0.33) and
+`executing-plans-batches-queries` (-0.33). The two negative deltas are one
+failed with-plugin run in three, inside the noise floor at 3 runs; the
+no-plugin arm passed every run. The quiet cases are expected to show 0.00.
+
+Rulings on the two cases below the bar (transcripts read; for
+`code-review-runs-system-audit` the full-run temp directories were already
+removed, so a with-plugin-only diagnostic run, $0.29, kept them):
+
+- `code-review-runs-system-audit` (0.00): a skill problem, not a stale
+  grader. The grader matches the `## Security audit` and
+  `## Performance audit` headings that `skills/code-review/SKILL.md` still
+  prescribes. In the full run `code-review` did not load in 2 of 3 runs
+  (`legion:security-principles` or no skill instead). When it loaded, the
+  reply said the two-file repo did not need the multi-agent audit and used
+  `## Security` / `## Performance` (or Findings / Performance) headings, so
+  the model skipped the System audit section's merge format. The diagnostic
+  run scored 1 of 3 on the heading check, the same pattern.
+- `security-audit-on-system` (0.50, same without the plugin): mostly a stale
+  grader. The reply finds the SQL injection as critical with
+  `src/search.js:3`, reports the Stripe key, and says no dependency audit
+  was possible, but it is a guidance-mode review (Findings / Hardening /
+  Not checked) that offers the full audit. The rebuilt `security-principles`
+  makes that the right mode for a pasted app and reserves the Scope /
+  Method / Findings / Not checked report for the full audit, so the `report`
+  grader still expects the 0.11.0 shape and all 9 judge votes failed it.
+  A smaller skill question remains: "Audit this app's security" is also
+  the skill's own full-audit trigger, and it answered in guidance mode
+  without asking the one clarifying question the skill prescribes.
+
+Nothing was edited. The system-audit trigger and the `security-audit-on-system`
+grader are open items.
