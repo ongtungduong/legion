@@ -47,10 +47,10 @@ const VARIANTS = {
       {
         file: `${BRAINSTORMING}/SKILL.md`,
         from: `  a plan, decision, or idea, think it through from first principles or with
-  six thinking hats, or record an ADR under docs/adr/.
+  six thinking hats, or record an ADR under docs/adr/; and when terminology is
 `,
         to: `  a plan, decision, or idea, think it through from first principles, or
-  record an ADR under docs/adr/.
+  record an ADR under docs/adr/; and when terminology is
 `,
       },
       {
