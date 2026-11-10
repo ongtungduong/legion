@@ -37,8 +37,8 @@ Review package (commits, stat, diff): [path]
 This repo's standards files: [list of paths]
 Checklist and smell baseline, read first: [absolute path to skills/code-review/references/review-checklists.md]
 Design principles: [paths to the chosen skills/coding-principles/references/<set>.mini.md files]
-Security checklist: [absolute path to skills/security-and-hardening/references/security-checklist.md, or "not triggered"]
-Performance checklist: [absolute path to skills/performance-optimization/references/performance-checklist.md, or "not triggered"]
+Security checklist: [absolute path to skills/security-principles/references/security-checklist.md, or "not triggered"]
+Performance checklist: [absolute path to skills/performance-principles/references/performance-checklist.md, or "not triggered"]
 
 Report, per file and hunk:
 (a) every violation of a documented repo standard, citing the file and rule;

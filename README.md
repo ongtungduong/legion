@@ -25,7 +25,7 @@ each part, see [THIRD_PARTY.md](THIRD_PARTY.md) and [docs/architecture.md](docs/
 - **Best practices from classic books.** `coding-principles` picks one primary rule set (plus at most one companion) from the 14 in agent-rules-books, by task type and a compatibility matrix. The rule set is written into the plan, the implementer applies it while coding and during REFACTOR, and the reviewer checks against that set's own checklist.
 - **Multi-perspective brainstorming.** Reduce the problem to what *must be true* (first principles), compare approaches with de Bono's Six Thinking Hats "choosing between alternatives" sequence, then grill the design in rounds until no decision is left implicit. Depth scales with the size of the work.
 - **Thinking models placed where decisions are made.** First principles lives in brainstorming. Inversion is the Black hat in brainstorming and the pre-mortem step in writing-plans. Systems thinking is the system map and second-order effects in brainstorming, blast radius in code-review, and feedback loops in debugging. Pareto is the scope cut in brainstorming, slice order in writing-plans, and how findings are ranked in code-review. The full skill x model matrix is in [docs/architecture.md](docs/architecture.md).
-- **Security and performance in every code change.** Like the book rule sets, `security-and-hardening` and `performance-optimization` are loaded by the chain: the spec and plan name the trust boundaries and the performance budget, the quick path loads both before the first test when a change touches them, and reviewers check against their checklists. A whole-repo target in `code-review` runs both as system audits with one shared report format. A first request to skip a safety step keeps the cheap control and says why.
+- **Security and performance in every code change.** Like the book rule sets, `security-principles` and `performance-principles` are loaded by the chain: the spec and plan name the trust boundaries and the performance budget, the quick path loads both before the first test when a change touches them, and reviewers check against their checklists. A whole-repo target in `code-review` runs both as system audits with one shared report format; the security one is Cloudflare's multi-agent audit (coverage ledger, independent verifiers, `confirmed` / `needs_validation` verdicts, validated `findings.json`). A first request to skip a safety step keeps the cheap control and says why.
 - **A guard hook.** `hooks/guard` asks before a tool touches `.env`, keys, or certificates, and blocks whole-folder scans of `node_modules`, `dist`, and `build`. Bash builtins only; `LEGION_GUARD=off` turns it off. It is a convenience, not a security boundary.
 - **Spec-driven and test-driven throughout.** TDD starts by settling acceptance criteria; every test traces back to a criterion; every task in a plan states which spec requirement it implements.
 - **agentskills.io standard.** Every skill was rewritten with `skill-creator`: the description states both *what* and *when*, the body follows the Workflow / Gotchas structure, long templates live in `assets/`, and the skill-creator validator runs in `npm test`.
@@ -78,8 +78,8 @@ claude --plugin-dir /path/to/legion
 
 ```
 brainstorming ─▶ writing-plans ─▶ executing-plans ─▶ code-review (final)
-     │                                  │
-     └─ defining-terms                  └─ spec + TDD + coding-principles + security/perf checklists + evidence gate in every task,
+                                        │
+                                        └─ spec + TDD + coding-principles + security/perf checklists + evidence gate in every task,
                                            inline or subagent chosen by the agent per task
 ```
 
@@ -93,7 +93,7 @@ Documents the agent creates:
 | Design doc | `.legion/specs/YYYY-MM-DD-<topic>-design.md` |
 | Plan | `.legion/plans/YYYY-MM-DD-<topic>.md` |
 | Plan-run ledger (gitignored) | `.legion/runs/<plan>/progress.md` |
-| Shared language | `GLOSSARY.md`, `docs/adr/NNNN-*.md` |
+| Decision records | `docs/adr/NNNN-*.md` |
 
 ## Skills
 
@@ -101,14 +101,13 @@ Documents the agent creates:
 |---|---|---|
 | `using-legion` | Router, loaded at SessionStart | superpowers, rewritten to be lighter |
 | `brainstorming` | Clarifying intent, first-principles thinking, comparing approaches with the Six Thinking Hats, grilling in rounds (merged from the old grilling skill, including when only a plan needs stress-testing), writing the design doc, recording ADRs | superpowers + addy (spec) + mattpocock (grilling, ADR) + de Bono |
-| `defining-terms` | Terminology, `GLOSSARY.md` | mattpocock |
 | `writing-plans` | Splitting a spec into vertical-slice tasks, ordering slices by value (Pareto), pre-mortem | superpowers + addy (slicing, sizing) + Klein (pre-mortem) |
 | `executing-plans` | All code work, with or without a plan: settle acceptance criteria, TDD, follow coding-principles, evidence gate before reporting done, including a check that no test or lint was weakened to get there. Before an irreversible step, one decision gets a fresh adversarial review. The agent chooses inline or subagent per task, with a ledger. Implementer subagents run in their own git worktree, with the model chosen by role (haiku/sonnet/opus). Merged from the old TDD and verification skills. | superpowers (executing-plans + SDD + TDD + verification) + mattpocock (seams, anti-patterns) + addy (bar check, docs for version-sensitive APIs, doubt review) + mattpocock (PR body) |
 | `systematic-debugging` | Bugs, failing tests, slowness, flakiness | mattpocock (feedback loop, human-in-the-loop script) + superpowers |
 | `code-review` | Two-axis diff/PR review; receiving review | mattpocock + addy + superpowers |
 | `coding-principles` | Picking 1–2 rule sets from classic books (Clean Code, APoSD, Refactoring, WELC, Clean Architecture, DDD, DDIA, Release It!...) to shape code, avoiding conflicting pairs | agent-rules-books (14 mini editions) |
-| `security-and-hardening` | Untrusted input, auth, secrets, PII, LLM output | addy (condensed) |
-| `performance-optimization` | Speeding code up toward a measured budget: baseline, profile, fix the dominant bottleneck test-first, re-measure; no speed claim without a number and its source | addy (`performance-optimization`, `web-performance-auditor`, condensed) |
+| `security-principles` | Untrusted input, auth, secrets, PII, LLM output; focused security reviews with attack classes per domain; full multi-agent security audits and pen-tests with independent validation | Cloudflare `security-audit` (principles, verdicts, severity, audit workflow, attack classes, validators) + addy (threat model, boundaries, checklist, condensed) |
+| `performance-principles` | Speeding code up toward a measured budget: baseline, profile, fix the dominant bottleneck test-first, re-measure; no speed claim without a number and its source | addy (`performance-optimization`, `web-performance-auditor`, condensed) |
 | `skill-creator` | Creating, editing, and validating skills against agentskills.io | duongot-skills/skill-creator |
 
 ## Development

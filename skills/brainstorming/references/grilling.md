@@ -19,8 +19,7 @@ Recommend an answer for every question so the user can accept it in a word.
 4. **Wait for the answers**, then recompute the frontier. A question that
    depends on one still open belongs to a later round.
 5. **Use the project's vocabulary.** If `GLOSSARY.md` exists, phrase questions
-   in its terms. When a term is fuzzy or contested, call the Skill tool with
-   `legion:defining-terms`.
+   in its terms.
 6. **Finish when the frontier is empty:** play the settled tree back in a short
    summary, listing any assumption you made so it can be rejected, and do not
    act on it until the user confirms it.

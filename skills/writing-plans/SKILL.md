@@ -23,6 +23,12 @@ and nothing they could decide alone.
 
 ## Workflow
 
+**Gate: an approved design comes first.** If there is no spec, design doc,
+or issue whose intent the user has approved (only a request such as "write
+the plan for X"), call the Skill tool with `legion:brainstorming` and plan
+only after it hands back an approved design. A plan built on guessed intent
+pins every guess into files, signatures, and tests.
+
 1. **Scope check.** If the spec covers several independent subsystems, propose
    one plan per subsystem; each must yield working, testable software alone.
 2. **Map the files** to create or modify, with one responsibility each. Split

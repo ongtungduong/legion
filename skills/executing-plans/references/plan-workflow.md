@@ -23,7 +23,7 @@ Progress:
    and load the plan's `Design principles` (pick them with that skill and
    ledger the choice if the plan has none). When the plan's `Security` or
    `Performance` line is not `none`, also call the Skill tool with
-   `legion:security-and-hardening` or `legion:performance-optimization`; a
+   `legion:security-principles` or `legion:performance-principles`; a
    plan without those lines gets them from the quick path's trigger lists,
    ledgered. Each task brief then names the matching checklist paths.
 5. **Pre-flight.** For each task that consumes what an earlier one produces,

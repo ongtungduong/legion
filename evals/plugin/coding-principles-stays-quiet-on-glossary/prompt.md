@@ -1,5 +1,5 @@
 ---
-description: 'Near miss: adding a glossary term is defining-terms, not a coding rule set.'
+description: 'Near miss: adding a glossary term is a docs edit, not a coding rule set.'
 expected_outcome: 'legion:coding-principles is not invoked.'
 max_turns: 6
 allowed_tools: [Read, Glob, Grep, Skill]

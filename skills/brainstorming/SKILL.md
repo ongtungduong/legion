@@ -46,8 +46,7 @@ decisions the way they would.
    know the why, ask open questions with no options attached. After that,
    propose concretely with your reason instead of asking. Ground to cover:
    intent and why now, who it is for, goals/non-goals/anti-goals, what exists
-   and what was tried. With fuzzy terms, call the Skill tool with
-   `legion:defining-terms`.
+   and what was tried.
 5. **Play back each part** in a short paragraph as soon as you understand it,
    marking what you filled in as your proposal, and ask what is wrong.
 6. **Size the work** and say it; the size sets the depth of steps 7 to 9 (table
