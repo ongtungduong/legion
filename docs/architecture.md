@@ -28,7 +28,7 @@ nobody later "fixes" the parts that are deliberate.
 | superpowers | SessionStart hook; hard gate before coding; plans with Interfaces / Global constraints / Review focus; a ledger that survives compaction; "rulings, not stalls" and the four stop points; the TDD and verification iron laws; receiving review without sycophancy | `hooks/`, `brainstorming`, `writing-plans`, `executing-plans` (including TDD and verification), `code-review/references/receiving-review.md` |
 | mattpocock | Interviewing in rounds over a decision tree; `GLOSSARY.md` and ADRs; seams and test anti-patterns; debugging that starts from a feedback loop; two-axis review running in parallel; the user-invoked vs model-invoked distinction; invoking skills with "Call the Skill tool with" | `brainstorming/references/grilling.md`, `brainstorming/references/adr-format.md`, `defining-terms`, `executing-plans` (TDD), `systematic-debugging`, `code-review`, `AGENTS.md` (invocation convention, cross-refs) |
 | addyosmani | Spec structure (Commands, Testing, Boundaries Always/Ask/Never, Success criteria); vertical slices and the XS–XL size table; review severity labels; STRIDE threat model and security checklist; deterministic trigger evals; the "even when pasted inline" lesson for descriptions | `brainstorming`, `writing-plans`, `code-review`, `security-and-hardening`, `scripts/trigger-evals.mjs`, `AGENTS.md` |
-| agent-rules-books | 14 mini rule sets distilled from classic books; the "one primary set, at most one more" rule; the compatibility matrix (2 ❌ pairs, 11 🔁 pairs) | `coding-principles`, and its hook points in writing-plans, executing-plans, code-review |
+| agent-rules-books | The decision rules, trigger rules, and final checklists of its 14 book rule sets, synthesized into topic references (system design, coding, performance) with the conflicting pairs settled once | `coding-principles`, and its hook points in writing-plans, executing-plans, code-review |
 | duongot-skills | `skill-creator`: the 6-step workflow, the agentskills.io spec and best practices, template, validator | `skills/skill-creator`, `scripts/validate-spec.mjs` |
 
 ## What was deliberately dropped or changed
@@ -42,7 +42,7 @@ nobody later "fixes" the parts that are deliberate.
 | `using-git-worktrees`, `finishing-a-development-branch` | Reduced to Setup and Finish steps in `executing-plans` | A separate skill was not needed in the first version. |
 | Visual companion and brainstorm server | Dropped | Depends on a JS server; outside the framework's scope. |
 | Issue tracker and `setup-matt-pocock-skills` | Not included yet | Needs a user-invoked setup skill. Recorded in the roadmap. |
-| addy's 25 skills | `security-principles` and, since 0.11.0, `performance-principles` taken as skills; three process ideas folded into `executing-plans` (see "Folded in from addy") | Other domain skills (observability, CI/CD, API design...) will be added when there is a real need. |
+| addy's 25 skills | `security-principles` taken as a skill and the performance material folded into `coding-principles`; three process ideas folded into `executing-plans` (see "Folded in from addy") | Other domain skills (observability, CI/CD, API design...) will be added when there is a real need. |
 
 ## The agentskills.io standard (0.2.0)
 
@@ -70,13 +70,13 @@ These three layers link into one chain, so each layer can check the one before i
 |---|---|---|
 | Spec-driven | `brainstorming` → `writing-plans` → `executing-plans` (rule 1, the criteria step) | The design doc is the source of truth. Every task states `Acceptance (spec: ...)`. TDD settles acceptance criteria before the first test, and every test must trace back to a criterion. The Spec axis of review catches both what is missing and what is extra. |
 | Test-driven | `executing-plans` (rule 2, the TDD cycle) | No code without a failing test first. Legacy code gets characterization tests first. The full suite runs before reporting done. |
-| Best practices | `coding-principles` | The plan states `Design principles`. The implementer reads that rule set before coding. REFACTOR follows the set's decision rules. The reviewer checks against its final checklist. Priority: the repo's own standards > the rule set > the smell baseline. |
+| Best practices | `coding-principles` | The plan states `Design principles`. The implementer reads those references before coding and settles the design questions before the first test. REFACTOR follows their rules. The reviewer checks against each final checklist. Priority: the repo's own standards > the references > the smell baseline. |
 
-Why at most two rule sets: agent-rules-books itself observes that a model cannot
-follow hundreds of rules at once, and many pairs of books overlap or pull in opposite
-directions (Clean Code leans toward small functions, APoSD toward deep modules).
-Only the `mini` editions are used (about 1.3–2k tokens each, loaded only when
-needed); the `full` editions are not included.
+Until the topic redesign (see "Design, code, and performance in one skill"),
+this skill loaded one or two of 14 per-book `mini` rule sets, because a model
+cannot follow hundreds of rules at once and many pairs of books overlap or
+pull in opposite directions (Clean Code leans toward small functions, APoSD
+toward deep modules).
 
 ## Multi-perspective brainstorming (0.4.0)
 
@@ -118,9 +118,8 @@ Where each of the four models changes a decision, per skill, as of 0.11.0.
 | `executing-plans` | Rule 1 (spec first) | RED: name the change that would make the test fail; evidence gate step 4; doubt review | Quick path "List the reach" (callers, consumers, data) | REFACTOR: the smell that most blocks the next change |
 | `systematic-debugging` | Step 2 (a loop of facts before any hypothesis) | Step 4 (falsifiable predictions) | Gotcha on loops in the system | Step 4 (likelihood for the cost of checking) |
 | `code-review` | Spec axis (built only what the spec asks) | n/a | Blast radius item | Ranking findings, folding Minor ones |
-| `coding-principles` | Step 1 (repo standards are facts) | n/a | System-level sets (architecture, data, reliability) | One primary set, at most one companion |
+| `coding-principles` | Step 1 (repo standards are facts); optimization step 3 (measure before naming the bottleneck) | Step 5 (break the design once); optimization step 5 (what load breaks it) | Step 3 (design questions: owner, direction, truth, failure, load); optimization step 4 (queues, retries, caches, pools) | Step 5 (effort on the one hard-to-reverse decision); only the references the change needs; optimization step 3 (largest share first) |
 | `security-principles` | Steps 1-2 (trust boundaries and assets); core principle "require a boundary and result" | Step 3 (STRIDE), step 4 (abuse cases); audit verifiers try to refute each candidate; critic personas | Step 1 (trust boundaries); audit coverage ledger and chained-boundary class | Step 7 (exposure x impact); audit hunter priority order and severity anchors |
-| `performance-principles` | Step 3 (measure before naming the bottleneck) | Step 5 (what load breaks it) | Step 4 (queues, retries, caches, pools) | Step 3 (largest share first) |
 | `skill-creator` | Step 1 (what the agent lacks) | Step 6 (near-miss prompts) | n/a | Body: add what the agent lacks, omit what it knows |
 
 ## One skill for all code work (0.7.0)
@@ -238,7 +237,7 @@ has measured evidence that it works. Design doc:
 | The quick path owns the trigger lists | One owner per fact. The router row and the skill descriptions are discovery vocabulary; `code-review` and `writing-plans` point at the quick path's lists |
 | Security loads on any trust-boundary change, whatever its size; performance skips XS | A one-line change can open a hole; a one-line change rarely moves a hot path |
 | A system audit is a mode of each domain skill (`references/audit.md`), dispatched by `code-review` when the target is a whole repo, not a third skill | A separate audit skill would add an always-on description and collide with security and code-review triggers. The two audits share a report skeleton; `validate.mjs` fails if they drift. Since the security audit became Cloudflare's multi-agent workflow, `code-review` runs it in the main session (a subagent cannot start subagents) and returns its summary in the shared skeleton |
-| Metric honesty in `performance-principles` | A model reading source cannot see runtime cost. No speed claim without a number and its source; otherwise "potential impact" |
+| Metric honesty in the performance references | A model reading source cannot see runtime cost. No speed claim without a number and its source; otherwise "potential impact" |
 | A first request to skip a safety step keeps the cheap control | Maintainer's decision after two pressure cases failed: the router's "user instructions win" let "skip the validation" and "just add a retry" bypass every skill. Now the cheap control stays with a one-line reason, and is dropped only if the user insists, matching the maintainer's "if I insist, comply" rule |
 | `hooks/guard` (PreToolUse) asks before secret files and denies whole-folder scans of `node_modules`, `dist`, `build` | A convenience guard, not a security boundary: Claude Code's permission rules remain the boundary. Bash builtins only (tested with no `PATH`), fails open, `LEGION_GUARD=off` disables it. Two opus reviews removed false positives on ordinary work; the remaining gaps are listed in the roadmap |
 | Behavioral evals are the bar: a case passes at 2 of 3 runs, quality graders must beat the no-plugin arm | Lexical trigger evals do not show that a skill fires or helps. Every run is logged in `docs/evals.md` with model, Claude Code version, and cost |
@@ -249,6 +248,26 @@ What the evals changed in existing skills: the router routes "what broke?"
 to debugging; `executing-plans` and `systematic-debugging` keep the
 test-first order and the report block in sessions that cannot run code;
 `coding-principles` loads for any new function or module.
+
+## Design, code, and performance in one skill (unreleased)
+
+Goal set by the maintainer: design and code are right from the start, and
+secure from the start. `performance-principles` is removed; `coding-principles`
+is rebuilt around topics instead of books.
+
+| Decision | Reason |
+|---|---|
+| Three topic references (`system-design`, `coding`, `performance`) replace the 14 per-book files | Picking a book was a proxy for picking a topic, and it left the conflicts (small functions vs deep modules, DDD vs PoEAA) to be avoided by a compatibility list. A synthesis settles each conflict once and removes the "one primary set, at most one companion" rule. The per-book sets stay upstream |
+| The coding and performance topics are split by situation: `coding-existing-code`, `performance-optimization`, `performance-web`, `audit` | A new function does not need the refactoring and legacy rules, and a hot-path review does not need the measured-optimization loop. Each file is loaded on a stated condition |
+| The workflow answers the design questions before the first test, then breaks the design once | "Right the first time" is a sequencing rule: owner, dependency direction, source of truth, failure behavior, and load are cheap to change before code exists. The Gotchas keep it from turning into invented layers |
+| `coding-principles` calls `security-principles` at the design step; `security-principles` points back for where the controls live | Validation, authorization, and tenant keys added after the structure is fixed land in the wrong layer. Security rules win over a structural preference |
+| Performance is a reference, not a skill | It is loaded by the chain on the same triggers as before; one fewer always-on description, and designing for load sits next to the data and failure rules it depends on. The performance audit keeps the name `references/audit.md` so `validate.mjs` still compares its report skeleton with the security audit's |
+
+Not yet measured: the behavioral evals in `docs/evals.md` were run against
+the per-book version. The renamed cases
+(`coding-principles-fires-on-slow-endpoint`,
+`coding-principles-stays-quiet-on-regression`) and the existing
+`coding-principles-*` cases need a fresh `claude plugin eval` run.
 
 ## Artifact conventions
 

@@ -36,9 +36,9 @@ modify the working tree, index, or HEAD, and never dispatch subagents.
 Review package (commits, stat, diff): [path]
 This repo's standards files: [list of paths]
 Checklist and smell baseline, read first: [absolute path to skills/code-review/references/review-checklists.md]
-Design principles: [paths to the chosen skills/coding-principles/references/<set>.mini.md files]
+Design principles: [paths to the chosen skills/coding-principles/references/<name>.md files]
 Security checklist: [absolute path to skills/security-principles/references/security-checklist.md, or "not triggered"]
-Performance checklist: [absolute path to skills/performance-principles/references/performance-checklist.md, or "not triggered"]
+Performance checklist: [absolute path to skills/coding-principles/references/performance.md (its final checklist), or "not triggered"]
 
 Report, per file and hunk:
 (a) every violation of a documented repo standard, citing the file and rule;

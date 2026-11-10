@@ -45,9 +45,8 @@ it. Questions and trivial edits get answered directly, with no skill.
 | Any production code change, with or without a plan; about to claim done, commit, or open a PR | `legion:executing-plans` |
 | Bug, failing or flaky test, crash, performance regression | `legion:systematic-debugging` |
 | Reviewing a diff, branch, or PR; responding to review feedback | `legion:code-review` |
-| Refactoring or cleanup; untested legacy code; designing a module, API, boundary, domain model, data flow, or failure handling | `legion:coding-principles` |
+| Designing a module, API, boundary, domain model, data flow, or failure handling; refactoring or cleanup; untested legacy code; speeding up code toward a measured goal (N+1, latency, memory, bundle size, Core Web Vitals) | `legion:coding-principles` |
 | Untrusted input, auth, secrets, personal data, or LLM output; a security audit, pen-test, or vulnerability hunt | `legion:security-principles` |
-| Speeding up code toward a measured goal: profiling, N+1, latency, throughput, memory, bundle size, Core Web Vitals | `legion:performance-principles` |
 | Creating, editing, or validating a skill | `legion:skill-creator` |
 
 ## Default flow for new work
@@ -55,7 +54,7 @@ it. Questions and trivial edits get answered directly, with no skill.
 ```
 brainstorming ─▶ writing-plans ─▶ executing-plans ─▶ code-review (final)
                                         │
-                                        └─ spec + TDD + coding-principles + security/perf checklists + evidence gate in every task,
+                                        └─ spec + TDD + coding-principles (design, code, performance) + security-principles + evidence gate in every task,
                                            inline or subagent per task
 ```
 

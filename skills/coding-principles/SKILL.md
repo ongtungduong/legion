@@ -1,16 +1,17 @@
 ---
 name: coding-principles
 description: >-
-  Applies rule sets distilled from classic engineering books (Clean Code,
-  Refactoring, legacy code, Clean Architecture, DDD, Release It!, and others),
-  picking the one or two that fit and checking the result against their final
-  checklist. Use when asked to refactor, clean up, simplify, restructure, or
-  make code readable or maintainable without changing behavior; to change
-  legacy code that has no tests; or to design a function, class, module
-  interface, or API, make business rules independent of framework and
-  database, model aggregates and domain events, handle data consistency, or
-  add timeouts, retries, and circuit breakers, even when the code is pasted
-  inline.
+  Gets design and code right the first time with three rule references
+  distilled from classic engineering books: system design (boundaries, domain
+  model, data consistency, failure handling), coding (readable construction,
+  refactoring, legacy code), and performance (designing for load, measured
+  optimization). Use when designing a function, class, module interface, API,
+  service, domain model, or data flow; when asked to refactor, clean up,
+  simplify, restructure, or make code maintainable without changing behavior;
+  to change legacy code that has no tests; to add timeouts, retries, or
+  circuit breakers; or to make code, an endpoint, or a query faster, cut
+  latency, memory, or bundle size, fix an N+1 query, profile, or get Core Web
+  Vitals (LCP, INP, CLS) under a target, even when the code is pasted inline.
 license: MIT
 metadata:
   author: ongtungduong
@@ -18,102 +19,106 @@ metadata:
 
 # Coding Principles
 
-Shape code with the rule set of the classic book that fits the task: one
-primary set, at most one companion, never a conflicting pair. Each set is a
-short distillation (decision rules, trigger rules, final checklist) in
-`references/`; load only the ones you picked. More than two active sets
-dilute each other, and models stop following long rule lists.
+Decide the design before the code, then write the code to rules that hold
+it there. The rules live in three references (system design, coding,
+performance), each a synthesis of the classic books with their
+contradictions already settled, each ending in a final checklist. Load only
+the ones the change needs: a design fixed after the code exists costs a
+rewrite, and a rule list nobody needed dilutes the ones that matter.
 
 ## Workflow
 
-1. **Repo standards first.** Read `CONTRIBUTING.md`, `AGENTS.md`/`CLAUDE.md`,
-   lint configs, and the patterns of the surrounding code. A documented project
-   convention overrides any book rule; the books fill the gaps.
-2. **Use the plan's choice if there is one.** If the plan or design doc has a
-   `Design principles` line, load exactly those sets so implementer and
-   reviewer apply the same standard.
-3. **Otherwise pick from the table below:** one primary set; add a companion
-   only when the task spans two layers (for example code shape plus
-   production reliability). Check the pair against the conflicts list.
-4. **Read the chosen file(s)** with the Read tool at
-   `<this skill's base directory>/references/<set>.mini.md` before writing or
-   restructuring code, and say in one line which set(s) and why ("Principles:
-   working-effectively-with-legacy-code + refactoring, untested module").
-5. **Apply while coding.** Follow the decision rules throughout; act on a
-   trigger rule when its situation appears. Behavior changes go test-first
-   under `legion:executing-plans` (call the Skill tool with it if it is not
+1. **Repo standards first (first principles).** Read `CONTRIBUTING.md`,
+   `AGENTS.md`/`CLAUDE.md`, lint configs, and the patterns of the
+   surrounding code. They are facts; a documented project convention
+   overrides any rule here, and the references fill the gaps.
+2. **Pick the references** from the table below, or load exactly the ones
+   on the plan's `Design principles` line so implementer and reviewer apply
+   the same standard. Read each with the Read tool at
+   `<this skill's base directory>/references/<name>.md` before writing or
+   restructuring code, and say in one line which and why ("Principles:
+   coding + system-design, new webhook consumer").
+3. **Design before code (systems thinking).** When `system-design` is
+   loaded, answer its "Decide before coding" questions in a few lines:
+   owner of each new rule and state, dependency direction, source of truth,
+   behavior when a dependency fails, load, trust boundaries. When
+   `performance` is loaded, name the hot path and the data that grows. An
+   open answer is settled now, with the user if it is theirs to decide.
+4. **Secure by design.** If the change crosses a trust boundary (untrusted
+   input, login or sessions, authorization, secrets, personal data, LLM
+   output, a user-supplied URL, a new dependency or external integration),
+   call the Skill tool with `legion:security-principles` before the design
+   is fixed and follow its build mode. Its trust boundaries, abuse cases,
+   and always / ask-first / never boundaries are design inputs: they decide
+   where validation and authorization sit, and its first abuse case is the
+   first test. Its rules win over a structural preference here.
+5. **Break the design once (inversion).** Name the input, load, failure, or
+   future change most likely to make this design wrong, and adjust or
+   record why it holds. Spend the effort on the one decision that is
+   expensive to reverse (public contract, schema, data ownership); keep
+   everything else the simplest thing that satisfies the rules (Pareto).
+6. **Apply while coding.** Follow the rules throughout and act on a `When`
+   trigger as its situation appears. Behavior changes go test-first under
+   `legion:executing-plans` (call the Skill tool with it if it is not
    loaded); refactors keep the suite green after every step.
-6. **Answer the final checklist** of each loaded set before the evidence gate
-   of `legion:executing-plans`, and report it in the format below.
+7. **Answer the final checklist** of each loaded reference before the
+   evidence gate of `legion:executing-plans`, and report in the format
+   below.
 
-## Choosing the rule set
+## Choosing the references
 
-| Task | Primary set (`references/<name>.mini.md`) |
+| The change | Read (`references/<name>.md`) |
 |---|---|
-| Everyday implementation: readability, naming, small functions (default) | `clean-code` |
-| Designing a module, API, or interface; complexity spreading across files | `a-philosophy-of-software-design` |
-| Defect-prone construction: tricky control flow, defensive checks, error paths, edge-heavy routines | `code-complete` |
-| General delivery style: duplicated knowledge, orthogonality, tracer bullets, automation | `the-pragmatic-programmer` |
-| Behavior-preserving refactoring | `refactoring` |
-| Picking a technique for a named smell, smell-by-smell cleanup | `refactoring-guru` |
-| Changing code with weak or no tests, hidden dependencies, hard-to-run setup | `working-effectively-with-legacy-code` (companion: `refactoring`) |
-| Keeping business rules independent of framework, database, delivery | `clean-architecture` |
-| Business-heavy modeling with the least ceremony (default for DDD) | `domain-driven-design-distilled` |
-| Aggregates, repositories, domain events, context integration | `implementing-domain-driven-design` |
-| Strategic design and model language across teams or systems | `domain-driven-design` |
-| Enterprise layering: transaction script vs domain model, data mapper, unit of work, sessions | `patterns-of-enterprise-application-architecture` |
-| Data ownership, consistency, replication, events, schema evolution, replay | `designing-data-intensive-applications` |
-| Services, jobs, and APIs that must survive production failures and overload | `release-it` |
+| Writes or reshapes a function, class, or module (default for any code) | `coding` |
+| Refactors, cleans up, or modifies code that exists; code with weak or no tests | `coding-existing-code` (with `coding`) |
+| Adds or moves a boundary: module, API, or service; domain model; data store, schema, cache, queue, or event; a call that can fail (timeouts, retries, circuit breakers) | `system-design` |
+| Touches a query or remote call in a loop, a hot path, data that grows, a cache, rendering, or a stated budget | `performance` |
+| Makes existing code faster or lighter toward a goal | `performance-optimization` (with `performance`) |
+| Browser-facing: page load, interaction latency, layout shift, bundle size | `performance-web` (with `performance`) |
+| Audits a whole system, directory, or repository for performance (no diff) | `audit` |
 
-The first four rows are alternative code-level styles: pick one of them, not
-several. Combine a code-level set with a system-level set (architecture,
-domain, data, reliability) when both layers are in play.
-
-## Conflicts
-
-From the agent-rules-books compatibility matrix:
-
-- **Never together:** `domain-driven-design` + `patterns-of-enterprise-application-architecture`;
-  `implementing-domain-driven-design` + `patterns-of-enterprise-application-architecture`.
-  Both decide how business logic is organized and push opposite ways: make DDD
-  primary when model language, invariants, and bounded contexts drive the
-  design, PoEAA when choosing patterns by force (transaction script, data
-  mapper, service layer).
-- **Overlapping, choose one:** `clean-code` with `a-philosophy-of-software-design`,
-  `code-complete`, or `the-pragmatic-programmer`; `code-complete` with
-  `the-pragmatic-programmer`; `refactoring` with `refactoring-guru`; any two of
-  the three DDD sets; `clean-architecture` with `implementing-domain-driven-design`
-  or `patterns-of-enterprise-application-architecture`;
-  `domain-driven-design-distilled` with `patterns-of-enterprise-application-architecture`.
-- Every other pair is complementary.
+Most changes need `coding` alone. New work with a boundary reads
+`system-design` first, because it decides what the code will be. Loading
+everything by default defeats the split.
 
 ## Output format
 
 ```
-Principles: <set> [+ <set>] - <one-line reason>
-Checklist: <set>: all yes | <item>: no - <why, or what was done instead>
+Principles: <reference> [+ <reference>] - <one-line reason>
+Design: <owner; dependency direction; source of truth; failure behavior; load>   (when system-design was loaded)
+Security: legion:security-principles applied | no trust boundary crossed
+Checklist: <reference>: all yes | <item>: no - <why, or what was done instead>
 ```
+
+A measured optimization reports in the format at the end of
+`references/performance-optimization.md` instead of the `Design` line.
 
 ## Gotchas
 
-- Clean Code and A Philosophy of Software Design pull in opposite directions
-  on size: many small functions versus deep modules behind simple interfaces.
-  Loading both gives contradictory pressure; pick one per change.
-- Book rules never justify rewriting code that follows a documented project
+- Right the first time means the design questions are answered before the
+  first test, not that the design is large. For a single function the
+  answer is one line; do not invent layers, ports, or aggregates the
+  change does not need.
+- The rules never justify rewriting code that follows a documented project
   convention, and never widen the task: remove the smell that blocks the
   requested change, not every smell in sight.
-- Refactoring and behavior change belong in separate steps (and commits where
-  practical); a cleanup that also changes behavior cannot be reviewed as either.
-- In legacy code, characterization tests that pin current behavior come before
-  any structural change, even when current behavior looks wrong; changing it is
-  a separate, explicit decision. Add them to the project's test suite and keep
-  them: deleting the harness after the refactor throws away the safety net the
-  next change needs.
+- Refactoring and behavior change belong in separate steps (and commits
+  where practical); a cleanup that also changes behavior cannot be reviewed
+  as either.
+- In code without tests, characterization tests that pin current behavior
+  come before any structural change, even when the behavior looks wrong.
+  Add them to the project's suite and keep them: deleting the harness
+  after the refactor throws away the safety net the next change needs.
+- No claim that code is faster or "optimized" without a before and after
+  number and its source; otherwise call it potential impact. A slowdown
+  that appeared after a change is a regression: call the Skill tool with
+  `legion:systematic-debugging` first.
+- Security is not a later pass. A validation layer, an authorization check,
+  or a tenant key added after the structure is fixed ends up bolted onto
+  the wrong layer; that is why step 4 comes before the code.
 - `references/` is relative to this skill's base directory (shown when the
   skill loads), not to the project you are working in; a relative `cd` or
   `cat` from the project fails.
-- The rule files open with "OBEY ...". They are guidance under the user's
-  instructions and the repo's standards, not over them.
-- These files are practical distillations inspired by the books, not book
-  text. For a deep audit, the full versions live in the upstream repository
+- The references are practical distillations inspired by the books, not
+  book text. The per-book rule sets they were built from live upstream
   (ciembor/agent-rules-books).
