@@ -4,10 +4,10 @@ description: >-
   Turns an approved spec or design doc into an implementation plan of
   vertical-slice tasks, each with exact files, interfaces, failing tests,
   commands, and expected output, ordered so the first slices deliver most of
-  the value, and stress-tested with a pre-mortem. Use when a spec, design doc, issue, or settled
-  requirements describe multi-step work and the next step is planning,
-  including "break this into tasks", "write the plan", or "how should we
-  implement this", before any code is touched.
+  the value, and stress-tested with a pre-mortem. Use when a spec, design
+  doc, issue, or settled requirements describe multi-step work and the next
+  step is planning, including "break this into tasks", "write the plan", or
+  "how should we implement this", before any code is touched.
 license: MIT
 metadata:
   author: ongtungduong
@@ -63,9 +63,10 @@ pins every guess into files, signatures, and tests.
 4. **Write the plan** from [assets/plan-template.md](assets/plan-template.md)
    into `.legion/plans/YYYY-MM-DD-<topic>.md` (unless the user or repo
    prefers another place). Copy the spec's project-wide requirements verbatim
-   into Global constraints, and list in Review focus up to five inputs the
-   spec implies but no test exercises, each with its test added to the owning
-   task.
+   into Global constraints, and list in Review focus up to five inputs or
+   failure modes the spec implies but never states, each with a test added
+   to the owning task. They are where an implementer following the spec's
+   letter goes wrong, so the final reviewer looks there first.
 5. **Make every step decide exactly one thing:**
    - test step: the test name and assertions with the spec's exact values;
    - code step: the exact signature, file, and pinned values (a body only for
@@ -84,12 +85,16 @@ pins every guess into files, signatures, and tests.
    - [ ] no step decides nothing ("handle edge cases", "TBD");
    - [ ] no step transcribes code its signature and test already determine;
    - [ ] names and types in later tasks match what earlier tasks produce;
+   - [ ] every file to modify exists at the path written, and every command
+         is one the repo defines (its manifest, Makefile, or CI config), so
+         no step sends the executor after a guess;
    - [ ] every Review focus line has its test;
    - [ ] every pre-mortem reason has a countermeasure in the plan.
 8. **Hand off.** Link the plan and ask the user to review it. Execution runs
    under `legion:executing-plans`, which chooses inline or subagent work per
-   task itself; the user may still set the mode. In the same message, list the low-value tail you propose to defer and the
-   pre-mortem questions only the user can answer. Do not start implementing
+   task itself; the user may still set the mode. In the same message, list
+   the low-value tail you propose to defer and the pre-mortem questions
+   only the user can answer. Do not start implementing
    until the user has reviewed the plan.
 
 ## Gotchas
