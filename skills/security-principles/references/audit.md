@@ -4,7 +4,8 @@ Read this when the user explicitly asks to audit or pen-test a codebase, asks
 for a full, comprehensive, or end-to-end security review, requests report
 artifacts, or when `code-review` runs a system audit (no diff). It runs six
 phases with isolated agents and writes run files to an output directory. The
-execution-safety rules in `SKILL.md` apply throughout.
+core principles, execution safety, and anti-patterns in
+`references/review.md` apply throughout.
 
 ## Platform terminology
 
