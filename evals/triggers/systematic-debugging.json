@@ -14,6 +14,14 @@
     {
       "prompt": "Grill me on my architecture decision",
       "owner": "brainstorming"
+    },
+    {
+      "prompt": "I already know which line is wrong in paginate(), change it test-first with red-green-refactor",
+      "owner": "executing-plans"
+    },
+    {
+      "prompt": "Refactor this module so it is easier to read, without changing behavior",
+      "owner": "coding-principles"
     }
   ]
 }

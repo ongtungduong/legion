@@ -15,21 +15,32 @@ Progress:
    create a feature branch (or a worktree if the user wants isolation).
 2. **Ledger** at `.legion/runs/<plan-basename>/progress.md`, first line
    `# Legion ledger - plan: <plan path>`. Add `.legion/*`, `!.legion/specs/`,
-   `!.legion/plans/` to `.gitignore` if missing and say so (specs and plans stay
-   committed; everything else in `.legion/` is scratch). If the ledger already names this plan, every
-   `Task N: complete` line is done: resume at the first task without one.
-3. **Read** the plan and the spec it names once; create one todo per task.
-4. **Load the standards:** call the Skill tool with `legion:coding-principles`
+   `!.legion/plans/` to `.gitignore` if missing and say so (specs and plans
+   stay committed; everything else in `.legion/` is scratch). If the ledger
+   already names this plan, every `Task N: complete` line is done: resume at
+   the first task without one and skip steps 3 and 4.
+3. **Commit the plan and its spec** on the branch if they are untracked or
+   modified, together with the `.gitignore` change. A subagent's worktree
+   sees only committed state, and the dispatch check needs a clean tree.
+   Then ledger `Plan base: <full sha of HEAD>`: the final review covers
+   this commit to `HEAD`, whatever the default branch is called.
+4. **Baseline.** Run the full suite once before any task and ledger
+   `Baseline: <command> -> <result>`, naming each failing test. Those
+   failures are pre-existing: report them at the finish and fix them only
+   if a task says so. "The full suite passed" later means no failure
+   outside this list.
+5. **Read** the plan and the spec it names once; create one todo per task.
+6. **Load the standards:** call the Skill tool with `legion:coding-principles`
    and load the plan's `Design principles` (pick them with that skill and
    ledger the choice if the plan has none). When the plan's `Performance`
    line is not `none`, also read that skill's `performance` reference; when
    its `Security` line is not `none`, also call the Skill tool with
    `legion:security-principles`. A plan without those lines gets them from
    the quick path's trigger lists, ledgered. Each task brief then names the matching checklist paths.
-5. **Pre-flight.** For each task that consumes what an earlier one produces,
+7. **Pre-flight.** For each task that consumes what an earlier one produces,
    compare their Interfaces blocks and ledger each conflict with your ruling,
    or write `Pre-flight: no shared interfaces`.
-6. **Choose the mode and model per task** (see "Inline or subagent") and
+8. **Choose the mode and model per task** (see "Inline or subagent") and
    ledger each as `Mode: Task N inline|subagent[+review] (<model>) - <reason>`,
    one line per task.
 
@@ -73,11 +84,13 @@ Progress:
       - a subagent implementer: SendMessage it while `git worktree list`
         still shows its worktree; otherwise dispatch a new one whose reset
         target is the pinned head;
-      - re-pin after each round, then re-review the fix.
+      - an inline task: fix them yourself, each with a test that fails
+        first;
+      - re-pin a subagent's head after each round, then re-review the fix.
    4. After three rounds without convergence, rule on each open finding.
 4. **Completion contract**, all with evidence from this session: every named
    test exists and was seen failing, then passing; the full suite passed on
-   the final run; the bar held (evidence gate step 4) over `BASE..<tip>`;
+   the final run, apart from the ledgered baseline failures; the bar held (evidence gate step 4) over `BASE..<tip>`;
    every expected output was compared; every deviation has a
    ruling; the design principles' final checklist is answered for the task's
    code. For a subagent task, inspect the diff yourself; its report is not
@@ -96,7 +109,7 @@ Progress:
 
 ## 3. Final review
 
-Call the Skill tool with `legion:code-review` for `git merge-base main HEAD`
+Call the Skill tool with `legion:code-review` for the ledger's `Plan base`
 to `HEAD`, at deep depth, passing the plan's Review
 focus and pointing the reviewer at the ledger's `Ruling:` lines. Grade each
 finding by its effect on a real user, then:

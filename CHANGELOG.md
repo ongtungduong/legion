@@ -4,6 +4,22 @@
 
 Changed
 
+- `executing-plans` takes a baseline before the first change (quick path and
+  plan setup), so inherited failures are told apart from caused ones. Plan
+  setup commits the plan and spec and ledgers a `Plan base`, which the final
+  review uses instead of `git merge-base main HEAD`. The evidence gate also
+  scans untracked files. The dead `working-effectively-with-legacy-code`
+  pointer now names the `coding-existing-code` reference, and the path table
+  says when a bug's cause counts as known.
+- `systematic-debugging` gains an output format and a report step, loads the
+  matching principle before the fix instead of after it, and moves
+  `git bisect run` from the list of loops to the hypothesis step.
+- `writing-plans` defines Review focus as inputs the spec implies but never
+  states, and its self-review checks that every path and command in the plan
+  exists in the repo.
+- Trigger evals: near-miss negatives added for `systematic-debugging` and
+  `writing-plans`.
+
 - `code-review` adopts the method of Claude Code's `/code-review`, with
   pieces of awesome-skills `code-review-skill`. The target can be a range,
   the working tree, a PR number, a pasted diff, or a path. Three depths
