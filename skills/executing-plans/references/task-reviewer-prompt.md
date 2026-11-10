@@ -17,9 +17,9 @@ Inputs:
 - Design principles the code must follow: [paths to the chosen
   skills/coding-principles/references/<set>.mini.md files]
 - Security checklist: [absolute path to
-  skills/security-and-hardening/references/security-checklist.md, or "not triggered"]
+  skills/security-principles/references/security-checklist.md, or "not triggered"]
 - Performance checklist: [absolute path to
-  skills/performance-optimization/references/performance-checklist.md, or "not triggered"]
+  skills/performance-principles/references/performance-checklist.md, or "not triggered"]
 
 Review in two separate passes and report them separately.
 

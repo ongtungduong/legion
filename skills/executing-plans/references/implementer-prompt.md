@@ -35,9 +35,9 @@ My resolution of ambiguities I noticed in the brief: [or "none"]
 Design principles for this code, read before writing it:
   [absolute paths to the chosen skills/coding-principles/references/<set>.mini.md files]
 Security checklist, read before writing code and answer every item:
-  [absolute path to skills/security-and-hardening/references/security-checklist.md, or "not triggered"]
+  [absolute path to skills/security-principles/references/security-checklist.md, or "not triggered"]
 Performance checklist, read before writing code and answer every item:
-  [absolute path to skills/performance-optimization/references/performance-checklist.md, or "not triggered"]
+  [absolute path to skills/performance-principles/references/performance-checklist.md, or "not triggered"]
 Test quality rules, read before the first test:
   [absolute path to skills/executing-plans/references/good-tests.md]
 

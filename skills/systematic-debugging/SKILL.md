@@ -69,6 +69,13 @@ cause.
    `legion:executing-plans`; this test is its first RED); if no such seam exists, report that as a
    finding. Apply one fix at the root cause, watch the test pass, run the full
    suite, and re-run the original unminimized loop.
+   Before choosing the fix, call the Skill tool with the principle the cause
+   calls for: `legion:security-principles` when the cause is a security flaw
+   (injection, missing authorization, leaked secret), then look for the same
+   flaw at the other trust boundaries; `legion:performance-principles` for a
+   performance regression, entering at its fix step with the step 5 baseline,
+   since the cause is already found; `legion:coding-principles` when the
+   root-cause fix restructures code rather than changing a line.
 7. **Clean up:**
    - [ ] the original reproduction no longer fails;
    - [ ] the regression test passes, or the missing seam is documented;

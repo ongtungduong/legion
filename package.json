@@ -10,7 +10,7 @@
     "validate:spec": "node scripts/validate-spec.mjs",
     "evals:triggers": "node scripts/trigger-evals.mjs",
     "test:hooks": "bash tests/hooks/test-session-start.sh && bash tests/hooks/test-guard.sh",
-    "test:scripts": "node --test tests/scripts/validate.test.mjs",
+    "test:scripts": "node --test tests/scripts/validate.test.mjs tests/security-audit/validate-findings.test.cjs tests/security-audit/validate-coverage-ledger.test.cjs",
     "test": "npm run validate && npm run validate:spec && npm run evals:triggers && npm run test:hooks && npm run test:scripts"
   },
   "engines": {

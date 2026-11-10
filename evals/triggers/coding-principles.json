@@ -16,11 +16,7 @@
     },
     {
       "prompt": "Is this login handler safe against SQL injection?",
-      "owner": "security-and-hardening"
-    },
-    {
-      "prompt": "Add the term Invoice to our GLOSSARY.md",
-      "owner": "defining-terms"
+      "owner": "security-principles"
     }
   ]
 }

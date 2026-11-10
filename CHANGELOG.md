@@ -1,5 +1,34 @@
 # Changelog
 
+## Unreleased
+
+Changed
+
+- `security-principles` is rebuilt on Cloudflare's `security-audit` skill.
+  Three modes: build (STRIDE, boundaries, checklist, as before), guidance
+  (focused reviews with Cloudflare's attack classes and ten domain
+  companions), and full audit (six phases: reconnaissance, coverage-led
+  hunting, independent candidate validation, `findings.json` checked by
+  bundled validators, fresh record verification, reports). Findings need a
+  crossed boundary and a concrete result; verdicts are `confirmed`,
+  `needs_validation` (no severity), or `rejected`; severity is
+  critical/high/medium/low/informational. `code-review` runs the security
+  half of a system audit in the main session, since the audit dispatches its
+  own subagents.
+- Renamed `security-and-hardening` to `security-principles` and
+  `performance-optimization` to `performance-principles`. Load them as
+  `legion:security-principles` and `legion:performance-principles`.
+- `writing-plans` without an approved spec or design doc now calls
+  `brainstorming` first.
+- `systematic-debugging` loads `security-principles`,
+  `performance-principles`, or `coding-principles` at the fix step, by cause.
+
+Removed
+
+- `defining-terms` skill. The router no longer routes terminology work;
+  `GLOSSARY.md` is still read by `brainstorming`, `executing-plans`, and
+  `code-review` when it exists.
+
 ## 0.11.0 - 2026-11-09
 
 Performance and security in every code change, a guard hook, and measured

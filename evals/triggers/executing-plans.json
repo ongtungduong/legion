@@ -26,10 +26,6 @@
       "owner": "code-review"
     },
     {
-      "prompt": "Add the term Invoice to the glossary",
-      "owner": "defining-terms"
-    },
-    {
       "prompt": "Find out why the integration test crashes",
       "owner": "systematic-debugging"
     },
