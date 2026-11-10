@@ -265,11 +265,8 @@ is rebuilt around topics instead of books.
 | `coding-principles` calls `security-principles` at the design step; `security-principles` points back for where the controls live | Validation, authorization, and tenant keys added after the structure is fixed land in the wrong layer. Security rules win over a structural preference |
 | Performance is a reference, not a skill | It is loaded by the chain on the same triggers as before; one fewer always-on description, and designing for load sits next to the data and failure rules it depends on. The performance audit keeps the name `references/audit.md` so `validate.mjs` still compares its report skeleton with the security audit's |
 
-Not yet measured: the behavioral evals in `docs/evals.md` were run against
-the per-book version. The renamed cases
-(`coding-principles-fires-on-slow-endpoint`,
-`coding-principles-stays-quiet-on-regression`) and the existing
-`coding-principles-*` cases need a fresh `claude plugin eval` run.
+Measured: the behavioral run against the 0.12.0 skills is in the
+`2026-11-10 full suite (0.12.0 skills)` section of `docs/evals.md`.
 
 ## Artifact conventions
 
