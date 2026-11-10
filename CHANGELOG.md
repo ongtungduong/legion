@@ -4,6 +4,20 @@
 
 Changed
 
+- `code-review` adopts the method of Claude Code's `/code-review`, with
+  pieces of awesome-skills `code-review-skill`. The target can be a range,
+  the working tree, a PR number, a pasted diff, or a path. Three depths
+  (quick, standard, deep) set the reviewers and the model; deep splits the
+  Standards axis into Correctness, Principles, and (across a trust boundary)
+  Security reviewers. Every finding carries a failure scenario or a quoted
+  rule, and a fresh verifier tries to refute each Critical and Important one
+  (`CONFIRMED`, `PLAUSIBLE`, or dropped) before the report. The checklist
+  gains three correctness passes (line scan, removed behavior, callers),
+  Reuse, Altitude, and Leftovers. A breach of a loaded `coding-principles`
+  rule or a security or performance checklist item, quoted, is a finding
+  like a documented repo standard; security findings need a boundary and a
+  result, as `security-principles` requires. The report adds a depth line
+  and a verdict; fixing and posting to a PR happen only on request.
 - `security-principles` is rebuilt on Cloudflare's `security-audit` skill.
   Three modes: build (STRIDE, boundaries, checklist, as before), guidance
   (focused reviews with Cloudflare's attack classes and ten domain

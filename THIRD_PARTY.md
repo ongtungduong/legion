@@ -1,7 +1,8 @@
 # Third-party notices
 
-Legion adapts material from the projects below. Each is MIT licensed; their
-notices are reproduced in full as the license requires. Content was rewritten
+Legion adapts material from the projects below. Each is MIT licensed unless
+the table says otherwise; their notices are reproduced in full as the license
+requires. Content was rewritten
 and condensed, not copied wholesale, except where the table says a file was
 copied; the table says what came from where.
 
@@ -20,7 +21,7 @@ copied; the table says what came from where.
 | `skills/systematic-debugging` | mattpocock `diagnosing-bugs`; superpowers `systematic-debugging` |
 | `skills/systematic-debugging/scripts/hitl-loop.sh` | mattpocock `diagnosing-bugs/scripts/hitl-loop.template.sh` (adapted to Claude Code's `!` prefix) |
 | `skills/executing-plans/assets/pr-body.md` | mattpocock `pr` (itself credited to Humanlayer `show-me`, Dex Horthy) |
-| `skills/code-review` (+ references) | mattpocock `code-review` (two axes, smell baseline); addy `code-review-and-quality` (severity labels); superpowers `requesting-code-review`, `receiving-code-review` |
+| `skills/code-review` (+ references) | mattpocock `code-review` (two axes, smell baseline); addy `code-review-and-quality` (severity labels); superpowers `requesting-code-review`, `receiving-code-review`; Claude Code's built-in `/code-review` and the `code-review` plugin of anthropics/claude-plugins-official (Apache-2.0): method only, no text copied (target resolution, review angles: line scan, removed behavior, callers, reuse, simplification, altitude, scoped instruction files; a failure scenario per finding; independent validation of each finding; posting rules); awesome-skills `code-review-skill` (reuse check, quality anti-patterns, leftovers, size note, verdict line), condensed and rewritten |
 | `skills/coding-principles/references/{system-design,coding,coding-existing-code}.md` | agent-rules-books `*/<book>.mini.md` (14 rule sets), rules selected, merged by topic, and rewritten |
 | `skills/coding-principles/SKILL.md` | Topic routing replaces the per-book routing derived from agent-rules-books `docs/USAGE.md` and `docs/COMPATIBILITY.md` |
 | `skills/security-principles/SKILL.md` | Cloudflare `security-audit/SKILL.md` (operating modes); addy `security-and-hardening` (build workflow, boundaries, gotchas) |
@@ -42,6 +43,9 @@ Source revisions used:
 - mattpocock/skills: https://github.com/mattpocock/skills @ `4ae2317ddb22` (2026-10-31)
 - agent-rules-books: https://github.com/ciembor/agent-rules-books @ `893a88a6fce3` (2026-09-10, v0.6)
 - cloudflare/security-audit-skill: https://github.com/cloudflare/security-audit-skill @ `c1c8a8c14710` (2026-09-14)
+- awesome-skills/code-review-skill: https://github.com/awesome-skills/code-review-skill @ `4850184dfd77` (2026-09-08)
+- anthropics/claude-plugins-official: https://github.com/anthropics/claude-plugins-official, `plugins/code-review` v1.0.1 as installed on 2026-11-10 (Apache-2.0; ideas only, so no notice is reproduced below)
+- Claude Code built-in `/code-review`: as shipped in Claude Code 2.1.322 (2026-11-10); ideas only
 
 Note on agent-rules-books: its rule sets are practical instructions inspired by
 the books, not book text and not substitutes for the books. Its own
@@ -160,6 +164,32 @@ SOFTWARE.
 MIT License
 
 Copyright (c) 2025-2026 Cloudflare, Inc.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+## awesome-skills/code-review-skill
+
+```
+MIT License
+
+Copyright (c) 2025 awesome-skills
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
