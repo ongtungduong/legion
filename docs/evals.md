@@ -242,3 +242,87 @@ judge errors.
 this re-run). Every fires, quality, and pressure case beats the no-plugin
 arm except the four exceptions recorded in the design doc's amendments.
 Total for the full suite: $10.69 against an estimate of $9.40.
+
+## Open measurements
+
+### B3: zero-delta quality cases
+
+Five quality or pressure cases scored 1.00 with and without the plugin in the
+0.11.0 full-suite run (sonnet, 3 runs), so they show no evidence that the
+skill text changes behavior:
+
+| Case | Instruction it targets (file, lines, quoted phrase) |
+|---|---|
+| `code-review-flags-n-plus-one` | `skills/code-review/references/review-checklists.md:30`: "no query or network call inside a loop over data that grows". The `-hard` sibling also leans on `skills/coding-principles/references/performance.md:49-50`: "A lazy load inside a loop or a serializer is a hidden N+1". |
+| `code-review-flags-unmeasured-speed-claim` | `skills/code-review/references/review-checklists.md:32-33`: "a speed claim comes with a before/after measurement"; `skills/coding-principles/references/performance.md:15-17`: "no claim that code is faster, lighter, or "optimized" without a before and after number". |
+| `executing-plans-batches-queries` | `skills/executing-plans/SKILL.md:72-75`: "the `performance` reference of `legion:coding-principles` when the change touches a query or network call inside a loop"; the `-hard` sibling adds `performance.md:134`: "concurrency is bounded". |
+| `executing-plans-holds-bar-under-pressure` | `skills/executing-plans/SKILL.md:138-148` (evidence gate, step 4): "Green reached by weakening a check is not green" and "thresholds lowered or checks dropped from config". |
+| `executing-plans-loads-security-on-auth-change` | `skills/executing-plans/SKILL.md:67-71`: "`legion:security-principles` when the change touches untrusted input (requests, forms, uploads, webhooks, values another process wrote)". |
+
+Stays-quiet cases are out of scope: 1.00 vs 1.00 is their expected result.
+
+**Two explanations.**
+
+- (a) The case is too easy: a capable model does it unaided, so the case
+  cannot discriminate whether or not the instruction is useful.
+- (b) The instruction is redundant: the model does this without being told,
+  even when the task is hard.
+
+The two predict different results on a harder case and on a weaker model. If
+the model fails the harder case unaided and the plugin fixes it, the original
+was too easy (a). If a harder, realistic case still shows no delta, the
+instruction is a candidate to cut (b).
+
+**Added.** One harder sibling per case, `evals/plugin/<name>-hard/`, same
+layout and grader style, each with a with-only skill-fired grader:
+
+| Case | What makes it hard | Expected behavior |
+|---|---|---|
+| `code-review-flags-n-plus-one-hard` | 180-line rename-and-new-field PR; the query hides in a lazy `order.getShipment()` reached through a serializer and a helper, away from the `Promise.all(orders.map(...))` loop | Flag the per-order shipment query as an N+1, Important or above, tracing the chain |
+| `code-review-flags-unmeasured-speed-claim-hard` | Modest "optimize" PR; the only numbers are a micro-benchmark of `formatMoney` and an 11.8s staging run with no baseline | Do not accept them as proof for the export claim; ask for a before/after of the export |
+| `executing-plans-batches-queries-hard` | Remote avatar service with a 100-id page limit, 4 concurrent requests, results in no order with missing ids | `getMany` in chunks of at most 100, at most 4 in flight, matched by `userId`, `null` when missing |
+| `executing-plans-holds-bar-under-pressure-hard` | One-cent failure called "rounding noise", 15-minute deadline, ignore list and coverage threshold in view | Round tax per line (3411); test and jest config untouched |
+| `executing-plans-loads-security-on-auth-change-hard` | UX request to return to the previous page from `?back=`; never says login, auth, or security | Load `legion:security-principles`; redirect only to same-site paths, fall back to `/cart`; test an off-site value |
+
+**Commands** (flags as given by the maintainer; `claude plugin eval --help`
+could not be run when this block was written, so check them first):
+
+```bash
+# (i) full existing suite on the weaker model
+claude plugin eval . --no-publish --model haiku --runs 3 --threshold 0.67 -j 3 --max-cost-usd 6 --json evals/results/b3-suite-haiku.json
+
+# (ii) the five harder siblings, on both models
+claude plugin eval . --no-publish --model sonnet --runs 3 --case '*-hard' --max-cost-usd 2 --json evals/results/b3-hard-sonnet.json
+claude plugin eval . --no-publish --model haiku  --runs 3 --case '*-hard' --max-cost-usd 2 --json evals/results/b3-hard-haiku.json
+```
+
+The original cases' sonnet scores are already in the 0.11.0 log above
+(1.00 vs 1.00). Record the model, Claude Code version, and cost for each run
+in the table at the top of this file.
+
+**Decision rule, fixed before the numbers arrive.** Per case, using the
+delta (with plugin minus without) of the `-hard` sibling on sonnet and haiku,
+and of the original on sonnet and haiku:
+
+- Delta > 0 on the hard sibling on either model: keep the instruction. The
+  original case was too easy, and the hard sibling replaces it as the quality
+  case.
+- Delta = 0 on both models for both the original and the hard sibling: list
+  the targeted instruction (the file and lines in the table above) as a
+  candidate to cut, for the maintainer to decide. Nothing is cut by this
+  rule alone.
+
+Read the numbers with these limits:
+
+- Check the skill-fired grader first. If the skill did not fire in a case
+  (with-plugin arm), the instruction was never exercised: that is a wiring
+  finding, not a cut candidate.
+- A hard sibling at 0.00 vs 0.00 means the case or its grader is out of reach
+  for that model, not that the instruction is redundant. Read two transcripts
+  and fix the case before using it for a decision.
+- At 3 runs one run moves a score by 0.33. A delta of exactly +0.33 on one
+  model only is weak: re-run that case with `--runs 5` before relying on it.
+- The no-plugin arm removes the whole plugin, not one sentence. A positive
+  delta shows the plugin helps here, not that the quoted line is the cause.
+  Before a cut, confirm by ablation: remove the quoted lines on a scratch
+  branch and re-run that case.
