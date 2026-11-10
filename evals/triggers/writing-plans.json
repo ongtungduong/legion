@@ -14,6 +14,10 @@
     {
       "prompt": "Review the diff since main",
       "owner": "code-review"
+    },
+    {
+      "prompt": "I want to add a reporting feature but I am not sure of the details yet, help me shape it",
+      "owner": "brainstorming"
     }
   ]
 }

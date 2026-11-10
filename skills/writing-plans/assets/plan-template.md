@@ -15,9 +15,9 @@
 naming and copy rules. One line each. Every task implicitly includes these.>
 
 ## Review focus
-<Up to five inputs or failure modes the spec implies but no task's tests
-exercise, most likely first, each with the behavior a reasonable user would
-expect and the task whose tests now pin it.>
+<Up to five inputs or failure modes the spec implies but never states, most
+likely first, each with the behavior a reasonable user would expect and the
+task whose tests pin it.>
 
 ## Pre-mortem
 <Assume the plan was executed and the feature failed. Three most likely
