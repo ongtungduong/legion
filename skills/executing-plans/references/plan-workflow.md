@@ -97,7 +97,7 @@ Progress:
 ## 3. Final review
 
 Call the Skill tool with `legion:code-review` for `git merge-base main HEAD`
-to `HEAD`, on `opus`, passing the plan's Review
+to `HEAD`, at deep depth, passing the plan's Review
 focus and pointing the reviewer at the ledger's `Ruling:` lines. Grade each
 finding by its effect on a real user, then:
 
@@ -145,15 +145,19 @@ leaves out.
 
   | Dispatch | `model` |
   |---|---|
-  | Implementer: XS-S, one file, fully pinned by its test and signature | `haiku` |
-  | Implementer: M, several files, or judgment; any `+review` task | `sonnet` |
+  | Lookup: find files, run tests, read logs, summarize | `haiku` |
+  | Implementer | `sonnet` |
   | Task reviewer | `sonnet`; `opus` for a `+review` task |
-  | Final review (both `legion:code-review` reviewers) | `opus` |
+  | Final review | the models `legion:code-review` names for deep depth |
 
-  A `haiku` implementer that returns BLOCKED for lack of judgment, or fails
-  review twice, is re-dispatched on `sonnet`; ledger it. `fable` has no tier
-  here yet, so do not pick it. If the Agent tool's model list changes, keep
-  the tiers (cheap, standard, most capable) and ledger the alias you chose.
+  `haiku` never edits code: a wrong lookup is cheap to spot, a wrong edit
+  costs review rounds on a larger model. An implementer that returns BLOCKED
+  for lack of judgment, or fails review twice, is re-dispatched with `effort`
+  one level higher when the Agent tool takes that parameter, and on `opus`
+  only if that fails too; ledger it. Otherwise leave `effort` unset, so each
+  model runs at its default. `fable` has no tier here yet, so do not pick it.
+  If the Agent tool's model list changes, keep the tiers (cheap, standard,
+  most capable) and ledger the alias you chose.
 - One implementer at a time. A worktree isolates the files, but each task
   builds on the commits before it and integrates by fast-forward.
 - Only writers get a worktree. Reviewers and lookups are read-only and work
