@@ -40,7 +40,7 @@ it. Questions and trivial edits get answered directly, with no skill.
 
 | Situation | Skill |
 |---|---|
-| New work or a behavior change whose design is not approved: intent, approaches, design doc; "grill me"; recording an ADR | `legion:brainstorming` |
+| New work or a behavior change whose design is not approved: intent, approaches, design doc; "grill me"; recording an ADR; fuzzy or contested terms, GLOSSARY.md | `legion:brainstorming` |
 | An approved spec needs an implementation plan | `legion:writing-plans` |
 | Any production code change, with or without a plan; about to claim done, commit, or open a PR | `legion:executing-plans` |
 | Bug, failing or flaky test, crash, performance regression | `legion:systematic-debugging` |

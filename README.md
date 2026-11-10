@@ -15,8 +15,8 @@ each part, see [THIRD_PARTY.md](THIRD_PARTY.md) and [docs/architecture.md](docs/
 - **Light router.** Questions and small tasks are answered right away, without
   pulling in a process. A skill loads only when the task clearly matches. Discipline
   skills (executing-plans, debugging) keep their hard rules once loaded.
-- **Shared language.** `GLOSSARY.md` and ADRs (from mattpocock) are built into
-  brainstorming, executing-plans, and code-review.
+- **Shared language.** `GLOSSARY.md` and ADRs (from mattpocock) are written by
+  brainstorming and read by executing-plans and code-review.
 - **Two-axis review.** Spec and Standards run in parallel in two separate subagents
   (mattpocock), with addy's severity labels and a smell baseline.
 - **Debugging starts from a feedback loop.** Following mattpocock: get a command
@@ -100,7 +100,7 @@ Documents the agent creates:
 | Skill | Use for | Main sources |
 |---|---|---|
 | `using-legion` | Router, loaded at SessionStart | superpowers, rewritten to be lighter |
-| `brainstorming` | Clarifying intent, first-principles thinking, comparing approaches with the Six Thinking Hats, grilling in rounds (merged from the old grilling skill, including when only a plan needs stress-testing), writing the design doc, recording ADRs | superpowers + addy (spec) + mattpocock (grilling, ADR) + de Bono |
+| `brainstorming` | Clarifying intent, first-principles thinking, comparing approaches with the Six Thinking Hats, grilling in rounds (merged from the old grilling skill, including when only a plan needs stress-testing), writing the design doc, recording ADRs and glossary terms | superpowers + addy (spec) + mattpocock (grilling, ADR, glossary) + de Bono |
 | `writing-plans` | Splitting a spec into vertical-slice tasks, ordering slices by value (Pareto), pre-mortem | superpowers + addy (slicing, sizing) + Klein (pre-mortem) |
 | `executing-plans` | All code work, with or without a plan: settle acceptance criteria, TDD, follow coding-principles, evidence gate before reporting done, including a check that no test or lint was weakened to get there. Before an irreversible step, one decision gets a fresh adversarial review. The agent chooses inline or subagent per task, with a ledger. Implementer subagents run in their own git worktree, with the model chosen by role (haiku/sonnet/opus). Merged from the old TDD and verification skills. | superpowers (executing-plans + SDD + TDD + verification) + mattpocock (seams, anti-patterns) + addy (bar check, docs for version-sensitive APIs, doubt review) + mattpocock (PR body) |
 | `systematic-debugging` | Bugs, failing tests, slowness, flakiness | mattpocock (feedback loop, human-in-the-loop script) + superpowers |

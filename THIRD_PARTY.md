@@ -13,6 +13,7 @@ copied; the table says what came from where.
 | `skills/brainstorming` | superpowers `brainstorming`; addy `spec-driven-development` (spec sections, boundaries) |
 | `skills/brainstorming/references/grilling.md` | mattpocock `grilling` |
 | `skills/brainstorming/references/adr-format.md` | mattpocock `ADR-FORMAT.md` |
+| `skills/brainstorming/references/glossary-format.md` | mattpocock `domain-modeling`, `GLOSSARY-FORMAT.md` (condensed from Legion's removed `defining-terms` skill) |
 | `skills/writing-plans` | superpowers `writing-plans`; addy `planning-and-task-breakdown` (vertical slices, sizing) |
 | `skills/executing-plans` (+ references) | superpowers `executing-plans`, `subagent-driven-development` and its prompts, `test-driven-development`, `verification-before-completion`; mattpocock `tdd` (seams, anti-patterns); addy `constraint-driven-development` (the "guard the bar" checks), `source-driven-development` (version-sensitive APIs) |
 | `skills/executing-plans/references/doubt-review.md` | addy `doubt-driven-development` (condensed) |

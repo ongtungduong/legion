@@ -35,7 +35,10 @@ it, and inversion tests every recommendation.
 7. **Wait for the answers**, then recompute the frontier. A question that
    depends on one still open belongs to a later round.
 8. **Use the project's vocabulary.** If `GLOSSARY.md` exists, phrase questions
-   in its terms.
+   in its terms. When a term is fuzzy or contested (one word for two concepts,
+   two words for one, or a word the design depends on), read
+   [references/glossary-format.md](glossary-format.md) and settle it in the
+   round.
 9. **Invert the settled tree, then finish.** When the frontier is empty, ask
    what would make the settled design fail; a failure no answer covers becomes
    one more round. Then play the tree back in a short summary, listing every
