@@ -18,7 +18,10 @@ core principles, execution safety, and anti-patterns in
 - **`research` agent**: focused source exploration and factual verification,
   read-only, no file writes. Use `model: "sonnet"`.
 - **`general` agent**: broad investigation and bounded local execution (the
-  hunters and candidate verifiers). Use `model: "opus"`.
+  hunters and candidate verifiers). Hunters use `model: "sonnet"`: they are
+  the bulk of the run's tokens, and every candidate they raise is checked
+  again. Candidate verifiers use `model: "opus"`: few, small, and their
+  verdict decides what is reported.
 - **`subagent_type:`** in a heading of a reference file names which of these
   two roles runs that work.
 
