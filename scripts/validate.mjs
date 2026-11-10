@@ -7,10 +7,12 @@
 //   mattpocock   - cross-skill calls name the Skill tool with a real skill
 import fs from 'node:fs';
 import path from 'node:path';
+import { spawnSync } from 'node:child_process';
 import { ROOT, SKILLS_DIR, TRIGGERS_DIR, ROUTER, listSkills, readSkill, walk, rel } from './lib/skills.mjs';
 
 const errors = [];
 const warnings = [];
+const notes = [];
 const err = (m) => errors.push(m);
 const warn = (m) => warnings.push(m);
 
@@ -162,6 +164,42 @@ for (const name of hookFiles) {
   else if (!(fs.statSync(hook).mode & 0o111)) err(`${name} is not executable (chmod +x)`);
 }
 
+// --- Version bump -----------------------------------------------------------
+// Installed plugin caches are keyed by version, so a change to what ships
+// without a bump never reaches users. Compare against the latest v* tag; skip
+// (with a note) when git, tags, or the tag's history are not available, as in
+// a shallow CI checkout.
+const SHIPPED = ['skills', 'hooks', '.claude-plugin'];
+const parseVer = (v) => (/^\d+\.\d+\.\d+$/.test(v ?? '') ? v.split('.').map(Number) : null);
+const cmpVer = (a, b) => a[0] - b[0] || a[1] - b[1] || a[2] - b[2];
+const git = (...args) => {
+  const res = spawnSync('git', args, { cwd: ROOT, encoding: 'utf8' });
+  return res.error || res.status !== 0 ? null : res.stdout;
+};
+const skipBump = (why) => notes.push(`version-bump check skipped: ${why}`);
+if (git('rev-parse', '--show-cdup') === null) skipBump('not a git checkout');
+else if (git('rev-parse', '--show-cdup').trim() !== '') skipBump('not at the root of a git checkout');
+else {
+  const tag = (git('tag', '--list', 'v*') ?? '').split('\n')
+    .filter((t) => parseVer(t.slice(1)))
+    .sort((a, b) => cmpVer(parseVer(a.slice(1)), parseVer(b.slice(1))))
+    .pop();
+  const current = parseVer(pkg?.version);
+  if (!tag) skipBump('no v* tags (fetch them: git fetch --tags)');
+  else if (!current) skipBump(`package.json version "${pkg?.version}" is not x.y.z`);
+  else {
+    const changed = git('diff', '--name-only', tag, '--', ...SHIPPED);
+    const untracked = git('ls-files', '--others', '--exclude-standard', '--', ...SHIPPED);
+    if (changed === null || untracked === null) skipBump(`cannot diff against ${tag} (shallow clone?)`);
+    else {
+      const files = [...changed.split('\n'), ...untracked.split('\n')].filter(Boolean);
+      if (files.length && cmpVer(current, parseVer(tag.slice(1))) <= 0) {
+        err(`${files.length} file(s) under ${SHIPPED.join(', ')} changed since ${tag} (e.g. ${files[0]}) but package.json is still ${pkg.version}; bump the version above ${tag.slice(1)} in package.json, plugin.json, and marketplace.json`);
+      }
+    }
+  }
+}
+
 // --- CI workflows -----------------------------------------------------------
 // Least privilege: a read-only token unless a job asks for more, and actions
 // pinned to a commit SHA (a moved tag can ship new code into CI).
@@ -177,6 +215,7 @@ if (fs.existsSync(workflowsDir)) {
 }
 
 // --- Report -----------------------------------------------------------------
+for (const n of notes) console.log(`NOTE  ${n}`);
 for (const w of warnings) console.log(`WARN  ${w}`);
 for (const e of errors) console.log(`ERROR ${e}`);
 console.log(`validate: ${skills.length} skills, ${errors.length} errors, ${warnings.length} warnings`);

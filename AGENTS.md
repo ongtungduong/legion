@@ -61,7 +61,7 @@ Legion conventions on top of the spec:
 
 ```bash
 npm test                            # all of the below except plugin validate
-npm run validate                    # repo: links, legion: refs, router/README coverage, versions, hook
+npm run validate                    # repo: links, legion: refs, router/README coverage, versions (bumped since the latest tag), hook
 npm run validate:spec               # every skill against agentskills.io (needs python3)
 npm run evals:triggers              # lexical routing; fails on near-duplicate descriptions
 claude plugin validate . --strict

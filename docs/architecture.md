@@ -251,7 +251,7 @@ to debugging; `executing-plans` and `systematic-debugging` keep the
 test-first order and the report block in sessions that cannot run code;
 `coding-principles` loads for any new function or module.
 
-## Design, code, and performance in one skill (unreleased)
+## Design, code, and performance in one skill (0.12.0)
 
 Goal set by the maintainer: design and code are right from the start, and
 secure from the start. `performance-principles` is removed; `coding-principles`
@@ -283,7 +283,7 @@ the per-book version. The renamed cases
 
 | Layer | What it checks | Where it runs | Cost |
 |---|---|---|---|
-| `scripts/validate.mjs` | Frontmatter, size, dev files leaking into `skills/`, links (none leaving a skill's root), `legion:` refs, router and README covering every skill, matching versions, every hook `hooks.json` runs exists and is executable, CI least privilege (permissions block, SHA-pinned actions), matching audit skeletons | CI, local | 0 |
+| `scripts/validate.mjs` | Frontmatter, size, dev files leaking into `skills/`, links (none leaving a skill's root), `legion:` refs, router and README covering every skill, matching versions, a version bump when shipped files changed since the latest tag, every hook `hooks.json` runs exists and is executable, CI least privilege (permissions block, SHA-pinned actions), matching audit skeletons | CI, local | 0 |
 | `tests/scripts/` | Each `validate.mjs` and `trigger-evals.mjs` rule fails on a copy of the repo with that defect (`LEGION_ROOT`) | CI, local | 0 |
 | `scripts/trigger-evals.mjs` | Positive prompts must rank their skill in the top 3; negative prompts must not rank the skill first; no two descriptions may be near-duplicates | CI, local | 0 |
 | `tests/hooks/` | `session-start` emits valid JSON (control characters included), carries the router without its frontmatter, and falls back when files are missing; `guard` makes the right decision on 44 inputs and runs with no `PATH` | CI, local | 0 |
