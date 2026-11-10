@@ -46,7 +46,7 @@ test('clean copy passes', () => {
 
 test('link out of the skill root fails', () => {
   const root = copyRepo();
-  edit(root, 'skills/defining-terms/references/glossary-format.md', (t) => `${t}\nSee [x](../../brainstorming/SKILL.md).\n`);
+  edit(root, 'skills/security-principles/references/security-checklist.md', (t) => `${t}\nSee [x](../../brainstorming/SKILL.md).\n`);
   const { code, out } = run('validate.mjs', root);
   assert.equal(code, 1, out);
   assert.match(out, /leaves the skill root/);
@@ -90,7 +90,7 @@ test('action pinned by tag fails', () => {
 
 test('audit skeletons must match', () => {
   const root = copyRepo();
-  edit(root, 'skills/security-and-hardening/references/audit.md', (t) => t.replace('### Not checked', '### Gaps'));
+  edit(root, 'skills/security-principles/references/audit.md', (t) => t.replace('### Not checked', '### Gaps'));
   const { code, out } = run('validate.mjs', root);
   assert.equal(code, 1, out);
   assert.match(out, /audit skeletons differ/);
@@ -98,7 +98,7 @@ test('audit skeletons must match', () => {
 
 test('bad frontmatter is reported, not thrown', () => {
   const root = copyRepo();
-  edit(root, 'skills/defining-terms/SKILL.md', (t) => t.replace(/^---\n/, '--\n'));
+  edit(root, 'skills/skill-creator/SKILL.md', (t) => t.replace(/^---\n/, '--\n'));
   const { code, out } = run('trigger-evals.mjs', root);
   assert.equal(code, 1, out);
   assert.match(out, /frontmatter does not parse/);

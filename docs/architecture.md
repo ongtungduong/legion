@@ -42,7 +42,7 @@ nobody later "fixes" the parts that are deliberate.
 | `using-git-worktrees`, `finishing-a-development-branch` | Reduced to Setup and Finish steps in `executing-plans` | A separate skill was not needed in the first version. |
 | Visual companion and brainstorm server | Dropped | Depends on a JS server; outside the framework's scope. |
 | Issue tracker and `setup-matt-pocock-skills` | Not included yet | Needs a user-invoked setup skill. Recorded in the roadmap. |
-| addy's 25 skills | `security-and-hardening` and, since 0.11.0, `performance-optimization` taken as skills; three process ideas folded into `executing-plans` (see "Folded in from addy") | Other domain skills (observability, CI/CD, API design...) will be added when there is a real need. |
+| addy's 25 skills | `security-principles` and, since 0.11.0, `performance-principles` taken as skills; three process ideas folded into `executing-plans` (see "Folded in from addy") | Other domain skills (observability, CI/CD, API design...) will be added when there is a real need. |
 
 ## The agentskills.io standard (0.2.0)
 
@@ -82,7 +82,7 @@ needed); the `full` editions are not included.
 
 | Technique | Place in the flow | Reason |
 |---|---|---|
-| First principles | After the playback, before laying out approaches | Forces at least one approach to be rebuilt from goals, facts, and constraints instead of copying a familiar solution. Existing code, data, and contracts count as facts, not assumptions. |
+| First principles | After the playback, before laying out approaches; now the White and Green hats rather than a separate step | Forces at least one approach to be rebuilt from goals, facts, and constraints instead of copying a familiar solution. Existing code, data, and contracts count as facts, not assumptions. |
 | Six Thinking Hats | When comparing approaches | Uses the Blue → White → Green → Yellow → Black → Red → Blue sequence (per Wikipedia, "choosing between alternatives"). The Red hat reflects only the user's reaction, never the agent's. Research evidence for the method is thin, so it is used as a checklist to avoid missing a perspective, not as a ritual. |
 | Grilling | Since 0.5.0 lives in `brainstorming/references/grilling.md`. Runs after an approach is chosen (mandatory for projects), earlier when three or more decisions are open, or through the "grill only" entry in step 1 when the user only wants an existing plan or decision stress-tested (that entry does not require a design doc). | Merged into brainstorming on request: one fewer skill in the always-on part and the router, while the grilling content still lives in one place. The "grill me" and "poke holes" triggers moved into brainstorming's description. |
 
@@ -99,10 +99,10 @@ not allow cross-skill file references.
 
 | Model | Location | Form |
 |---|---|---|
-| First principles | `brainstorming` step 7 | Its own step, with `references/first-principles.md` |
-| Inversion | `brainstorming` Black hat; `writing-plans` step 6 (pre-mortem, after Gary Klein, HBR 2007); `security-and-hardening` (STRIDE is already inversion) | Every failure reason in the pre-mortem needs a countermeasure: a test, a Review focus item, a task reorder, or a question for the user |
-| Systems thinking | `brainstorming` White hat (system map) and Black hat (second-order effects, feedback loops), projects only; `code-review` Blast radius item; `systematic-debugging` gotcha about loops | Stop at the level where the effects still change the choice |
-| Pareto | `brainstorming` step 6 (scope cut); `writing-plans` step 3 (`Slice order`); `code-review` (ranking findings, folding Minor ones) | Proposed only, never cut unilaterally: deferred scope is dropped only when the user agrees |
+| First principles | `brainstorming` White and Green hats (step 7); grilling builds the tree only from goals and constraints | Part of `references/six-thinking-hats.md` (White-hat procedure), no longer a step of its own |
+| Inversion | `brainstorming` Black hat and grilling ("Wrong if" on every recommendation, inverting the settled tree); `writing-plans` step 6 (pre-mortem, after Gary Klein, HBR 2007); `security-principles` (STRIDE is already inversion) | Every failure reason in the pre-mortem needs a countermeasure: a test, a Review focus item, a task reorder, or a question for the user |
+| Systems thinking | `brainstorming` White hat (system map) and Black hat (second-order effects, feedback loops), projects only, and grilling (each decision adds the branches it sets off); `code-review` Blast radius item; `systematic-debugging` gotcha about loops | Stop at the level where the effects still change the choice |
+| Pareto | `brainstorming` step 6 (scope cut), Blue hat (deciding criteria), Yellow hat (share of the goal for the cost), grilling (frontier by leverage, default the rest); `writing-plans` step 3 (`Slice order`); `code-review` (ranking findings, folding Minor ones) | Proposed only, never cut unilaterally: deferred scope is dropped only when the user agrees |
 
 ## Thinking-model matrix
 
@@ -113,15 +113,14 @@ Where each of the four models changes a decision, per skill, as of 0.11.0.
 | Skill | First principles | Inversion | Systems thinking | Pareto |
 |---|---|---|---|---|
 | `using-legion` | n/a | n/a | n/a | Light router: a skill loads only when it changes the next action |
-| `brainstorming` | Step 7 | Black hat (inverted failures) | White hat (system map), Black hat (second-order effects) | Step 6 (scope cut) |
-| `defining-terms` | Step 4 (concrete scenarios force the boundary) | n/a | n/a | n/a |
+| `brainstorming` | White hat (truths, assumptions questioned), Green hat (rebuild); grilling tree | Black hat (inverted failures); grilling "Wrong if" and inverted tree | White hat (system map), Black hat (second-order effects); grilling branches | Step 6 (scope cut); Blue and Yellow hats; grilling order |
 | `writing-plans` | n/a (the spec already rebuilt the approach) | Step 6 (pre-mortem) | Step 5 cross-task references, Interfaces blocks | Step 3 (`Slice order`) |
 | `executing-plans` | Rule 1 (spec first) | RED: name the change that would make the test fail; evidence gate step 4; doubt review | Quick path "List the reach" (callers, consumers, data) | REFACTOR: the smell that most blocks the next change |
 | `systematic-debugging` | Step 2 (a loop of facts before any hypothesis) | Step 4 (falsifiable predictions) | Gotcha on loops in the system | Step 4 (likelihood for the cost of checking) |
 | `code-review` | Spec axis (built only what the spec asks) | n/a | Blast radius item | Ranking findings, folding Minor ones |
 | `coding-principles` | Step 1 (repo standards are facts) | n/a | System-level sets (architecture, data, reliability) | One primary set, at most one companion |
-| `security-and-hardening` | Steps 1-2 (trust boundaries and assets) | Step 3 (STRIDE), step 4 (abuse cases), audit personas | Step 1 (trust boundaries); audit step 4 | Step 7 and audit step 7 (exposure x impact) |
-| `performance-optimization` | Step 3 (measure before naming the bottleneck) | Step 5 (what load breaks it) | Step 4 (queues, retries, caches, pools) | Step 3 (largest share first) |
+| `security-principles` | Steps 1-2 (trust boundaries and assets); core principle "require a boundary and result" | Step 3 (STRIDE), step 4 (abuse cases); audit verifiers try to refute each candidate; critic personas | Step 1 (trust boundaries); audit coverage ledger and chained-boundary class | Step 7 (exposure x impact); audit hunter priority order and severity anchors |
+| `performance-principles` | Step 3 (measure before naming the bottleneck) | Step 5 (what load breaks it) | Step 4 (queues, retries, caches, pools) | Step 3 (largest share first) |
 | `skill-creator` | Step 1 (what the agent lacks) | Step 6 (near-miss prompts) | n/a | Body: add what the agent lacks, omit what it knows |
 
 ## One skill for all code work (0.7.0)
@@ -165,7 +164,6 @@ worktree itself.
 
 | Decision | Reason |
 |---|---|
-| `domain-modeling` renamed to `defining-terms` | In DDD, "domain modeling" reads as designing entities, aggregates, and domain events, which belongs to `coding-principles`. The skill only settles terminology in `GLOSSARY.md`. |
 | ADRs moved into `brainstorming` (`references/adr-format.md`) | Trade-off decisions are made there: approaches are compared in step 8 and grilled in step 9. An ADR is offered when the design doc is written, and only when the decision is hard to reverse, surprising without context, and the result of a real trade-off. A direct entry in step 1 handles "record an ADR for X". |
 | No separate ADR skill | It would add a description to the always-on context and a row to the router for a rare task. brainstorming's description gained one trigger phrase instead. |
 
@@ -239,8 +237,8 @@ has measured evidence that it works. Design doc:
 | Performance and security are wired into the chain the way `coding-principles` is | The maintainer's model: standards that `executing-plans` and `code-review` call, not skills that wait to be invoked. The design doc gets a `Non-functional` section, the plan `Security` and `Performance` lines, the quick path loads both before the first test, implementers and reviewers get the checklist paths |
 | The quick path owns the trigger lists | One owner per fact. The router row and the skill descriptions are discovery vocabulary; `code-review` and `writing-plans` point at the quick path's lists |
 | Security loads on any trust-boundary change, whatever its size; performance skips XS | A one-line change can open a hole; a one-line change rarely moves a hot path |
-| A system audit is a mode of each domain skill (`references/audit.md`), dispatched by `code-review` when the target is a whole repo, not a third skill | A separate audit skill would add an always-on description and collide with security and code-review triggers. The two audits share a report skeleton; `validate.mjs` fails if they drift |
-| Metric honesty in `performance-optimization` | A model reading source cannot see runtime cost. No speed claim without a number and its source; otherwise "potential impact" |
+| A system audit is a mode of each domain skill (`references/audit.md`), dispatched by `code-review` when the target is a whole repo, not a third skill | A separate audit skill would add an always-on description and collide with security and code-review triggers. The two audits share a report skeleton; `validate.mjs` fails if they drift. Since the security audit became Cloudflare's multi-agent workflow, `code-review` runs it in the main session (a subagent cannot start subagents) and returns its summary in the shared skeleton |
+| Metric honesty in `performance-principles` | A model reading source cannot see runtime cost. No speed claim without a number and its source; otherwise "potential impact" |
 | A first request to skip a safety step keeps the cheap control | Maintainer's decision after two pressure cases failed: the router's "user instructions win" let "skip the validation" and "just add a retry" bypass every skill. Now the cheap control stays with a one-line reason, and is dropped only if the user insists, matching the maintainer's "if I insist, comply" rule |
 | `hooks/guard` (PreToolUse) asks before secret files and denies whole-folder scans of `node_modules`, `dist`, `build` | A convenience guard, not a security boundary: Claude Code's permission rules remain the boundary. Bash builtins only (tested with no `PATH`), fails open, `LEGION_GUARD=off` disables it. Two opus reviews removed false positives on ordinary work; the remaining gaps are listed in the roadmap |
 | Behavioral evals are the bar: a case passes at 2 of 3 runs, quality graders must beat the no-plugin arm | Lexical trigger evals do not show that a skill fires or helps. Every run is logged in `docs/evals.md` with model, Claude Code version, and cost |
@@ -258,7 +256,7 @@ test-first order and the report block in sessions that cannot run code;
 - `.legion/runs/<plan>/`: ledger, briefs, and diff packages. Everything in
   `.legion/` except `specs/` and `plans/` is gitignored; `runs/` is deleted
   after the user chooses how to integrate.
-- `GLOSSARY.md` and `docs/adr/`: created only when there is content, the mattpocock way.
+- `docs/adr/`: created only when there is content, the mattpocock way.
 
 ## Testing
 

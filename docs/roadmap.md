@@ -38,7 +38,7 @@ problem in a working session (mattpocock's "observed failure" principle).
    another agent to continue from.
 9. **Domain skills from addy**, one at a time as the need arises:
    `observability-and-instrumentation`, `api-and-interface-design`,
-   `ci-cd-and-automation` (`performance-optimization` shipped in 0.11.0).
+   `ci-cd-and-automation` (`performance-principles` shipped in 0.11.0).
 
 ## Long term
 
