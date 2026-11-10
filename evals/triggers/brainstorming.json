@@ -10,7 +10,10 @@
     "Grill me on this migration plan",
     "Poke holes in my plan to split the monolith",
     "Stress-test this decision to drop Redis before I commit to it",
-    "Record an ADR for choosing event sourcing for orders"
+    "Record an ADR for choosing event sourcing for orders",
+    "We keep saying account and customer interchangeably, which one is right?",
+    "Our terminology for shipment versus delivery is fuzzy, let's pin it down",
+    "Add the term Settlement to our GLOSSARY.md"
   ],
   "negative": [
     {
