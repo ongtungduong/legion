@@ -98,7 +98,12 @@ and say the review was not independent.
 |---|---|---|---|
 | quick | Under about 50 changed lines with no trust boundary, or the user asks for a quick look | Spec + Standards, `model: "sonnet"` | You re-read the cited code for each Critical and Important candidate |
 | standard (default) | Everything else | Spec + Standards, `model: "sonnet"` | One fresh verifier for all Critical and Important candidates, `model: "sonnet"` |
-| deep | A plan's final whole-branch review; over about 400 changed lines; a diff crossing a trust boundary that the user wants reviewed thoroughly; or the user asks for a deep review | Spec + Correctness + Principles, and Security when the diff crosses a trust boundary, `model: "opus"` | One fresh verifier per Critical candidate and one for the Important batch, `model: "opus"` |
+| deep | A plan's final whole-branch review; over about 400 changed lines; a diff crossing a trust boundary that the user wants reviewed thoroughly; or the user asks for a deep review | Spec + Correctness + Principles, and Security when the diff crosses a trust boundary, `model: "sonnet"` | One fresh verifier per Critical candidate and one for the Important batch, `model: "opus"` |
+
+Finders do the verbose reading, so they run on `sonnet` at every depth;
+`opus` is spent only on the deep verifiers, whose input is small and whose
+verdict is the judgment call. A caller's request for another model does not
+change this split.
 
 At deep, the Standards axis is split so each reviewer holds one question:
 Correctness hunts bugs (line scan, removed behavior, callers), Principles
