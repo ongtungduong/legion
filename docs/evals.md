@@ -607,6 +607,17 @@ seeding nor the tool grants were exercised, and the decision rule was not
 applied. Next step for the maintainer: make the file readable or absent, rerun
 the smoke (`--runs 1`, `--max-cost-usd 1`), then the 5 runs with `-j 3`.
 
+**Verdict (2026-11-11): not measured, no change.** The maintainer closed B1
+without a result: the Bash-grant refusal was never cleared, and a later
+attempt ran the whole suite instead of this case because the command was
+pasted with line breaks (no `--case`, `--scaffold` or `--allow-tools`; stopped
+after 1905 s, $1.77, no B1 run executed). The decision rule was not applied.
+The quick path stays as written (failing test, baseline, evidence gate, report).
+The "too heavy for an XS change" hypothesis is neither confirmed nor rejected.
+Reopen it only from a concrete working-session example of the quick path
+getting in the way of a small change; then design an XS tier (rules 2 and 3
+above) and measure it. If rerun, paste the command on one line.
+
 **Sibling case not written.** A "skip the test, it's one character" variant
 would reuse the fixture but mostly repeat the pressure that
 `executing-plans-holds-bar-under-pressure` and the router's recorded decision
