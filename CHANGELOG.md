@@ -29,6 +29,18 @@ Changed
   exists in the repo.
 - Trigger evals: near-miss negatives added for `systematic-debugging` and
   `writing-plans`.
+- `brainstorming` compares approaches plainly by default; the Six Thinking
+  Hats is an opt-in reference. A 10-run A/B favored the plain comparison on
+  three graders at about 6 percent lower cost. The description now also covers
+  "what are my options" prompts, and grilling records glossary terms.
+- `using-legion` routes whole-repo security and performance audits to
+  `code-review` and security-only audits to `security-principles`.
+- `skill-creator` aligns with Legion conventions and measures a baseline
+  before writing.
+- Dropped two performance pointers (the `executing-plans` quick path and one
+  review-checklist item) that an ablation found inert.
+- Evals: A/B harness for brainstorming, cost-on-one-line-fix case, harder
+  siblings for zero-delta cases, and haiku trigger rates in `docs/evals.md`.
 
 - `code-review` adopts the method of Claude Code's `/code-review`, with
   pieces of awesome-skills `code-review-skill`. The target can be a range,
