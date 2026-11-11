@@ -451,6 +451,26 @@ which was not changed here: a description edit for a weaker model needs its
 own measurement. Not run: the old suite again on haiku (the full-suite haiku
 run above is the one on record) and B1 (blocked, see its block).
 
+**B3 closing measurements (2026-11-11, 5 runs, plugin only).**
+
+- *Solo ablation of the "no claim without a before and after number" paragraph
+  in `performance.md`* (`code-review-flags-unmeasured-speed-claim` and `-hard`),
+  full vs paragraph removed: sonnet 3/5 vs 2/5 and 5/5 vs 5/5; haiku 4/5 vs 5/5
+  and 5/5 vs 5/5. No effect beyond noise, but the case shape (a reviewer shown
+  a claim) is one the model already handles. Kept: it is the documented policy
+  (`docs/architecture.md`, the task reviewer prompt), five lines, and removing
+  it would leave those inconsistent. Reconsider with a case that tempts the
+  model into inventing a number.
+- *Haiku trigger rates, current descriptions.* `brainstorming-ab-*`
+  `skill-fired` 3, 4, 1, 3 of 5 (dominant-reuse, hidden-conflict, small-flag,
+  tradeoff-polling), up from 0/3 on all four in the suite run before the
+  description fix. `security-principles-fires-on-is-this-safe` 2/5, up from
+  0/3: the three misses are one-turn replies that answered the pasted handler
+  directly without loading the skill (read from `trace.jsonl`). The
+  description already says "whenever asked whether something is safe or
+  vulnerable"; a further edit would be a guess for one small model and was not
+  made. Accepted as a haiku limitation; sonnet fires 3/3.
+
 **Haiku full suite.** 28 of 34 scored cases meet 0.66 (the 4 `-ab-` cases and
 B1 excluded), mean delta +0.32 against +0.43 on sonnet. Below the bar on
 haiku and not below it on sonnet: `security-principles-fires-on-is-this-safe`
