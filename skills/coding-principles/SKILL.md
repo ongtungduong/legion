@@ -44,11 +44,9 @@ rewrite, and a rule list nobody needed dilutes the ones that matter.
    behavior when a dependency fails, load, trust boundaries. When
    `performance` is loaded, name the hot path and the data that grows. An
    open answer is settled now, with the user if it is theirs to decide.
-4. **Secure by design.** If the change crosses a trust boundary (untrusted
-   input, login or sessions, authorization, secrets, personal data, LLM
-   output, a user-supplied URL, a new dependency or external integration),
-   call the Skill tool with `legion:security-principles` before the design
-   is fixed and follow its build mode. Its trust boundaries, abuse cases,
+4. **Secure by design.** If the change crosses a trust boundary (the cases in
+   the `legion:security-principles` description), call the Skill
+   tool with `legion:security-principles` before the design is fixed and follow its build mode. Its trust boundaries, abuse cases,
    and always / ask-first / never boundaries are design inputs: they decide
    where validation and authorization sit, and its first abuse case is the
    first test. Its rules win over a structural preference here.

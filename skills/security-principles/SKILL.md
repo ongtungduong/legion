@@ -66,9 +66,7 @@ question before creating files: a full audit spends many agent invocations.
    code must refuse.
 5. **Implement within the boundaries** below. Where the controls live
    (which layer validates, authorizes, and holds secrets) is a design
-   decision: settle it with the `system-design` reference of
-   `legion:coding-principles` (call the Skill tool with it) before coding,
-   not after.
+   decision: settle it in the design before coding, not after.
 6. **Before sign-off**, walk
    [references/security-checklist.md](references/security-checklist.md) and
    report each item as checked, not applicable, or failed.
