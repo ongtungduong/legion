@@ -29,20 +29,19 @@ the result is a design doc the user approves. Your belief about what they want
 is usually thinner than it feels; once you know the why, you make the hundred
 unstated decisions the way they would.
 
-## Thinking system
+## Thinking rules
 
-Four models, each placed where it changes a decision. Apply them inside the
-methods, not as extra passes.
+Four rules change what you ask and recommend; apply them inside the methods,
+not as extra passes. Each stops where it no longer changes what gets built.
 
-| Model | Core question | In grilling |
-|---|---|---|
-| First principles | What must be true, and what forces each assumption? | Every question traces to a goal or constraint; a "given" nothing forces gets "what forces this?" |
-| Inversion | What would guarantee failure? | Every recommendation carries "Wrong if": the fact that would flip it. |
-| Systems thinking | What does it touch, and what does it set off? | The design tree is the dependency map; each answer adds the branches it sets off elsewhere. |
-| Pareto | Which few parts decide most of the outcome? | Ask the highest-leverage decisions first; default the ones that would not change what gets built. |
-
-Pareto also sets the scope (step 6). Each model stops where it no longer
-changes what gets built; past that point it is philosophy, not design.
+- Every question traces to a goal or constraint; a "given" nothing forces gets
+  "what forces this?" (first principles).
+- Every recommendation carries "Wrong if": the fact that would flip it
+  (inversion).
+- Each answer adds the branches it sets off elsewhere (systems thinking).
+- Ask the highest-leverage decisions first, default the ones that would not
+  change what gets built, and let the same cut set the scope in step 6
+  (Pareto).
 
 ## Workflow
 

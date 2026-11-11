@@ -80,10 +80,10 @@ If the skill bundles executable code, read [references/scripts-guide.md](referen
 
 ### 6. Validate
 
-Run the bundled validator on the finished skill directory:
+Run the bundled validator on the finished skill directory. The script path is relative to this skill's root, so from any other working directory use its full path (the base directory shown when this skill loaded):
 
 ```bash
-python scripts/validate_skill.py <path-to-skill-directory>
+python <this-skill-root>/scripts/validate_skill.py <path-to-skill-directory>
 ```
 
 It checks every frontmatter constraint from the spec and warns on a body over 500 lines, a `SKILL.md` of 20,000 bytes or more, and referenced bundled paths that do not exist. Fix all errors and review every warning. `skills-ref validate <dir>`, where available, is an equivalent check.
@@ -115,5 +115,4 @@ Before delivering a skill, confirm:
 - [ ] `SKILL.md` body under 500 lines and 20,000 bytes; overflow moved to `references/`
 - [ ] Every bundled-file mention says when to load it and uses a relative path
 - [ ] Scripts (if any) are non-interactive, self-contained, with helpful errors
-- [ ] `python scripts/validate_skill.py <dir>` passes with no errors
-- [ ] In a repo that keeps a thinking-model matrix, its row for this skill is updated
+- [ ] The validator passes with no errors
