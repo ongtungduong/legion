@@ -13,6 +13,7 @@ copied; the table says what came from where.
 | `skills/brainstorming` | superpowers `brainstorming`; addy `spec-driven-development` (spec sections, boundaries) |
 | `skills/brainstorming/references/grilling.md` | mattpocock `grilling` |
 | `skills/brainstorming/references/adr-format.md` | mattpocock `ADR-FORMAT.md` |
+| `skills/brainstorming/references/glossary-format.md` | mattpocock `domain-modeling`, `GLOSSARY-FORMAT.md` (condensed from Legion's removed `defining-terms` skill) |
 | `skills/writing-plans` | superpowers `writing-plans`; addy `planning-and-task-breakdown` (vertical slices, sizing) |
 | `skills/executing-plans` (+ references) | superpowers `executing-plans`, `subagent-driven-development` and its prompts, `test-driven-development`, `verification-before-completion`; mattpocock `tdd` (seams, anti-patterns); addy `constraint-driven-development` (the "guard the bar" checks), `source-driven-development` (version-sensitive APIs) |
 | `skills/executing-plans/references/doubt-review.md` | addy `doubt-driven-development` (condensed) |
@@ -31,7 +32,7 @@ copied; the table says what came from where.
 | `skills/security-principles/references/{reconnaissance,hunting,attack-classes,validation-and-reporting}.md` and the ten domain companions | Cloudflare `security-audit/*.md`, copied with file names lowercased and cross-references updated; additions from addy `agents/security-auditor.md` and #736: secret patterns printed as file names only (the vendors' published token formats), owner-run dependency advisories, attacker personas in the coverage critic, the repo's security baseline in reconnaissance |
 | `skills/security-principles/scripts/`, `tests/security-audit/` | Cloudflare `security-audit/validate-findings.cjs`, `validate-coverage-ledger.cjs`, `report-schema.json` and their tests, copied unchanged except the tests' require paths |
 | `skills/coding-principles/references/{performance,performance-optimization,performance-web,audit}.md` | addy `performance-optimization` and its `references/optimization-patterns.md`, `references/performance-checklist.md`, `agents/web-performance-auditor.md` (metric-honesty rule), condensed and rewritten; design-for-load rules from agent-rules-books (`designing-data-intensive-applications`, `release-it`, `patterns-of-enterprise-application-architecture`, `a-philosophy-of-software-design`, `code-complete`) |
-| `skills/skill-creator` | Same author: `duongot-skills/skill-creator` (MIT, ongtungduong), copied unchanged except `name`, renamed to match its directory |
+| `skills/skill-creator` | Same author: `duongot-skills/skill-creator` (MIT, ongtungduong), `name` renamed to match its directory, then aligned with Legion conventions: folded description, Gotchas, the Claude Code 20,000-byte limit (also a validator warning), and a baseline-first measurement step with `references/measuring.md` |
 | `scripts/validate-spec.mjs` | Wraps `skills/skill-creator/scripts/validate_skill.py` |
 | `scripts/validate.mjs`, `tests/` | superpowers `tests/skill-size`, `tests/skill-layout`; addy `scripts/validate-skills.js` |
 | `scripts/trigger-evals.mjs`, `evals/triggers/` | addy `scripts/run-evals.js` (Tier 2 lexical routing) |

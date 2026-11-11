@@ -1,6 +1,16 @@
 # Changelog
 
-## Unreleased
+## 0.12.0 - 2026-11-10
+
+Breaking: `security-and-hardening` is now `security-principles`,
+`performance-optimization` and `defining-terms` are removed, and
+`coding-principles` is rebuilt by topic.
+
+Added
+
+- `scripts/validate.mjs` fails when `skills/`, `hooks/`, or `.claude-plugin/`
+  changed since the latest `v*` tag but the version did not go up. It skips
+  with a note when git or the tags are unavailable.
 
 Changed
 

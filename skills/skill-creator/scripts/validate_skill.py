@@ -7,7 +7,9 @@ Checks (errors fail validation, warnings do not):
   errors:   SKILL.md present and UTF-8, frontmatter well-formed, name/description present
             and within constraints, name matches directory, compatibility <= 500
             chars, metadata is a flat string->string map
-  warnings: unknown frontmatter fields, body over 500 lines, referenced
+  warnings: unknown frontmatter fields, body over 500 lines, SKILL.md of
+            20,000 bytes or more (Claude Code re-attaches only that much of
+            an invoked skill after compaction), referenced
             scripts//references//assets/ paths that do not exist or escape
             the skill directory (`..`)
 
@@ -21,6 +23,7 @@ from pathlib import Path
 
 KNOWN_FIELDS = {"name", "description", "license", "compatibility", "metadata", "allowed-tools"}
 BLOCK_SCALARS = {">", ">-", "|", "|-"}
+MAX_SKILL_BYTES = 20000  # Claude Code re-attaches only this much after compaction
 NON_STRING_RE = re.compile(r"^(true|false|null|~|[-+]?\d+(\.\d+)?)$", re.IGNORECASE)
 
 
@@ -214,6 +217,13 @@ def validate(skill_dir):
     if len(body_lines) > 500:
         warnings.append(
             f"SKILL.md body is {len(body_lines)} lines; the spec recommends under 500 "
+            "(move detail into references/)"
+        )
+    size = len(text.encode("utf-8"))
+    if size >= MAX_SKILL_BYTES:
+        warnings.append(
+            f"SKILL.md is {size} bytes; Claude Code re-attaches only the first "
+            f"{MAX_SKILL_BYTES} bytes of an invoked skill after compaction "
             "(move detail into references/)"
         )
     body = "\n".join(body_lines)

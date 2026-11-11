@@ -29,8 +29,7 @@
   check the diff against each of its items.
 - **Performance:** no query or network call inside a loop over data that
   grows; no unbounded read into memory; a cache keyed on everything the
-  response varies by and bounded in size; a speed claim comes with a
-  before/after measurement. When a performance checklist path is given,
+  response varies by and bounded in size. When a performance checklist path is given,
   check each of its items.
 - **Design:** follows existing patterns or justifies a new one; module
   boundaries respected; no circular dependencies.

@@ -69,10 +69,6 @@ cause that only looks obvious from reading the code is still unknown.
      login or sessions, authorization, secrets or API keys, personal data,
      LLM output, a user-supplied URL fetched server-side, or adds a
      dependency. An XS change gets it too: a one-line change can open a hole.
-   - the `performance` reference of `legion:coding-principles` when the
-     change touches a query or network call inside a loop, a hot path (per
-     request, per row, per frame), data that grows with users or time,
-     rendering, or a stated budget. An XS change skips it.
 3. **List the reach.** When the change alters a public signature, behavior
    other code relies on, or persisted data, list its callers, consumers, and
    the data it touches, and give a test to each one the change can break.

@@ -122,7 +122,7 @@ Where each of the four models changes a decision, per skill, as of 0.11.0.
 | `code-review` | Spec axis (built only what the spec asks) | Step 6 (a fresh verifier tries to refute each Critical and Important finding); removed-behavior pass | Callers pass and Blast radius item | Depth table; ranking findings, folding Minor ones |
 | `coding-principles` | Step 1 (repo standards are facts); optimization step 3 (measure before naming the bottleneck) | Step 5 (break the design once); optimization step 5 (what load breaks it) | Step 3 (design questions: owner, direction, truth, failure, load); optimization step 4 (queues, retries, caches, pools) | Step 5 (effort on the one hard-to-reverse decision); only the references the change needs; optimization step 3 (largest share first) |
 | `security-principles` | Steps 1-2 (trust boundaries and assets); core principle "require a boundary and result" | Step 3 (STRIDE), step 4 (abuse cases); audit verifiers try to refute each candidate; critic personas | Step 1 (trust boundaries); audit coverage ledger and chained-boundary class | Step 7 (exposure x impact); audit hunter priority order and severity anchors |
-| `skill-creator` | Step 1 (what the agent lacks) | Step 6 (near-miss prompts) | n/a | Body: add what the agent lacks, omit what it knows |
+| `skill-creator` | Step 1 (what the agent lacks); step 2 (observed baseline failures are the spec) | Steps 2 and 7 (near-miss prompts) | n/a | Step 5 (write only what fixes observed failures); step 7 (cut instructions with no delta) |
 
 ## One skill for all code work (0.7.0)
 
@@ -251,7 +251,7 @@ to debugging; `executing-plans` and `systematic-debugging` keep the
 test-first order and the report block in sessions that cannot run code;
 `coding-principles` loads for any new function or module.
 
-## Design, code, and performance in one skill (unreleased)
+## Design, code, and performance in one skill (0.12.0)
 
 Goal set by the maintainer: design and code are right from the start, and
 secure from the start. `performance-principles` is removed; `coding-principles`
@@ -265,11 +265,8 @@ is rebuilt around topics instead of books.
 | `coding-principles` calls `security-principles` at the design step; `security-principles` points back for where the controls live | Validation, authorization, and tenant keys added after the structure is fixed land in the wrong layer. Security rules win over a structural preference |
 | Performance is a reference, not a skill | It is loaded by the chain on the same triggers as before; one fewer always-on description, and designing for load sits next to the data and failure rules it depends on. The performance audit keeps the name `references/audit.md` so `validate.mjs` still compares its report skeleton with the security audit's |
 
-Not yet measured: the behavioral evals in `docs/evals.md` were run against
-the per-book version. The renamed cases
-(`coding-principles-fires-on-slow-endpoint`,
-`coding-principles-stays-quiet-on-regression`) and the existing
-`coding-principles-*` cases need a fresh `claude plugin eval` run.
+Measured: the behavioral run against the 0.12.0 skills is in the
+`2026-11-10 full suite (0.12.0 skills)` section of `docs/evals.md`.
 
 ## Artifact conventions
 
@@ -283,7 +280,7 @@ the per-book version. The renamed cases
 
 | Layer | What it checks | Where it runs | Cost |
 |---|---|---|---|
-| `scripts/validate.mjs` | Frontmatter, size, dev files leaking into `skills/`, links (none leaving a skill's root), `legion:` refs, router and README covering every skill, matching versions, every hook `hooks.json` runs exists and is executable, CI least privilege (permissions block, SHA-pinned actions), matching audit skeletons | CI, local | 0 |
+| `scripts/validate.mjs` | Frontmatter, size, dev files leaking into `skills/`, links (none leaving a skill's root), `legion:` refs, router and README covering every skill, matching versions, a version bump when shipped files changed since the latest tag, every hook `hooks.json` runs exists and is executable, CI least privilege (permissions block, SHA-pinned actions), matching audit skeletons | CI, local | 0 |
 | `tests/scripts/` | Each `validate.mjs` and `trigger-evals.mjs` rule fails on a copy of the repo with that defect (`LEGION_ROOT`) | CI, local | 0 |
 | `scripts/trigger-evals.mjs` | Positive prompts must rank their skill in the top 3; negative prompts must not rank the skill first; no two descriptions may be near-duplicates | CI, local | 0 |
 | `tests/hooks/` | `session-start` emits valid JSON (control characters included), carries the router without its frontmatter, and falls back when files are missing; `guard` makes the right decision on 44 inputs and runs with no `PATH` | CI, local | 0 |

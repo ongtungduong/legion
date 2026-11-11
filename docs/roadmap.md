@@ -5,8 +5,8 @@ problem in a working session (mattpocock's "observed failure" principle).
 
 ## Near term
 
-1. **Re-run the behavioral evals on each Claude Code release.** The 0.11.0
-   baseline is in `docs/evals.md` (sonnet, Claude Code 2.1.319). Re-run with
+1. **Re-run the behavioral evals on each Claude Code release.** The 0.12.0
+   baseline is in `docs/evals.md` (sonnet, Claude Code 2.1.322). Re-run with
    the same command when the CLI or the default model changes, and add a
    second model (haiku) to see which skills depend on the stronger model.
 2. **`claude plugin validate . --strict` in CI.** CI runs `npm test` and

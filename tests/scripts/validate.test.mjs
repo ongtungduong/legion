@@ -96,6 +96,60 @@ test('audit skeletons must match', () => {
   assert.match(out, /audit skeletons differ/);
 });
 
+// Version-bump rule: the copy has no .git, so these tests make it a git repo,
+// commit it, and tag the commit with the version it carries.
+function git(root, ...args) {
+  const res = spawnSync('git', ['-c', 'user.name=t', '-c', 'user.email=t@t', '-c', 'commit.gpgsign=false', ...args], { cwd: root, encoding: 'utf8' });
+  assert.equal(res.status, 0, res.stderr);
+}
+
+function taggedCopy(tag = true) {
+  const root = copyRepo();
+  git(root, 'init', '-q');
+  git(root, 'add', '-A');
+  git(root, 'commit', '-q', '-m', 'release');
+  const version = JSON.parse(fs.readFileSync(path.join(root, 'package.json'), 'utf8')).version;
+  if (tag) git(root, 'tag', `v${version}`);
+  return { root, version };
+}
+
+function setVersion(root, version) {
+  for (const f of ['package.json', '.claude-plugin/plugin.json', '.claude-plugin/marketplace.json']) {
+    edit(root, f, (t) => t.replace(/"version": "[^"]+"/, `"version": "${version}"`));
+  }
+}
+
+test('changed skill with the version of the latest tag fails', () => {
+  const { root, version } = taggedCopy();
+  edit(root, 'skills/skill-creator/SKILL.md', (t) => `${t}\nA change.\n`);
+  const { code, out } = run('validate.mjs', root);
+  assert.equal(code, 1, out);
+  assert.match(out, new RegExp(`v${version.replace(/\./g, '\\.')}`));
+  assert.match(out, /bump the version/);
+});
+
+test('changed skill with a bumped version passes', () => {
+  const { root } = taggedCopy();
+  edit(root, 'skills/skill-creator/SKILL.md', (t) => `${t}\nA change.\n`);
+  setVersion(root, '99.0.0');
+  const { code, out } = run('validate.mjs', root);
+  assert.equal(code, 0, out);
+});
+
+test('unchanged skills with the version of the latest tag pass', () => {
+  const { root } = taggedCopy();
+  const { code, out } = run('validate.mjs', root);
+  assert.equal(code, 0, out);
+});
+
+test('repo without tags skips the version-bump check', () => {
+  const { root } = taggedCopy(false);
+  edit(root, 'skills/skill-creator/SKILL.md', (t) => `${t}\nA change.\n`);
+  const { code, out } = run('validate.mjs', root);
+  assert.equal(code, 0, out);
+  assert.match(out, /version-bump check skipped/);
+});
+
 test('bad frontmatter is reported, not thrown', () => {
   const root = copyRepo();
   edit(root, 'skills/skill-creator/SKILL.md', (t) => t.replace(/^---\n/, '--\n'));
