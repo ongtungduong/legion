@@ -1,5 +1,21 @@
 # Changelog
 
+## 0.12.1 - 2026-11-11
+
+Changed
+
+- `brainstorming` replaces the "Thinking system" table with four short rules;
+  the models stay in the description and in `references/grilling.md`.
+- `coding-principles` points to the `security-principles` description for the
+  trust-boundary triggers instead of repeating the list, and
+  `security-principles` no longer points back at `coding-principles`.
+- `executing-plans` lets a slow suite take a slice baseline and run the full
+  suite once at the end; `plan-workflow.md` drops two version-specific notes
+  (the `fable` tier, Claude Code 2.1.203).
+- `skill-creator` gives the validator's path from the skill root and drops a
+  checklist line that only applied to Legion's own repo.
+- `docs/evals.md` closes B1 as not measured; the quick path is unchanged.
+
 ## 0.12.0 - 2026-11-10
 
 Breaking: `security-and-hardening` is now `security-principles`,
