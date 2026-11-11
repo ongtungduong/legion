@@ -3,7 +3,7 @@
 Interview the user until every open decision is resolved. Model the topic as a
 **design tree**: every decision branches into the decisions that depend on it.
 Recommend an answer for every question so the user can accept it in a word.
-Grilling runs on the same four thinking models as the hats: first principles
+Grilling runs on the same four thinking models as the rest of the skill: first principles
 decides which questions exist, systems thinking shapes the tree, Pareto orders
 it, and inversion tests every recommendation.
 
