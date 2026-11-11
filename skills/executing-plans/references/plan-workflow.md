@@ -28,7 +28,9 @@ Progress:
    `Baseline: <command> -> <result>`, naming each failing test. Those
    failures are pre-existing: report them at the finish and fix them only
    if a task says so. "The full suite passed" later means no failure
-   outside this list.
+   outside this list. If the suite is too slow to run twice, run the slice
+   that covers the files the plan touches, ledger which slice, and run the
+   full suite at the finish.
 5. **Read** the plan and the spec it names once; create one todo per task.
 6. **Load the standards:** call the Skill tool with `legion:coding-principles`
    and load the plan's `Design principles` (pick them with that skill and
@@ -168,7 +170,7 @@ leaves out.
   for lack of judgment, or fails review twice, is re-dispatched with `effort`
   one level higher when the Agent tool takes that parameter, and on `opus`
   only if that fails too; ledger it. Otherwise leave `effort` unset, so each
-  model runs at its default. `fable` has no tier here yet, so do not pick it.
+  model runs at its default.
   If the Agent tool's model list changes, keep the tiers (cheap, standard,
   most capable) and ledger the alias you chose.
 - One implementer at a time. A worktree isolates the files, but each task
@@ -199,8 +201,8 @@ leaves out.
   build output) are missing. The implementer installs dependencies itself;
   secrets come only through a `.worktreeinclude` the user owns, never copied
   by an agent.
-- Bash runs inside a subagent's worktree only from Claude Code 2.1.203. On
-  older versions, and when a workflow script starts the agent, the isolation
-  check catches the shared tree.
+- Bash may not run inside a subagent's worktree on older Claude Code versions,
+  and not when a workflow script starts the agent; the isolation check
+  catches the shared tree.
 - An implementer that spawns its own reviewer duplicates the task review at
   full cost. The prompts forbid it; treat it as a defect if it happens.

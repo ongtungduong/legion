@@ -76,7 +76,9 @@ cause that only looks obvious from reading the code is still unknown.
    run the full suite once before changing anything. Failures here are
    pre-existing: name them in the report and leave them alone unless the
    request covers them. Without a baseline you cannot tell a failure you
-   caused from one you inherited.
+   caused from one you inherited. If the suite takes minutes, run the slice
+   that covers the code you will touch, say which slice, and run the full
+   suite once at the end.
 5. **Run the TDD cycle** below, inline.
 6. **Review if risky.** When step 2 loaded `legion:security-principles`,
    or the change touches persisted data, money, or concurrency, call the
