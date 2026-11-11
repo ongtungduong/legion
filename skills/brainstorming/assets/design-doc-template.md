@@ -8,25 +8,20 @@ What we are building, for whom, and why now.
 - Non-goals (including the scope deferred by the Pareto cut, if the user agreed):
 - Anti-goals (what would make this a failure even if it technically works):
 
-## First principles (White hat)
+## First principles
 - Goal (no solution words):
 - Must be true: facts (with sources) and hard constraints
 - Assumptions questioned: each one kept (and what forces it), dropped, or asked
 - System touched (project only): upstream and downstream of the change
 
 ## Approaches
-Deciding criteria (Blue): <the one or two that decide>.
-The two or three considered, including the first-principles rebuild.
+The two or three considered, grounded in the existing code.
 
-| Hat | A: <name> | B: <name> |
+| | A: <name> | B: <name> |
 |---|---|---|
-| White: facts / unknowns / what it touches | | |
-| Green: better or combined option | | |
-| Yellow: share of the goal, for what cost | | |
-| Black: inverted failures, second-order effects, cost if wrong | | |
-| Red: user's reaction | | |
+| Trade-offs | | |
 
-Chosen: <approach>, because <the deciding points>.
+Chosen: <approach>, because <the deciding points>. Wrong if: <the fact that would flip it>.
 
 ## Design
 The parts of the "how" the user decided, as they decided them (including the
