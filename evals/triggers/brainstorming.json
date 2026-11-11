@@ -7,6 +7,7 @@
     "Think through this new feature from first principles before we build it",
     "Use six thinking hats to compare options for the new sync service",
     "I already told you what I want and why, just lay out the approaches for the sync tool",
+    "Customers sit behind shared IPs and someone scripted our export endpoint; we have a limiter helper already. What are my options, which would you pick?",
     "Grill me on this migration plan",
     "Poke holes in my plan to split the monolith",
     "Stress-test this decision to drop Redis before I commit to it",

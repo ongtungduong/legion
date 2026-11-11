@@ -195,7 +195,10 @@ Review is read-only. Act on findings only when the user asks:
 
 When the target is a whole repository, system, or directory rather than a
 change, skip the Spec and Standards pair: there is no change to judge.
-Run the two audits side by side:
+Run the two audits side by side, however small the repo: a two-file app gets
+the same two headings with short bodies, because a request for "both audits"
+that gets one merged list leaves the reader unable to tell what was checked
+for each:
 
 - **Performance:** dispatch one auditor with the Agent tool,
   `subagent_type: "general-purpose"` (a fresh context, never `fork`), no
