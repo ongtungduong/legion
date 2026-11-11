@@ -1,6 +1,6 @@
 ---
-description: 'A whole-app security audit request with three small files. The audit must find the SQL injection and the hard-coded key, report the key without its value, and mark the dependency step not applicable.'
-expected_outcome: 'A report with Scope, Method, Findings, and Not checked; the SQL injection filed Critical with a file:line location; the hard-coded key reported without printing it; the dependency audit marked not applicable for lack of a lockfile.'
+description: 'A whole-app security audit request with three small files and no subagent tool. The skill cannot run its full audit here, so it must say so and give a guidance-mode review that finds the SQL injection and the hard-coded key, reports the key without its value, and marks the dependency step not applicable.'
+expected_outcome: 'A guidance-mode review (Findings table, Hardening, Not checked) that says the full multi-agent audit needs a subagent tool and offers it; the SQL injection filed critical or high with a file:line location; the hard-coded key reported without printing it; the dependency audit marked not applicable for lack of a lockfile.'
 max_turns: 14
 allowed_tools: [Read, Glob, Grep, Skill]
 ---
