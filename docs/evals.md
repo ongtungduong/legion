@@ -5,12 +5,12 @@ Every run of `claude plugin eval` against this repo, newest last. Raw results
 model and records the Claude Code version and cost, because trigger rates
 move between versions.
 
-**Bar** (from the 0.11.0 design): a case passes at a score of at least 0.67
+**Bar** (from the 0.11.0 design): a case passes at a score of at least 0.66
 (2 of 3 runs). Quality graders must score higher with the plugin than without
 (positive delta). A failing case gets its transcript read before any edit,
 and a ruling on whether the skill or the grader was wrong.
 
-Command: `claude plugin eval . --no-publish --model sonnet --runs 3 --threshold 0.67 --json evals/results/<file>.json`
+Command: `claude plugin eval . --no-publish --model sonnet --runs 3 --threshold 0.66 --json evals/results/<file>.json`
 
 ## Runs
 
@@ -34,6 +34,11 @@ Command: `claude plugin eval . --no-publish --model sonnet --runs 3 --threshold 
 | 2026-11-10 | 2.1.322 | sonnet | full suite, 29 cases, concurrency 3 (0.12.0 skills) | 3 x 2 arms | 10.16 | 27/29 at score >= 0.67; 2 below the bar |
 | 2026-11-10 | 2.1.322 | sonnet | B2 hats arm only (4 brainstorming-ab cases, baseline copy), concurrency 1 | 5 x 2 arms | 2.32 | not a pass/fail run; no-hats arm not run, rule not applied |
 | 2026-11-10 | 2.1.322 | sonnet | B1 smoke (1 run) | 1 x 2 arms | 0.00 | no case executed; CLI refused Bash grant (3 s) |
+| 2026-11-11 | 2.1.322 | sonnet | A2 cases after fixes (3 cases, 3 then 5 runs, one diagnostic with transcripts) | 3-5 x 2 arms | about 4 | security-audit 3/3; system-audit 4/5; shapes-new-module 2/5 (open) |
+| 2026-11-11 | 2.1.322 | sonnet | B1 smoke again | 1 x 2 arms | 0.00 | no case executed; same EACCES refusal |
+| 2026-11-11 | 2.1.322 | sonnet | B2 both arms (4 brainstorming-ab cases), no-plugin arm dropped, `-j 3` | 5 x 1 arm each | 3.45 | rule 1 invalid (hats `dominant-reuse` fires 2/5) |
+| 2026-11-11 | 2.1.322 | sonnet, haiku | B3 hard siblings, 5 cases | 3 x 2 arms | 2.55 | see B3 result |
+| 2026-11-11 | 2.1.322 | haiku | full suite, 39 cases (includes the 4 ab cases, 5 hard siblings, and B1 without Bash) | 3 x 2 arms | 1.66 | 28/34 scored cases at >= 0.66, 3 run errors |
 
 ### 2026-11-09 baseline (0.10.0 skills)
 
@@ -331,6 +336,135 @@ removed, so a with-plugin-only diagnostic run, $0.29, kept them):
 Nothing was edited. The system-audit trigger and the `security-audit-on-system`
 grader are open items.
 
+### 2026-11-11 A2 follow-up and the B measurements
+
+Claude Code 2.1.322, sonnet unless stated. Raw results stay in
+`evals/results/2026-11-11-*.json` (gitignored). Runs after the first A2
+diagnostic used `-j 3` under `caffeinate -i`: three of five runs in an earlier
+B2 diagnostic timed out at 300 s with a 2135 s wall clock, which points at the
+machine sleeping, not at a skill; the later runs had no timeouts.
+
+**A2 rulings (transcripts read from `--keep-temp` runs).**
+
+| Case | Before | After | Ruling |
+|---|---|---|---|
+| `security-audit-on-system` | 0.50 vs 0.50 | 3/3 vs 0/3 | Stale grader. In a session with no `Agent` tool the skill must say the full audit cannot run and give a guidance-mode review (Findings, Hardening, Not checked), which it does. The prompt says "audit", the skill's own full-audit trigger, so asking a clarifying question is not needed: the missing subagent tool settles the mode. Grader now requires Critical or High with a file:line, the key reported but not echoed, the dependency audit not applicable, and a statement of what was not checked. |
+| `code-review-runs-system-audit` | 0.00 vs 0.00 (skill fired 1/3) | skill fired 5/5, headings 4/5 vs 0/5 | Two causes. (1) The router sent every "audit" to `security-principles`; the code-review row now names whole-repo security and performance audits and the security row says "security-only". (2) The skill let a two-file repo skip the two-heading report; it now says size shortens the bodies, not the headings. The grader also required Security before Performance; it now accepts either order. The replies still stop at the security profile and budget proposal, as `security-principles` prescribes. |
+| `coding-principles-shapes-new-module` | 0.67 (1/3 green) | 2/5, then 1/5 in a diagnostic run | Open, two causes seen across 8 transcripts: in 3 of 8 runs the reply named "coding" in its `Principles:` line without reading any reference file; in others it read `coding.md` and still wrote parsing and aggregation in one function, against its rule "setup, validation, computation, and side effects are separate phases". An edit asking the model to name only references it had opened showed no effect (2/5 runs still read nothing) and was reverted. The grader is not stale. |
+
+**B1: still not run.** The same smoke refused the `Bash` grant with the same
+EACCES error. In the sandboxed shell of this session `~/.aws`, `~/.kube/config`,
+the gcloud application-default credentials and the Anthropic profile config do
+not exist, so the unreadable file is most likely hidden by the tool sandbox
+that ran the CLI, not by file modes (a hypothesis; not tested). Run the command from the B1 block in an
+unsandboxed terminal. In the haiku full suite the B1 case also ran, without
+`Bash`, and scored 0.20 in both arms (no run could edit or test): not a result.
+
+**B2: not decidable.** Both arms ran (5 runs each, no-plugin arm dropped with
+`--ablation none`, no errors, $1.74 hats and $1.71 no-hats). Passes out of 5
+per grader, hats | no-hats:
+
+| Case | recommendation | conflict-first | real-alternatives | flip-condition | no-filler-question | no-code | proportionate | skill-fired | cost USD |
+|---|---|---|---|---|---|---|---|---|---|
+| dominant-reuse | 5 \| 5 | n/a | 1 \| 4 | 5 \| 5 | 3 \| 3 | 0 \| 1 | 0 \| 0 | **2** \| 4 | 0.071 \| 0.076 |
+| tradeoff-polling | 5 \| 5 | n/a | 0 \| 0 | 5 \| 5 | 2 \| 1 | 4 \| 5 | 4 \| 3 | 5 \| 5 | 0.076 \| 0.076 |
+| hidden-conflict | 5 \| 5 | 5 \| 5 | 2 \| 2 | 5 \| 5 | 3 \| 2 | 5 \| 5 | 1 \| 2 | 5 \| 5 | 0.089 \| 0.079 |
+| small-flag | 3 \| 2 | n/a | 5 \| 5 | 5 \| 5 | 1 \| 1 | 5 \| 5 | 1 \| 1 | 5 \| 5 | 0.076 \| 0.073 |
+
+Rule 1 fails: hats `skill-fired` is 2/5 on `dominant-reuse` (it was 3/5 on
+2026-11-10), so the pre-registered rule is not applied. For the record, with
+that case set aside no grader differs by 2 or more runs in favour of either
+arm and cost per run is within 3 percent (mean of the four cases: hats $0.078,
+no-hats $0.076), which is the "full tie at equal
+cost" shape of rule 5. That is indicative only and moves nothing. What the
+transcripts of the `dominant-reuse` diagnostic show: both completed replies
+carry a full ready-to-paste route with the configured limiter, so `no-code` is
+a correct fail; both run 500 words over four or five options including a queue
+and a per-org limit that the stated facts do not call for, so `proportionate`
+is a correct fail; and one of them never loaded the skill. The trigger is the
+open item: the prompt gives the what and the why and asks "what are my
+options, which would you pick", the case the description's "only wants
+options, approaches, or a recommendation" clause is meant to cover, yet hats
+fires 2/5 against 4/5 for the no-hats description. The hats variant's
+description still says "Six Thinking Hats"; whether that wording lowers the
+trigger rate on this prompt is untested.
+
+**B2 rerun (2026-11-11, after a trigger fix).** The brainstorming description
+gained `("what are my options", "which would you pick"), even when an existing
+helper looks like the obvious fit`. Both arms again 5 runs, sonnet, `-j 3`, no
+errors; `skill-fired` is 5/5 in every case and arm, so rule 1 holds. Passes out
+of 5, hats | no-hats (graders at 5 | 5 or not discriminating omitted):
+
+| Case | recommendation | real-alternatives | no-filler-question | proportionate | cost USD |
+|---|---|---|---|---|---|
+| dominant-reuse | 5 \| 5 | 2 \| 2 | 3 \| 4 | 0 \| 1 | 0.095 \| 0.078 |
+| tradeoff-polling | 5 \| 5 | **4 \| 0** | 2 \| 1 | 5 \| 4 | 0.079 \| 0.077 |
+| hidden-conflict | 5 \| 5 | 1 \| **3** | 0 \| **2** | 3 \| 2 | 0.088 \| 0.081 |
+| small-flag | **5 \| 2** | 5 \| 5 | 0 \| 1 | **5 \| 2** | 0.078 \| 0.075 |
+
+Rule 3 does not fire (`recommendation` and `conflict-first` tie on the
+trade-off and hidden-conflict cases). Hats wins three graders by 3 or more
+(small-flag `recommendation` and `proportionate`, tradeoff `real-alternatives`);
+no-hats wins two by 2 (hidden-conflict `real-alternatives` and
+`no-filler-question`). That is a mixed result, so rule 5 applies: rerun those
+cases at 10 runs before deciding (about $5; not run). Hats costs about 9
+percent more per run. Nothing moved.
+
+**B3: results and the pre-registered rule.** Delta is with minus without on
+the pass rate of the quality grader (3 runs; one run is 0.33).
+
+| Case | Original, sonnet | Original, haiku | Hard, sonnet | Hard, haiku | Rule outcome |
+|---|---|---|---|---|---|
+| `code-review-flags-n-plus-one` | 1.00 vs 0.67 (0.12.0 run) | 1.00 vs 0.33 | 1.00 vs 0.67 | 1.00 vs 0.00 | Keep. Delta > 0 on the hard sibling on both models; the original was too easy. |
+| `code-review-flags-unmeasured-speed-claim` | 0.67 vs 1.00 (0.12.0 run) | 0.33 vs 1.00 | 1.00 vs 1.00 | 1.00 vs 1.00 | **Cut candidate**, with a warning: delta is 0 or negative in all four cells and the skill fired. Targets `review-checklists.md` item "a speed claim comes with a before/after measurement" and `performance.md` "no claim that code is faster ... without a before and after number". On haiku the plugin arm is worse (1 of 3 vs 3 of 3 on `claim-and-cache`). Read two transcripts before cutting; ablate the lines, do not cut on this rule alone. |
+| `executing-plans-batches-queries` | 1.00 vs 1.00 (0.12.0: 0.67 vs 1.00) | 1.00 vs 1.00 | 1.00 vs 1.00 | 1.00 vs 1.00 | **Cut candidate**: delta 0 in all four cells, skill fired on the hard sibling 3/3 on both models. Targets the `performance`-reference trigger bullet in the quick path of `skills/executing-plans/SKILL.md`. |
+| `executing-plans-holds-bar-under-pressure` | 1.00 vs 0.67 (0.12.0) | 1.00 vs 0.67 | 1.00 vs 0.67 | 0.33 vs 1.00 (0.00 vs 0.67 in the suite run) | Keep on sonnet (+0.33 on one model and weak: rerun at 5 runs). **Haiku finding:** on the hard sibling the plugin arm is worse in two runs of the case, and the skill fired in 1 of 3 and 1 of 3 runs. Read transcripts: a long skill may be crowding out the bar on a small model. |
+| `executing-plans-loads-security-on-auth-change` | 1.00 vs 1.00 | 1.00 vs 1.00 | 1.00 vs 1.00 | 1.00 vs 1.00 | **Cut candidate on outcome** (delta 0 in four cells; both arms write a same-site redirect and a safe lookup), but the wiring is not redundant: the skill loaded 3/3 on sonnet and on the haiku original, and 0/3 on the haiku hard sibling. Keep the instruction; the case shows no effect on the code. |
+
+The limits block asks for `--runs 5` on a lone +0.33: the two weakly positive cells (+0.33 on
+sonnet) need `--runs 5` before use; not run. Nothing was cut.
+
+**B3 follow-up (2026-11-11, sonnet, 5 runs).** `executing-plans-holds-bar-under-pressure`
+with | without: 4/5 | 5/5, hard sibling 4/5 | 4/5. The +0.33 from 3 runs was
+noise; the case does not discriminate, and the evidence-gate instruction stays
+because it is a safety control, not because this case proves it. Ablation, five
+`-hard` cases, plugin only, 5 runs: the full plugin vs a copy without the
+`performance`-reference bullet in the quick path of `skills/executing-plans/SKILL.md`,
+the speed-claim item in `review-checklists.md`, and the "no claim without a
+number" paragraph in `performance.md`. `batches-queries-hard` 5/5 vs 5/5,
+`unmeasured-speed-claim-hard` 5/5 vs 5/5, `n-plus-one-hard` 5/5 vs 5/5;
+`loads-security-on-auth-change-hard` 5/5 vs 5/5 (security loaded 5 vs 4); the
+pressure case 3/5 vs 2/5. Ruling: the two cut candidates show no effect, so
+the quick-path `performance` bullet and the speed-claim checklist item were
+removed (plan tasks still load `performance`, and the reference's own rule
+stays: it was removed in the ablation only together with the others, so its
+solo effect is untested). The README sentence about the quick path was
+corrected. The auth-change case is kept.
+
+**B3 haiku follow-up (5 runs, `--keep-temp`).** `holds-bar-under-pressure`
+with | without: 4/5 | 5/5; hard sibling 2/5 | 3/5, skill fired 1 of 5. The
+earlier reading "a long skill crowds out the bar on haiku" is not supported:
+the skill is mostly not loaded on the hard prompt, so the gap is the model's
+variance, not the skill's length. The open item is the trigger rate on haiku
+(also 0/3 for `security-principles-fires-on-is-this-safe` in the suite run),
+which was not changed here: a description edit for a weaker model needs its
+own measurement. Not run: the old suite again on haiku (the full-suite haiku
+run above is the one on record) and B1 (blocked, see its block).
+
+**Haiku full suite.** 28 of 34 scored cases meet 0.66 (the 4 `-ab-` cases and
+B1 excluded), mean delta +0.32 against +0.43 on sonnet. Below the bar on
+haiku and not below it on sonnet: `security-principles-fires-on-is-this-safe`
+0.00 (never fired, 0/3), `brainstorming-records-glossary-term` 0.33,
+`coding-principles-shapes-new-module` 0.33,
+`code-review-flags-unmeasured-speed-claim` 0.33,
+`executing-plans-holds-bar-under-pressure-hard` 0.00, and
+`systematic-debugging-fires-on-what-broke` 0.33 (fired 3/3, `root-cause` 1/3
+in both arms). The four `brainstorming-ab-*` cases show `skill-fired` 0/3 on
+haiku. Three with-plugin runs of the two glossary quiet cases ended at the
+6-turn cap (run errors) yet passed `not-fired`. In these cases haiku did not
+load `security-principles` or `brainstorming` from their descriptions; not
+tested further.
+
 ## Open measurements
 
 Questions the suite has not answered yet. Each block states its decision rule
@@ -363,7 +497,7 @@ so this wiring is unverified until the first run.
 **Command.**
 
 ```bash
-claude plugin eval . --no-publish --model sonnet --runs 5 --threshold 0.67 \
+claude plugin eval . --no-publish --model sonnet --runs 5 --threshold 0.66 \
   --case 'executing-plans-cost-on-one-line-fix*' --max-cost-usd 3 \
   --scaffold --trust-plugin --allow-tools Write Edit Bash \
   --json evals/results/<file>.json
@@ -506,7 +640,7 @@ could not be run when this block was written, so check them first):
 
 ```bash
 # (i) full existing suite on the weaker model
-claude plugin eval . --no-publish --model haiku --runs 3 --threshold 0.67 -j 3 --max-cost-usd 6 --json evals/results/b3-suite-haiku.json
+claude plugin eval . --no-publish --model haiku --runs 3 --threshold 0.66 -j 3 --max-cost-usd 6 --json evals/results/b3-suite-haiku.json
 
 # (ii) the five harder siblings, on both models
 claude plugin eval . --no-publish --model sonnet --runs 3 --case '*-hard' --max-cost-usd 2 --json evals/results/b3-hard-sonnet.json
@@ -600,8 +734,8 @@ node scripts/make-eval-variant.mjs baseline "$AB/hats" --cases brainstorming-ab-
 node scripts/make-eval-variant.mjs no-hats "$AB/no-hats" --cases brainstorming-ab-
 LEGION_ROOT="$AB/no-hats" node scripts/validate.mjs
 claude --version
-claude plugin eval "$AB/hats" --no-publish --model sonnet --runs 5 --threshold 0.67 --max-cost-usd 4 --trust-plugin --json "$AB/hats.json"
-claude plugin eval "$AB/no-hats" --no-publish --model sonnet --runs 5 --threshold 0.67 --max-cost-usd 4 --trust-plugin --json "$AB/no-hats.json"
+claude plugin eval "$AB/hats" --no-publish --model sonnet --runs 5 --threshold 0.66 --max-cost-usd 4 --trust-plugin --json "$AB/hats.json"
+claude plugin eval "$AB/no-hats" --no-publish --model sonnet --runs 5 --threshold 0.66 --max-cost-usd 4 --trust-plugin --json "$AB/no-hats.json"
 ```
 
 `--cases` copies only the A/B cases, so neither run needs `--case`. A path
