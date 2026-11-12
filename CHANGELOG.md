@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.12.2 - 2026-11-12
+
+Changed
+
+- `using-legion` splits the `coding-principles` map row into design and
+  performance rows, routes a performance-only audit to `coding-principles`
+  (an unnamed or combined audit stays with `code-review`, a security-only one
+  with `security-principles`), and shows `systematic-debugging` in the default
+  flow as the branch for an unexpected failure and the entry for a bug report.
+- `coding-principles` names a performance-only audit in its description, with
+  a matching trigger case and a near-miss negative for the combined audit.
+
 ## 0.12.1 - 2026-11-11
 
 Changed

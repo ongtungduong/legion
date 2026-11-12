@@ -12,7 +12,8 @@
     "We have an N+1 query on the orders page",
     "Get our LCP under 2.5 seconds",
     "Memory keeps growing when we import large CSV files",
-    "Add timeouts and retries to the payment client"
+    "Add timeouts and retries to the payment client",
+    "Audit the whole codebase for performance problems only, not security"
   ],
   "negative": [
     {
@@ -26,6 +27,10 @@
     {
       "prompt": "The search page got three times slower since yesterday's deploy",
       "owner": "systematic-debugging"
+    },
+    {
+      "prompt": "Audit the whole repo, security and performance both",
+      "owner": "code-review"
     }
   ]
 }
