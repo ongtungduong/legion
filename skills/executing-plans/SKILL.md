@@ -32,9 +32,9 @@ take that path once per task; without one, the request is a plan of one task.
    the test, because adapting it turns test-first into test-after. Only the
    user grants exceptions (throwaway spike, generated code, pure config).
 3. **Principles.** Code follows the references loaded with
-   `legion:coding-principles`, or for an XS change inside existing code, the
-   surrounding code's conventions; a documented repo convention wins where
-   they disagree.
+   `legion:principles`, or for an XS change inside existing code, the
+   surrounding code's conventions; `legion:principles` sets the
+   precedence, `security` first.
 4. **Evidence.** No "done", "fixed", or "passing" without a check run in the
    same message and its output read; code and state change between the check
    and the claim.
@@ -57,18 +57,18 @@ cause that only looks obvious from reading the code is still unknown.
    the change is not trivial, write them in one to three lines and confirm
    them with the user before coding.
 2. **Load the standards** before the first test, with the Skill tool:
-   - `legion:coding-principles` whenever the change adds a function,
+   - `legion:principles` whenever the change adds a function,
      class, module, or interface, however small, or reshapes one; it names
      its references in one line, settles the design before the first test,
      and its rules shape GREEN and REFACTOR. The report's `Principles:`
      line names only a reference you loaded. An XS change inside existing
      code (a condition, a value, one call) follows the surrounding code's
      conventions instead; say so in that line.
-   - `legion:security-principles` when the change touches untrusted input
-     (requests, forms, uploads, webhooks, values another process wrote),
-     login or sessions, authorization, secrets or API keys, personal data,
-     LLM output, a user-supplied URL fetched server-side, or adds a
-     dependency. An XS change gets it too: a one-line change can open a hole.
+   - the `security` reference of `legion:principles` when the change touches
+     untrusted input (requests, forms, uploads, webhooks, values another
+     process wrote), login or sessions, authorization, secrets or API keys,
+     personal data, LLM output, a user-supplied URL fetched server-side, or
+     adds a dependency. An XS change gets it too: a one-line change can open a hole.
 3. **List the reach.** When the change alters a public signature, behavior
    other code relies on, or persisted data, list its callers, consumers, and
    the data it touches, and give a test to each one the change can break.
@@ -80,7 +80,7 @@ cause that only looks obvious from reading the code is still unknown.
    that covers the code you will touch, say which slice, and run the full
    suite once at the end.
 5. **Run the TDD cycle** below, inline.
-6. **Review if risky.** When step 2 loaded `legion:security-principles`,
+6. **Review if risky.** When step 2 loaded the `security` reference,
    or the change touches persisted data, money, or concurrency, call the
    Skill tool with `legion:code-review` before claiming it, and name the
    checklists loaded so the reviewer checks against them.
@@ -125,7 +125,7 @@ use. Cite the URL in the report's `Sources:` line, or list the API under
 For a bug, the first test reproduces the reported symptom. For existing code
 without tests, first write characterization tests that pin what it does today,
 even where that looks wrong, then change it (the `coding-existing-code`
-reference of `legion:coding-principles` covers breaking dependencies to get
+reference of `legion:principles` covers breaking dependencies to get
 a seam). Those tests stay in the suite; they are the point, not scaffolding.
 
 ## The evidence gate
@@ -175,7 +175,7 @@ Conflicts, ambiguities, and plan defects are yours to decide: the spec is the
 binding authority, the plan argues from it, and your judgment settles what
 neither answers. Ledger each as `Ruling: <decision> - <why> - <cost if wrong>`
 and continue; an unledgered deviation is a decision the user never sees.
-The ask-first boundaries of `legion:security-principles` are not rulings: a
+The ask-first boundaries of the `security` reference are not rulings: a
 new dependency, auth flow, or category of personal data that the spec or plan
 does not already name waits for the user, because it is a safety control the
 user owns, not a judgment call.

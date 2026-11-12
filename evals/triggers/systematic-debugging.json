@@ -21,7 +21,7 @@
     },
     {
       "prompt": "Refactor this module so it is easier to read, without changing behavior",
-      "owner": "coding-principles"
+      "owner": "principles"
     }
   ]
 }

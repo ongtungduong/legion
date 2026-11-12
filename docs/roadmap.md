@@ -24,8 +24,8 @@ problem in a working session (mattpocock's "observed failure" principle).
 
 ## Medium term
 
-5. **Deeper evals for `coding-principles`.** 0.11.0 shows the skill loads and
-   names its set (`coding-principles-shapes-new-module`, 1.00 vs 0.00); it
+5. **Deeper evals for `principles`.** 0.11.0 shows the skill loads and
+   names its set (`principles-shapes-new-module`, 1.00 vs 0.00); it
    does not yet show that a reference changes a design decision on a
    refactoring or legacy task. agent-rules-books itself has no empirical data
    on this.
@@ -38,7 +38,7 @@ problem in a working session (mattpocock's "observed failure" principle).
    another agent to continue from.
 9. **Domain skills from addy**, one at a time as the need arises:
    `observability-and-instrumentation`, `api-and-interface-design`,
-   `ci-cd-and-automation` (performance shipped in 0.11.0 and now lives in `coding-principles`).
+   `ci-cd-and-automation` (performance shipped in 0.11.0 and now lives in `principles`).
 
 ## Long term
 

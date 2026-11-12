@@ -33,15 +33,15 @@ pins every guess into files, signatures, and tests.
    one plan per subsystem; each must yield working, testable software alone.
 2. **Map the files** to create or modify, with one responsibility each. Split
    by responsibility, not by technical layer; follow existing patterns.
-   **Choose the design principles** with `legion:coding-principles` (call the
+   **Choose the design principles** with `legion:principles` (call the
    Skill tool with it) and record them in the plan's `Design principles` line,
    so the implementer and the reviewer apply the same standard. Fill the
    `Security` and `Performance` lines from the spec's `Non-functional`
    section, or, when the spec has none, from the trigger lists in
    `legion:executing-plans`; `none` is a decision, so write it only when no
-   trigger matches. They tell the implementer which checklists to load:
-   `legion:security-principles` for `Security`, the `performance` reference
-   of `legion:coding-principles` for `Performance`.
+   trigger matches. They tell the implementer which checklists to load: the
+   `security` reference of `legion:principles` for `Security`, its
+   `performance` reference for `Performance`.
 3. **Slice vertically.** Each task is one complete, testable path through the
    system (schema + logic + interface for one capability). The first task is
    the thinnest end-to-end tracer bullet. Size each task; split anything L or

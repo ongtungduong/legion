@@ -39,6 +39,7 @@ Command: `claude plugin eval . --no-publish --model sonnet --runs 3 --threshold 
 | 2026-11-11 | 2.1.322 | sonnet | B2 both arms (4 brainstorming-ab cases), no-plugin arm dropped, `-j 3` | 5 x 1 arm each | 3.45 | rule 1 invalid (hats `dominant-reuse` fires 2/5) |
 | 2026-11-11 | 2.1.322 | sonnet, haiku | B3 hard siblings, 5 cases | 3 x 2 arms | 2.55 | see B3 result |
 | 2026-11-11 | 2.1.322 | haiku | full suite, 39 cases (includes the 4 ab cases, 5 hard siblings, and B1 without Bash) | 3 x 2 arms | 1.66 | 28/34 scored cases at >= 0.66, 3 run errors |
+| 2026-11-12 | 2.1.322 | sonnet | 0.13.0 principles merge: 15 affected cases, one `--case` each, plus 3 diagnostic runs and re-runs after fixes | 3 x 2 arms (diagnostics 1 x 1) | 10.41 | 14/15 at >= 0.66; 1 below the bar, pre-existing (see section) |
 
 ### 2026-11-09 baseline (0.10.0 skills)
 
@@ -484,6 +485,45 @@ haiku. Three with-plugin runs of the two glossary quiet cases ended at the
 6-turn cap (run errors) yet passed `not-fired`. In these cases haiku did not
 load `security-principles` or `brainstorming` from their descriptions; not
 tested further.
+
+### 2026-11-12 principles merge (0.13.0 skills)
+
+Plan `.legion/plans/2026-11-12-principles-merge.md`. Command as above with
+`--case '<name>' --max-cost-usd 3`, one case per run, Claude Code 2.1.322,
+sonnet.
+
+| Case | With | Without | Delta | Result |
+|---|---|---|---|---|
+| code-review-fires-on-is-this-safe | 1.00 | 0.00 | +1.00 | pass |
+| security-audit-on-system | 1.00 | 0.50 | +0.50 | pass |
+| code-review-runs-system-audit | 0.33 | 0.00 | +0.33 | fail, then pass after the prompt fix below (1.00 vs 0.00) |
+| executing-plans-loads-security-on-auth-change | 1.00 | 0.50 | +0.50 | pass (`security-read` 3/3) |
+| executing-plans-loads-security-on-auth-change-hard | 0.83 | 0.50 | +0.33 | pass (`security-read` 2/3) |
+| principles-holds-security-under-pressure | 1.00 | 0.67 | +0.33 | pass (`skill-fired` indicator 1/3) |
+| principles-stays-quiet-on-glossary-rename | 1.00 | 1.00 | 0.00 | pass (quiet case) |
+| executing-plans-cost-on-one-line-fix | 0.20 | 0.20 | 0.00 | fail: pre-existing, B1 (the CLI refuses the Bash grant; no run executes) |
+| code-review-runs-design-audit (new) | 1.00 | 0.00 | +1.00 | pass (first run 1.00 vs 0.33, after the routing fix 1.00 vs 0.00) |
+| code-review-proposes-three-axis-audit (new) | 1.00 | 0.00 | +1.00 | pass after the fix below (RED 0.33) |
+| principles-fires-on-refactor | 1.00 | 0.00 | +1.00 | pass (final review run) |
+| principles-fires-on-slow-endpoint | 1.00 | 0.00 | +1.00 | pass |
+| principles-shapes-new-module | 1.00 | 0.00 | +1.00 | pass (was 2/5 open on 2026-11-11) |
+| principles-stays-quiet-on-glossary | 1.00 | 1.00 | 0.00 | pass (quiet case) |
+| principles-stays-quiet-on-regression | 1.00 | 1.00 | 0.00 | pass (quiet case) |
+| security-audit-on-system, re-run after the 0.13.0 approval-gate wording | 0.83 | 0.50 | +0.33 | pass (`report` 2/3) |
+
+- `code-review-proposes-three-axis-audit` RED: in 2 of 3 runs "Review this
+  whole codebase" with pasted files was read as a review of pasted files
+  (Spec and Standards). `code-review` step 1 now has a "whole codebase,
+  repo, or system, even when its files are pasted" target; GREEN 3/3.
+- `code-review-runs-system-audit` (headings 1/3, skill fired 3/3): a
+  diagnostic run shows the reply proposing scope and budget for both axes
+  and waiting, as the 0.13.0 approval gate requires; the grader expects the
+  audit headings in the same turn. Maintainer's decision: the prompt now
+  approves scope and budget (grader untouched); re-run 3/3, 1.00 vs 0.00.
+- Re-runs after the minor fixes (one router row for `principles`, the
+  precedence stated once in `principles`): auth-change 1.00 vs 0.50,
+  principles-holds-security-under-pressure 1.00 vs 0.00,
+  principles-fires-on-slow-endpoint 1.00 vs 0.00.
 
 ## Open measurements
 

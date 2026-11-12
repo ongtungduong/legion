@@ -55,9 +55,9 @@ You are reviewing a code change for quality.
 This repo's standards files, each binding only the files under its own
 directory: [list of paths]
 Checklist and smell baseline, read first: [absolute path to skills/code-review/references/review-checklists.md]
-Design principles: [paths to the chosen skills/coding-principles/references/<name>.md files]
-Security checklist: [absolute path to skills/security-principles/references/security-checklist.md, or "not triggered"]
-Performance checklist: [absolute path to skills/coding-principles/references/performance.md (its final checklist), or "not triggered"]
+Design principles: [paths to the chosen skills/principles/references/<name>.md files]
+Security checklist: [absolute path to skills/principles/references/security.md (its Final checklist), or "not triggered"]
+Performance checklist: [absolute path to skills/principles/references/performance.md (its final checklist), or "not triggered"]
 
 Work through the checklist's three correctness passes first (line scan,
 removed behavior, callers), then the rest. Report, per file and hunk:
@@ -65,7 +65,8 @@ removed behavior, callers), then the rest. Report, per file and hunk:
     checklist, each with its failure scenario;
 (b) every violation of a documented repo standard, quoting the file and rule;
 (c) breaches of the design principles' decision rules or final checklist,
-    quoting the rule; a documented repo standard overrides them;
+    quoting the rule; a documented repo standard overrides them, except
+    the `security` reference, which overrides it;
 (d) reuse, simplification, and altitude problems, naming the existing helper
     or the simpler or more general change;
 (e) any baseline smell, named and with the hunk quoted, marked as a judgment
@@ -110,7 +111,7 @@ reviewer's job; report one only if you trip over it.
 
 This repo's standards files, each binding only the files under its own
 directory: [list of paths]
-Design principles: [paths to the chosen skills/coding-principles/references/<name>.md files]
+Design principles: [paths to the chosen skills/principles/references/<name>.md files]
 Checklist and smell baseline, read its Design, Readability, Reuse, Altitude,
 Leftovers, and Production readiness items and the baseline: [absolute path to skills/code-review/references/review-checklists.md]
 
@@ -118,7 +119,8 @@ Report:
 (a) every violation of a documented repo standard, quoting the file, the
     rule, and the violating line. No "spirit of the document" inferences;
 (b) breaches of the design principles' decision rules or final checklist,
-    quoting the rule; a documented repo standard overrides them;
+    quoting the rule; a documented repo standard overrides them, except
+    the `security` reference, which overrides it;
 (c) reuse, simplification, and altitude problems, naming the existing helper
     or the simpler or more general change;
 (d) baseline smells, named, with the hunk quoted, marked as judgment calls.
@@ -130,19 +132,19 @@ what was done well. Keep the report under 500 words.
 ## Security reviewer (deep, when the diff crosses a trust boundary)
 
 ```
-You are reviewing a code change for vulnerabilities, in the guidance mode of
-the security-principles skill.
+You are reviewing a code change for vulnerabilities (a focused
+security review).
 
-Read first: [absolute path to skills/security-principles/references/review.md]
-Then the relevant classes in: [absolute path to skills/security-principles/references/attack-classes.md]
-Walk each item of: [absolute path to skills/security-principles/references/security-checklist.md]
+Read first: [absolute path to skills/code-review/references/security-review.md]
+Then the relevant classes in: [absolute path to skills/code-review/references/attack-classes.md]
+Walk each item of: [absolute path to skills/principles/references/security.md (its Final checklist)]
 Trust boundaries this diff touches: [list]
 
-Follow review.md's core principles and execution safety. For each candidate
+Follow security-review.md's core principles and execution safety. For each candidate
 name the lower-trust principal, the input, the control that should stop it,
 the boundary crossed, and the concrete result. Give each a verdict
 (confirmed / needs_validation with the exact missing fact) and, for
-confirmed ones, review.md's severity. Report rejected candidates in one line
+confirmed ones, security-review.md's severity. Report rejected candidates in one line
 each. Create no audit files or output directory. Keep the report under 500
 words.
 ```

@@ -33,11 +33,11 @@ Global constraints that bind this task: [paste the plan's Global constraints]
 Decisions from earlier tasks you cannot see in the brief: [interfaces, rulings]
 My resolution of ambiguities I noticed in the brief: [or "none"]
 Design principles for this code, read before writing it:
-  [absolute paths to the chosen skills/coding-principles/references/<name>.md files]
+  [absolute paths to the chosen skills/principles/references/<name>.md files]
 Security checklist, read before writing code and answer every item:
-  [absolute path to skills/security-principles/references/security-checklist.md, or "not triggered"]
+  [absolute path to skills/principles/references/security.md (its Final checklist), or "not triggered"]
 Performance rules, read before writing code and answer every item of the final checklist:
-  [absolute path to skills/coding-principles/references/performance.md, or "not triggered"]
+  [absolute path to skills/principles/references/performance.md, or "not triggered"]
 Test quality rules, read before the first test:
   [absolute path to skills/executing-plans/references/good-tests.md]
 
@@ -47,7 +47,8 @@ How to work:
   watch it pass, then run the project's full test suite.
 - Touch only what the task requires. Match the existing style; where the
   repo's conventions are silent, follow the design principles above. Repo
-  conventions win when the two disagree.
+  conventions win when the two disagree, except the `security` reference,
+  which wins over them.
 - Every test traces to an acceptance criterion in the brief; build nothing
   that no criterion asks for.
 - Never reach green by weakening a check: no new suppressions (`@ts-ignore`,

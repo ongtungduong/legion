@@ -6,7 +6,13 @@
     "The reviewer left comments on my PR, help me respond to the review feedback",
     "Review this PR and check its blast radius on the services that call it",
     "Audit the whole repo for performance and security problems",
-    "Review PR 42 and find the bugs in it before we merge"
+    "Review PR 42 and find the bugs in it before we merge",
+    "Audit the whole codebase for performance problems only, not security",
+    "Is this login handler safe against SQL injection?",
+    "Audit our dependencies for known vulnerabilities",
+    "Do a full security audit of this codebase and write the report",
+    "Pen-test the code in this repo and find exploitable vulnerabilities",
+    "Audit the system design of this whole repository"
   ],
   "negative": [
     {
@@ -16,6 +22,10 @@
     {
       "prompt": "Turn the spec into an implementation plan",
       "owner": "writing-plans"
+    },
+    {
+      "prompt": "Design the module boundaries for the new billing service",
+      "owner": "principles"
     }
   ]
 }

@@ -113,7 +113,7 @@ below is for humans tracing where each model acts.
 
 ## Thinking-model matrix
 
-Where each of the four models changes a decision, per skill, as of 0.11.0.
+Where each of the four models changes a decision, per skill, as of 0.13.0.
 "n/a" means the model has no decision to change there; it is not a gap.
 Nothing checks this table: update a skill's row by hand when a change moves the step a model acts in.
 
@@ -124,9 +124,8 @@ Nothing checks this table: update a skill's row by hand when a change moves the 
 | `writing-plans` | n/a (the spec already rebuilt the approach) | Step 6 (pre-mortem) | Step 5 cross-task references, Interfaces blocks | Step 3 (`Slice order`) |
 | `executing-plans` | Rule 1 (spec first) | RED: name the change that would make the test fail; evidence gate step 4; doubt review | Quick path "List the reach" (callers, consumers, data) | REFACTOR: the smell that most blocks the next change |
 | `systematic-debugging` | Step 2 (a loop of facts before any hypothesis) | Step 4 (falsifiable predictions) | Gotcha on loops in the system | Step 4 (likelihood for the cost of checking) |
-| `code-review` | Spec axis (built only what the spec asks) | Step 6 (a fresh verifier tries to refute each Critical and Important finding); removed-behavior pass | Callers pass and Blast radius item | Depth table; ranking findings, folding Minor ones |
-| `coding-principles` | Step 1 (repo standards are facts); optimization step 3 (measure before naming the bottleneck) | Step 5 (break the design once); optimization step 5 (what load breaks it) | Step 3 (design questions: owner, direction, truth, failure, load); optimization step 4 (queues, retries, caches, pools) | Step 5 (effort on the one hard-to-reverse decision); only the references the change needs; optimization step 3 (largest share first) |
-| `security-principles` | Steps 1-2 (trust boundaries and assets); core principle "require a boundary and result" | Step 3 (STRIDE), step 4 (abuse cases); audit verifiers try to refute each candidate; critic personas | Step 1 (trust boundaries); audit coverage ledger and chained-boundary class | Step 7 (exposure x impact); audit hunter priority order and severity anchors |
+| `code-review` | Spec axis (built only what the spec asks); security core principle "require a boundary and result" | Step 6 (a fresh verifier tries to refute each Critical and Important finding); removed-behavior pass; audit verifiers and critic personas | Callers pass and Blast radius item; system-design audit map (owners, dependency direction, sources of truth); security coverage ledger and chained-boundary class | Depth table; ranking findings, folding Minor ones; hunter priority order and severity anchors |
+| `principles` | Step 1 (repo standards are facts); optimization step 3 (measure before naming the bottleneck); `security` reference steps 1-2 (trust boundaries and assets) | Step 5 (break the design once); optimization step 5 (what load breaks it); `security` reference step 3 (STRIDE) and step 4 (abuse cases) | Step 3 (design questions: owner, direction, truth, failure, load); optimization step 4 (queues, retries, caches, pools); `security` reference step 1 (trust boundaries) | Step 5 (effort on the one hard-to-reverse decision); only the references the change needs; optimization step 3 (largest share first); `security` reference step 7 (exposure x impact) |
 | `skill-creator` | Step 1 (what the agent lacks); step 2 (observed baseline failures are the spec) | Steps 2 and 7 (near-miss prompts) | n/a | Step 5 (write only what fixes observed failures); step 7 (cut instructions with no delta) |
 
 ## One skill for all code work (0.7.0)
@@ -243,7 +242,7 @@ has measured evidence that it works. Design doc:
 | Performance and security are wired into the chain the way `coding-principles` is | The maintainer's model: standards that `executing-plans` and `code-review` call, not skills that wait to be invoked. The design doc gets a `Non-functional` section, the plan `Security` and `Performance` lines, the quick path loads both before the first test, implementers and reviewers get the checklist paths |
 | The quick path owns the trigger lists | One owner per fact. The router row and the skill descriptions are discovery vocabulary; `code-review` and `writing-plans` point at the quick path's lists |
 | Security loads on any trust-boundary change, whatever its size; performance skips XS | A one-line change can open a hole; a one-line change rarely moves a hot path |
-| A system audit is a mode of each domain skill (`references/audit.md`), dispatched by `code-review` when the target is a whole repo, not a third skill | A separate audit skill would add an always-on description and collide with security and code-review triggers. The two audits share a report skeleton; `validate.mjs` fails if they drift. Since the security audit became Cloudflare's multi-agent workflow, `code-review` runs it in the main session (a subagent cannot start subagents) and returns its summary in the shared skeleton |
+| A system audit is a mode of each domain skill (`references/audit.md`), dispatched by `code-review` when the target is a whole repo, not a third skill | A separate audit skill would add an always-on description and collide with security and code-review triggers. The two audits share a report skeleton; `validate.mjs` fails if they drift. Since the security audit became Cloudflare's multi-agent workflow, `code-review` runs it in the main session (a subagent cannot start subagents) and returns its summary in the shared skeleton. Superseded in 0.13.0: every audit lives in `code-review/references/` as `<axis>-audit.md` |
 | Metric honesty in the performance references | A model reading source cannot see runtime cost. No speed claim without a number and its source; otherwise "potential impact" |
 | A first request to skip a safety step keeps the cheap control | Maintainer's decision after two pressure cases failed: the router's "user instructions win" let "skip the validation" and "just add a retry" bypass every skill. Now the cheap control stays with a one-line reason, and is dropped only if the user insists, matching the maintainer's "if I insist, comply" rule |
 | `hooks/guard` (PreToolUse) asks before secret files and denies whole-folder scans of `node_modules`, `dist`, `build` | A convenience guard, not a security boundary: Claude Code's permission rules remain the boundary. Bash builtins only (tested with no `PATH`), fails open, `LEGION_GUARD=off` disables it. Two opus reviews removed false positives on ordinary work; the remaining gaps are listed in the roadmap |
@@ -267,8 +266,8 @@ is rebuilt around topics instead of books.
 | Three topic references (`system-design`, `coding`, `performance`) replace the 14 per-book files | Picking a book was a proxy for picking a topic, and it left the conflicts (small functions vs deep modules, DDD vs PoEAA) to be avoided by a compatibility list. A synthesis settles each conflict once and removes the "one primary set, at most one companion" rule. The per-book sets stay upstream |
 | The coding and performance topics are split by situation: `coding-existing-code`, `performance-optimization`, `performance-web`, `audit` | A new function does not need the refactoring and legacy rules, and a hot-path review does not need the measured-optimization loop. Each file is loaded on a stated condition |
 | The workflow answers the design questions before the first test, then breaks the design once | "Right the first time" is a sequencing rule: owner, dependency direction, source of truth, failure behavior, and load are cheap to change before code exists. The Gotchas keep it from turning into invented layers |
-| `coding-principles` calls `security-principles` at the design step; `security-principles` points back for where the controls live | Validation, authorization, and tenant keys added after the structure is fixed land in the wrong layer. Security rules win over a structural preference |
-| Performance is a reference, not a skill | It is loaded by the chain on the same triggers as before; one fewer always-on description, and designing for load sits next to the data and failure rules it depends on. The performance audit keeps the name `references/audit.md` so `validate.mjs` still compares its report skeleton with the security audit's |
+| `coding-principles` calls `security-principles` at the design step; `security-principles` points back for where the controls live (superseded in 0.13.0: one `security` reference inside `principles`) | Validation, authorization, and tenant keys added after the structure is fixed land in the wrong layer. Security rules win over a structural preference |
+| Performance is a reference, not a skill | It is loaded by the chain on the same triggers as before; one fewer always-on description, and designing for load sits next to the data and failure rules it depends on. The performance audit keeps the name `references/audit.md` so `validate.mjs` still compares its report skeleton with the security audit's. Superseded in 0.13.0: it is `code-review/references/performance-audit.md` |
 
 Measured: the behavioral run against the 0.12.0 skills is in the
 `2026-11-10 full suite (0.12.0 skills)` section of `docs/evals.md`.
@@ -286,6 +285,27 @@ A split into a separate `security-audit` skill was considered and rejected.
 
 Revisit if a behavioral eval shows build or guidance prompts drifting into audit mode, or audit runs missing phase rules.
 
+Superseded in 0.13.0: `security-principles` is removed, its standard moved to `principles` and its review and audit material to `code-review` (see below).
+
+## Principles and checks split (0.13.0)
+
+Goal set by the maintainer: one standard for code (system design, coding,
+performance, security), applied to new code and to changes in existing code,
+and one place that checks code against it, for a diff or a whole repository.
+Design doc: `.legion/specs/2026-11-12-principles-merge-design.md`.
+
+| Decision | Reason |
+|---|---|
+| `coding-principles` is renamed `principles` and gains a `security` reference (the old build mode: trust boundaries, STRIDE, abuse cases, always / ask first / never, gotchas, final checklist); `security-principles` is removed | One standard loaded by the chain, one always-on description fewer. Continues 0.12.0, which folded `performance-principles` in |
+| Precedence: the `security` reference, then documented repo conventions, then the other references, then the smell baseline; a request to drop a security control keeps the cheap control and is honored only if the user insists | Maintainer's choice ("security first", 1a). Every reviewer and implementer prompt that said "repo conventions override the principles" names the exception |
+| Everything that checks code moves to `code-review`: the focused security review ("is this safe?"), `security-review.md`, `attack-classes.md`, the ten domain companions, the full-audit phases and `scripts/`, the performance audit | Maintainer's choice (approach B). The attack material is read only when checking code, so it moved with the audit; the audit now reads nothing across skills except the `principles` checklists, which removes the cost that made 0.12.4 reject a split |
+| A whole-repo audit covers system design (new `system-design-audit.md`), performance, and security; all three when no axis is named; one scope-and-budget proposal before any agent runs, and approval in the request counts | Maintainer's choice. No logic or style axis: with no spec there is no oracle, and it is the costliest axis. A design finding needs a quoted rule of `system-design.md` and a concrete failure, consistency, or change scenario |
+| Brownfield rule: code you write or change meets every loaded reference; untouched code is reported as FYI and fixed only when asked | Matches the maintainer's "change surgically" rule; the standards never widen a task |
+| `validate.mjs` compares the report skeleton of every `references/audit.md` or `references/<name>-audit.md`; the orchestration file is `system-audit-flow.md` so the rule does not mistake it for a report | Three audit reports now live in one skill |
+| Build mode does not read the domain companions | Unchanged from before the split; revisit if a design task (OAuth, multi-tenant, LLM tools) shows a miss the companions would have prevented |
+
+Measured: the 2026-11-12 rows of `docs/evals.md`.
+
 ## Artifact conventions
 
 - `.legion/specs/` and `.legion/plans/`: committed; the source of truth.
@@ -298,7 +318,7 @@ Revisit if a behavioral eval shows build or guidance prompts drifting into audit
 
 | Layer | What it checks | Where it runs | Cost |
 |---|---|---|---|
-| `scripts/validate.mjs` | Frontmatter, size, dev files leaking into `skills/`, links (none leaving a skill's root), `legion:` refs, router and README covering every skill, matching versions, a version bump when shipped files changed since the latest tag, every hook `hooks.json` runs exists and is executable, CI least privilege (permissions block, SHA-pinned actions), matching audit skeletons | CI, local | 0 |
+| `scripts/validate.mjs` | Frontmatter, size, dev files leaking into `skills/`, links (none leaving a skill's root), `legion:` refs, router and README covering every skill, matching versions, a version bump when shipped files changed since the latest tag, every hook `hooks.json` runs exists and is executable, CI least privilege (permissions block, SHA-pinned actions), matching audit skeletons (every `references/audit.md` or `*-audit.md`) | CI, local | 0 |
 | `tests/scripts/` | Each `validate.mjs` and `trigger-evals.mjs` rule fails on a copy of the repo with that defect (`LEGION_ROOT`) | CI, local | 0 |
 | `scripts/trigger-evals.mjs` | Positive prompts must rank their skill in the top 3; negative prompts must not rank the skill first; no two descriptions may be near-duplicates | CI, local | 0 |
 | `tests/hooks/` | `session-start` emits valid JSON (control characters included), carries the router without its frontmatter, and falls back when files are missing; `guard` makes the right decision on 44 inputs and runs with no `PATH` | CI, local | 0 |

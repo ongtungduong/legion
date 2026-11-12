@@ -1,0 +1,42 @@
+{
+  "positive": [
+    "This module's interface is too complex, how should I design it?",
+    "Refactor this class without changing its behavior",
+    "I need to change this legacy code that has no tests",
+    "Keep our business rules independent of the framework and database",
+    "This service needs timeouts and a circuit breaker before we ship it",
+    "Model the aggregates and domain events for the ordering context",
+    "Clean up this function, it works but is hard to read",
+    "Make this code more maintainable",
+    "This endpoint takes 3 seconds, make it faster",
+    "We have an N+1 query on the orders page",
+    "Get our LCP under 2.5 seconds",
+    "Memory keeps growing when we import large CSV files",
+    "Add timeouts and retries to the payment client",
+    "We are adding file uploads, what do we need to harden?",
+    "Our chatbot passes LLM output into a database query, is that a problem?",
+    "Where should we store API secrets for this service?"
+  ],
+  "negative": [
+    {
+      "prompt": "The checkout test fails with a TypeError, find out why",
+      "owner": "systematic-debugging"
+    },
+    {
+      "prompt": "Is this login handler safe against SQL injection?",
+      "owner": "code-review"
+    },
+    {
+      "prompt": "The search page got three times slower since yesterday's deploy",
+      "owner": "systematic-debugging"
+    },
+    {
+      "prompt": "Audit the whole repo, security and performance both",
+      "owner": "code-review"
+    },
+    {
+      "prompt": "Audit the architecture of the whole repo",
+      "owner": "code-review"
+    }
+  ]
+}

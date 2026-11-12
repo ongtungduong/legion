@@ -6,13 +6,16 @@ description: >-
   performance, reuse, repo conventions, design principles), with
   fresh-context reviewers working by angle, a concrete failure scenario for
   every finding, an independent verification pass, and severity labels;
-  audits a whole codebase for security and performance; and handles
-  responding to review feedback. Use when reviewing a diff, branch, commit
-  range, working tree, or pull request (by number or URL), when asked to
-  "review since X", to find bugs in a change, or to check work before merge,
-  when a plan's final review is due, when asked to audit or review the whole
-  repo or system, or when addressing reviewer comments, including when the
-  diff is pasted inline.
+  answers whether code is safe or vulnerable; audits a whole codebase for
+  system design, performance, and security (audit the system design or
+  architecture of a whole repo, security audit, pen-test, find
+  vulnerabilities);
+  and handles responding to review feedback. Use when reviewing a diff,
+  branch, commit range, working tree, or pull request (by number or URL),
+  when asked "is this safe?", to "review since X", to find bugs in a change,
+  or to check work before merge, when a plan's final review is due, when
+  asked to audit, pen-test, or review the whole repo or system, or when
+  addressing reviewer comments, including when the diff is pasted inline.
 license: MIT
 metadata:
   author: ongtungduong
@@ -44,24 +47,38 @@ with neither is an opinion and is not reported above Minor.
      reported as such before any review work.
    - *Pasted diff, no repo:* review the pasted text.
    - *A file or directory with no diff:* review the files as they stand on
-     the Standards axis only; a whole repository or system goes to
-     [System audit](#system-audit-no-diff).
+     the Standards axis only.
+   - *The whole codebase, repo, or system* ("review this whole codebase",
+     "audit the repo"), even when its files are pasted inline: go to
+     [System audit](#system-audit-no-diff), never the Spec and Standards pair.
+   - *A security question about code* ("is this safe?", pasted code, a file,
+     or a diff, or the triage of a reported finding; no repo-wide scope):
+     Standards axis only, Security angle only, no output directory and no
+     audit artifacts; focused agents may help and report back to the
+     current task. Read
+     [references/security-review.md](references/security-review.md), apply
+     only the relevant classes in
+     [references/attack-classes.md](references/attack-classes.md) and the
+     domain companions it indexes, and report in the focused-review output
+     format of `security-review.md` instead of the format below. A security
+     question about a design with no code is answered from the
+     `security` reference of `legion:principles`.
 2. **Find the spec:** issue references in commit messages or the PR body, a
    path the user gave, a doc under `.legion/` matching the branch, else ask.
    No spec means the Spec axis reports "no spec available".
-3. **Find the standards**, in order of precedence:
+3. **Find the standards**, in order of precedence, except that the
+   `security` reference in 3 outranks everything above it:
    1. *Documented repo standards:* `CONTRIBUTING.md`, `CODING_STANDARDS.md`,
       lint configs, and the `AGENTS.md`/`CLAUDE.md` files at the repo root
       and in each ancestor directory of a changed file. An instruction file
       binds only the files under its own directory.
    2. *Design principles:* the plan's `Design principles` references, or the
-      ones `legion:coding-principles` picks for this diff (call the Skill
+      ones `legion:principles` picks for this diff (call the Skill
       tool with it; naming them is enough, the reviewers read the files).
    3. *Security and performance:* when the diff touches what the Security or
       Performance item of the checklist covers, the absolute path of
-      `security-checklist.md` from the `security-principles` skill's
-      references folder, or of `performance.md` (for its final checklist)
-      from the `coding-principles` skill's.
+      `security.md` (its Final checklist) or `performance.md` (its final
+      checklist) from the `principles` skill's references folder.
    4. *The checklist and smell baseline* in
       [references/review-checklists.md](references/review-checklists.md):
       pass its absolute path to the reviewers, and read it yourself only
@@ -108,7 +125,8 @@ model does not change this split; the user's own instruction does.
 At deep, the Standards axis is split so each reviewer holds one question:
 Correctness hunts bugs (line scan, removed behavior, callers), Principles
 checks the documented standards, design principles, reuse, and altitude, and
-Security follows the guidance mode of `legion:security-principles`. Their
+Security follows the focused review of
+`references/security-review.md`. Their
 findings are all reported under `## Standards`.
 
 A diff over about 400 changed lines gets one line in the report saying
@@ -152,14 +170,16 @@ was checked is a complete review.
 ## Principles are part of the standard
 
 The filter above removes opinions, not principles. A breach of a rule in the
-loaded `coding-principles` references or of an item in the security or
+loaded `principles` references or of an item in the security or
 performance checklist is a finding when the reviewer quotes the rule and the
 line that breaks it, exactly like a documented repo standard; it is
 Important unless the rule's own text makes it optional. A documented repo
-standard still overrides a principle, and a smell stays a judgment call at
+standard still overrides a principle except the `security` reference, which
+overrides it, and a smell stays a judgment call at
 Minor.
 
-Security findings follow the rule of `legion:security-principles`: name the
+Security findings follow the rule of
+[references/security-review.md](references/security-review.md): name the
 lower-trust principal, the input, the boundary crossed, and the concrete
 result. One that depends on a fact outside the diff (a proxy, a deployment
 setting) is `PLAUSIBLE` with that fact named, never silently dropped and
@@ -169,8 +189,9 @@ reviewed at quick depth.
 
 ## Not findings
 
-- A problem on lines the change did not touch, outside any function it
-  touched. If it is serious (a security hole, data loss), list it once
+- For a diff target, a problem on lines the change did not touch, outside
+  any function it touched (a target with no diff has no such lines: report
+  what is there). If it is serious (a security hole, data loss), list it once
   under FYI as pre-existing; it does not change the verdict.
 - Anything a linter, formatter, type checker, or CI step already enforces.
 - A style preference with no documented rule behind it, or a rule from an
@@ -194,31 +215,15 @@ Review is read-only. Act on findings only when the user asks:
 ## System audit (no diff)
 
 When the target is a whole repository, system, or directory rather than a
-change, skip the Spec and Standards pair: there is no change to judge.
-Run the two audits side by side, however small the repo: a two-file app gets
-the same two headings with short bodies, because a request for "both audits"
-that gets one merged list leaves the reader unable to tell what was checked
-for each:
+change, read [references/system-audit-flow.md](references/system-audit-flow.md)
+and follow it instead of the Spec and Standards pair.
 
-- **Performance:** dispatch one auditor with the Agent tool,
-  `subagent_type: "general-purpose"` (a fresh context, never `fork`), no
-  worktree, `model: "sonnet"`, told to read and follow `audit.md` from the
-  `coding-principles` skill's references folder (absolute path). Give
-  it the scope (paths, entry points) and cap its report at 600 words.
-- **Security:** call the Skill tool with `legion:security-principles` and
-  run its full audit mode yourself. It dispatches its own hunters and
-  verifiers, and a subagent cannot start subagents, so it never runs inside
-  an auditor subagent. Propose its profile and budget before starting, as
-  the `audit.md` in its references folder says.
-
-Merge them under `## Security audit` (its Report summary, with the output
-directory) and `## Performance audit`, keeping each one's findings table,
-then one summary line with the count per severity. Security severities count
-as Critical (`critical`, `high`), Important (`medium`), Minor (`low`), and
-FYI (`informational`); its `needs_validation` leads are counted separately,
-never as findings. Without a subagent tool, run the performance audit and a
-guidance-mode security review yourself, and say that neither was independent
-and the security review was not a full audit.
+Loading this skill authorizes no audit and no audit files. A whole-repo
+review proposes its scope and budget and waits for approval before any agent
+runs, because a security audit spends many agent invocations; approval
+given in the request counts. If a security
+request could mean a focused review or a full audit, ask one focused
+question before creating files.
 
 ## Receiving feedback
 

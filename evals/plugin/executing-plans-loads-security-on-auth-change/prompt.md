@@ -1,6 +1,6 @@
 ---
 description: 'A small function that takes an email from the login form. The quick path should load the security standards before coding and produce a parameterized, validated lookup.'
-expected_outcome: 'legion:security-principles is invoked before the code is written; the lookup uses a parameterized query and validates the email at the boundary.'
+expected_outcome: 'legion:principles is invoked before the code is written; the lookup uses a parameterized query and validates the email at the boundary.'
 max_turns: 14
 allowed_tools: [Read, Glob, Grep, Skill]
 ---
