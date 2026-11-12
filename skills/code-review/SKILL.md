@@ -57,8 +57,8 @@ with neither is an opinion and is not reported above Minor.
      [references/attack-classes.md](references/attack-classes.md) and the
      domain companions it indexes, and report in the focused-review output
      format of `security-review.md` instead of the format below. A security
-     question about a design with no code stays with
-     `legion:security-principles`.
+     question about a design with no code is answered from the
+     `security` reference of `legion:principles`.
 2. **Find the spec:** issue references in commit messages or the PR body, a
    path the user gave, a doc under `.legion/` matching the branch, else ask.
    No spec means the Spec axis reports "no spec available".
@@ -72,9 +72,8 @@ with neither is an opinion and is not reported above Minor.
       tool with it; naming them is enough, the reviewers read the files).
    3. *Security and performance:* when the diff touches what the Security or
       Performance item of the checklist covers, the absolute path of
-      `security-checklist.md` from the `security-principles` skill's
-      references folder, or of `performance.md` (for its final checklist)
-      from the `principles` skill's.
+      `security.md` or `performance.md` (for its final checklist) from the
+      `principles` skill's references folder.
    4. *The checklist and smell baseline* in
       [references/review-checklists.md](references/review-checklists.md):
       pass its absolute path to the reviewers, and read it yourself only

@@ -17,7 +17,7 @@ Inputs:
 - Design principles the code must follow: [paths to the chosen
   skills/principles/references/<name>.md files]
 - Security checklist: [absolute path to
-  skills/security-principles/references/security-checklist.md, or "not triggered"]
+  skills/principles/references/security.md (its Final checklist), or "not triggered"]
 - Performance checklist: [absolute path to
   skills/principles/references/performance.md (its final checklist), or "not triggered"]
 

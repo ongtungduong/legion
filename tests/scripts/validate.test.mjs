@@ -46,7 +46,7 @@ test('clean copy passes', () => {
 
 test('link out of the skill root fails', () => {
   const root = copyRepo();
-  edit(root, 'skills/security-principles/references/security-checklist.md', (t) => `${t}\nSee [x](../../brainstorming/SKILL.md).\n`);
+  edit(root, 'skills/principles/references/security.md', (t) => `${t}\nSee [x](../../brainstorming/SKILL.md).\n`);
   const { code, out } = run('validate.mjs', root);
   assert.equal(code, 1, out);
   assert.match(out, /leaves the skill root/);

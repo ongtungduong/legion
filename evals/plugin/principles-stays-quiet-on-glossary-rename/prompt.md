@@ -1,6 +1,6 @@
 ---
 description: 'Near miss: a glossary rename, no untrusted input or secrets.'
-expected_outcome: 'legion:security-principles is not invoked.'
+expected_outcome: 'legion:principles is not invoked.'
 max_turns: 6
 allowed_tools: [Read, Glob, Grep, Skill]
 ---

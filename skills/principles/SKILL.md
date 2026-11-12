@@ -1,18 +1,20 @@
 ---
 name: principles
 description: >-
-  Gets design and code right the first time with three rule references
-  distilled from classic engineering books: system design (boundaries, domain
-  model, data consistency, failure handling), coding (readable construction,
-  refactoring, legacy code), and performance (designing for load, measured
-  optimization). Use when designing a function, class, module interface, API,
-  service, domain model, or data flow; when asked to refactor, clean up,
-  simplify, restructure, or make code maintainable without changing behavior;
-  to change legacy code that has no tests; to add timeouts, retries, or
-  circuit breakers; or to make code, an endpoint, or a query faster, cut
-  latency, memory, or bundle size, fix an N+1 query, profile, or get Core Web
-  Vitals (LCP, INP, CLS) under a target, even when the code is pasted
-  inline.
+  Gets design and code right the first time with four rule references: system
+  design (boundaries, domain model, data consistency, failure handling),
+  coding (readable construction, refactoring, legacy code), performance
+  (designing for load, measured optimization), and security (trust
+  boundaries, abuse cases, always / ask-first / never controls). Use when
+  designing a function, class, module interface, API, service, domain model,
+  or data flow; when asked to refactor, clean up, simplify, restructure, or
+  make code maintainable without changing behavior; to change legacy code
+  that has no tests; to add timeouts, retries, or circuit breakers; to make
+  code, an endpoint, or a query faster, cut latency, memory, or bundle size,
+  fix an N+1 query, or get Core Web Vitals (LCP, INP, CLS) under a target; or
+  when writing code that handles untrusted input, login, sessions,
+  authorization, secrets, uploads, user-supplied URLs, third-party packages,
+  personal data, or LLM output, even when the code is pasted inline.
 license: MIT
 metadata:
   author: ongtungduong
@@ -21,8 +23,8 @@ metadata:
 # Principles
 
 Decide the design before the code, then write the code to rules that hold
-it there. The rules live in three references (system design, coding,
-performance), each a synthesis of the classic books with their
+it there. The rules live in four references (system design, coding,
+performance, security), each a synthesis of the classic books with their
 contradictions already settled, each ending in a final checklist. Load only
 the ones the change needs: a design fixed after the code exists costs a
 rewrite, and a rule list nobody needed dilutes the ones that matter.
@@ -32,7 +34,8 @@ rewrite, and a rule list nobody needed dilutes the ones that matter.
 1. **Repo standards first.** Read `CONTRIBUTING.md`,
    `AGENTS.md`/`CLAUDE.md`, lint configs, and the patterns of the
    surrounding code. They are facts; a documented project convention
-   overrides any rule here, and the references fill the gaps.
+   overrides any rule here except the `security` reference, and the
+   references fill the gaps.
 2. **Pick the references** from the table below, or load exactly the ones
    on the plan's `Design principles` line so implementer and reviewer apply
    the same standard. Read each with the Read tool at
@@ -45,12 +48,17 @@ rewrite, and a rule list nobody needed dilutes the ones that matter.
    behavior when a dependency fails, load, trust boundaries. When
    `performance` is loaded, name the hot path and the data that grows. An
    open answer is settled now, with the user if it is theirs to decide.
-4. **Secure by design.** If the change crosses a trust boundary (the cases in
-   the `legion:security-principles` description), call the Skill
-   tool with `legion:security-principles` before the design is fixed and follow its build mode. Its trust boundaries, abuse cases,
-   and always / ask-first / never boundaries are design inputs: they decide
-   where validation and authorization sit, and its first abuse case is the
-   first test. Its rules win over a structural preference here.
+4. **Secure by design.** If the change crosses a trust boundary (untrusted
+   input, auth, sessions, secrets, uploads, user-supplied URLs, third-party
+   packages, personal data, LLM output), whatever its size, read
+   `references/security.md` before the design is fixed and follow its
+   workflow. Its trust boundaries, abuse cases, and always / ask-first /
+   never boundaries are design inputs: they decide where validation and
+   authorization sit, and its first abuse case is the first test.
+   Order: the `security` reference, then documented repo conventions, then
+   the other references, then the smell baseline. When the user asks to drop
+   a security control, keep the cheap control and say in one line what it
+   stops; drop it only if the user insists after that.
 5. **Break the design once.** Name the input, load, failure, or
    future change most likely to make this design wrong, and adjust or
    record why it holds. Spend the effort on the one decision that is
@@ -74,6 +82,7 @@ rewrite, and a rule list nobody needed dilutes the ones that matter.
 | Touches a query or remote call in a loop, a hot path, data that grows, a cache, rendering, or a stated budget | `performance` |
 | Makes existing code faster or lighter toward a goal | `performance-optimization` (with `performance`) |
 | Browser-facing: page load, interaction latency, layout shift, bundle size | `performance-web` (with `performance`) |
+| Crosses a trust boundary (untrusted input, auth, sessions, secrets, uploads, user-supplied URLs, third-party packages, personal data, LLM output), whatever the size | `security` |
 
 Most changes need `coding` alone. New work with a boundary reads
 `system-design` first, because it decides what the code will be. Loading
@@ -84,7 +93,6 @@ everything by default defeats the split.
 ```
 Principles: <reference> [+ <reference>] - <one-line reason>
 Design: <owner; dependency direction; source of truth; failure behavior; load>   (when system-design was loaded)
-Security: legion:security-principles applied | no trust boundary crossed
 Checklist: <reference>: all yes | <item>: no - <why, or what was done instead>
 ```
 
@@ -114,6 +122,8 @@ A measured optimization reports in the format at the end of
 - Security is not a later pass. A validation layer, an authorization check,
   or a tenant key added after the structure is fixed ends up bolted onto
   the wrong layer; that is why step 4 comes before the code.
+- Code you write or change meets every loaded reference; violations in code
+  the task does not touch are reported as FYI and fixed only when asked.
 - `references/` is relative to this skill's base directory (shown when the
   skill loads), not to the project you are working in; a relative `cd` or
   `cat` from the project fails.
