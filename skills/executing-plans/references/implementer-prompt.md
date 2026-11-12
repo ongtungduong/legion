@@ -47,7 +47,8 @@ How to work:
   watch it pass, then run the project's full test suite.
 - Touch only what the task requires. Match the existing style; where the
   repo's conventions are silent, follow the design principles above. Repo
-  conventions win when the two disagree.
+  conventions win when the two disagree, except the `security` reference,
+  which wins over them.
 - Every test traces to an acceptance criterion in the brief; build nothing
   that no criterion asks for.
 - Never reach green by weakening a check: no new suppressions (`@ts-ignore`,

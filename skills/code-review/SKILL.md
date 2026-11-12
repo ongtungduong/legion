@@ -72,8 +72,8 @@ with neither is an opinion and is not reported above Minor.
       tool with it; naming them is enough, the reviewers read the files).
    3. *Security and performance:* when the diff touches what the Security or
       Performance item of the checklist covers, the absolute path of
-      `security.md` or `performance.md` (for its final checklist) from the
-      `principles` skill's references folder.
+      `security.md` (its Final checklist) or `performance.md` (its final
+      checklist) from the `principles` skill's references folder.
    4. *The checklist and smell baseline* in
       [references/review-checklists.md](references/review-checklists.md):
       pass its absolute path to the reviewers, and read it yourself only
@@ -169,7 +169,8 @@ loaded `principles` references or of an item in the security or
 performance checklist is a finding when the reviewer quotes the rule and the
 line that breaks it, exactly like a documented repo standard; it is
 Important unless the rule's own text makes it optional. A documented repo
-standard still overrides a principle, and a smell stays a judgment call at
+standard still overrides a principle except the `security` reference, which
+overrides it, and a smell stays a judgment call at
 Minor.
 
 Security findings follow the rule of

@@ -65,7 +65,8 @@ removed behavior, callers), then the rest. Report, per file and hunk:
     checklist, each with its failure scenario;
 (b) every violation of a documented repo standard, quoting the file and rule;
 (c) breaches of the design principles' decision rules or final checklist,
-    quoting the rule; a documented repo standard overrides them;
+    quoting the rule; a documented repo standard overrides them, except
+    the `security` reference, which overrides it;
 (d) reuse, simplification, and altitude problems, naming the existing helper
     or the simpler or more general change;
 (e) any baseline smell, named and with the hunk quoted, marked as a judgment
@@ -118,7 +119,8 @@ Report:
 (a) every violation of a documented repo standard, quoting the file, the
     rule, and the violating line. No "spirit of the document" inferences;
 (b) breaches of the design principles' decision rules or final checklist,
-    quoting the rule; a documented repo standard overrides them;
+    quoting the rule; a documented repo standard overrides them, except
+    the `security` reference, which overrides it;
 (c) reuse, simplification, and altitude problems, naming the existing helper
     or the simpler or more general change;
 (d) baseline smells, named, with the hunk quoted, marked as judgment calls.
