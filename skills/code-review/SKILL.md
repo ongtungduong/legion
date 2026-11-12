@@ -7,7 +7,9 @@ description: >-
   fresh-context reviewers working by angle, a concrete failure scenario for
   every finding, an independent verification pass, and severity labels;
   answers whether code is safe or vulnerable; audits a whole codebase for
-  security and performance (security audit, pen-test, find vulnerabilities);
+  system design, performance, and security (audit the system design or
+  architecture of a whole repo, security audit, pen-test, find
+  vulnerabilities);
   and handles responding to review feedback. Use when reviewing a diff,
   branch, commit range, working tree, or pull request (by number or URL),
   when asked "is this safe?", to "review since X", to find bugs in a change,
@@ -215,7 +217,8 @@ and follow it instead of the Spec and Standards pair.
 
 Loading this skill authorizes no audit and no audit files. A whole-repo
 review proposes its scope and budget and waits for approval before any agent
-runs, because a security audit spends many agent invocations. If a security
+runs, because a security audit spends many agent invocations; approval
+given in the request counts. If a security
 request could mean a focused review or a full audit, ask one focused
 question before creating files.
 

@@ -11,7 +11,8 @@
     "Is this login handler safe against SQL injection?",
     "Audit our dependencies for known vulnerabilities",
     "Do a full security audit of this codebase and write the report",
-    "Pen-test the code in this repo and find exploitable vulnerabilities"
+    "Pen-test the code in this repo and find exploitable vulnerabilities",
+    "Audit the system design of this whole repository"
   ],
   "negative": [
     {
@@ -21,6 +22,10 @@
     {
       "prompt": "Turn the spec into an implementation plan",
       "owner": "writing-plans"
+    },
+    {
+      "prompt": "Design the module boundaries for the new billing service",
+      "owner": "principles"
     }
   ]
 }

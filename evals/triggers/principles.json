@@ -33,6 +33,10 @@
     {
       "prompt": "Audit the whole repo, security and performance both",
       "owner": "code-review"
+    },
+    {
+      "prompt": "Audit the architecture of the whole repo",
+      "owner": "code-review"
     }
   ]
 }
