@@ -273,6 +273,19 @@ is rebuilt around topics instead of books.
 Measured: the behavioral run against the 0.12.0 skills is in the
 `2026-11-10 full suite (0.12.0 skills)` section of `docs/evals.md`.
 
+## Security audit stays inside security-principles (0.12.4)
+
+A split into a separate `security-audit` skill was considered and rejected.
+
+| Point | Finding |
+|---|---|
+| Size (about 57% of `skills/`) | Not a context cost: only `SKILL.md` (about 6.7 KB) loads on invoke. Audit-only files (`audit.md`, `reconnaissance.md`, `hunting.md`, `validation-and-reporting.md`) load in full-audit mode only, and the 77 KB of `scripts/` are run, not read |
+| Two products | True, but they share `review.md`, `attack-classes.md`, and the ten domain companions (about 110 KB). A split would either copy them or read across skill directories |
+| Triggering | One more always-on description, competing with `security-principles` and `code-review` for "audit". Today the mode gate ("loading this skill does not authorize a full audit"; ask when ambiguous) keeps a costly multi-agent run from starting on a trigger match. `disable-model-invocation` would block the `code-review` system audit, which loads it through the Skill tool |
+| Nested references | Real: phase files were reachable only through `audit.md`. Fixed by linking them from `SKILL.md` |
+
+Revisit if a behavioral eval shows build or guidance prompts drifting into audit mode, or audit runs missing phase rules.
+
 ## Artifact conventions
 
 - `.legion/specs/` and `.legion/plans/`: committed; the source of truth.

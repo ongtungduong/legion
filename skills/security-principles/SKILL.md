@@ -44,7 +44,14 @@ audit or the creation of audit files.
   asks for a full, comprehensive, or end-to-end security review, or requests
   report artifacts; or `code-review` runs a system audit. Read
   [references/review.md](references/review.md), then
-  [references/audit.md](references/audit.md), and run all six phases.
+  [references/audit.md](references/audit.md), and run all six phases. Read
+  each phase file in full when its phase starts, not a preview:
+  [references/reconnaissance.md](references/reconnaissance.md) (phase 1),
+  [references/attack-classes.md](references/attack-classes.md) (phase 1
+  companion selection and every hunter prompt),
+  [references/hunting.md](references/hunting.md) (phase 2), and
+  [references/validation-and-reporting.md](references/validation-and-reporting.md)
+  (phases 3-6). Domain companions are read only when phase 1 selects them.
 
 If the request could mean either guidance or a full audit, ask one focused
 question before creating files: a full audit spends many agent invocations.
