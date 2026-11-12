@@ -47,8 +47,10 @@ with neither is an opinion and is not reported above Minor.
      reported as such before any review work.
    - *Pasted diff, no repo:* review the pasted text.
    - *A file or directory with no diff:* review the files as they stand on
-     the Standards axis only; a whole repository or system goes to
-     [System audit](#system-audit-no-diff).
+     the Standards axis only.
+   - *The whole codebase, repo, or system* ("review this whole codebase",
+     "audit the repo"), even when its files are pasted inline: go to
+     [System audit](#system-audit-no-diff), never the Spec and Standards pair.
    - *A security question about code* ("is this safe?", pasted code, a file,
      or a diff, or the triage of a reported finding; no repo-wide scope):
      Standards axis only, Security angle only, no output directory and no
