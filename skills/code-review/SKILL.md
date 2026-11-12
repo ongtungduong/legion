@@ -6,13 +6,14 @@ description: >-
   performance, reuse, repo conventions, design principles), with
   fresh-context reviewers working by angle, a concrete failure scenario for
   every finding, an independent verification pass, and severity labels;
-  audits a whole codebase for security and performance; and handles
-  responding to review feedback. Use when reviewing a diff, branch, commit
-  range, working tree, or pull request (by number or URL), when asked to
-  "review since X", to find bugs in a change, or to check work before merge,
-  when a plan's final review is due, when asked to audit or review the whole
-  repo or system, or when addressing reviewer comments, including when the
-  diff is pasted inline.
+  answers whether code is safe or vulnerable; audits a whole codebase for
+  security and performance (security audit, pen-test, find vulnerabilities);
+  and handles responding to review feedback. Use when reviewing a diff,
+  branch, commit range, working tree, or pull request (by number or URL),
+  when asked "is this safe?", to "review since X", to find bugs in a change,
+  or to check work before merge, when a plan's final review is due, when
+  asked to audit, pen-test, or review the whole repo or system, or when
+  addressing reviewer comments, including when the diff is pasted inline.
 license: MIT
 metadata:
   author: ongtungduong
@@ -46,6 +47,16 @@ with neither is an opinion and is not reported above Minor.
    - *A file or directory with no diff:* review the files as they stand on
      the Standards axis only; a whole repository or system goes to
      [System audit](#system-audit-no-diff).
+   - *A security question about code* ("is this safe?", pasted code, a file,
+     or a diff, no repo-wide scope): Standards axis only, Security angle
+     only, no output directory. Read
+     [references/security-review.md](references/security-review.md), apply
+     only the relevant classes in
+     [references/attack-classes.md](references/attack-classes.md) and the
+     domain companions it indexes, and report in the guidance output format
+     of `security-review.md` instead of the format below. A security
+     question about a design with no code stays with
+     `legion:security-principles`.
 2. **Find the spec:** issue references in commit messages or the PR body, a
    path the user gave, a doc under `.legion/` matching the branch, else ask.
    No spec means the Spec axis reports "no spec available".
@@ -108,7 +119,8 @@ model does not change this split; the user's own instruction does.
 At deep, the Standards axis is split so each reviewer holds one question:
 Correctness hunts bugs (line scan, removed behavior, callers), Principles
 checks the documented standards, design principles, reuse, and altitude, and
-Security follows the guidance mode of `legion:security-principles`. Their
+Security follows the focused review of
+`references/security-review.md`. Their
 findings are all reported under `## Standards`.
 
 A diff over about 400 changed lines gets one line in the report saying
@@ -159,7 +171,8 @@ Important unless the rule's own text makes it optional. A documented repo
 standard still overrides a principle, and a smell stays a judgment call at
 Minor.
 
-Security findings follow the rule of `legion:security-principles`: name the
+Security findings follow the rule of
+[references/security-review.md](references/security-review.md): name the
 lower-trust principal, the input, the boundary crossed, and the concrete
 result. One that depends on a fact outside the diff (a proxy, a deployment
 setting) is `PLAUSIBLE` with that fact named, never silently dropped and
@@ -196,6 +209,12 @@ Review is read-only. Act on findings only when the user asks:
 When the target is a whole repository, system, or directory rather than a
 change, read [references/system-audit-flow.md](references/system-audit-flow.md)
 and follow it instead of the Spec and Standards pair.
+
+Loading this skill authorizes no audit and no audit files. A whole-repo
+review proposes its scope and budget and waits for approval before any agent
+runs, because a security audit spends many agent invocations. If a security
+request could mean a focused review or a full audit, ask one focused
+question before creating files.
 
 ## Receiving feedback
 

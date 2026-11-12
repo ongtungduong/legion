@@ -56,7 +56,7 @@ This repo's standards files, each binding only the files under its own
 directory: [list of paths]
 Checklist and smell baseline, read first: [absolute path to skills/code-review/references/review-checklists.md]
 Design principles: [paths to the chosen skills/principles/references/<name>.md files]
-Security checklist: [absolute path to skills/security-principles/references/security-checklist.md, or "not triggered"]
+Security checklist: [absolute path to security-checklist.md of the security-principles folder, or "not triggered"]
 Performance checklist: [absolute path to skills/principles/references/performance.md (its final checklist), or "not triggered"]
 
 Work through the checklist's three correctness passes first (line scan,
@@ -130,19 +130,19 @@ what was done well. Keep the report under 500 words.
 ## Security reviewer (deep, when the diff crosses a trust boundary)
 
 ```
-You are reviewing a code change for vulnerabilities, in the guidance mode of
-the security-principles skill.
+You are reviewing a code change for vulnerabilities (a focused
+security review).
 
-Read first: [absolute path to skills/security-principles/references/review.md]
-Then the relevant classes in: [absolute path to skills/security-principles/references/attack-classes.md]
-Walk each item of: [absolute path to skills/security-principles/references/security-checklist.md]
+Read first: [absolute path to skills/code-review/references/security-review.md]
+Then the relevant classes in: [absolute path to skills/code-review/references/attack-classes.md]
+Walk each item of: [absolute path to security-checklist.md of the security-principles folder]
 Trust boundaries this diff touches: [list]
 
-Follow review.md's core principles and execution safety. For each candidate
+Follow security-review.md's core principles and execution safety. For each candidate
 name the lower-trust principal, the input, the control that should stop it,
 the boundary crossed, and the concrete result. Give each a verdict
 (confirmed / needs_validation with the exact missing fact) and, for
-confirmed ones, review.md's severity. Report rejected candidates in one line
+confirmed ones, security-review.md's severity. Report rejected candidates in one line
 each. Create no audit files or output directory. Keep the report under 500
 words.
 ```

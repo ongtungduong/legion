@@ -12,9 +12,9 @@ const {
   isSafeRelativePath,
   preflightJsonText,
   validateDocument,
-} = require("../../skills/security-principles/scripts/validate-coverage-ledger.cjs");
+} = require("../../skills/code-review/scripts/validate-coverage-ledger.cjs");
 
-const validatorPath = path.join(__dirname, "..", "..", "skills", "security-principles", "scripts", "validate-coverage-ledger.cjs");
+const validatorPath = path.join(__dirname, "..", "..", "skills", "code-review", "scripts", "validate-coverage-ledger.cjs");
 const CLI_TIMEOUT_MS = 5000;
 const HOSTILE_CLI_TIMEOUT_MS = 15000;
 const HAS_SAFE_INPUT_OPEN = Number.isInteger(fs.constants.O_NOFOLLOW) &&

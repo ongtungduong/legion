@@ -1,6 +1,6 @@
 ---
-description: 'A direct safety question about a handler. security-principles should fire.'
-expected_outcome: 'legion:security-principles is invoked; the reply flags the injection.'
+description: 'A direct safety question about a handler. code-review should fire.'
+expected_outcome: 'legion:code-review is invoked; the reply flags the injection.'
 max_turns: 8
 allowed_tools: [Read, Glob, Grep, Skill]
 ---
