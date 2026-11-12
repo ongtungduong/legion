@@ -39,7 +39,7 @@ Command: `claude plugin eval . --no-publish --model sonnet --runs 3 --threshold 
 | 2026-11-11 | 2.1.322 | sonnet | B2 both arms (4 brainstorming-ab cases), no-plugin arm dropped, `-j 3` | 5 x 1 arm each | 3.45 | rule 1 invalid (hats `dominant-reuse` fires 2/5) |
 | 2026-11-11 | 2.1.322 | sonnet, haiku | B3 hard siblings, 5 cases | 3 x 2 arms | 2.55 | see B3 result |
 | 2026-11-11 | 2.1.322 | haiku | full suite, 39 cases (includes the 4 ab cases, 5 hard siblings, and B1 without Bash) | 3 x 2 arms | 1.66 | 28/34 scored cases at >= 0.66, 3 run errors |
-| 2026-11-12 | 2.1.322 | sonnet | 0.13.0 principles merge: 10 affected cases, one `--case` each, plus 3 diagnostic runs and a re-run after one fix | 3 x 2 arms (diagnostics 1 x 1) | 6.35 | 8/10 at >= 0.66; 2 below the bar (see section) |
+| 2026-11-12 | 2.1.322 | sonnet | 0.13.0 principles merge: 15 affected cases, one `--case` each, plus 3 diagnostic runs and re-runs after fixes | 3 x 2 arms (diagnostics 1 x 1) | 8.60 | 13/15 at >= 0.66; 2 below the bar (see section) |
 
 ### 2026-11-09 baseline (0.10.0 skills)
 
@@ -504,6 +504,12 @@ sonnet.
 | executing-plans-cost-on-one-line-fix | 0.20 | 0.20 | 0.00 | fail: pre-existing, B1 (the CLI refuses the Bash grant; no run executes) |
 | code-review-runs-design-audit (new) | 1.00 | 0.00 | +1.00 | pass (first run 1.00 vs 0.33, after the routing fix 1.00 vs 0.00) |
 | code-review-proposes-three-axis-audit (new) | 1.00 | 0.00 | +1.00 | pass after the fix below (RED 0.33) |
+| principles-fires-on-refactor | 1.00 | 0.00 | +1.00 | pass (final review run) |
+| principles-fires-on-slow-endpoint | 1.00 | 0.00 | +1.00 | pass |
+| principles-shapes-new-module | 1.00 | 0.00 | +1.00 | pass (was 2/5 open on 2026-11-11) |
+| principles-stays-quiet-on-glossary | 1.00 | 1.00 | 0.00 | pass (quiet case) |
+| principles-stays-quiet-on-regression | 1.00 | 1.00 | 0.00 | pass (quiet case) |
+| security-audit-on-system, re-run after the 0.13.0 approval-gate wording | 0.83 | 0.50 | +0.33 | pass (`report` 2/3) |
 
 - `code-review-proposes-three-axis-audit` RED: in 2 of 3 runs "Review this
   whole codebase" with pasted files was read as a review of pasted files
