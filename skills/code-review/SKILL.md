@@ -66,7 +66,8 @@ with neither is an opinion and is not reported above Minor.
 2. **Find the spec:** issue references in commit messages or the PR body, a
    path the user gave, a doc under `.legion/` matching the branch, else ask.
    No spec means the Spec axis reports "no spec available".
-3. **Find the standards**, in order of precedence:
+3. **Find the standards**, in order of precedence, except that the
+   `security` reference in 3 outranks everything above it:
    1. *Documented repo standards:* `CONTRIBUTING.md`, `CODING_STANDARDS.md`,
       lint configs, and the `AGENTS.md`/`CLAUDE.md` files at the repo root
       and in each ancestor directory of a changed file. An instruction file
