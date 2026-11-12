@@ -71,7 +71,7 @@ cause.
       choosing the fix: `legion:security-principles` when the cause is a
       security flaw (injection, missing authorization, leaked secret), then
       look for the same flaw at the other trust boundaries;
-      `legion:coding-principles` for a performance regression (its
+      `legion:principles` for a performance regression (its
       `performance-optimization` reference, entering at the fix step with
       the step 5 baseline, since the cause is already found) or when the
       root-cause fix restructures code rather than changing a line.

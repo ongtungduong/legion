@@ -1,5 +1,5 @@
 ---
-description: 'A new module written from scratch. The chain should load coding-principles, name its references, and answer their checklist; the code should keep parsing and aggregation apart.'
+description: 'A new module written from scratch. The chain should load principles, name its references, and answer their checklist; the code should keep parsing and aggregation apart.'
 expected_outcome: 'The reply has a "Principles:" line naming a reference and answers its checklist; parsing and per-customer totals are separate functions with tests.'
 max_turns: 14
 allowed_tools: [Read, Glob, Grep, Skill]

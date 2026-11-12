@@ -1,5 +1,5 @@
 ---
-name: coding-principles
+name: principles
 description: >-
   Gets design and code right the first time with three rule references
   distilled from classic engineering books: system design (boundaries, domain
@@ -18,7 +18,7 @@ metadata:
   author: ongtungduong
 ---
 
-# Coding Principles
+# Principles
 
 Decide the design before the code, then write the code to rules that hold
 it there. The rules live in three references (system design, coding,

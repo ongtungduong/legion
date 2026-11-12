@@ -55,9 +55,9 @@ You are reviewing a code change for quality.
 This repo's standards files, each binding only the files under its own
 directory: [list of paths]
 Checklist and smell baseline, read first: [absolute path to skills/code-review/references/review-checklists.md]
-Design principles: [paths to the chosen skills/coding-principles/references/<name>.md files]
+Design principles: [paths to the chosen skills/principles/references/<name>.md files]
 Security checklist: [absolute path to skills/security-principles/references/security-checklist.md, or "not triggered"]
-Performance checklist: [absolute path to skills/coding-principles/references/performance.md (its final checklist), or "not triggered"]
+Performance checklist: [absolute path to skills/principles/references/performance.md (its final checklist), or "not triggered"]
 
 Work through the checklist's three correctness passes first (line scan,
 removed behavior, callers), then the rest. Report, per file and hunk:
@@ -110,7 +110,7 @@ reviewer's job; report one only if you trip over it.
 
 This repo's standards files, each binding only the files under its own
 directory: [list of paths]
-Design principles: [paths to the chosen skills/coding-principles/references/<name>.md files]
+Design principles: [paths to the chosen skills/principles/references/<name>.md files]
 Checklist and smell baseline, read its Design, Readability, Reuse, Altitude,
 Leftovers, and Production readiness items and the baseline: [absolute path to skills/code-review/references/review-checklists.md]
 

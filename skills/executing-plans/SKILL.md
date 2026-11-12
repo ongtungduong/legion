@@ -32,7 +32,7 @@ take that path once per task; without one, the request is a plan of one task.
    the test, because adapting it turns test-first into test-after. Only the
    user grants exceptions (throwaway spike, generated code, pure config).
 3. **Principles.** Code follows the references loaded with
-   `legion:coding-principles`, or for an XS change inside existing code, the
+   `legion:principles`, or for an XS change inside existing code, the
    surrounding code's conventions; a documented repo convention wins where
    they disagree.
 4. **Evidence.** No "done", "fixed", or "passing" without a check run in the
@@ -57,7 +57,7 @@ cause that only looks obvious from reading the code is still unknown.
    the change is not trivial, write them in one to three lines and confirm
    them with the user before coding.
 2. **Load the standards** before the first test, with the Skill tool:
-   - `legion:coding-principles` whenever the change adds a function,
+   - `legion:principles` whenever the change adds a function,
      class, module, or interface, however small, or reshapes one; it names
      its references in one line, settles the design before the first test,
      and its rules shape GREEN and REFACTOR. The report's `Principles:`
@@ -125,7 +125,7 @@ use. Cite the URL in the report's `Sources:` line, or list the API under
 For a bug, the first test reproduces the reported symptom. For existing code
 without tests, first write characterization tests that pin what it does today,
 even where that looks wrong, then change it (the `coding-existing-code`
-reference of `legion:coding-principles` covers breaking dependencies to get
+reference of `legion:principles` covers breaking dependencies to get
 a seam). Those tests stay in the suite; they are the point, not scaffolding.
 
 ## The evidence gate

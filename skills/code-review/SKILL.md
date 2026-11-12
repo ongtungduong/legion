@@ -55,13 +55,13 @@ with neither is an opinion and is not reported above Minor.
       and in each ancestor directory of a changed file. An instruction file
       binds only the files under its own directory.
    2. *Design principles:* the plan's `Design principles` references, or the
-      ones `legion:coding-principles` picks for this diff (call the Skill
+      ones `legion:principles` picks for this diff (call the Skill
       tool with it; naming them is enough, the reviewers read the files).
    3. *Security and performance:* when the diff touches what the Security or
       Performance item of the checklist covers, the absolute path of
       `security-checklist.md` from the `security-principles` skill's
       references folder, or of `performance.md` (for its final checklist)
-      from the `coding-principles` skill's.
+      from the `principles` skill's.
    4. *The checklist and smell baseline* in
       [references/review-checklists.md](references/review-checklists.md):
       pass its absolute path to the reviewers, and read it yourself only
@@ -152,7 +152,7 @@ was checked is a complete review.
 ## Principles are part of the standard
 
 The filter above removes opinions, not principles. A breach of a rule in the
-loaded `coding-principles` references or of an item in the security or
+loaded `principles` references or of an item in the security or
 performance checklist is a finding when the reviewer quotes the rule and the
 line that breaks it, exactly like a documented repo standard; it is
 Important unless the rule's own text makes it optional. A documented repo
@@ -203,7 +203,7 @@ for each:
 - **Performance:** dispatch one auditor with the Agent tool,
   `subagent_type: "general-purpose"` (a fresh context, never `fork`), no
   worktree, `model: "sonnet"`, told to read and follow `audit.md` from the
-  `coding-principles` skill's references folder (absolute path). Give
+  `principles` skill's references folder (absolute path). Give
   it the scope (paths, entry points) and cap its report at 600 words.
 - **Security:** call the Skill tool with `legion:security-principles` and
   run its full audit mode yourself. It dispatches its own hunters and

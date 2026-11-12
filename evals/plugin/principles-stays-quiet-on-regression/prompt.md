@@ -1,6 +1,6 @@
 ---
-description: 'Near miss. A page got slower after a deploy: a regression, which belongs to systematic-debugging, not coding-principles.'
-expected_outcome: 'legion:coding-principles is not invoked; the reply treats it as a regression to reproduce and bisect.'
+description: 'Near miss. A page got slower after a deploy: a regression, which belongs to systematic-debugging, not principles.'
+expected_outcome: 'legion:principles is not invoked; the reply treats it as a regression to reproduce and bisect.'
 max_turns: 8
 allowed_tools: [Read, Glob, Grep, Skill]
 ---
