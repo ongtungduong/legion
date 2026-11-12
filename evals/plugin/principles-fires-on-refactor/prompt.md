@@ -1,6 +1,6 @@
 ---
-description: 'A behavior-preserving cleanup request with code pasted inline. coding-principles should fire and name the references it applies.'
-expected_outcome: 'legion:coding-principles is invoked; the reply names the references it applies.'
+description: 'A behavior-preserving cleanup request with code pasted inline. principles should fire and name the references it applies.'
+expected_outcome: 'legion:principles is invoked; the reply names the references it applies.'
 max_turns: 10
 allowed_tools: [Read, Glob, Grep, Skill]
 ---

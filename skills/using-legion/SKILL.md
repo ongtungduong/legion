@@ -45,8 +45,8 @@ it. Questions and trivial edits get answered directly, with no skill.
 | Any production code change, with or without a plan; about to claim done, commit, or open a PR | `legion:executing-plans` |
 | Bug, failing or flaky test, crash, performance regression | `legion:systematic-debugging` |
 | Reviewing a diff, branch, or PR; responding to review feedback; auditing a whole repo (no diff) for security and performance, or with no axis named | `legion:code-review` |
-| Designing a module, API, boundary, domain model, data flow, or failure handling; refactoring, cleanup, or untested legacy code | `legion:coding-principles` |
-| Making code faster toward a measured goal (N+1, latency, memory, bundle size, Core Web Vitals); a performance-only audit (no diff) | `legion:coding-principles` |
+| Designing a module, API, boundary, domain model, data flow, or failure handling; refactoring, cleanup, or untested legacy code | `legion:principles` |
+| Making code faster toward a measured goal (N+1, latency, memory, bundle size, Core Web Vitals); a performance-only audit (no diff) | `legion:principles` |
 | Untrusted input, auth, secrets, personal data, or LLM output; a security-only audit (no diff), pen-test, or vulnerability hunt | `legion:security-principles` |
 | Creating, editing, or validating a skill | `legion:skill-creator` |
 
@@ -55,7 +55,7 @@ it. Questions and trivial edits get answered directly, with no skill.
 ```
 brainstorming ─▶ writing-plans ─▶ executing-plans ─▶ code-review (final)
                                         ├─ unexpected failure ─▶ systematic-debugging ─▶ back to the task
-                                        └─ spec + TDD + coding-principles (design, code, performance) + security-principles + evidence gate in every task,
+                                        └─ spec + TDD + principles (design, code, performance) + security-principles + evidence gate in every task,
                                            inline or subagent per task
 ```
 

@@ -15,11 +15,11 @@ Inputs:
 - Implementer's worktree, to read code around the diff: [path, or "inline task"]
 - Global constraints that bind this task: [paste verbatim from the plan]
 - Design principles the code must follow: [paths to the chosen
-  skills/coding-principles/references/<name>.md files]
+  skills/principles/references/<name>.md files]
 - Security checklist: [absolute path to
   skills/security-principles/references/security-checklist.md, or "not triggered"]
 - Performance checklist: [absolute path to
-  skills/coding-principles/references/performance.md (its final checklist), or "not triggered"]
+  skills/principles/references/performance.md (its final checklist), or "not triggered"]
 
 Review in two separate passes and report them separately.
 

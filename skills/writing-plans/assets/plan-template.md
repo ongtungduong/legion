@@ -5,7 +5,7 @@
 **Goal:** <one sentence>
 **Architecture:** <two or three sentences>
 **Spec:** <path to the design doc; executors read it too>
-**Design principles:** <references from legion:coding-principles, e.g. "coding + system-design">
+**Design principles:** <references from legion:principles, e.g. "coding + system-design">
 **Security:** none | <trust boundaries touched and the assets behind them>
 **Performance:** none | <budget or hot path>
 **Slice order:** <why the first slices come first: the value they deliver or the risk they retire; the low-value tail proposed for later, if any>
