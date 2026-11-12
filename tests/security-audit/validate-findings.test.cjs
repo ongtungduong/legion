@@ -4,15 +4,15 @@ const os = require("node:os");
 const path = require("node:path");
 const { spawnSync } = require("node:child_process");
 const test = require("node:test");
-const schema = require("../../skills/security-principles/scripts/report-schema.json");
+const schema = require("../../skills/code-review/scripts/report-schema.json");
 const {
   LIMITS,
   collect,
   collectSchemaErrors,
   validateDocument,
-} = require("../../skills/security-principles/scripts/validate-findings.cjs");
+} = require("../../skills/code-review/scripts/validate-findings.cjs");
 
-const validatorPath = path.join(__dirname, "..", "..", "skills", "security-principles", "scripts", "validate-findings.cjs");
+const validatorPath = path.join(__dirname, "..", "..", "skills", "code-review", "scripts", "validate-findings.cjs");
 const CLI_TIMEOUT_MS = 5000;
 const HOSTILE_CLI_TIMEOUT_MS = 15000;
 const HAS_SAFE_INPUT_OPEN = Number.isInteger(fs.constants.O_NOFOLLOW) &&
@@ -572,8 +572,8 @@ test("caps amplified in-limit findings output under a constrained Node heap", { 
 });
 
 test("keeps shared helpers aligned with the coverage-ledger validator", () => {
-  const findingsModule = require("../../skills/security-principles/scripts/validate-findings.cjs");
-  const ledgerModule = require("../../skills/security-principles/scripts/validate-coverage-ledger.cjs");
+  const findingsModule = require("../../skills/code-review/scripts/validate-findings.cjs");
+  const ledgerModule = require("../../skills/code-review/scripts/validate-coverage-ledger.cjs");
 
   for (const name of [
     "VISIBLE_CONTENT",

@@ -1,11 +1,11 @@
 # Security audit (full audit mode)
 
-Read this when the user explicitly asks to audit or pen-test a codebase, asks
-for a full, comprehensive, or end-to-end security review, requests report
-artifacts, or when `code-review` runs a system audit (no diff). It runs six
+Read this when `code-review` runs a security audit of a whole repository or
+system: the user explicitly asks to audit or pen-test a codebase, or asks for
+a full security review or report artifacts. It runs six
 phases with isolated agents and writes run files to an output directory. The
 core principles, execution safety, and anti-patterns in
-`references/review.md` apply throughout.
+`references/security-review.md` apply throughout.
 
 ## Platform terminology
 
@@ -27,7 +27,7 @@ core principles, execution safety, and anti-patterns in
 
 Preserve the role, write-isolation, prompt, and independence boundaries.
 Without a subagent tool, do not run a full audit: say so, and offer a
-guidance-mode review instead.
+focused review (`references/security-review.md`) instead.
 
 ## Files
 
@@ -49,7 +49,7 @@ format and ledger consistency only, never that a finding is real.
 
 Resolve these values before reconnaissance:
 
-- **Skill directory**: the absolute directory containing `SKILL.md`.
+- **Skill directory**: the absolute directory containing `SKILL.md` (the `code-review` skill).
 - **Target**: the absolute repository root under review.
 - **Repo name**: a stable repository identifier from the directory or local Git remote.
 - **Output directory**: a new writable directory outside the target,

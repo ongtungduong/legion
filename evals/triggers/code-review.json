@@ -7,7 +7,11 @@
     "Review this PR and check its blast radius on the services that call it",
     "Audit the whole repo for performance and security problems",
     "Review PR 42 and find the bugs in it before we merge",
-    "Audit the whole codebase for performance problems only, not security"
+    "Audit the whole codebase for performance problems only, not security",
+    "Is this login handler safe against SQL injection?",
+    "Audit our dependencies for known vulnerabilities",
+    "Do a full security audit of this codebase and write the report",
+    "Pen-test the code in this repo and find exploitable vulnerabilities"
   ],
   "negative": [
     {

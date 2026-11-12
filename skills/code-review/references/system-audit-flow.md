@@ -14,11 +14,11 @@ for each:
   absolute paths of `performance.md` and `performance-web.md` from the
   `principles` skill's references folder. Give it the scope (paths, entry
   points) and cap its report at 600 words.
-- **Security:** call the Skill tool with `legion:security-principles` and
-  run its full audit mode yourself. It dispatches its own hunters and
-  verifiers, and a subagent cannot start subagents, so it never runs inside
-  an auditor subagent. Propose its profile and budget before starting, as
-  the `audit.md` in its references folder says.
+- **Security:** read `references/security-audit.md` of this skill and run its
+  full audit yourself (it dispatches its own hunters and verifiers; a
+  subagent cannot start subagents, so it never runs inside an auditor
+  subagent). Propose its profile and budget before starting, as that file
+  says.
 
 Merge them under `## Security audit` (its Report summary, with the output
 directory) and `## Performance audit`, keeping each one's findings table,
@@ -26,5 +26,5 @@ then one summary line with the count per severity. Security severities count
 as Critical (`critical`, `high`), Important (`medium`), Minor (`low`), and
 FYI (`informational`); its `needs_validation` leads are counted separately,
 never as findings. Without a subagent tool, run the performance audit and a
-guidance-mode security review yourself, and say that neither was independent
+focused security review (`references/security-review.md`) yourself, and say that neither was independent
 and the security review was not a full audit.

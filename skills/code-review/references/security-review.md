@@ -1,7 +1,7 @@
-# Review rules (guidance and full audit)
+# Security review rules (focused review and full audit)
 
-Read this before a guidance-mode review or a full audit; build mode does not
-need it. These are Cloudflare `security-audit`'s core principles, universal
+Read this before a focused security review or a full audit; the build-time
+workflow of `security-principles` does not need it. These are Cloudflare `security-audit`'s core principles, universal
 execution safety, and anti-patterns, and they bind every review, triage, and
 audit agent.
 
@@ -73,10 +73,10 @@ OS-enforced sandbox that provides all of these controls:
 
 The agent, outside the target-controlled process, may make a disposable source
 copy in an assigned `scratch/` directory when a build must write beside
-source. In guidance mode, do not retain target-controlled files. In full audit
+source. In a focused review, do not retain target-controlled files. In full audit
 mode, only trusted parent-side code may promote the minimum non-secret result
 to retained `artifacts/` using the procedure under Write isolation in
-`references/audit.md`. Never expose a retained output directory (other than
+`references/security-audit.md`. Never expose a retained output directory (other than
 the agent's own assigned `scratch/`), another agent's directory, the host home
 directory, credentials, sockets, or shared services to target code. Do not
 install dependencies or let builds fetch them. Use only tools and dependencies
@@ -130,4 +130,4 @@ needing validation.
 
 A clean review has an empty Findings table: say so, and do not invent low
 findings. A full audit reports in the format at the end of
-`references/audit.md` instead.
+`references/security-audit.md` instead.

@@ -1,16 +1,12 @@
 ---
 name: security-principles
 description: >-
-  Finds and prevents vulnerabilities that cross a real trust boundary:
-  STRIDE threat models, always / ask-first / never boundaries, a security
-  checklist, reviews by attack class (web, auth, browser, LLM and agents,
-  supply chain, cloud, native, mobile), and a full multi-agent security audit
-  with confirmed / needs-validation verdicts. Use when writing or reviewing
-  code that handles untrusted input, login, sessions or cookies,
-  authorization, secrets or API keys, file uploads, user-supplied URLs,
-  third-party packages, personal data, or LLM output; whenever asked whether
-  something is safe or vulnerable; and when asked to security audit,
-  pen-test, or find vulnerabilities, even when the code is pasted inline.
+  Prevents vulnerabilities at design and build time: STRIDE threat models,
+  always / ask-first / never boundaries, and a security checklist walked
+  before sign-off. Use when writing or changing code that handles untrusted
+  input, login, sessions or cookies, authorization, secrets or API keys, file
+  uploads, user-supplied URLs, third-party packages, personal data, or LLM
+  output, even when the code is pasted inline.
 license: MIT
 metadata:
   author: ongtungduong
@@ -18,45 +14,12 @@ metadata:
 
 # Security Principles
 
-Find and prevent vulnerabilities that violate a real trust boundary, and give
-owners the source evidence, safe reproduction, priority, and smallest
-effective fix. A candidate without a concrete affected principal, resource, or
+Prevent vulnerabilities that violate a real trust boundary while the code is
+designed and built. A candidate without a concrete affected principal, resource, or
 security outcome is not a finding. Most breaches begin in design, so controls
 added without a threat model are guesses.
 
-## Modes
-
-Pick the mode before acting. Loading this skill does not authorize a full
-audit or the creation of audit files.
-
-- **Build**: writing or changing code that crosses a trust boundary. Follow
-  the Workflow, Boundaries, and Gotchas below; the repo's own tests run as
-  usual.
-- **Guidance**: a security question, "is this safe?", a focused review of
-  code or a diff, triage of a reported finding. First read
-  [references/review.md](references/review.md) (core principles, verdicts,
-  severity anchors, execution safety, anti-patterns, output format) and
-  follow it; then apply only the relevant classes in
-  [references/attack-classes.md](references/attack-classes.md) and the domain
-  companions it indexes. No output directory, no audit artifacts; focused
-  agents may help and report back to the current task.
-- **Full audit**: the user explicitly asks to audit or pen-test a codebase,
-  asks for a full, comprehensive, or end-to-end security review, or requests
-  report artifacts; or `code-review` runs a system audit. Read
-  [references/review.md](references/review.md), then
-  [references/audit.md](references/audit.md), and run all six phases. Read
-  each phase file in full when its phase starts, not a preview:
-  [references/reconnaissance.md](references/reconnaissance.md) (phase 1),
-  [references/attack-classes.md](references/attack-classes.md) (phase 1
-  companion selection and every hunter prompt),
-  [references/hunting.md](references/hunting.md) (phase 2), and
-  [references/validation-and-reporting.md](references/validation-and-reporting.md)
-  (phases 3-6). Domain companions are read only when phase 1 selects them.
-
-If the request could mean either guidance or a full audit, ask one focused
-question before creating files: a full audit spends many agent invocations.
-
-## Workflow (build mode)
+## Workflow
 
 1. **Map trust boundaries:** requests, forms, uploads, webhooks, queues,
    third-party APIs, LLM output, and values another process wrote (its command

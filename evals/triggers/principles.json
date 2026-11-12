@@ -21,7 +21,7 @@
     },
     {
       "prompt": "Is this login handler safe against SQL injection?",
-      "owner": "security-principles"
+      "owner": "code-review"
     },
     {
       "prompt": "The search page got three times slower since yesterday's deploy",
