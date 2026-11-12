@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.12.4 - 2026-11-12
+
+Changed
+
+- `security-principles` full-audit mode links each phase file
+  (`reconnaissance`, `attack-classes`, `hunting`, `validation-and-reporting`)
+  straight from `SKILL.md` and says to read it in full when its phase starts.
+  Before, they were reachable only through `references/audit.md`, a nested
+  chain that the agentskills spec and Anthropic's best practices warn invites
+  partial reads. The skill stays one skill; see `docs/architecture.md`.
+
 ## 0.12.3 - 2026-11-12
 
 Changed
