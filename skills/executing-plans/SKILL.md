@@ -33,8 +33,8 @@ take that path once per task; without one, the request is a plan of one task.
    user grants exceptions (throwaway spike, generated code, pure config).
 3. **Principles.** Code follows the references loaded with
    `legion:principles`, or for an XS change inside existing code, the
-   surrounding code's conventions. The `security` reference wins over a
-   documented repo convention, which wins over the other references.
+   surrounding code's conventions; `legion:principles` sets the
+   precedence, `security` first.
 4. **Evidence.** No "done", "fixed", or "passing" without a check run in the
    same message and its output read; code and state change between the check
    and the claim.
@@ -68,7 +68,7 @@ cause that only looks obvious from reading the code is still unknown.
      untrusted input (requests, forms, uploads, webhooks, values another
      process wrote), login or sessions, authorization, secrets or API keys,
      personal data, LLM output, a user-supplied URL fetched server-side, or
-     adds a dependency. An XS change gets it too: one line can open a hole.
+     adds a dependency. An XS change gets it too: a one-line change can open a hole.
 3. **List the reach.** When the change alters a public signature, behavior
    other code relies on, or persisted data, list its callers, consumers, and
    the data it touches, and give a test to each one the change can break.
@@ -82,8 +82,8 @@ cause that only looks obvious from reading the code is still unknown.
 5. **Run the TDD cycle** below, inline.
 6. **Review if risky.** When step 2 loaded the `security` reference,
    or the change touches persisted data, money, or concurrency, call the
-   Skill tool with `legion:code-review` before claiming it, naming the
-   loaded checklists so the reviewer checks them.
+   Skill tool with `legion:code-review` before claiming it, and name the
+   checklists loaded so the reviewer checks against them.
 7. **Run the evidence gate** and report in its format.
 
 ## Plan workflow
@@ -177,8 +177,8 @@ neither answers. Ledger each as `Ruling: <decision> - <why> - <cost if wrong>`
 and continue; an unledgered deviation is a decision the user never sees.
 The ask-first boundaries of the `security` reference are not rulings: a
 new dependency, auth flow, or category of personal data that the spec or plan
-does not name waits for the user, because the
-user owns that safety control, not you.
+does not already name waits for the user, because it is a safety control the
+user owns, not a judgment call.
 Do not pause between tasks to ask "should I continue?".
 
 Before an irreversible step (a data migration, deleting data, a public API

@@ -56,9 +56,8 @@ rewrite, and a rule list nobody needed dilutes the ones that matter.
    never boundaries are design inputs: they decide where validation and
    authorization sit, and its first abuse case is the first test.
    Order: the `security` reference, then documented repo conventions, then
-   the other references, then the smell baseline. When the user asks to drop
-   a security control, keep the cheap control and say in one line what it
-   stops; drop it only if the user insists after that.
+   the other references, then the smell baseline. A request to drop a
+   security control follows the first gotcha of `references/security.md`.
 5. **Break the design once.** Name the input, load, failure, or
    future change most likely to make this design wrong, and adjust or
    record why it holds. Spend the effort on the one decision that is
