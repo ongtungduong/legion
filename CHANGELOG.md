@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.12.5 - 2026-11-12
+
+Fixed
+
+- `code-review`: the finder/verifier model split yields to the user's own
+  instruction; only a calling skill or plan asking for another model is
+  ignored. Before, "a caller's request" read as overriding the router's
+  "user instructions win".
+- `executing-plans`: "Rulings, not stalls" no longer swallows the ask-first
+  boundaries of `security-principles`. A new dependency, auth flow, or
+  personal-data category that the spec or plan does not name waits for the
+  user.
+
 ## 0.12.4 - 2026-11-12
 
 Changed

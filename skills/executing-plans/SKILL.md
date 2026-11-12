@@ -175,6 +175,10 @@ Conflicts, ambiguities, and plan defects are yours to decide: the spec is the
 binding authority, the plan argues from it, and your judgment settles what
 neither answers. Ledger each as `Ruling: <decision> - <why> - <cost if wrong>`
 and continue; an unledgered deviation is a decision the user never sees.
+The ask-first boundaries of `legion:security-principles` are not rulings: a
+new dependency, auth flow, or category of personal data that the spec or plan
+does not already name waits for the user, because it is a safety control the
+user owns, not a judgment call.
 Do not pause between tasks to ask "should I continue?".
 
 Before an irreversible step (a data migration, deleting data, a public API
