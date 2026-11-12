@@ -224,7 +224,7 @@ Removed
 ## 0.11.0 - 2026-11-09
 
 Performance and security in every code change, a guard hook, and measured
-skills. Design: `.legion/specs/2026-11-09-perf-security-evals-design.md`.
+skills.
 
 New
 

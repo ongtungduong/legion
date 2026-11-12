@@ -1,7 +1,5 @@
 node_modules/
-.legion/*
-!.legion/specs/
-!.legion/plans/
+.legion/
 evals/results/
 .DS_Store
 evals/plugin/results/

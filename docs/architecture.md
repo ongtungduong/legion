@@ -234,8 +234,7 @@ that already loads passes; a new skill does not.
 Goal set by the maintainer: Legion catches performance and security problems
 while code is written and across a whole system, its own code meets the same
 three criteria (coding principles, security, performance), and every skill
-has measured evidence that it works. Design doc:
-`.legion/specs/2026-11-09-perf-security-evals-design.md`.
+has measured evidence that it works.
 
 | Decision | Reason |
 |---|---|
@@ -292,7 +291,6 @@ Superseded in 0.13.0: `security-principles` is removed, its standard moved to `p
 Goal set by the maintainer: one standard for code (system design, coding,
 performance, security), applied to new code and to changes in existing code,
 and one place that checks code against it, for a diff or a whole repository.
-Design doc: `.legion/specs/2026-11-12-principles-merge-design.md`.
 
 | Decision | Reason |
 |---|---|

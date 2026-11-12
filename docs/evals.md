@@ -488,7 +488,7 @@ tested further.
 
 ### 2026-11-12 principles merge (0.13.0 skills)
 
-Plan `.legion/plans/2026-11-12-principles-merge.md`. Command as above with
+Command as above with
 `--case '<name>' --max-cost-usd 3`, one case per run, Claude Code 2.1.322,
 sonnet.
 
