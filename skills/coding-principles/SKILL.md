@@ -11,7 +11,8 @@ description: >-
   to change legacy code that has no tests; to add timeouts, retries, or
   circuit breakers; or to make code, an endpoint, or a query faster, cut
   latency, memory, or bundle size, fix an N+1 query, profile, or get Core Web
-  Vitals (LCP, INP, CLS) under a target, even when the code is pasted inline.
+  Vitals (LCP, INP, CLS) under a target; or for a performance-only audit of a
+  whole codebase, repo, or system, even when the code is pasted inline.
 license: MIT
 metadata:
   author: ongtungduong

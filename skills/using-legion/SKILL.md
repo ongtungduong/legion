@@ -44,23 +44,25 @@ it. Questions and trivial edits get answered directly, with no skill.
 | An approved spec needs an implementation plan | `legion:writing-plans` |
 | Any production code change, with or without a plan; about to claim done, commit, or open a PR | `legion:executing-plans` |
 | Bug, failing or flaky test, crash, performance regression | `legion:systematic-debugging` |
-| Reviewing a diff, branch, or PR; responding to review feedback; auditing a whole repo for security and performance (no diff) | `legion:code-review` |
-| Designing a module, API, boundary, domain model, data flow, or failure handling; refactoring or cleanup; untested legacy code; speeding up code toward a measured goal (N+1, latency, memory, bundle size, Core Web Vitals) | `legion:coding-principles` |
-| Untrusted input, auth, secrets, personal data, or LLM output; a security-only audit, pen-test, or vulnerability hunt | `legion:security-principles` |
+| Reviewing a diff, branch, or PR; responding to review feedback; auditing a whole repo (no diff) for security and performance, or with no axis named | `legion:code-review` |
+| Designing a module, API, boundary, domain model, data flow, or failure handling; refactoring, cleanup, or untested legacy code | `legion:coding-principles` |
+| Making code faster toward a measured goal (N+1, latency, memory, bundle size, Core Web Vitals); a performance-only audit (no diff) | `legion:coding-principles` |
+| Untrusted input, auth, secrets, personal data, or LLM output; a security-only audit (no diff), pen-test, or vulnerability hunt | `legion:security-principles` |
 | Creating, editing, or validating a skill | `legion:skill-creator` |
 
 ## Default flow for new work
 
 ```
 brainstorming ─▶ writing-plans ─▶ executing-plans ─▶ code-review (final)
-                                        │
+                                        ├─ unexpected failure ─▶ systematic-debugging ─▶ back to the task
                                         └─ spec + TDD + coding-principles (design, code, performance) + security-principles + evidence gate in every task,
                                            inline or subagent per task
 ```
 
 Scale it to the work and say which size you chose: a small change collapses
 brainstorming into one short confirmation and may skip the written plan; a
-trivial change skips the flow.
+trivial change skips the flow. A bug report enters at systematic-debugging,
+whose fix then runs through executing-plans.
 
 ## Gotchas
 
