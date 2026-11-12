@@ -11,8 +11,8 @@ description: >-
   to change legacy code that has no tests; to add timeouts, retries, or
   circuit breakers; or to make code, an endpoint, or a query faster, cut
   latency, memory, or bundle size, fix an N+1 query, profile, or get Core Web
-  Vitals (LCP, INP, CLS) under a target; or for a performance-only audit of a
-  whole codebase, repo, or system, even when the code is pasted inline.
+  Vitals (LCP, INP, CLS) under a target, even when the code is pasted
+  inline.
 license: MIT
 metadata:
   author: ongtungduong
@@ -74,7 +74,6 @@ rewrite, and a rule list nobody needed dilutes the ones that matter.
 | Touches a query or remote call in a loop, a hot path, data that grows, a cache, rendering, or a stated budget | `performance` |
 | Makes existing code faster or lighter toward a goal | `performance-optimization` (with `performance`) |
 | Browser-facing: page load, interaction latency, layout shift, bundle size | `performance-web` (with `performance`) |
-| Audits a whole system, directory, or repository for performance (no diff) | `audit` |
 
 Most changes need `coding` alone. New work with a boundary reads
 `system-design` first, because it decides what the code will be. Loading

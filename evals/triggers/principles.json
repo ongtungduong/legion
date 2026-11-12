@@ -12,8 +12,7 @@
     "We have an N+1 query on the orders page",
     "Get our LCP under 2.5 seconds",
     "Memory keeps growing when we import large CSV files",
-    "Add timeouts and retries to the payment client",
-    "Audit the whole codebase for performance problems only, not security"
+    "Add timeouts and retries to the payment client"
   ],
   "negative": [
     {
