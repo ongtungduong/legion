@@ -96,7 +96,7 @@ Reread the draft as an agent seeing it cold, mid-task, with a full context windo
 - Can you execute the workflow without asking questions the SKILL.md should have answered?
 - Invert the trigger: would the description claim the step 2 near-miss, or another prompt that shares its vocabulary but belongs to another skill or none?
 
-Then re-run the step 2 prompts with the skill and compare against the baseline. A fixed failure confirms its instruction; an instruction that shows no delta is a candidate to cut. Wasted agent turns usually mean instructions are vague, inapplicable, or offer too many options.
+Then re-run the step 2 prompts with the skill and compare against the baseline. A fixed failure confirms its instruction; an instruction that shows no delta is a candidate to cut. Wasted agent turns usually mean instructions are vague, inapplicable, or offer too many options. When the default model changes, re-run the baselines; before cutting an instruction that a newer model no longer needs, read the "When the model changes" section of [references/measuring.md](references/measuring.md): a safety control or a project fact stays even with no delta.
 
 ## Gotchas
 

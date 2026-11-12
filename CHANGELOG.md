@@ -13,6 +13,14 @@ Fixed
   personal-data category that the spec or plan does not name waits for the
   user.
 
+Changed
+
+- `skill-creator`: `references/measuring.md` gains "When the model changes".
+  An instruction that compensates for model behavior is re-measured on each
+  new default model and becomes a cut candidate once the baseline passes; a
+  project fact or a safety control stays even with no delta. Step 7 points
+  to it.
+
 ## 0.12.4 - 2026-11-12
 
 Changed
