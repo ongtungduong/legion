@@ -12,6 +12,7 @@ instruction is kept only if the re-run shows it fixed that failure.
 3. [In a Claude Code plugin repo](#in-a-claude-code-plugin-repo)
 4. [Anywhere else](#anywhere-else)
 5. [Reading the result](#reading-the-result)
+6. [When the model changes](#when-the-model-changes)
 
 ## The loop
 
@@ -73,3 +74,15 @@ where instructions are vague or offer too many options.
 | Both fail | The instruction does not work; rewrite it, then re-run |
 | Stays-quiet prompt fires the skill | Narrow the description; re-run the positive prompts too |
 | Positive prompt never fires the skill | Add the user's own phrasing to the description |
+
+## When the model changes
+
+A kept instruction is evidence about one model. Sort it by what it fixes:
+
+- **Model behavior** (a skipped step, a wrong default, a reasoning shortcut):
+  it lasts only as long as that weakness. Re-run its baseline on each new
+  default model; once the baseline passes there, it is a cut candidate.
+- **Facts the model cannot have or controls it must not own** (project
+  conventions, exact commands, permissions, safety and evidence gates): a
+  better model does not make these redundant. A no-delta result is not
+  enough to cut one; cut it only when the fact or the risk is gone.
