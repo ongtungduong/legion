@@ -102,8 +102,8 @@ and say the review was not independent.
 
 Finders do the verbose reading, so they run on `sonnet` at every depth;
 `opus` is spent only on the deep verifiers, whose input is small and whose
-verdict is the judgment call. A caller's request for another model does not
-change this split.
+verdict is the judgment call. A calling skill or plan asking for another
+model does not change this split; the user's own instruction does.
 
 At deep, the Standards axis is split so each reviewer holds one question:
 Correctness hunts bugs (line scan, removed behavior, callers), Principles
