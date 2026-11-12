@@ -1,5 +1,42 @@
 # Changelog
 
+## 0.13.0 - 2026-11-12
+
+Removed (breaking)
+
+- `legion:coding-principles` is now `legion:principles`; there is no alias.
+- `legion:security-principles` is gone. Its build-mode standard is the
+  `security` reference of `principles`; its review and audit material is in
+  `code-review`.
+
+Changed
+
+- `principles` holds four standards (system design, coding, performance,
+  security). Precedence: the `security` reference, then documented repo
+  conventions, then the other references, then the smell baseline. Code you
+  write or change meets every loaded reference; untouched code is reported,
+  not rewritten.
+- `code-review` owns every check: diff review, security questions ("is this
+  safe?"), the full security audit (`security-review.md`, `security-audit.md`,
+  attack classes, domain companions, `scripts/`), and the performance audit
+  (`performance-audit.md`).
+- Every reviewer and implementer prompt names the `security` reference as
+  the exception to "repo conventions override the principles".
+
+Added
+
+- `code-review` audits a whole repo on three axes: system design (new
+  `references/system-design-audit.md`), performance, and security, all three
+  when none is named, after one scope-and-budget proposal
+  (`references/system-audit-flow.md`).
+- Eval cases `code-review-runs-design-audit` and
+  `code-review-proposes-three-axis-audit`.
+
+Repo
+
+- `validate.mjs` checks the report skeleton of every `references/audit.md`
+  or `references/<name>-audit.md`.
+
 ## 0.12.5 - 2026-11-12
 
 Fixed
