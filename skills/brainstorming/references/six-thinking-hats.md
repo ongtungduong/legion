@@ -2,9 +2,7 @@
 
 Edward de Bono's method (1985): look at a decision through one kind of thinking
 at a time instead of mixing facts, critique, optimism, and ideas in one pass.
-Here it is the method for choosing between approaches, and each hat carries
-one or more of the four thinking models (first principles, inversion, systems
-thinking, Pareto). Evidence that the method improves thinking in general is
+Here it is the method for choosing between approaches. Evidence that the method improves thinking in general is
 sparse, so treat it as a checklist that keeps any one kind of thinking from
 being skipped, not as a ritual.
 
@@ -12,17 +10,17 @@ being skipped, not as a ritual.
 
 Run the hats in this order, one hat at a time, across all candidates:
 
-| Hat | Model | Question | Notes |
-|---|---|---|---|
-| Blue (start) | Pareto | What is being decided, and which one or two criteria decide most of it? | Take the criteria from the goals, anti-goals, and constraints already agreed. Name the deciding ones; the rest only break ties. |
-| White | First principles, systems thinking | What must be true, what is assumed, and what does the change touch? | Run the White-hat procedure below. Facts only, with sources. A decisive unknown becomes a lookup or a question. |
-| Green | First principles | Which approaches are worth comparing? | Two or three real alternatives grounded in the existing code: the conventional one and the one rebuilt from White's truths, plus any combination. Ideas only, no critique yet. |
-| Yellow | Pareto | What share of the goal does each approach deliver, for what cost? | Benefits tied to the goals, not generic praise. An approach that delivers most of the goal for a fraction of the cost is a candidate even if it is not complete. |
-| Black | Inversion, systems thinking | What would guarantee it fails? What does it set off elsewhere? What does it cost, and how reversible is it? | Invert first: list what would make the approach fail, then check which of those it does. For a project, trace second-order effects through the White-hat map: feedback loops (retries, caches, queues, load), incentives, what other teams must change. Then migration, maintenance, cost if wrong. A failure that would sink every approach becomes an anti-goal. |
-| Red | none | How does the user feel about it? | Report reactions the user has already expressed. If none, ask for a gut reaction in one line. Never invent the user's feelings. |
-| Blue (end) | Pareto | Which approach, and what is the next step? | The recommendation, decided by the deciding criteria from Blue (start), with the hat lines that settled it. |
+| Hat | Question | Notes |
+|---|---|---|
+| Blue (start) | What is being decided, and which one or two criteria decide most of it? | Take the criteria from the goals, anti-goals, and constraints already agreed. Name the deciding ones; the rest only break ties. |
+| White | What must be true, what is assumed, and what does the change touch? | Run the White-hat procedure below. Facts only, with sources. A decisive unknown becomes a lookup or a question. |
+| Green | Which approaches are worth comparing? | Two or three real alternatives grounded in the existing code: the conventional one and the one rebuilt from White's truths, plus any combination. Ideas only, no critique yet. |
+| Yellow | What share of the goal does each approach deliver, for what cost? | Benefits tied to the goals, not generic praise. An approach that delivers most of the goal for a fraction of the cost is a candidate even if it is not complete. |
+| Black | What would guarantee it fails? What does it set off elsewhere? What does it cost, and how reversible is it? | Invert first: list what would make the approach fail, then check which of those it does. For a project, trace second-order effects through the White-hat map: feedback loops (retries, caches, queues, load), incentives, what other teams must change. Then migration, maintenance, cost if wrong. A failure that would sink every approach becomes an anti-goal. |
+| Red | How does the user feel about it? | Report reactions the user has already expressed. If none, ask for a gut reaction in one line. Never invent the user's feelings. |
+| Blue (end) | Which approach, and what is the next step? | The recommendation, decided by the deciding criteria from Blue (start), with the hat lines that settled it. |
 
-## White-hat procedure (first principles and system map)
+## White-hat procedure (facts and system map)
 
 Its job is to stop the approaches from being copies of the obvious solution
 when the obvious solution rests on an assumption nobody checked.
@@ -47,7 +45,7 @@ when the obvious solution rests on an assumption nobody checked.
 5. **Hand the truths to Green:** the rebuilt approach is the simplest one that
    satisfies every fact and constraint and nothing else. Existing code, data,
    and contracts are facts, not assumptions; reusing what is there is often
-   the first-principles answer, and a rewrite needs a fact that forces it.
+   the right answer, and a rewrite needs a fact that forces it.
 
 ## Depth by size
 
@@ -90,13 +88,13 @@ Blue: recommend <A/B/new>, because <the hat lines that decided it on the decidin
 - Agents tend to overweight one hat: Yellow when selling their own
   recommendation, Black when hedging. Give every approach a line under every
   hat in the sequence.
-- First principles is not "rebuild everything from scratch". It questions what
-  the request assumes, not what the system already guarantees.
+- Questioning assumptions is not "rebuild everything from scratch". It targets
+  what the request assumes, not what the system already guarantees.
 - An assumption the user stated as a requirement is still worth one question
   when nothing visible forces it: "Does it have to be real time, or is a
   five-minute delay fine?"
 - Second-order effects stop where they no longer change the choice. A chain
-  of "and then" past that point is speculation, not systems thinking.
+  of "and then" past that point is speculation.
 - A Black-hat risk that would change the decision needs a fact behind it
   (White). An unsupported fear is a question to settle, not a verdict.
 - Keep the table short. The hats exist to surface the deciding point, not to

@@ -29,7 +29,7 @@ rewrite, and a rule list nobody needed dilutes the ones that matter.
 
 ## Workflow
 
-1. **Repo standards first (first principles).** Read `CONTRIBUTING.md`,
+1. **Repo standards first.** Read `CONTRIBUTING.md`,
    `AGENTS.md`/`CLAUDE.md`, lint configs, and the patterns of the
    surrounding code. They are facts; a documented project convention
    overrides any rule here, and the references fill the gaps.
@@ -39,7 +39,7 @@ rewrite, and a rule list nobody needed dilutes the ones that matter.
    `<this skill's base directory>/references/<name>.md` before writing or
    restructuring code, and say in one line which and why ("Principles:
    coding + system-design, new webhook consumer").
-3. **Design before code (systems thinking).** When `system-design` is
+3. **Design before code.** When `system-design` is
    loaded, answer its "Decide before coding" questions in a few lines:
    owner of each new rule and state, dependency direction, source of truth,
    behavior when a dependency fails, load, trust boundaries. When
@@ -51,11 +51,11 @@ rewrite, and a rule list nobody needed dilutes the ones that matter.
    and always / ask-first / never boundaries are design inputs: they decide
    where validation and authorization sit, and its first abuse case is the
    first test. Its rules win over a structural preference here.
-5. **Break the design once (inversion).** Name the input, load, failure, or
+5. **Break the design once.** Name the input, load, failure, or
    future change most likely to make this design wrong, and adjust or
    record why it holds. Spend the effort on the one decision that is
    expensive to reverse (public contract, schema, data ownership); keep
-   everything else the simplest thing that satisfies the rules (Pareto).
+   everything else the simplest thing that satisfies the rules.
 6. **Apply while coding.** Follow the rules throughout and act on a `When`
    trigger as its situation appears. Behavior changes go test-first under
    `legion:executing-plans` (call the Skill tool with it if it is not
