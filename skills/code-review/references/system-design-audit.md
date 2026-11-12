@@ -25,8 +25,8 @@ but breaks nothing is a smell, not a defect.
    unbounded queue or cache, a failure no operator can trace.
 5. **Name the consequence.** Each candidate needs one concrete scenario: a
    failure ("when the payment API times out, the order stays pending
-   forever"), a consistency scenario (two sources of truth that diverge
-   when a discount changes), or a change scenario ("adding a field touches
+   forever"), a consistency scenario (two copies of a stock count that
+   diverge when one write fails), or a change scenario ("adding a field touches
    seven modules"). Put it in the `Impact` column. No consequence: at most
    Minor.
 6. **Verify each finding.** Confirm in the code that nothing already
@@ -47,7 +47,7 @@ but breaks nothing is a smell, not a defect.
 ### Findings
 | Severity | Location | Finding | Evidence | Impact |
 |---|---|---|---|---|
-| Important | src/orders.js:12, src/invoices.js:8 | order total has two sources of truth | each module computes it with its own rule | consistency: invoice and order diverge when a discount changes |
+| Important | src/stock.js:30, src/checkout.js:14 | stock level kept in two tables | checkout decrements its own copy, warehouse sync writes the other | consistency: checkout sells items the warehouse no longer has |
 ### Not checked
 <what was out of reach, and what would settle it>
 ```
