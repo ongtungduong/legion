@@ -6,7 +6,8 @@
     "The reviewer left comments on my PR, help me respond to the review feedback",
     "Review this PR and check its blast radius on the services that call it",
     "Audit the whole repo for performance and security problems",
-    "Review PR 42 and find the bugs in it before we merge"
+    "Review PR 42 and find the bugs in it before we merge",
+    "Audit the whole codebase for performance problems only, not security"
   ],
   "negative": [
     {

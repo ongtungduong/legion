@@ -97,17 +97,20 @@ for (const file of mdFiles) {
 }
 
 // --- Shared audit report skeleton -------------------------------------------
-// Every skill's references/audit.md ends with the same report skeleton, so a
-// system audit merges the reports of several skills into one shape. The
-// skeleton is the "### " headings and the findings table header inside
-// "## Report".
+// Every audit report reference (references/audit.md or references/<name>-audit.md)
+// ends with the same report skeleton, so a system audit merges the reports of
+// several axes into one shape. The skeleton is the "### " headings and the
+// findings table header inside "## Report".
+const AUDIT_FILE = /^(?:[a-z0-9-]+-)?audit\.md$/;
 const auditSkeleton = (text) => {
   const report = text.split(/^## Report\s*$/m)[1] ?? '';
   return report.split('\n').filter((l) => /^### |^\| Severity/.test(l)).map((l) => l.trim()).join('\n');
 };
-const audits = skills
-  .map((name) => path.join(SKILLS_DIR, name, 'references', 'audit.md'))
-  .filter((f) => fs.existsSync(f));
+const audits = skills.flatMap((name) => {
+  const dir = path.join(SKILLS_DIR, name, 'references');
+  if (!fs.existsSync(dir)) return [];
+  return fs.readdirSync(dir).filter((f) => AUDIT_FILE.test(f)).sort().map((f) => path.join(dir, f));
+});
 const firstSkeleton = audits.length ? auditSkeleton(fs.readFileSync(audits[0], 'utf8')) : '';
 for (const f of audits) {
   const sk = auditSkeleton(fs.readFileSync(f, 'utf8'));

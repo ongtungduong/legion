@@ -90,10 +90,18 @@ test('action pinned by tag fails', () => {
 
 test('audit skeletons must match', () => {
   const root = copyRepo();
-  edit(root, 'skills/security-principles/references/audit.md', (t) => t.replace('### Not checked', '### Gaps'));
+  edit(root, 'skills/code-review/references/performance-audit.md', (t) => t.replace('### Not checked', '### Gaps'));
   const { code, out } = run('validate.mjs', root);
   assert.equal(code, 1, out);
   assert.match(out, /audit skeletons differ/);
+});
+
+test('an *-audit.md without a report skeleton fails', () => {
+  const root = copyRepo();
+  fs.writeFileSync(path.join(root, 'skills/code-review/references/x-audit.md'), '# X audit\n');
+  const { code, out } = run('validate.mjs', root);
+  assert.equal(code, 1, out);
+  assert.match(out, /x-audit\.md: no report skeleton/);
 });
 
 // Version-bump rule: the copy has no .git, so these tests make it a git repo,
