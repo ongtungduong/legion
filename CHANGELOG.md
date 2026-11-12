@@ -36,6 +36,8 @@ Repo
 
 - `validate.mjs` checks the report skeleton of every `references/audit.md`
   or `references/<name>-audit.md`.
+- The `code-review-runs-system-audit` prompt approves scope and budget, so
+  the case measures the audit rather than the approval gate.
 
 ## 0.12.5 - 2026-11-12
 

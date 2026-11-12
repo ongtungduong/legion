@@ -1,11 +1,11 @@
 ---
-description: 'A request to audit a whole repository for performance and security, with no diff. code-review should run both audits and report them under separate headings, not the Spec/Standards pair.'
+description: 'A request to audit a whole repository for performance and security, with no diff, that already approves scope and budget. code-review should run both audits and report them under separate headings, not the Spec/Standards pair.'
 expected_outcome: 'legion:code-review is invoked; the reply has both a "Security audit" and a "Performance audit" heading, in either order.'
 max_turns: 16
 allowed_tools: [Read, Glob, Grep, Skill, Agent]
 ---
 
-Audit the whole repo for performance and security. These are all its source files:
+Audit the whole repo for performance and security. These are all its source files. Scope and budget are approved; run it now.
 
 ```js
 // src/server.js

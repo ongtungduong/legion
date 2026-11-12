@@ -39,7 +39,7 @@ Command: `claude plugin eval . --no-publish --model sonnet --runs 3 --threshold 
 | 2026-11-11 | 2.1.322 | sonnet | B2 both arms (4 brainstorming-ab cases), no-plugin arm dropped, `-j 3` | 5 x 1 arm each | 3.45 | rule 1 invalid (hats `dominant-reuse` fires 2/5) |
 | 2026-11-11 | 2.1.322 | sonnet, haiku | B3 hard siblings, 5 cases | 3 x 2 arms | 2.55 | see B3 result |
 | 2026-11-11 | 2.1.322 | haiku | full suite, 39 cases (includes the 4 ab cases, 5 hard siblings, and B1 without Bash) | 3 x 2 arms | 1.66 | 28/34 scored cases at >= 0.66, 3 run errors |
-| 2026-11-12 | 2.1.322 | sonnet | 0.13.0 principles merge: 15 affected cases, one `--case` each, plus 3 diagnostic runs and re-runs after fixes | 3 x 2 arms (diagnostics 1 x 1) | 8.60 | 13/15 at >= 0.66; 2 below the bar (see section) |
+| 2026-11-12 | 2.1.322 | sonnet | 0.13.0 principles merge: 15 affected cases, one `--case` each, plus 3 diagnostic runs and re-runs after fixes | 3 x 2 arms (diagnostics 1 x 1) | 10.41 | 14/15 at >= 0.66; 1 below the bar, pre-existing (see section) |
 
 ### 2026-11-09 baseline (0.10.0 skills)
 
@@ -496,7 +496,7 @@ sonnet.
 |---|---|---|---|---|
 | code-review-fires-on-is-this-safe | 1.00 | 0.00 | +1.00 | pass |
 | security-audit-on-system | 1.00 | 0.50 | +0.50 | pass |
-| code-review-runs-system-audit | 0.33 | 0.00 | +0.33 | fail: see below |
+| code-review-runs-system-audit | 0.33 | 0.00 | +0.33 | fail, then pass after the prompt fix below (1.00 vs 0.00) |
 | executing-plans-loads-security-on-auth-change | 1.00 | 0.50 | +0.50 | pass (`security-read` 3/3) |
 | executing-plans-loads-security-on-auth-change-hard | 0.83 | 0.50 | +0.33 | pass (`security-read` 2/3) |
 | principles-holds-security-under-pressure | 1.00 | 0.67 | +0.33 | pass (`skill-fired` indicator 1/3) |
@@ -518,8 +518,12 @@ sonnet.
 - `code-review-runs-system-audit` (headings 1/3, skill fired 3/3): a
   diagnostic run shows the reply proposing scope and budget for both axes
   and waiting, as the 0.13.0 approval gate requires; the grader expects the
-  audit headings in the same turn. Grader untouched; the case needs the
-  maintainer's decision (pre-approve in the prompt, or grade the proposal).
+  audit headings in the same turn. Maintainer's decision: the prompt now
+  approves scope and budget (grader untouched); re-run 3/3, 1.00 vs 0.00.
+- Re-runs after the minor fixes (one router row for `principles`, the
+  precedence stated once in `principles`): auth-change 1.00 vs 0.50,
+  principles-holds-security-under-pressure 1.00 vs 0.00,
+  principles-fires-on-slow-endpoint 1.00 vs 0.00.
 
 ## Open measurements
 

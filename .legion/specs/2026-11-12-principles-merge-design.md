@@ -160,13 +160,13 @@ names the companion's path in `code-review` for that case.
   | `reconnaissance.md`, `hunting.md`, `validation-and-reporting.md`, `attack-classes.md`, the ten domain companions | same names |
   | `security-principles/scripts/*` | `code-review/scripts/*` |
   | new | `system-design-audit.md` |
-  | new | `system-audit.md` (the orchestration, moved out of `SKILL.md`) |
+  | new | `system-audit-flow.md` (the orchestration, moved out of `SKILL.md`) |
 
 - `SKILL.md`:
   - Step 1 targets gain *A security question about code* (pasted, a file, or
     a diff): run the focused security review of `references/security-review.md`
     (guidance format, no output directory), Security reviewer only.
-  - *A whole repository or system* goes to `references/system-audit.md`.
+  - *A whole repository or system* goes to `references/system-audit-flow.md`.
   - The mode gate moves here: loading the skill authorizes no audit; a
     whole-repo review proposes its scope and budget and waits for approval
     before any agent runs; an ambiguous security request gets one focused
@@ -174,7 +174,7 @@ names the companion's path in `code-review` for that case.
   - Diff review: Security finders read `security-review.md`,
     `attack-classes.md`, and `principles/references/security.md`'s checklist
     instead of the old paths. Spec and Standards axes are unchanged.
-- `references/system-audit.md` (my call on the procedure):
+- `references/system-audit-flow.md` (my call on the procedure):
   1. Scope: paths, modules, entry points; repo standards and baseline
      (ADRs, `docs/`, budgets, prior audit runs).
   2. Axes: all three when none is named; only the named ones otherwise.
