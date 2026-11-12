@@ -39,9 +39,9 @@ pins every guess into files, signatures, and tests.
    `Security` and `Performance` lines from the spec's `Non-functional`
    section, or, when the spec has none, from the trigger lists in
    `legion:executing-plans`; `none` is a decision, so write it only when no
-   trigger matches. They tell the implementer which checklists to load:
-   `legion:security-principles` for `Security`, the `performance` reference
-   of `legion:principles` for `Performance`.
+   trigger matches. They tell the implementer which checklists to load: the
+   `security` reference of `legion:principles` for `Security`, its
+   `performance` reference for `Performance`.
 3. **Slice vertically.** Each task is one complete, testable path through the
    system (schema + logic + interface for one capability). The first task is
    the thinnest end-to-end tracer bullet. Size each task; split anything L or

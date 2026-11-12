@@ -30,7 +30,7 @@ exists.
    down, or answers twice?
 6. **Trust.** Does data from a lower-trust source cross into this code, or
    does it touch credentials, personal data, or privileged actions? If so,
-   security-principles shapes the design (the skill's workflow says how).
+   the `security` reference shapes the design (step 4 of the skill says how).
 7. **Reversal.** Which decision here is expensive to undo (public contract,
    schema, data ownership, a vendor)? Compare two options for that one and
    keep the rest simple.
@@ -203,7 +203,7 @@ When
 - Does every outbound call have a timeout, bounded safe retries, and
   isolation, and is everything that grows bounded?
 - Can an operator see a failure and trace it to its cause?
-- Were the trust boundaries named, and was security-principles applied
+- Were the trust boundaries named, and was the `security` reference applied
   where one is crossed?
 - Is the one hard-to-reverse decision made deliberately, and can a business
   rule be tested without the framework, database, or network?

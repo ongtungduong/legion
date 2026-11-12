@@ -1,9 +1,9 @@
 # Security review rules (focused review and full audit)
 
 Read this before a focused security review or a full audit; the build-time
-workflow of `security-principles` does not need it. These are Cloudflare `security-audit`'s core principles, universal
-execution safety, and anti-patterns, and they bind every review, triage, and
-audit agent.
+`security` reference of `legion:principles` does not need it. These are
+Cloudflare `security-audit`'s core principles, universal execution safety,
+and anti-patterns, and they bind every review, triage, and audit agent.
 
 ## Core principles
 

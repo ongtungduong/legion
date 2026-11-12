@@ -1,23 +1,12 @@
----
-name: security-principles
-description: >-
-  Prevents vulnerabilities at design and build time: STRIDE threat models,
-  always / ask-first / never boundaries, and a security checklist walked
-  before sign-off. Use when writing or changing code that handles untrusted
-  input, login, sessions or cookies, authorization, secrets or API keys, file
-  uploads, user-supplied URLs, third-party packages, personal data, or LLM
-  output, even when the code is pasted inline.
-license: MIT
-metadata:
-  author: ongtungduong
----
+# Security
 
-# Security Principles
-
-Prevent vulnerabilities that violate a real trust boundary while the code is
-designed and built. A candidate without a concrete affected principal, resource, or
-security outcome is not a finding. Most breaches begin in design, so controls
-added without a threat model are guesses.
+Read this when the change crosses a trust boundary: untrusted input, auth,
+sessions, secrets, uploads, user-supplied URLs, third-party packages,
+personal data, or LLM output, whatever the size. Prevent vulnerabilities that
+violate a real trust boundary while the code is designed and built. A
+candidate without a concrete affected principal, resource, or security
+outcome is not a finding. Most breaches begin in design, so controls added
+without a threat model are guesses.
 
 ## Workflow
 
@@ -37,9 +26,8 @@ added without a threat model are guesses.
 5. **Implement within the boundaries** below. Where the controls live
    (which layer validates, authorizes, and holds secrets) is a design
    decision: settle it in the design before coding, not after.
-6. **Before sign-off**, walk
-   [references/security-checklist.md](references/security-checklist.md) and
-   report each item as checked, not applicable, or failed.
+6. **Before sign-off**, walk the Final checklist below and report each item
+   as checked, not applicable, or failed.
 7. **Fix in order of exposure x impact:** reachable without
    authentication and leading to data loss, account takeover, or code
    execution first; theoretical or already mitigated last.
@@ -93,3 +81,46 @@ feature: say so.
 - Personal data you never collect cannot leak. Every personal-data store needs
   a stated purpose, a retention period, and a working deletion path, including
   backups and analytics copies.
+
+## Final checklist
+
+Mark each item checked, not applicable, or failed, with evidence. In your own
+change, fix a failed item. In a review, a failed item becomes a finding only
+with a lower-trust principal, a crossed boundary, and a concrete result;
+otherwise it is a hardening note.
+
+### Input and output
+- [ ] All external input validated at the boundary (shape, length, enum, format)
+- [ ] No string-built SQL, NoSQL, shell, or file paths from input
+- [ ] Output encoded; no raw HTML from user data without an allowlist sanitizer
+- [ ] Uploads: MIME allowlist, size cap, content check where it matters
+
+### Authentication and authorization
+- [ ] Every protected endpoint checks authorization for the specific resource
+- [ ] Passwords hashed with argon2, scrypt, or bcrypt
+- [ ] Session cookies are httpOnly, secure, sameSite; bounded lifetime
+- [ ] Auth endpoints rate limited, with a shared store when more than one instance runs
+
+### Secrets and data
+- [ ] No secrets in source or git history; `.env*` gitignored; `.env.example` has placeholders
+- [ ] Staged changes scanned without printing values: `git diff --cached -i -G'password|secret|api_key|token' --name-only`
+- [ ] No secrets, tokens, or personal data in logs or telemetry
+- [ ] Personal data classified, collected for a stated purpose, with retention and a deletion path
+- [ ] Responses strip sensitive fields; errors are generic to users
+
+### Network and configuration
+- [ ] Security headers set (CSP from `default-src 'self'`, HSTS, nosniff, frame options)
+- [ ] CORS limited to an explicit origin list; never `*` with credentials
+- [ ] Server-side fetches of user URLs: scheme/host allowlist, all resolved IPs public, no redirects
+
+### Dependencies
+- [ ] Native audit run against the committed lockfile; critical/high triaged by reachability
+- [ ] Registry signatures verified where supported (`npm audit signatures`); a missing signature is a lead to investigate, not proof of compromise
+- [ ] New dependencies reviewed (owner, release age, install scripts, typosquats)
+- [ ] One lockfile per install boundary; installs reproducible
+
+### LLM features (if any)
+- [ ] Model output validated against a schema before use; never executed or rendered raw
+- [ ] Secrets, other tenants' data, and the full system prompt kept out of the context
+- [ ] Tool permissions scoped; tool arguments validated; destructive actions confirmed in code
+- [ ] Token, rate, and recursion limits set

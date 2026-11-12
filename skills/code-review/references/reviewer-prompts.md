@@ -56,7 +56,7 @@ This repo's standards files, each binding only the files under its own
 directory: [list of paths]
 Checklist and smell baseline, read first: [absolute path to skills/code-review/references/review-checklists.md]
 Design principles: [paths to the chosen skills/principles/references/<name>.md files]
-Security checklist: [absolute path to security-checklist.md of the security-principles folder, or "not triggered"]
+Security checklist: [absolute path to skills/principles/references/security.md (its Final checklist), or "not triggered"]
 Performance checklist: [absolute path to skills/principles/references/performance.md (its final checklist), or "not triggered"]
 
 Work through the checklist's three correctness passes first (line scan,
@@ -135,7 +135,7 @@ security review).
 
 Read first: [absolute path to skills/code-review/references/security-review.md]
 Then the relevant classes in: [absolute path to skills/code-review/references/attack-classes.md]
-Walk each item of: [absolute path to security-checklist.md of the security-principles folder]
+Walk each item of: [absolute path to skills/principles/references/security.md (its Final checklist)]
 Trust boundaries this diff touches: [list]
 
 Follow security-review.md's core principles and execution safety. For each candidate
