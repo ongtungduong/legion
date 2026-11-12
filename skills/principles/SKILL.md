@@ -12,7 +12,7 @@ description: >-
   that has no tests; to add timeouts, retries, or circuit breakers; to make
   code, an endpoint, or a query faster, cut latency, memory, or bundle size,
   fix an N+1 query, or get Core Web Vitals (LCP, INP, CLS) under a target; or
-  when writing code that handles untrusted input, login, sessions,
+  when writing or hardening code that handles untrusted input, login, sessions,
   authorization, secrets, uploads, user-supplied URLs, third-party packages,
   personal data, or LLM output, even when the code is pasted inline.
 license: MIT

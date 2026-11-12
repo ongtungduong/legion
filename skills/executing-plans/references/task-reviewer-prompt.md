@@ -35,7 +35,8 @@ Review in two separate passes and report them separately.
    - Readability and naming consistent with the codebase and GLOSSARY.md.
    - No speculative generality, duplication, or needless abstraction.
    - Each item of the design principles' final checklist holds for the diff;
-     cite the rule a finding breaks. Repo conventions override them.
+     cite the rule a finding breaks. Repo conventions override them, except the `security`
+     reference, which overrides them.
    - Security: untrusted input, secrets, injection, authorization; when a
      security checklist is given, check the diff against each item.
    - Performance: no query or remote call inside a loop over growing data,
