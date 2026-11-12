@@ -78,7 +78,7 @@ with neither is an opinion and is not reported above Minor.
    has a nameable failure scenario or a quoted rule, including the ones they
    half believe: a candidate dropped silently is the usual cause of a missed
    bug, and step 6 exists to filter.
-6. **Verify (inversion).** Merge duplicates (same defect, same place, same
+6. **Verify.** Merge duplicates (same defect, same place, same
    reason), then try to refute every Critical and Important candidate
    before it is reported, as the depth table says. A verifier reads the real
    code around the claim (guards upstream, callers, tests) and returns
@@ -145,7 +145,7 @@ findings carry no verification tag.
 Lead with what matters: one structural problem *is* the review even when
 there are ten nits. Order each axis by severity, correctness before cleanup
 at the same severity, and once Minor findings pass five, fold them into one
-line per file so they cannot bury the Critical and Important ones (Pareto).
+line per file so they cannot bury the Critical and Important ones.
 Never add findings to make a review look thorough: "no findings" with what
 was checked is a complete review.
 

@@ -99,6 +99,11 @@ Each model sits at the step where it changes a decision; there is no separate
 own, would compete with brainstorming for triggers, and the agentskills standard does
 not allow cross-skill file references.
 
+Since 0.12.3 the skills carry the steps, not the model names. A label such as
+"(Pareto)" next to a step that already says what to do changed no behavior:
+the model knows the term, and the step text is what it follows. The matrix
+below is for humans tracing where each model acts.
+
 | Model | Location | Form |
 |---|---|---|
 | First principles | `brainstorming` White and Green hats (step 7); grilling builds the tree only from goals and constraints | Part of `references/six-thinking-hats.md` (White-hat procedure), no longer a step of its own |
@@ -110,7 +115,7 @@ not allow cross-skill file references.
 
 Where each of the four models changes a decision, per skill, as of 0.11.0.
 "n/a" means the model has no decision to change there; it is not a gap.
-`skill-creator`'s checklist asks every new or changed skill to update its row.
+Nothing checks this table: update a skill's row by hand when a change moves the step a model acts in.
 
 | Skill | First principles | Inversion | Systems thinking | Pareto |
 |---|---|---|---|---|

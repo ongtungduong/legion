@@ -1,5 +1,20 @@
 # Changelog
 
+## 0.12.3 - 2026-11-12
+
+Changed
+
+- Thinking-model labels ("(Pareto)", "(inversion)", "(systems thinking)",
+  "(first principles)") are removed from step titles and rules in
+  `brainstorming`, `writing-plans`, `code-review`, `coding-principles`, and
+  `security-principles`; every step keeps its instruction. The Six Thinking
+  Hats table drops its Model column, and the `brainstorming` description
+  drops the list of models (the "think it through from first principles"
+  trigger stays). "Pareto cut" is now "scope cut". `docs/architecture.md`
+  keeps the matrix for humans.
+- `docs/architecture.md` no longer claims the `skill-creator` checklist keeps
+  the thinking-model matrix up to date; that checklist line was removed.
+
 ## 0.12.2 - 2026-11-12
 
 Changed
