@@ -48,13 +48,15 @@ with neither is an opinion and is not reported above Minor.
      the Standards axis only; a whole repository or system goes to
      [System audit](#system-audit-no-diff).
    - *A security question about code* ("is this safe?", pasted code, a file,
-     or a diff, no repo-wide scope): Standards axis only, Security angle
-     only, no output directory. Read
+     or a diff, or the triage of a reported finding; no repo-wide scope):
+     Standards axis only, Security angle only, no output directory and no
+     audit artifacts; focused agents may help and report back to the
+     current task. Read
      [references/security-review.md](references/security-review.md), apply
      only the relevant classes in
      [references/attack-classes.md](references/attack-classes.md) and the
-     domain companions it indexes, and report in the guidance output format
-     of `security-review.md` instead of the format below. A security
+     domain companions it indexes, and report in the focused-review output
+     format of `security-review.md` instead of the format below. A security
      question about a design with no code stays with
      `legion:security-principles`.
 2. **Find the spec:** issue references in commit messages or the PR body, a
@@ -182,8 +184,9 @@ reviewed at quick depth.
 
 ## Not findings
 
-- A problem on lines the change did not touch, outside any function it
-  touched. If it is serious (a security hole, data loss), list it once
+- For a diff target, a problem on lines the change did not touch, outside
+  any function it touched (a target with no diff has no such lines: report
+  what is there). If it is serious (a security hole, data loss), list it once
   under FYI as pre-existing; it does not change the verdict.
 - Anything a linter, formatter, type checker, or CI step already enforces.
 - A style preference with no documented rule behind it, or a rule from an

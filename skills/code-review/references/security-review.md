@@ -114,7 +114,7 @@ needing validation.
 9. Assigning severity to `needs_validation` records.
 10. Writing the report before independent verification or letting prose and JSON disagree.
 
-## Output format (guidance mode)
+## Output format (focused review)
 
 ```markdown
 ### Findings

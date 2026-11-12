@@ -1,4 +1,4 @@
-# Security audit (full audit mode)
+# Security audit (full audit)
 
 Read this when `code-review` runs a security audit of a whole repository or
 system: the user explicitly asks to audit or pen-test a codebase, or asks for
@@ -30,6 +30,9 @@ Without a subagent tool, do not run a full audit: say so, and offer a
 focused review (`references/security-review.md`) instead.
 
 ## Files
+
+Read each phase file in full when its phase starts, not a preview; domain
+companions only when phase 1 selects them.
 
 | File | Read it |
 |---|---|
