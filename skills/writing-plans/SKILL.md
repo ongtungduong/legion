@@ -54,7 +54,7 @@ pins every guess into files, signatures, and tests.
    | M | 3-5 | One feature slice |
    | L, XL | 5+ | Split it |
 
-   **Order by value (Pareto).** After the tracer bullet, put first the slices
+   **Order by value.** After the tracer bullet, put first the slices
    that deliver most of the spec's goal or retire its biggest risk, and say
    why in the plan's `Slice order` line. Name the low-value tail and, at
    hand-off, propose moving it to a later plan; the spec's scope stays until
@@ -73,7 +73,7 @@ pins every guess into files, signatures, and tests.
      an algorithm the signature and tests do not determine);
    - verification step: the command and the output that means it passed;
    - cross-task reference: point at the other task's Interfaces block.
-6. **Pre-mortem (inversion).** Assume the plan was executed exactly and the
+6. **Pre-mortem.** Assume the plan was executed exactly and the
    feature still failed: rejected by the user, broken in production, or
    unmergeable. Write the three most likely reasons in the plan's
    `Pre-mortem` section, each naming the component or assumption at fault,

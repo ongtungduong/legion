@@ -5,7 +5,7 @@ What we are building, for whom, and why now.
 
 ## Goals / Non-goals / Anti-goals
 - Goals:
-- Non-goals (including the scope deferred by the Pareto cut, if the user agreed):
+- Non-goals (including the scope deferred by the scope cut, if the user agreed):
 - Anti-goals (what would make this a failure even if it technically works):
 
 ## First principles

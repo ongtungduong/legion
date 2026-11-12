@@ -27,7 +27,7 @@ impact", and no number appears in the report unless a tool produced it.
    (per request, per row) and that nothing upstream already bounds it
    (pagination, a cache, a batch loader). Drop what fails; move what you
    cannot settle to Not checked.
-6. **Rank (Pareto).** Order by expected share of the total cost: per-request
+6. **Rank.** Order by expected share of the total cost: per-request
    and per-row costs on the busiest paths first, then growth risks (fine
    today, fails at 10x data), then one-off costs. Fold more than five Minor
    findings into one line per file.

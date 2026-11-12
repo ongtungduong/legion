@@ -3,8 +3,7 @@ name: brainstorming
 description: >-
   Draws out what the user wants and why, compares two or three approaches
   grounded in the code, grills open decisions in rounds, and gets a design
-  doc approved before any code is written, thinking throughout with first
-  principles, inversion, systems thinking, and Pareto. Use before building or
+  doc approved before any code is written. Use before building or
   changing anything whose intent is not settled: a new feature, component,
   page, CLI, flow, or behavior change, even when phrased only as "add X",
   "help me shape Y", or "not sure of the details yet", or when the user
@@ -24,8 +23,7 @@ metadata:
 
 Find out what the user wants and why, then run two methods: a **comparison of
 approaches** to choose one, and **grilling** to settle every decision the
-chosen approach leaves open. Both run on the same four thinking models, and
-the result is a design doc the user approves. Your belief about what they want
+chosen approach leaves open. The result is a design doc the user approves. Your belief about what they want
 is usually thinner than it feels; once you know the why, you make the hundred
 unstated decisions the way they would.
 
@@ -35,13 +33,11 @@ Four rules change what you ask and recommend; apply them inside the methods,
 not as extra passes. Each stops where it no longer changes what gets built.
 
 - Every question traces to a goal or constraint; a "given" nothing forces gets
-  "what forces this?" (first principles).
-- Every recommendation carries "Wrong if": the fact that would flip it
-  (inversion).
-- Each answer adds the branches it sets off elsewhere (systems thinking).
+  "what forces this?"
+- Every recommendation carries "Wrong if": the fact that would flip it.
+- Each answer adds the branches it sets off elsewhere.
 - Ask the highest-leverage decisions first, default the ones that would not
-  change what gets built, and let the same cut set the scope in step 6
-  (Pareto).
+  change what gets built, and let the same cut set the scope in step 6.
 
 ## Workflow
 
@@ -70,7 +66,7 @@ not as extra passes. Each stops where it no longer changes what gets built.
    and what was tried.
 5. **Play back each part** in a short paragraph as soon as you understand it,
    marking what you filled in as your proposal, and ask what is wrong.
-6. **Size the work and cut the scope (Pareto).** Say the size; it sets the
+6. **Size the work and cut the scope.** Say the size; it sets the
    depth of steps 7 and 8 (table below). Then find the smallest part of the
    scope that delivers most of the goal and propose the rest as non-goals or
    a later step; the user decides. Several independent projects: agree an
@@ -126,10 +122,10 @@ spike the user agreed to.
   on one.
 - Offering a menu before you know the why steers the user toward your guesses.
 - A default you chose silently is one the user could not reject. Say each one.
-- First principles questions what the request assumes, not what the system
-  already guarantees: existing code, data, and contracts are facts, and reusing
-  them is often the first-principles answer.
-- A Pareto cut the user did not agree to is a silently dropped requirement.
+- Question what the request assumes, not what the system already guarantees:
+  existing code, data, and contracts are facts, and reusing them is often the
+  best answer.
+- A scope cut the user did not agree to is a silently dropped requirement.
   Propose it; keep the scope until they say yes. The same holds for a grilling
   decision you defaulted: it goes in the playback.
 - Grilling questions are decisions for the user; facts you can look up are

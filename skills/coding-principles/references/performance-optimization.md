@@ -22,16 +22,16 @@ its baseline.
 2. **Measure the baseline** with the project's own tools, on a realistic
    workload, repeated enough to see the noise. Record the command, the
    conditions, and the result with its spread.
-3. **Find what dominates (first principles, Pareto).** Profile, trace, or
+3. **Find what dominates.** Profile, trace, or
    read the query plan before naming a cause; the obvious suspect is often
    wrong. Rank costs by share of the total: fixing a step that takes 5% of
    the time saves at most 5%. Work on the largest share first.
-4. **Trace the system around it (systems thinking).** Follow the cost
+4. **Trace the system around it.** Follow the cost
    upstream and downstream: who calls this per request, row, or frame, and
    which queues, retries, caches, pools, and locks sit on the path. A cache
    that turns a slow read into a stale one moves the problem instead of
    solving it.
-5. **Ask what load breaks it (inversion).** Name the input size,
+5. **Ask what load breaks it.** Name the input size,
    concurrency, or data growth at which the current code fails the budget,
    and the one at which your fix would.
 6. **Fix the one bottleneck, test-first.** Call the Skill tool with
