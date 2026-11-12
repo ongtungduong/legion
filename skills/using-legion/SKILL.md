@@ -44,7 +44,7 @@ it. Questions and trivial edits get answered directly, with no skill.
 | An approved spec needs an implementation plan | `legion:writing-plans` |
 | Any production code change, with or without a plan; about to claim done, commit, or open a PR | `legion:executing-plans` |
 | Bug, failing or flaky test, crash, performance regression | `legion:systematic-debugging` |
-| Reviewing a diff, branch, or PR; responding to review feedback; a security question about code ("is this safe?"), a security audit, pen-test, or vulnerability hunt; auditing a whole repo (no diff) for security and performance, a performance-only audit, or with no axis named | `legion:code-review` |
+| Reviewing a diff, branch, or PR; responding to review feedback; a security question about code ("is this safe?"), a security audit, pen-test, or vulnerability hunt; auditing a whole repo (no diff) for system design, performance, or security, or with no axis named | `legion:code-review` |
 | Designing a module, API, boundary, domain model, data flow, or failure handling; refactoring, cleanup, or untested legacy code; code that crosses a trust boundary: untrusted input, auth, secrets, personal data, LLM output | `legion:principles` |
 | Making code faster toward a measured goal (N+1, latency, memory, bundle size, Core Web Vitals) | `legion:principles` |
 | Creating, editing, or validating a skill | `legion:skill-creator` |
