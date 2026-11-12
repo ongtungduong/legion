@@ -3,9 +3,6 @@
 Interview the user until every open decision is resolved. Model the topic as a
 **design tree**: every decision branches into the decisions that depend on it.
 Recommend an answer for every question so the user can accept it in a word.
-Grilling runs on the same four thinking models as the rest of the skill: first principles
-decides which questions exist, systems thinking shapes the tree, Pareto orders
-it, and inversion tests every recommendation.
 
 ## Procedure
 
@@ -14,23 +11,23 @@ it, and inversion tests every recommendation.
    fresh, read-only `general-purpose` subagent on `model: "haiku"` for slow
    lookups and keep asking the questions that
    do not depend on them.
-2. **Build the tree from first principles.** A decision belongs in the tree
+2. **Build the tree from goals and constraints.** A decision belongs in the tree
    only if a goal or hard constraint makes it matter. When the plan or the
    user treats something as given and no fact or constraint forces it, add
    the decision "what forces this?" instead of building on it.
-3. **Map what each decision sets off (systems thinking).** For every node,
+3. **Map what each decision sets off.** For every node,
    note the decisions it creates elsewhere: other components, data, jobs,
    teams, and feedback loops such as retries, caches, and queues. Those
    become child branches.
 4. **Compute the frontier:** every open decision whose prerequisites are
    already settled.
-5. **Order the frontier by leverage (Pareto).** Ask first the decisions that
+5. **Order the frontier by leverage.** Ask first the decisions that
    close the most branches or are hardest to reverse. A decision whose answer
    would not change what gets built gets your default instead of a question,
    and goes in the playback.
 6. **Ask the frontier as one round**, numbered, each with your recommendation
    worded so "yes" accepts it, and the fact or condition that would make it
-   wrong (inversion). If the user's rules cap questions per message, ask the
+   wrong. If the user's rules cap questions per message, ask the
    highest-leverage ones and carry the rest.
 7. **Wait for the answers**, then recompute the frontier. A question that
    depends on one still open belongs to a later round.

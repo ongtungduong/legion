@@ -1,6 +1,6 @@
 {
   "name": "legion",
-  "version": "0.12.2",
+  "version": "0.12.3",
   "description": "Disciplined engineering workflow for coding agents: clarify intent, plan in vertical slices, build test-first, check security and performance, review on two axes, verify before claiming done.",
   "author": {
     "name": "Ông Tùng Dương"

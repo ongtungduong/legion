@@ -70,7 +70,7 @@ question before creating files: a full audit spends many agent invocations.
 6. **Before sign-off**, walk
    [references/security-checklist.md](references/security-checklist.md) and
    report each item as checked, not applicable, or failed.
-7. **Fix in order of exposure x impact (Pareto):** reachable without
+7. **Fix in order of exposure x impact:** reachable without
    authentication and leading to data loss, account takeover, or code
    execution first; theoretical or already mitigated last.
 
