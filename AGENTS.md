@@ -11,7 +11,7 @@ skills/<name>/    SKILL.md (+ references/, assets/, scripts/) - shipped to users
 evals/triggers/   lexical trigger cases, one JSON per skill
 evals/plugin/     behavioral cases for `claude plugin eval` (prompt.md + graders/)
 scripts/          repo checks (Node, no dependencies)
-tests/            shell tests for hooks
+tests/            hook tests (shell), check and validator tests (node:test)
 docs/             architecture, roadmap (human-facing)
 ```
 
@@ -53,7 +53,8 @@ Legion conventions on top of the spec:
 - [ ] `skills/<name>/` written with `legion:skill-creator`
 - [ ] Row in the map in `skills/using-legion/SKILL.md`
 - [ ] Row in the skill table in `README.md`
-- [ ] `evals/triggers/<name>.json` with 3+ positive and 2+ near-miss negative prompts
+- [ ] `evals/triggers/<name>.json` with 5+ positive and 2+ near-miss negative prompts
+- [ ] `evals/plugin/<name>-<behavior>/` and `evals/plugin/<name>-stays-quiet-<prompt>/` cases
 - [ ] Provenance in `THIRD_PARTY.md` if adapted from another project
 - [ ] `npm test` and `claude plugin validate . --strict` pass
 
@@ -61,12 +62,16 @@ Legion conventions on top of the spec:
 
 ```bash
 npm test                            # all of the below except plugin validate
-npm run validate                    # repo: links, legion: refs, router/README coverage, versions (bumped since the latest tag), hook
+npm run validate                    # repo: links, legion: refs, router/README coverage, versions (bumped since the latest tag), hook, eval case structure
 npm run validate:spec               # every skill against agentskills.io (needs python3)
 npm run evals:triggers              # lexical routing; fails on near-duplicate descriptions
+npm run test:shell                  # shellcheck (skipped locally if not installed, required in CI)
 claude plugin validate . --strict
 claude plugin eval . --no-publish  # behavioral, on demand, costs tokens
+npm run evals:summarize -- <result.json> <label>  # commit a per-case summary of a run
 ```
+
+A new check rule gets a row in the rule tables of `tests/scripts/validate.test.mjs`.
 
 When a description changes, re-run `npm run evals:triggers`. When you measure
 real trigger rates, record the model and Claude Code version.

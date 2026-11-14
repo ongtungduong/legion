@@ -2,9 +2,16 @@
 // Lexical trigger evals (deterministic, CI-safe, zero dependencies).
 //
 // Idea from addyosmani/agent-skills (Tier 2): score each prompt against every
-// skill description with TF-IDF cosine similarity.
-//   - every positive prompt must rank its skill within top_k (default 3);
-//   - every negative prompt must not rank the skill #1;
+// skill's routing text with TF-IDF cosine similarity. A skill's routing text is
+// its description plus its row in the router map, the two things a session
+// sees when it picks a skill.
+//   - every positive prompt must rank its skill #1, unless the case sets a
+//     wider top_k (an explicit, reviewable exception);
+//   - at least 90% of positive prompts rank #1, so exceptions stay rare, and
+//     at least 75% of each skill's, so a skill with few prompts cannot hide
+//     its misses behind the others;
+//   - a negative prompt must not rank the skill #1, and when it names an
+//     owner skill, the owner must rank above the skill;
 //   - no two descriptions may be near-duplicates.
 // This approximates routing by vocabulary only. It catches descriptions that
 // lack the words users say and descriptions that are too broad; it cannot
@@ -13,9 +20,12 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { TRIGGERS_DIR, ROUTER, listSkills, readSkill } from './lib/skills.mjs';
 
-const DEFAULT_TOP_K = 3;
-const COLLISION = 0.5;
-const MIN_POSITIVE = 3;
+const DEFAULT_TOP_K = 1;
+const MIN_RANK1 = 0.9;
+const MIN_RANK1_SKILL = 0.75;
+// The closest pair of real descriptions scores about 0.21.
+const COLLISION = 0.35;
+const MIN_POSITIVE = 5;
 const MIN_NEGATIVE = 2;
 
 const STOP = new Set(('a an and are as at be before by can do does for from has have how i if in into is it its ' +
@@ -42,7 +52,14 @@ const skills = listSkills().filter((s) => {
   errors.push(`${s}: frontmatter does not parse; run npm run validate`);
   return false;
 });
-const docs = Object.fromEntries(skills.map((s) => [s, tokens(`${s.replace(/-/g, ' ')} ${readSkill(s).data.description}`)]));
+// Router map rows: "| <situation> | `legion:<skill>` |", keyed by skill.
+const mapRows = {};
+for (const line of (readSkill(ROUTER)?.text ?? '').split('\n')) {
+  const row = line.match(/^\|(.+)\|\s*`legion:([a-z0-9-]+)`\s*\|\s*$/);
+  if (row) mapRows[row[2]] = `${mapRows[row[2]] ?? ''} ${row[1]}`;
+}
+const descs = Object.fromEntries(skills.map((s) => [s, tokens(`${s.replace(/-/g, ' ')} ${readSkill(s).data.description}`)]));
+const docs = Object.fromEntries(skills.map((s) => [s, [...descs[s], ...tokens(mapRows[s] ?? '')]]));
 
 const df = new Map();
 for (const toks of Object.values(docs)) for (const t of new Set(toks)) df.set(t, (df.get(t) ?? 0) + 1);
@@ -81,26 +98,38 @@ for (const s of skills) {
   if (pos.length < MIN_POSITIVE) errors.push(`${s}: needs at least ${MIN_POSITIVE} positive prompts`);
   if (neg.length < MIN_NEGATIVE) errors.push(`${s}: needs at least ${MIN_NEGATIVE} negative prompts`);
 
+  let skillRank1 = 0;
   for (const c of pos) {
     const prompt = typeof c === 'string' ? c : c.prompt;
     const k = (typeof c === 'object' && c.top_k) || DEFAULT_TOP_K;
     const ranked = rank(prompt);
     const r = ranked.findIndex(([name]) => name === s) + 1;
     positives++;
-    if (r === 1) rank1++;
+    if (r === 1) { rank1++; skillRank1++; }
     else notes.push(`${s}: ranked #${r} for "${prompt}" (top: ${ranked[0][0]})`);
     if (r > k) errors.push(`${s}: positive ranked #${r} (> top ${k}): "${prompt}" -> top: ${ranked.slice(0, 3).map(([n]) => n).join(', ')}`);
   }
+  if (pos.length && skillRank1 / pos.length < MIN_RANK1_SKILL) {
+    errors.push(`${s}: rank-1 ${skillRank1}/${pos.length} (${((100 * skillRank1) / pos.length).toFixed(1)}%) is under the ${100 * MIN_RANK1_SKILL}% per-skill floor`);
+  }
   for (const c of neg) {
     if (c.owner && !skills.includes(c.owner) && c.owner !== ROUTER) errors.push(`${s}: negative owner "${c.owner}" is not a skill`);
-    const top = rank(c.prompt)[0][0];
-    if (top === s) errors.push(`${s}: negative prompt ranked this skill #1: "${c.prompt}"`);
+    const ranked = rank(c.prompt).map(([name]) => name);
+    if (ranked[0] === s) { errors.push(`${s}: negative prompt ranked this skill #1: "${c.prompt}"`); continue; }
+    const mine = ranked.indexOf(s), owner = ranked.indexOf(c.owner);
+    if (owner > mine) errors.push(`${s}: negative "${c.prompt}" ranks ${s} #${mine + 1} above its owner ${c.owner} #${owner + 1}`);
   }
 }
+if (positives && rank1 / positives < MIN_RANK1) {
+  errors.push(`rank-1 rate ${((100 * rank1) / positives).toFixed(1)}% is under the ${100 * MIN_RANK1}% floor; improve descriptions instead of widening top_k`);
+}
 
+// Distinctness is a property of the descriptions alone: the router map is
+// shared context and would mask two descriptions that say the same thing.
+const descVecs = Object.fromEntries(skills.map((s) => [s, vector(descs[s])]));
 for (let i = 0; i < skills.length; i++) {
   for (let j = i + 1; j < skills.length; j++) {
-    const sim = cosine(vecs[skills[i]], vecs[skills[j]]);
+    const sim = cosine(descVecs[skills[i]], descVecs[skills[j]]);
     if (sim > COLLISION) errors.push(`descriptions too similar (${sim.toFixed(2)} > ${COLLISION}): ${skills[i]} / ${skills[j]}`);
   }
 }

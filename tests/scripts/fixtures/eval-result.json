@@ -1,0 +1,56 @@
+{
+  "schemaVersion": 1,
+  "claudeVersion": "9.9.9",
+  "startedAt": "2030-01-02T03:04:05.000Z",
+  "durationSeconds": 60,
+  "costUsd": 1.23456,
+  "partial": false,
+  "suite": {
+    "root": "/fixture/plugin",
+    "ablation": "with-without",
+    "modelOverride": "sonnet",
+    "threshold": 0.66,
+    "concurrency": 3,
+    "plugins": ["/fixture/plugin"]
+  },
+  "cases": [
+    {
+      "name": "zeta-stays-quiet",
+      "dir": "evals/plugin/zeta-stays-quiet",
+      "source": "prose",
+      "promptMarkdown": "FIXTURE-PROMPT-TEXT zeta",
+      "runsPerCase": 2,
+      "graders": [{ "name": "not-fired", "type": "tool_used", "weight": 1, "config": {} }],
+      "arms": {
+        "with": [
+          { "score": 1, "passed": true, "costUsd": 0.1, "tracePath": "/fixture/trace-1.jsonl", "graders": [{ "name": "not-fired", "passed": true }] },
+          { "score": 0, "passed": false, "costUsd": 0.1, "tracePath": "/fixture/trace-2.jsonl", "graders": [{ "name": "not-fired", "passed": false }] }
+        ]
+      }
+    },
+    {
+      "name": "alpha-fires",
+      "dir": "evals/plugin/alpha-fires",
+      "source": "prose",
+      "promptMarkdown": "FIXTURE-PROMPT-TEXT alpha",
+      "runsPerCase": 3,
+      "graders": [
+        { "name": "skill-fired", "type": "tool_used", "weight": 1, "config": {} },
+        { "name": "quality", "type": "llm", "weight": 1, "config": {} }
+      ],
+      "arms": {
+        "with": [
+          { "score": 1, "passed": true, "costUsd": 0.2, "judgeCostUsd": 0.01, "tracePath": "/fixture/trace-3.jsonl", "graders": [{ "name": "skill-fired", "passed": true }, { "name": "quality", "passed": true, "evidence": "FIXTURE-EVIDENCE" }] },
+          { "score": 1, "passed": true, "costUsd": 0.2, "tracePath": "/fixture/trace-4.jsonl", "graders": [{ "name": "skill-fired", "passed": true }, { "name": "quality", "passed": true }] },
+          { "score": 0.5, "passed": false, "costUsd": 0.2, "tracePath": "/fixture/trace-5.jsonl", "graders": [{ "name": "skill-fired", "passed": true }, { "name": "quality", "passed": false }] }
+        ],
+        "without": [
+          { "score": 0.5, "passed": false, "costUsd": 0.1, "judgeCostUsd": 0.02, "tracePath": "/fixture/trace-6.jsonl", "graders": [{ "name": "skill-fired", "passed": false }, { "name": "quality", "passed": true }] },
+          { "score": 0, "passed": false, "costUsd": 0.1, "tracePath": "/fixture/trace-7.jsonl", "graders": [{ "name": "skill-fired", "passed": false }, { "name": "quality", "passed": false }] },
+          { "score": 0.5, "passed": false, "costUsd": 0.1, "tracePath": "/fixture/trace-8.jsonl", "graders": [{ "name": "skill-fired", "passed": false }, { "name": "quality", "passed": true }] }
+        ]
+      }
+    }
+  ],
+  "aggregates": { "casesTotal": 2, "casesPassed": 1, "overallScore": 0.6, "overallPassRate": 0.6, "meanDelta": 0.5 }
+}

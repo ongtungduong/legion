@@ -1,0 +1,68 @@
+{
+  "schemaVersion": 1,
+  "label": "new-quiet-cases",
+  "claudeVersion": "2.1.322",
+  "model": "sonnet",
+  "startedAt": "2026-11-12T15:31:32.469Z",
+  "partial": false,
+  "costUsd": 0.55,
+  "judgeCostUsd": 0,
+  "threshold": 0.66,
+  "bar": 0.66,
+  "totals": {
+    "cases": 3,
+    "passed": 3,
+    "atBar": 3,
+    "meanDelta": 0
+  },
+  "cases": [
+    {
+      "name": "executing-plans-stays-quiet-on-question",
+      "runs": 3,
+      "with": {
+        "passRate": 1,
+        "meanScore": 1
+      },
+      "without": {
+        "passRate": 1,
+        "meanScore": 1
+      },
+      "delta": 0,
+      "graders": {
+        "not-fired": 3
+      }
+    },
+    {
+      "name": "router-stays-quiet-on-question",
+      "runs": 3,
+      "with": {
+        "passRate": 1,
+        "meanScore": 1
+      },
+      "without": {
+        "passRate": 1,
+        "meanScore": 1
+      },
+      "delta": 0,
+      "graders": {
+        "no-legion-skill": 3
+      }
+    },
+    {
+      "name": "systematic-debugging-stays-quiet-on-error-question",
+      "runs": 3,
+      "with": {
+        "passRate": 1,
+        "meanScore": 1
+      },
+      "without": {
+        "passRate": 1,
+        "meanScore": 1
+      },
+      "delta": 0,
+      "graders": {
+        "not-fired": 3
+      }
+    }
+  ]
+}

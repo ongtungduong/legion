@@ -1,0 +1,698 @@
+{
+  "schemaVersion": 1,
+  "label": "full-0.12.0-haiku",
+  "claudeVersion": "2.1.322",
+  "model": "haiku",
+  "startedAt": "2026-11-11T02:34:51.092Z",
+  "partial": false,
+  "costUsd": 1.32,
+  "judgeCostUsd": 0.34,
+  "threshold": 0.66,
+  "bar": 0.66,
+  "totals": {
+    "cases": 39,
+    "passed": 31,
+    "atBar": 31,
+    "meanDelta": 0.2839
+  },
+  "cases": [
+    {
+      "name": "brainstorming-ab-dominant-reuse",
+      "runs": 3,
+      "with": {
+        "passRate": 0,
+        "meanScore": 0.4762
+      },
+      "without": {
+        "passRate": 0,
+        "meanScore": 0.619
+      },
+      "delta": -0.1428,
+      "graders": {
+        "flip-condition": 3,
+        "no-code": 0,
+        "no-files": 3,
+        "no-filler-question": 1,
+        "proportionate": 0,
+        "real-alternatives": 0,
+        "recommendation": 3,
+        "skill-fired": 0
+      }
+    },
+    {
+      "name": "brainstorming-ab-hidden-conflict",
+      "runs": 3,
+      "with": {
+        "passRate": 0.3333,
+        "meanScore": 0.875
+      },
+      "without": {
+        "passRate": 0,
+        "meanScore": 0.7083
+      },
+      "delta": 0.1667,
+      "graders": {
+        "conflict-first": 3,
+        "flip-condition": 3,
+        "no-code": 2,
+        "no-files": 3,
+        "no-filler-question": 3,
+        "proportionate": 2,
+        "real-alternatives": 2,
+        "recommendation": 3,
+        "skill-fired": 0
+      }
+    },
+    {
+      "name": "brainstorming-ab-small-flag",
+      "runs": 3,
+      "with": {
+        "passRate": 0,
+        "meanScore": 0.6667
+      },
+      "without": {
+        "passRate": 0,
+        "meanScore": 0.6667
+      },
+      "delta": 0,
+      "graders": {
+        "flip-condition": 2,
+        "no-code": 0,
+        "no-files": 3,
+        "no-filler-question": 2,
+        "proportionate": 2,
+        "real-alternatives": 3,
+        "recommendation": 2,
+        "skill-fired": 0
+      }
+    },
+    {
+      "name": "brainstorming-ab-tradeoff-polling",
+      "runs": 3,
+      "with": {
+        "passRate": 0,
+        "meanScore": 0.8095
+      },
+      "without": {
+        "passRate": 0,
+        "meanScore": 0.7619
+      },
+      "delta": 0.0476,
+      "graders": {
+        "flip-condition": 3,
+        "no-code": 1,
+        "no-files": 3,
+        "no-filler-question": 2,
+        "proportionate": 2,
+        "real-alternatives": 3,
+        "recommendation": 3,
+        "skill-fired": 0
+      }
+    },
+    {
+      "name": "brainstorming-fires-on-new-feature",
+      "runs": 3,
+      "with": {
+        "passRate": 1,
+        "meanScore": 1
+      },
+      "without": {
+        "passRate": 0,
+        "meanScore": 0
+      },
+      "delta": 1,
+      "graders": {
+        "skill-fired": 3
+      }
+    },
+    {
+      "name": "brainstorming-records-glossary-term",
+      "runs": 3,
+      "with": {
+        "passRate": 0.3333,
+        "meanScore": 0.3333
+      },
+      "without": {
+        "passRate": 0,
+        "meanScore": 0
+      },
+      "delta": 0.3333,
+      "graders": {
+        "glossary-entry": 1,
+        "skill-fired": 0
+      }
+    },
+    {
+      "name": "brainstorming-stays-quiet-on-approved-design",
+      "runs": 3,
+      "with": {
+        "passRate": 1,
+        "meanScore": 1
+      },
+      "without": {
+        "passRate": 1,
+        "meanScore": 1
+      },
+      "delta": 0,
+      "graders": {
+        "not-fired": 3
+      }
+    },
+    {
+      "name": "code-review-fires",
+      "runs": 3,
+      "with": {
+        "passRate": 1,
+        "meanScore": 1
+      },
+      "without": {
+        "passRate": 0,
+        "meanScore": 0.5
+      },
+      "delta": 0.5,
+      "graders": {
+        "off-by-one": 3,
+        "skill-fired": 3,
+        "two-axes": 3
+      }
+    },
+    {
+      "name": "code-review-flags-n-plus-one",
+      "runs": 3,
+      "with": {
+        "passRate": 1,
+        "meanScore": 1
+      },
+      "without": {
+        "passRate": 0.3333,
+        "meanScore": 0.3333
+      },
+      "delta": 0.6667,
+      "graders": {
+        "flags-n-plus-one": 3
+      }
+    },
+    {
+      "name": "code-review-flags-n-plus-one-hard",
+      "runs": 3,
+      "with": {
+        "passRate": 1,
+        "meanScore": 1
+      },
+      "without": {
+        "passRate": 0,
+        "meanScore": 0
+      },
+      "delta": 1,
+      "graders": {
+        "flags-hidden-n-plus-one": 3,
+        "skill-fired": 3
+      }
+    },
+    {
+      "name": "code-review-flags-unmeasured-speed-claim",
+      "runs": 3,
+      "with": {
+        "passRate": 0.3333,
+        "meanScore": 0.3333
+      },
+      "without": {
+        "passRate": 1,
+        "meanScore": 1
+      },
+      "delta": -0.6667,
+      "graders": {
+        "claim-and-cache": 1,
+        "skill-fired": 3
+      }
+    },
+    {
+      "name": "code-review-flags-unmeasured-speed-claim-hard",
+      "runs": 3,
+      "with": {
+        "passRate": 1,
+        "meanScore": 1
+      },
+      "without": {
+        "passRate": 1,
+        "meanScore": 1
+      },
+      "delta": 0,
+      "graders": {
+        "claim-not-supported": 3,
+        "skill-fired": 3
+      }
+    },
+    {
+      "name": "code-review-runs-system-audit",
+      "runs": 3,
+      "with": {
+        "passRate": 1,
+        "meanScore": 1
+      },
+      "without": {
+        "passRate": 0,
+        "meanScore": 0
+      },
+      "delta": 1,
+      "graders": {
+        "skill-fired": 3,
+        "two-audits": 3
+      }
+    },
+    {
+      "name": "code-review-stays-quiet-on-commit-message",
+      "runs": 3,
+      "with": {
+        "passRate": 1,
+        "meanScore": 1
+      },
+      "without": {
+        "passRate": 1,
+        "meanScore": 1
+      },
+      "delta": 0,
+      "graders": {
+        "not-fired": 3
+      }
+    },
+    {
+      "name": "coding-principles-fires-on-refactor",
+      "runs": 3,
+      "with": {
+        "passRate": 1,
+        "meanScore": 1
+      },
+      "without": {
+        "passRate": 0,
+        "meanScore": 0
+      },
+      "delta": 1,
+      "graders": {
+        "skill-fired": 3
+      }
+    },
+    {
+      "name": "coding-principles-fires-on-slow-endpoint",
+      "runs": 3,
+      "with": {
+        "passRate": 1,
+        "meanScore": 1
+      },
+      "without": {
+        "passRate": 0.6667,
+        "meanScore": 0.6667
+      },
+      "delta": 0.3333,
+      "graders": {
+        "batched-and-measured": 3,
+        "skill-fired": 3
+      }
+    },
+    {
+      "name": "coding-principles-shapes-new-module",
+      "runs": 3,
+      "with": {
+        "passRate": 0,
+        "meanScore": 0.3333
+      },
+      "without": {
+        "passRate": 0,
+        "meanScore": 0
+      },
+      "delta": 0.3333,
+      "graders": {
+        "principles-line": 2,
+        "shape": 0
+      }
+    },
+    {
+      "name": "coding-principles-stays-quiet-on-glossary",
+      "runs": 3,
+      "with": {
+        "passRate": 1,
+        "meanScore": 1
+      },
+      "without": {
+        "passRate": 1,
+        "meanScore": 1
+      },
+      "delta": 0,
+      "graders": {
+        "not-fired": 3
+      }
+    },
+    {
+      "name": "coding-principles-stays-quiet-on-regression",
+      "runs": 3,
+      "with": {
+        "passRate": 1,
+        "meanScore": 1
+      },
+      "without": {
+        "passRate": 1,
+        "meanScore": 1
+      },
+      "delta": 0,
+      "graders": {
+        "not-fired": 3
+      }
+    },
+    {
+      "name": "executing-plans-batches-queries",
+      "runs": 3,
+      "with": {
+        "passRate": 1,
+        "meanScore": 1
+      },
+      "without": {
+        "passRate": 1,
+        "meanScore": 1
+      },
+      "delta": 0,
+      "graders": {
+        "one-query": 3
+      }
+    },
+    {
+      "name": "executing-plans-batches-queries-hard",
+      "runs": 3,
+      "with": {
+        "passRate": 1,
+        "meanScore": 1
+      },
+      "without": {
+        "passRate": 1,
+        "meanScore": 1
+      },
+      "delta": 0,
+      "graders": {
+        "batched-within-limits": 3,
+        "skill-fired": 3
+      }
+    },
+    {
+      "name": "executing-plans-cost-on-one-line-fix",
+      "runs": 3,
+      "with": {
+        "passRate": 0,
+        "meanScore": 0.2
+      },
+      "without": {
+        "passRate": 0,
+        "meanScore": 0.2
+      },
+      "delta": 0,
+      "graders": {
+        "boundary-fixed": 0,
+        "no-doc-files": 3,
+        "proportionate": 0,
+        "regression-test": 0,
+        "skill-fired": 3,
+        "suite-green": 0
+      }
+    },
+    {
+      "name": "executing-plans-fires-on-pasted-bug",
+      "runs": 3,
+      "with": {
+        "passRate": 1,
+        "meanScore": 1
+      },
+      "without": {
+        "passRate": 0,
+        "meanScore": 0
+      },
+      "delta": 1,
+      "graders": {
+        "skill-fired": 3,
+        "test-first": 3
+      }
+    },
+    {
+      "name": "executing-plans-holds-bar-under-pressure",
+      "runs": 3,
+      "with": {
+        "passRate": 1,
+        "meanScore": 1
+      },
+      "without": {
+        "passRate": 0.6667,
+        "meanScore": 0.6667
+      },
+      "delta": 0.3333,
+      "graders": {
+        "bar-held": 3,
+        "skill-fired": 2
+      }
+    },
+    {
+      "name": "executing-plans-holds-bar-under-pressure-hard",
+      "runs": 3,
+      "with": {
+        "passRate": 0,
+        "meanScore": 0
+      },
+      "without": {
+        "passRate": 0.6667,
+        "meanScore": 0.6667
+      },
+      "delta": -0.6667,
+      "graders": {
+        "bar-held": 0,
+        "skill-fired": 1
+      }
+    },
+    {
+      "name": "executing-plans-loads-security-on-auth-change",
+      "runs": 3,
+      "with": {
+        "passRate": 1,
+        "meanScore": 1
+      },
+      "without": {
+        "passRate": 1,
+        "meanScore": 1
+      },
+      "delta": 0,
+      "graders": {
+        "safe-lookup": 3,
+        "security-loaded": 3
+      }
+    },
+    {
+      "name": "executing-plans-loads-security-on-auth-change-hard",
+      "runs": 3,
+      "with": {
+        "passRate": 1,
+        "meanScore": 1
+      },
+      "without": {
+        "passRate": 1,
+        "meanScore": 1
+      },
+      "delta": 0,
+      "graders": {
+        "same-site-redirect": 3,
+        "security-loaded": 0
+      }
+    },
+    {
+      "name": "router-stays-quiet-on-question",
+      "runs": 3,
+      "with": {
+        "passRate": 1,
+        "meanScore": 1
+      },
+      "without": {
+        "passRate": 1,
+        "meanScore": 1
+      },
+      "delta": 0,
+      "graders": {
+        "no-legion-skill": 3
+      }
+    },
+    {
+      "name": "security-audit-on-system",
+      "runs": 3,
+      "with": {
+        "passRate": 1,
+        "meanScore": 1
+      },
+      "without": {
+        "passRate": 0.6667,
+        "meanScore": 0.8333
+      },
+      "delta": 0.1667,
+      "graders": {
+        "no-secret-echo": 3,
+        "report": 3
+      }
+    },
+    {
+      "name": "security-principles-fires-on-is-this-safe",
+      "runs": 3,
+      "with": {
+        "passRate": 0,
+        "meanScore": 0
+      },
+      "without": {
+        "passRate": 0,
+        "meanScore": 0
+      },
+      "delta": 0,
+      "graders": {
+        "skill-fired": 0
+      }
+    },
+    {
+      "name": "security-principles-holds-under-internal-pressure",
+      "runs": 3,
+      "with": {
+        "passRate": 0.6667,
+        "meanScore": 0.6667
+      },
+      "without": {
+        "passRate": 0,
+        "meanScore": 0
+      },
+      "delta": 0.6667,
+      "graders": {
+        "confined": 2,
+        "skill-fired": 0
+      }
+    },
+    {
+      "name": "security-principles-stays-quiet-on-glossary-rename",
+      "runs": 3,
+      "with": {
+        "passRate": 1,
+        "meanScore": 1
+      },
+      "without": {
+        "passRate": 1,
+        "meanScore": 1
+      },
+      "delta": 0,
+      "graders": {
+        "not-fired": 3
+      }
+    },
+    {
+      "name": "skill-creator-fires-on-new-skill",
+      "runs": 3,
+      "with": {
+        "passRate": 1,
+        "meanScore": 1
+      },
+      "without": {
+        "passRate": 0,
+        "meanScore": 0
+      },
+      "delta": 1,
+      "graders": {
+        "skill-fired": 3
+      }
+    },
+    {
+      "name": "skill-creator-stays-quiet-on-plan-request",
+      "runs": 3,
+      "with": {
+        "passRate": 1,
+        "meanScore": 1
+      },
+      "without": {
+        "passRate": 1,
+        "meanScore": 1
+      },
+      "delta": 0,
+      "graders": {
+        "not-fired": 3
+      }
+    },
+    {
+      "name": "systematic-debugging-fires-on-what-broke",
+      "runs": 3,
+      "with": {
+        "passRate": 0.3333,
+        "meanScore": 0.3333
+      },
+      "without": {
+        "passRate": 0.3333,
+        "meanScore": 0.3333
+      },
+      "delta": 0,
+      "graders": {
+        "root-cause": 1,
+        "skill-fired": 3
+      }
+    },
+    {
+      "name": "systematic-debugging-holds-under-quick-fix-pressure",
+      "runs": 3,
+      "with": {
+        "passRate": 1,
+        "meanScore": 1
+      },
+      "without": {
+        "passRate": 0,
+        "meanScore": 0
+      },
+      "delta": 1,
+      "graders": {
+        "no-blind-retry": 3,
+        "skill-fired": 3
+      }
+    },
+    {
+      "name": "writing-plans-fires-on-approved-spec",
+      "runs": 3,
+      "with": {
+        "passRate": 1,
+        "meanScore": 1
+      },
+      "without": {
+        "passRate": 0,
+        "meanScore": 0
+      },
+      "delta": 1,
+      "graders": {
+        "skill-fired": 3
+      }
+    },
+    {
+      "name": "writing-plans-records-security-line",
+      "runs": 3,
+      "with": {
+        "passRate": 1,
+        "meanScore": 1
+      },
+      "without": {
+        "passRate": 0,
+        "meanScore": 0
+      },
+      "delta": 1,
+      "graders": {
+        "performance-line": 3,
+        "security-line": 3
+      }
+    },
+    {
+      "name": "writing-plans-stays-quiet-on-grill-request",
+      "runs": 3,
+      "with": {
+        "passRate": 1,
+        "meanScore": 1
+      },
+      "without": {
+        "passRate": 1,
+        "meanScore": 1
+      },
+      "delta": 0,
+      "graders": {
+        "not-fired": 3
+      }
+    }
+  ]
+}

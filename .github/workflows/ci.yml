@@ -15,20 +15,42 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  test:
+  test-node:
+    name: test (node ${{ matrix.node }})
     runs-on: ubuntu-latest
     timeout-minutes: 10
+    strategy:
+      fail-fast: false
+      matrix:
+        node: ['22', '24'] # the engines floor and a newer LTS line
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           fetch-depth: 0 # full history and tags, for the version-bump check
+          persist-credentials: false # npm test runs repo code; it needs no token
 
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
-          node-version: '22'
+          node-version: ${{ matrix.node }}
 
-      - name: Validate repo, spec, trigger evals, hook
+      # Includes shellcheck; CI=true makes a missing shellcheck or a skipped
+      # version-bump check an error instead of a note.
+      - name: Validate repo, spec, trigger evals, hooks, scripts, shell
         run: npm test
 
-      - name: Shellcheck every shell script
-        run: shellcheck hooks/session-start hooks/guard $(git ls-files '*.sh')
+  # Branch protection requires a check named "test". Matrix jobs report as
+  # "test (node 22)" and so on, so this job carries the required name and
+  # fails unless every matrix job passed; the matrix can change without
+  # touching branch protection.
+  test:
+    if: always()
+    needs: test-node
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Every matrix job passed
+        env:
+          RESULT: ${{ needs.test-node.result }}
+        run: |
+          echo "test-node: $RESULT"
+          test "$RESULT" = success

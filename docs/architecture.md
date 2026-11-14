@@ -86,11 +86,11 @@ there is content. Legion's own repo ignores all of `.legion/`.
 
 | Layer | Checks | Runs | Cost |
 |---|---|---|---|
-| `scripts/validate.mjs` | Frontmatter, size, dev files in `skills/`, links, `legion:` refs, router and README coverage, matching versions and a bump since the latest tag, hook files exist, CI least privilege, matching audit report skeletons | CI, local | 0 |
-| `tests/scripts/` | Each `validate.mjs` and `trigger-evals.mjs` rule fails on a copy of the repo with that defect | CI, local | 0 |
-| `tests/security-audit/` | The findings and coverage-ledger validators | CI, local | 0 |
-| `scripts/trigger-evals.mjs` | Positive prompts rank their skill in the top 3, negatives not first; no near-duplicate descriptions. Vocabulary only: it does not prove a real model triggers | CI, local | 0 |
+| `scripts/validate.mjs` | Frontmatter, size, dev files in `skills/`, links, `legion:` refs, router and README coverage, matching versions and a bump since the latest tag (an error in CI when it cannot run), hook files exist, CI least privilege, matching audit report skeletons, eval case structure and a firing plus a stays-quiet case per skill | CI, local | 0 |
+| `tests/scripts/` | Each `validate.mjs` and `trigger-evals.mjs` rule fails on a copy of the repo with that defect (one table row per rule); `shellcheck.mjs` and `summarize-eval.mjs` behavior | CI, local | 0 |
+| `tests/code-review/` | The findings and coverage-ledger validators of `code-review` | CI, local | 0 |
+| `scripts/trigger-evals.mjs` | Scores prompts against each skill's description plus its router map row. Positives rank their skill #1 (a case may widen `top_k`; at least 90% overall and 75% per skill must be #1); negatives not first and below their owner; no near-duplicate descriptions. Vocabulary only: it does not prove a real model triggers | CI, local | 0 |
 | `tests/hooks/` | `session-start` emits valid JSON with the router; `guard` decides correctly on 49 inputs and runs with no `PATH` | CI, local | 0 |
-| shellcheck | Hooks and `.sh` files | CI | 0 |
+| `scripts/shellcheck.mjs` | Hooks and `.sh` files; skipped with a note when shellcheck is missing locally, an error in CI | CI, local | 0 |
 | `claude plugin validate --strict` | Manifests and skills | Local | 0 |
-| `claude plugin eval` (`evals/plugin/`, 41 cases) | Fires, stays quiet, holds under pressure, changes the code, with and without the plugin | Local, on demand | about $0.04 a run |
+| `claude plugin eval` (`evals/plugin/`, 46 cases) | Fires, stays quiet, holds under pressure, changes the code, with and without the plugin; per-case results committed under `evals/summaries/` | Local, on demand | about $0.04 a run |

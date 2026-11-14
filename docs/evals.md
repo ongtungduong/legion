@@ -1,8 +1,23 @@
 # Behavioral evals
 
-Cases live in `evals/plugin/` (41; `prompt.md` plus `graders/`). Raw results
-(`evals/results/`) stay out of git. Full per-run logs were removed from this file
-and are in git history.
+Cases live in `evals/plugin/` (46; `prompt.md` plus `graders/`, and `case.yaml`
+plus `fixture.sh` for a case that scaffolds a project). A case name starts with
+the skill it tests (or `router-`); `-stays-quiet-` in the name means the skill
+must not fire. `npm run validate` checks that structure and that every skill has
+a firing case (a `tool_used` grader on `Skill` whose `input_match` matches
+`legion:<skill>`) and a stays-quiet case (the same grader with `max: 0`; the
+router's must match every skill). Raw results (`evals/results/`) stay out of git.
+Full per-run logs were removed from this file and are in git history.
+
+**Summaries.** After a run, `npm run evals:summarize -- evals/results/<file>.json <label>`
+writes `evals/summaries/<date>-<label>.json`, which is committed. It keeps the
+Claude Code version, model, cost (`costUsd` for the agent runs, `judgeCostUsd`
+separately, since the CLI leaves judge cost out), and each case's pass rate,
+mean score, delta, and per-grader pass counts; prompts, judge evidence, and
+local paths stay out. `totals.atBar` counts cases at this file's bar (mean score
+of at least 0.66); the CLI's own `passed` uses 0.67 and undercounts. Pass
+`--model` when the run had no `--model` override. Quote new numbers in this file
+only from a committed summary.
 
 **Bar.** A case passes at 2 of 3 runs. Quality graders must score higher with the
 plugin than without. A failing case gets its transcript read and a ruling on
@@ -19,18 +34,26 @@ model, Claude Code version, and cost for every run.
 
 ## Runs on record
 
-| Date | Claude Code | Model | Scope | Cost (USD) | Result |
-|---|---|---|---|---|---|
-| 2026-11-09 | 2.1.319 | sonnet | full suite, 0.11.0 skills (30 cases) | 10.69 | 30/30 at the bar |
-| 2026-11-10 | 2.1.322 | sonnet | full suite, 0.12.0 skills (29 cases) | 10.16 | 27/29; `code-review-runs-system-audit` and `security-audit-on-system` fixed afterwards |
-| 2026-11-11 | 2.1.322 | haiku | full suite, 0.12.0 skills | 1.66 | 28/34 scored cases; mean delta +0.32 (sonnet +0.43) |
-| 2026-11-11 | 2.1.322 | sonnet, haiku | five `-hard` sibling cases, ablations (B3) | about 6 | two instructions cut (see B3) |
-| 2026-11-12 | 2.1.322 | sonnet | 0.13.0 skills, 15 affected cases | 10.41 | 14/15; the one miss is B1 |
+Cost is the agent runs plus the judge (`costUsd + judgeCostUsd` of the
+summary). A row marked **unsourced** has no committed summary: its numbers come
+from that day's session and cannot be re-checked; the next run that covers its
+scope replaces it.
+
+| Date | Claude Code | Model | Scope | Cost (USD) | Result | Source |
+|---|---|---|---|---|---|---|
+| 2026-11-09 | 2.1.319 | sonnet | full suite, 0.11.0 skills (30 cases) | 6.81 | 20/30 at the bar on the full run; the 30/30 and 10.69 recorded earlier do not match this file and are unsourced (probably the full run plus that day's reruns) | `2026-11-09-full-0.11.0.json` |
+| 2026-11-10 | 2.1.322 | sonnet | full suite, 0.12.0 skills (29 cases) | 10.25 | 27/29; `code-review-runs-system-audit` and `security-audit-on-system` (now `code-review-security-audit-on-system`) fixed afterwards | `2026-11-10-full-0.12.0.json` |
+| 2026-11-11 | 2.1.322 | haiku | full suite, 0.12.0 skills (39 cases) | 1.66 | 31/39 at the bar; mean delta +0.28 (sonnet 0.12.0: +0.43) | `2026-11-11-full-0.12.0-haiku.json` |
+| 2026-11-11 | 2.1.322 | sonnet, haiku | five `-hard` sibling cases, ablations (B3) | about 6 | two instructions cut (see B3) | unsourced |
+| 2026-11-12 | 2.1.322 | sonnet | 0.13.0 skills, 15 affected cases | 10.41 | 14/15; the one miss is B1 | unsourced (raw result not kept) |
+| 2026-11-12 | 2.1.322 | sonnet | new quiet cases for `executing-plans` and `systematic-debugging`, plus `router-stays-quiet-on-question` | 0.55 | 3/3 at the bar in both arms | `2026-11-12-new-quiet-cases.json` |
+
+Sources are files in `evals/summaries/`.
 
 The last full sonnet suite is 0.12.0. 0.13.0 re-ran only the cases it affected
-(all passing except B1), including three new ones: `code-review-runs-design-audit`
-1.00 vs 0.00, `code-review-proposes-three-axis-audit` 1.00 vs 0.00, and
-`principles-shapes-new-module` 1.00 vs 0.00 (it was open at 2/5 before).
+(all passing except B1; unsourced, same run), including three new ones:
+`code-review-runs-design-audit` 1.00 vs 0.00, `code-review-proposes-three-axis-audit`
+1.00 vs 0.00, and `principles-shapes-new-module` 1.00 vs 0.00 (it was open at 2/5 before).
 
 ## What the evals changed
 
@@ -50,6 +73,13 @@ The last full sonnet suite is 0.12.0. 0.13.0 re-ran only the cases it affected
   `code-review-flags-n-plus-one` score 1.00 with and without the plugin on sonnet.
   The `-hard` siblings did not change that. The first and second are kept as
   wiring checks and safety controls; they do not show an effect on the code.
+  Fixture twins (`executing-plans-batches-queries-fixture`,
+  `code-review-flags-n-plus-one-fixture`,
+  `executing-plans-holds-bar-under-pressure-fixture`) scaffold a small project
+  and grade the files with regexes instead of an LLM judge. Like B1, they need
+  `--scaffold --allow-tools Write Edit Bash` and have never run here: the CLI
+  refuses the Bash grant inside the tool sandbox. Run them from an unsandboxed
+  terminal: `claude plugin eval . --no-publish --model sonnet --runs 3 --threshold 0.66 -j 3 --max-cost-usd 5 --trust-plugin --scaffold --allow-tools Write Edit Bash --case '*-fixture' --json evals/results/<file>.json`.
 - **haiku** fires `brainstorming` on 1 to 4 of 5 runs and `code-review` on "is this
   safe?" on 2 of 5 (sonnet fires reliably); accepted as a small-model limit.
 - Quiet cases are expected to score 0.00 delta.
