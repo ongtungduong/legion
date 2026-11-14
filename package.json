@@ -1,6 +1,6 @@
 {
   "name": "legion",
-  "version": "0.13.0",
+  "version": "0.13.1",
   "private": true,
   "description": "Legion skills plugin for Claude Code",
   "type": "module",
@@ -9,11 +9,13 @@
     "validate": "node scripts/validate.mjs",
     "validate:spec": "node scripts/validate-spec.mjs",
     "evals:triggers": "node scripts/trigger-evals.mjs",
+    "evals:summarize": "node scripts/summarize-eval.mjs",
     "test:hooks": "bash tests/hooks/test-session-start.sh && bash tests/hooks/test-guard.sh",
-    "test:scripts": "node --test tests/scripts/validate.test.mjs tests/security-audit/validate-findings.test.cjs tests/security-audit/validate-coverage-ledger.test.cjs",
-    "test": "npm run validate && npm run validate:spec && npm run evals:triggers && npm run test:hooks && npm run test:scripts"
+    "test:scripts": "node --test \"tests/**/*.test.{mjs,cjs}\"",
+    "test:shell": "node scripts/shellcheck.mjs",
+    "test": "npm run validate && npm run validate:spec && npm run evals:triggers && npm run test:hooks && npm run test:scripts && npm run test:shell"
   },
   "engines": {
-    "node": ">=18"
+    "node": ">=22"
   }
 }

@@ -98,7 +98,7 @@ gitignores the rest of `.legion/`. Legion's own repo ignores all of it.
 ## Development
 
 ```bash
-npm test                 # validate + validate:spec + trigger evals + hook and script tests
+npm test                 # validate + validate:spec + trigger evals + hook, script, and shellcheck tests
 npm run validate         # repo structure: links, router, README, manifests, versions
 npm run validate:spec    # skills against agentskills.io (needs python3)
 npm run evals:triggers   # vocabulary routing (TF-IDF)

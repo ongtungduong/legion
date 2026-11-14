@@ -1,5 +1,35 @@
 # Changelog
 
+## 0.13.1 - 2026-11-14
+
+Repo checks only; nothing that ships to users changed.
+
+Added
+
+- `npm run validate` lints `evals/plugin/` cases: name prefix, prompt and
+  grader frontmatter, grader types, and per model-invoked skill one firing
+  case (a `tool_used` grader on Skill for that skill) and one stays-quiet case
+  (the same grader with `max: 0`).
+- `npm run test:shell` (shellcheck, required in CI) and
+  `npm run evals:summarize`, which writes committed per-case summaries to
+  `evals/summaries/`.
+- Behavioral cases: quiet cases for `executing-plans` and
+  `systematic-debugging`, and three `-fixture` twins that grade files with
+  regexes (not yet run).
+- A test row for every `validate.mjs` and `trigger-evals.mjs` rule.
+
+Changed
+
+- Trigger evals score the router map row with the description; a positive
+  must rank its skill #1 unless it sets `top_k`; at least 90% of all
+  positives and 75% of each skill's rank #1; a negative's owner must outrank
+  the skill; 5 positives per skill; the near-duplicate threshold is 0.35.
+- In CI, a version-bump check that cannot run is an error.
+- CI runs on Node 22 and 24 behind one required `test` check; checkouts keep
+  no credentials. `engines` is `>=22`.
+- `security-audit-on-system` is now `code-review-security-audit-on-system`;
+  `tests/security-audit/` is `tests/code-review/`.
+
 ## 0.13.0 - 2026-11-12
 
 Removed (breaking)

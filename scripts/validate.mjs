@@ -8,7 +8,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { spawnSync } from 'node:child_process';
-import { ROOT, SKILLS_DIR, TRIGGERS_DIR, ROUTER, listSkills, readSkill, walk, rel } from './lib/skills.mjs';
+import { ROOT, SKILLS_DIR, TRIGGERS_DIR, ROUTER, listSkills, readSkill, parseFrontmatter, walk, rel } from './lib/skills.mjs';
 
 const errors = [];
 const warnings = [];
@@ -138,6 +138,69 @@ if (fs.existsSync(TRIGGERS_DIR)) {
   }
 }
 
+// --- Behavioral eval cases (evals/plugin/) ----------------------------------
+// `claude plugin eval` reads these; a malformed case fails only when someone
+// pays for a run. Names say which skill a case tests. A firing case has a
+// tool_used grader on Skill whose input_match matches that skill's call; a
+// case named *-stays-quiet-* has one with max: 0. Every model-invoked skill
+// needs at least one case of each kind; other cases may grade quality only.
+const EVALS_DIR = path.join(ROOT, 'evals', 'plugin');
+// Grader types of `claude plugin eval` (Claude Code 2.1.322 case schema).
+const GRADER_TYPES = new Set(['llm', 'regex', 'tool_used', 'tool_order', 'file_exists', 'baseline']);
+const modelSkills = skills.filter((s) => s !== ROUTER);
+const casePrefixes = [...modelSkills, 'router'].sort((a, b) => b.length - a.length);
+// The Skill tool input a call to legion:<name> produces, for input_match.
+const skillCall = (name) => JSON.stringify({ skill: `legion:${name}` });
+const cases = { fires: new Set(), quiet: new Set() };
+if (fs.existsSync(EVALS_DIR)) {
+  for (const entry of fs.readdirSync(EVALS_DIR, { withFileTypes: true })) {
+    if (!entry.isDirectory() || entry.name === 'results') continue;
+    const where = `evals/plugin/${entry.name}`;
+    const dir = path.join(EVALS_DIR, entry.name);
+    const owner = casePrefixes.find((p) => entry.name.startsWith(`${p}-`));
+    if (!owner) err(`${where}: name must start with a skill name or "router-"`);
+    const quiet = entry.name.includes('-stays-quiet-');
+    // The router's quiet case must cover a call to any skill.
+    const watched = owner === 'router' ? modelSkills : [owner];
+
+    const promptFile = path.join(dir, 'prompt.md');
+    if (fs.existsSync(promptFile)) {
+      const { data, error } = parseFrontmatter(fs.readFileSync(promptFile, 'utf8'));
+      if (error) err(`${where}/prompt.md: ${error}`);
+      else for (const key of ['description', 'expected_outcome']) if (!data[key]) err(`${where}/prompt.md: frontmatter needs ${key}`);
+    } else if (!fs.existsSync(path.join(dir, 'case.yaml'))) err(`${where}: needs prompt.md or case.yaml`);
+
+    const gradersDir = path.join(dir, 'graders');
+    const graders = fs.existsSync(gradersDir) ? fs.readdirSync(gradersDir).filter((f) => f.endsWith('.md')) : [];
+    if (!graders.length) { err(`${where}: no graders (graders/*.md)`); continue; }
+    let assertsUsed = false, assertsUnused = false;
+    for (const g of graders) {
+      const { data, error } = parseFrontmatter(fs.readFileSync(path.join(gradersDir, g), 'utf8'));
+      if (error) { err(`${where}/graders/${g}: ${error}`); continue; }
+      if (!GRADER_TYPES.has(data.type)) err(`${where}/graders/${g}: grader type "${data.type}" is not one of ${[...GRADER_TYPES].join(', ')}`);
+      let match = null;
+      if (data.input_match) {
+        try { match = new RegExp(data.input_match); }
+        catch { err(`${where}/graders/${g}: input_match is not a valid regex`); continue; }
+      }
+      if (!owner || data.type !== 'tool_used' || data.tool !== 'Skill' || !match) continue;
+      if (!watched.every((s) => match.test(skillCall(s)))) continue;
+      if (data.max === '0') assertsUnused = true;
+      else assertsUsed = true;
+    }
+    if (quiet && owner && !assertsUnused) {
+      err(`${where}: a stays-quiet case needs a tool_used grader on Skill with max: 0 whose input_match matches legion:${watched.length === 1 ? owner : '<any skill>'}`);
+    }
+    if (assertsUnused && quiet) cases.quiet.add(owner);
+    if (assertsUsed && !quiet) cases.fires.add(owner);
+  }
+}
+for (const name of skills) {
+  if (name === ROUTER || readSkill(name)?.data?.['disable-model-invocation'] === 'true') continue;
+  if (!cases.fires.has(name)) err(`${name}: no firing eval case in evals/plugin/ (a case named ${name}-<behavior> with a tool_used grader on Skill that matches legion:${name})`);
+  if (!cases.quiet.has(name)) err(`${name}: no stays-quiet eval case in evals/plugin/ (a case named ${name}-stays-quiet-<prompt>)`);
+}
+
 // --- Manifests and hooks ----------------------------------------------------
 function readJson(p) {
   try { return JSON.parse(fs.readFileSync(path.join(ROOT, p), 'utf8')); }
@@ -170,8 +233,9 @@ for (const name of hookFiles) {
 // --- Version bump -----------------------------------------------------------
 // Installed plugin caches are keyed by version, so a change to what ships
 // without a bump never reaches users. Compare against the latest v* tag; skip
-// (with a note) when git, tags, or the tag's history are not available, as in
-// a shallow CI checkout.
+// (with a note) when git, tags, or the tag's history are not available locally;
+// in CI (CI set) that is an error, because CI checks out full history and tags
+// and a skip there would let an unbumped change through unnoticed.
 const SHIPPED = ['skills', 'hooks', '.claude-plugin'];
 const parseVer = (v) => (/^\d+\.\d+\.\d+$/.test(v ?? '') ? v.split('.').map(Number) : null);
 const cmpVer = (a, b) => a[0] - b[0] || a[1] - b[1] || a[2] - b[2];
@@ -179,7 +243,9 @@ const git = (...args) => {
   const res = spawnSync('git', args, { cwd: ROOT, encoding: 'utf8' });
   return res.error || res.status !== 0 ? null : res.stdout;
 };
-const skipBump = (why) => notes.push(`version-bump check skipped: ${why}`);
+const skipBump = (why) => (process.env.CI
+  ? err(`version-bump check cannot run in CI: ${why}`)
+  : notes.push(`version-bump check skipped: ${why}`));
 if (git('rev-parse', '--show-cdup') === null) skipBump('not a git checkout');
 else if (git('rev-parse', '--show-cdup').trim() !== '') skipBump('not at the root of a git checkout');
 else {
