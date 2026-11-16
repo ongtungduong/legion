@@ -51,8 +51,9 @@ cause.
 3. **Reproduce and minimize.** Confirm the loop shows the failure the *user*
    described, not a nearby one. Cut inputs, callers, config, and steps one at a
    time, re-running after each, until every remaining element is load-bearing.
-4. **Hypothesize.** Write three to five ranked hypotheses before testing any,
-   each with a prediction ("if X is the cause, changing Y makes it disappear").
+4. **Hypothesize.** Write ranked hypotheses before testing any (three to five
+   for a cause that is open; one when a stack trace, a bisect, or the repro
+   already names the line), each with a prediction ("if X is the cause, changing Y makes it disappear").
    Rank by likelihood for the cost of checking: a likely cause that a
    one-line probe settles goes before a slightly likelier one that needs a
    new environment.

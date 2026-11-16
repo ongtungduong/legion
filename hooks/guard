@@ -2,9 +2,13 @@
 # PreToolUse guard for the Legion plugin.
 #
 # Asks the user before a tool touches a file that usually holds secrets
-# (.env, .env.*, *.pem, *.key, id_rsa*), and denies broad scans of
-# node_modules, dist, and build, which flood the context with generated code.
-# Everything else is allowed with no output. Set LEGION_GUARD=off to disable.
+# (.env, .env.*, *.pem, *.key, id_rsa*). Denies broad scans of node_modules,
+# which flood the context with generated code, and asks before broad scans of
+# dist and build, which are usually generated but can be source folders, so
+# the user decides and the agent is never locked out of real code.
+# Everything else is allowed with no output. The user disables the guard by
+# starting Claude Code with LEGION_GUARD=off; the agent cannot set it, so no
+# message tells it to.
 #
 # Bash builtins only: the hook runs before every matched tool call, so it
 # forks no process, and it must work with a broken PATH. It fails open: input
@@ -80,7 +84,19 @@ heavy_glob() {
 }
 
 ask_secret() { emit ask "Legion guard: $1 may contain secrets. Allow this $tool call?"; }
-deny_scan() { emit deny "Legion guard: broad scan of $1/ blocked; search one package or subfolder, or read the file directly. Set LEGION_GUARD=off to disable."; }
+deny_scan() { emit deny "Legion guard: broad scan of $1/ blocked; search one package or subfolder, or read the file directly. If the command only mentions the folder (text in a heredoc or a message), write that text with the Write or Edit tool."; }
+ask_scan() { emit ask "Legion guard: $1/ usually holds generated output, and a broad scan of it floods the context. Allow this $tool call? Decline if one subfolder or file would do."; }
+# note_heavy <name>: remember a broadly scanned folder; node_modules wins,
+# because it is the one that is denied.
+note_heavy() { if [ -z "$heavy" ] || [ "$1" = node_modules ]; then heavy="$1"; fi; }
+# decide: deny a node_modules scan, then ask about a secret, then about dist
+# or build. Returns when there is nothing to say.
+decide() {
+  [ "$heavy" = node_modules ] && deny_scan "$heavy"
+  [ -n "$secret" ] && ask_secret "$secret"
+  [ -n "$heavy" ] && ask_scan "$heavy"
+  return 0
+}
 
 # bash_segment <one command>: sets scanner/heavy/secret for one simple command.
 # Values of options that take a pattern or an exclusion are skipped, so
@@ -122,7 +138,7 @@ bash_segment() {
     [ -z "$secret" ] && secret_name "$word" && secret="$REPLY"
     prev="$word"
   done
-  if [ -n "$is_scanner" ] && [ -n "$seg_heavy" ]; then heavy="$seg_heavy"; fi
+  if [ -n "$is_scanner" ] && [ -n "$seg_heavy" ]; then note_heavy "$seg_heavy"; fi
 }
 
 json_string tool_name
@@ -140,10 +156,12 @@ case "$tool" in
     path="$REPLY"
     if [ "$tool" = Grep ]; then json_string glob; else json_string pattern; fi
     glob="$REPLY"
-    [ -n "$path" ] && heavy_target "$path" && deny_scan "$REPLY"
-    [ -n "$glob" ] && heavy_glob "$glob" && deny_scan "$REPLY"
-    [ -n "$path" ] && secret_name "$path" && ask_secret "$REPLY"
-    [ -n "$glob" ] && secret_glob "$glob" && ask_secret "$REPLY"
+    heavy="" secret=""
+    [ -n "$path" ] && heavy_target "$path" && note_heavy "$REPLY"
+    [ -n "$glob" ] && heavy_glob "$glob" && note_heavy "$REPLY"
+    if [ -n "$path" ] && secret_name "$path"; then secret="$REPLY"
+    elif [ -n "$glob" ] && secret_glob "$glob"; then secret="$REPLY"; fi
+    decide
     ;;
   Bash)
     json_string command
@@ -158,8 +176,7 @@ case "$tool" in
       bash_segment "${rest%%;*}"
       case "$rest" in *';'*) rest="${rest#*;}" ;; *) rest="" ;; esac
     done
-    [ -n "$heavy" ] && deny_scan "$heavy"
-    [ -n "$secret" ] && ask_secret "$secret"
+    decide
     ;;
 esac
 exit 0

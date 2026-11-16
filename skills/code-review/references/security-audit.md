@@ -16,11 +16,11 @@ core principles, execution safety, and anti-patterns in
   with a fresh context: `subagent_type: "general-purpose"`, never `fork` (a
   fork inherits the parent's context and breaks independence), no worktree.
 - **`research` agent**: focused source exploration and factual verification,
-  read-only, no file writes. Use `model: "sonnet"`.
+  read-only, no file writes. Use tier `standard`.
 - **`general` agent**: broad investigation and bounded local execution (the
-  hunters and candidate verifiers). Hunters use `model: "sonnet"`: they are
+  hunters and candidate verifiers). Hunters use tier `standard`: they are
   the bulk of the run's tokens, and every candidate they raise is checked
-  again. Candidate verifiers use `model: "opus"`: few, small, and their
+  again. Candidate verifiers use tier `top`: few, small, and their
   verdict decides what is reported.
 - **`subagent_type:`** in a heading of a reference file names which of these
   two roles runs that work.

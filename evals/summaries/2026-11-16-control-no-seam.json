@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 2,
+  "label": "control-no-seam",
+  "claudeVersion": "2.1.325",
+  "model": "sonnet",
+  "startedAt": "2026-11-16T04:52:21.598Z",
+  "partial": false,
+  "costUsd": 0.45,
+  "judgeCostUsd": 0.1,
+  "threshold": 0.66,
+  "bar": 0.66,
+  "totals": {
+    "cases": 1,
+    "passed": 1,
+    "atBar": 1,
+    "meanDelta": 0,
+    "graders": {
+      "outcome": 1,
+      "protocol": 0,
+      "routing": 1,
+      "unclassified": 0
+    },
+    "outcome": {
+      "graders": 1,
+      "with": 1,
+      "without": 1,
+      "delta": 0,
+      "regressions": []
+    },
+    "overhead": {
+      "cases": 1,
+      "cost": 1.23,
+      "turns": 1.05,
+      "seconds": 1.04
+    }
+  },
+  "cases": [
+    {
+      "name": "executing-plans-rules-on-untestable-change",
+      "runs": 3,
+      "with": {
+        "passRate": 1,
+        "meanScore": 1,
+        "costUsd": 0.0823,
+        "turns": 6.33,
+        "seconds": 19
+      },
+      "without": {
+        "passRate": 1,
+        "meanScore": 1,
+        "costUsd": 0.0668,
+        "turns": 6,
+        "seconds": 18.3
+      },
+      "delta": 0,
+      "graders": {
+        "ruled-not-stalled": {
+          "kind": "outcome",
+          "with": 3,
+          "without": 3
+        },
+        "skill-fired": {
+          "kind": "routing",
+          "with": 1,
+          "without": 0
+        }
+      }
+    }
+  ]
+}

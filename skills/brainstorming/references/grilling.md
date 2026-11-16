@@ -8,7 +8,7 @@ Recommend an answer for every question so the user can accept it in a word.
 
 1. **Collect facts yourself first.** Read the code, files, and docs the topic
    touches. Never ask the user for something you can look up; dispatch a
-   fresh, read-only `general-purpose` subagent on `model: "haiku"` for slow
+   fresh, read-only `general-purpose` subagent on tier `cheap` for slow
    lookups and keep asking the questions that
    do not depend on them.
 2. **Build the tree from goals and constraints.** A decision belongs in the tree

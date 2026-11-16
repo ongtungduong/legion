@@ -156,23 +156,25 @@ leaves out.
 - Add `+review` (a fresh task reviewer, even for inline work) when a shipped
   mistake would be costly: auth, secrets, untrusted input, data migration,
   money (prices, totals, discounts, payments), concurrency.
-- Name the model on every dispatch:
+- Name a tier on every dispatch and set `model` from the tier table in the
+  router (`legion:using-legion`):
 
-  | Dispatch | `model` |
+  | Dispatch | Tier |
   |---|---|
-  | Lookup: find files, run tests, read logs, summarize | `haiku` |
-  | Implementer | `sonnet` |
-  | Task reviewer | `sonnet`; `opus` for a `+review` task |
-  | Final review | the models `legion:code-review` names for deep depth |
+  | Lookup: find files, run tests, read logs, summarize | `cheap` |
+  | Implementer | `session` |
+  | Task reviewer | `standard`; `top` for a `+review` task |
+  | Final review | the tiers `legion:code-review` names for deep depth |
 
-  `haiku` never edits code: a wrong lookup is cheap to spot, a wrong edit
-  costs review rounds on a larger model. An implementer that returns BLOCKED
-  for lack of judgment, or fails review twice, is re-dispatched with `effort`
-  one level higher when the Agent tool takes that parameter, and on `opus`
-  only if that fails too; ledger it. Otherwise leave `effort` unset, so each
-  model runs at its default.
-  If the Agent tool's model list changes, keep the tiers (cheap, standard,
-  most capable) and ledger the alias you chose.
+  A `cheap` dispatch never edits code: a wrong lookup is cheap to spot, a
+  wrong edit costs review rounds on a larger model. The implementer runs on
+  the session's own model because its output is what the plan ships; a weaker
+  one trades a cheaper dispatch for review rounds. An implementer that returns
+  BLOCKED for lack of judgment, or fails review twice, is re-dispatched with
+  `effort` one level higher when the Agent tool takes that parameter, and on
+  tier `top` only if that fails too; ledger it. Otherwise leave `effort`
+  unset, so each model runs at its default. Ledger the alias each tier
+  resolved to in the `Mode:` line.
 - One implementer at a time. A worktree isolates the files, but each task
   builds on the commits before it and integrates by fast-forward.
 - Only writers get a worktree. Reviewers and lookups are read-only and work

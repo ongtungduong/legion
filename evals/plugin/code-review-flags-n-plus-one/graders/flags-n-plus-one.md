@@ -2,6 +2,6 @@
 type: llm
 ---
 
-PASS if the review flags the `db.query` call inside `for (const order of orders)` as an N+1 or per-row query problem, labels it Important or Critical, and gives a location in `src/orders.js`.
+PASS if the review flags the `db.query` call inside `for (const order of orders)` as an N+1 or per-row query problem, treats it as something to fix before merge (labelled Important or Critical, or the reviewer's equivalent), and gives a location in `src/orders.js`.
 
-FAIL if it is not mentioned, or is labelled Minor or FYI.
+FAIL if it is not mentioned, or is presented as minor, optional, or FYI.

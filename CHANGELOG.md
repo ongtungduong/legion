@@ -1,5 +1,60 @@
 # Changelog
 
+## 0.14.0 - 2026-11-16
+
+Principle: the harness is a floor under the agent, not a ceiling over it. Each
+change below removes a place where a more capable model was held to a weaker
+one's limits, or makes the evidence for the harness say what it measures.
+
+Changed
+
+- Subagent dispatches name a tier (`cheap`, `standard`, `session`, `top`), never
+  a model. The router defines the tiers once; a tier never resolves below the
+  session's model for work whose verdict the user relies on. Implementers run on
+  `session` (their output is what a plan ships), standard-depth verifiers on
+  `session`, deep verifiers, `+review` task reviewers, and doubt review on `top`;
+  finders, hunters, and auditors, which read at volume, stay `standard`.
+  `npm run validate` rejects a pinned `model: "<alias>"` in any skill file.
+- Test-first has an exit for a change no test can observe (a manifest value, a
+  migration, a stylesheet, a prompt): the agent rules `Ruling: no seam`, names and
+  runs the check that stands in, and lists what stayed unchecked, instead of
+  stalling or writing a test that restates the file. A function with a signature
+  still has a seam.
+- `systematic-debugging` writes one hypothesis when a stack trace, a bisect, or
+  the repro already names the line; `writing-plans` asks one or two pre-mortem
+  reasons for a plan of three tasks or fewer. Both keep the full count for open
+  problems.
+- The guard hook asks, instead of denying, before a broad scan of `dist/` or
+  `build/` (they can be source folders); `node_modules` is still denied. The
+  denial no longer tells the agent to set `LEGION_GUARD=off`, which only the user
+  can do.
+- `npm run evals:summarize` writes summary schema 2: per-grader kind and
+  with/without pass counts, an outcome-only delta with the graders the plugin
+  arm lost, and the plugin's cost, turns, and time as a multiple of the
+  no-plugin arm's.
+
+Added
+
+- `evals/grader-kinds.json`: every non-routing grader declares `outcome` or
+  `protocol`, so only results count as evidence that the plugin helps.
+  `npm run validate` rejects a grader that declares no kind.
+- Negative-control cases: `code-review-approves-clean-diff` (a correct diff must
+  be approved) and `executing-plans-rules-on-untestable-change` (no seam, no
+  stall).
+- `docs/evals.md` states what the numbers do not show: the headline delta is
+  inflated by routing graders, only sonnet and haiku were measured, and a review
+  costs about 2x the no-plugin answer.
+
+Fixed
+
+- `code-review-flags-unmeasured-speed-claim` mixed an outcome and a label check
+  in one grader and showed the plugin losing; it is now two graders and does not.
+  Graders that required the labels "Critical" or "Important" accept the
+  reviewer's equivalent. `principles-shapes-new-module` and
+  `code-review-runs-design-audit` no longer pass on a printed line alone.
+- `CONTRIBUTING.md` and the PR template asked for an `Unreleased` section that
+  never existed; they now ask for an entry at the top of the changelog.
+
 ## 0.13.1 - 2026-11-14
 
 Repo checks only; nothing that ships to users changed.

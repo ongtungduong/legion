@@ -11,4 +11,4 @@ npm test
 claude plugin validate . --strict
 ```
 
-Add a line under `Unreleased` in [CHANGELOG.md](CHANGELOG.md).
+Add an entry for the new version at the top of [CHANGELOG.md](CHANGELOG.md) and bump the version in `package.json`, `plugin.json`, and `marketplace.json` when anything under `skills/`, `hooks/`, or `.claude-plugin/` changes.

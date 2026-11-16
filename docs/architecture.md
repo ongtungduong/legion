@@ -5,6 +5,16 @@ The deliberate decisions behind the current design, with their reasons, so nobod
 
 ## Foundations
 
+0. **A floor, not a ceiling.** The harness adds what a strong agent lacks:
+   independent verification, a bar that cannot be weakened to reach green, state
+   that survives compaction, facts past its training date. It must not cap what a
+   stronger agent does: a rule needs its reason and an exit where the reason does
+   not apply, a dispatch never runs below the session's model for work the user
+   relies on, and a rule that no longer changes an outcome on the newest model is
+   cut (`skills/skill-creator/references/measuring.md`). Each number the docs
+   quote says what it measures: only an outcome grader's delta is evidence that
+   the plugin helps (`docs/evals.md`).
+
 1. **superpowers' chain** (SessionStart router, then brainstorm, plan, execute,
    review, verify, with hard gates) is kept; it is the strongest part of it.
 2. **A light router, not enforcement.** superpowers checks for skills before every
@@ -44,7 +54,8 @@ taken from claudekit-engineer: its license is proprietary.
 |---|---|
 | **One skill for all code work**, `executing-plans`, with a quick path (no plan) and a plan workflow (`references/plan-workflow.md`) | Spec-first and test-first must hold even for a pasted function; chaining three skills left a step to skip. The plan workflow lives in a reference because a quick-path run should not pay for ~10 KB it never uses |
 | The agent chooses inline or subagent per task; risky tasks (auth, data, money, concurrency) always get a fresh reviewer; XS tasks run inline | Restarting a worktree costs more than an XS task |
-| **Subagents** start fresh (`general-purpose`, never `fork`, which copies the parent conversation and loses the independent view) with an explicit model: `haiku` for lookups, `sonnet` for implementers, finders, and hunters, `opus` only for verifiers, doubt review, and risky-task review | Without a model the subagent inherits the main session's, usually the dearest |
+| **Subagents** start fresh (`general-purpose`, never `fork`, which copies the parent conversation and loses the independent view) with an explicit tier, defined once in the router: `cheap` for lookups, `standard` for finders, hunters, auditors, and task reviewers, `session` for implementers and a lone verifier, `top` for deep verifiers, doubt review, and risky-task review | A pinned alias caps every later session at the model that was best when the line was written; a tier never resolves below the session's model for work whose verdict the user relies on, and `npm run validate` rejects a pinned `model: "<alias>"`. Volume reading stays `standard` for cost: the cost, not a model's ability, is what that tier saves |
+| Test-first has an exit for a change no test can observe: `Ruling: no seam`, the nearest check named and run, the rest under `Unverified:` | A rule with no exit for a case it cannot serve either stalls the agent or is satisfied by a test that restates the file; a function with a signature still has a seam |
 | Implementers run one at a time in their own worktree, reset to `BASE` first; the controller pins the head as `legion/<plan>/task-N`, reviews `BASE..pin`, and fast-forwards | Native worktrees branch from the default branch, and the harness cleans up worktrees; a failed isolation check switches the run to inline |
 | `brainstorming` owns glossary and ADRs; no separate skill | A skill adds an always-on description and a router row for a rare task |
 | `principles` holds four references (`system-design`, `coding`, `performance`, `security`) plus situational files (`coding-existing-code`, `performance-optimization`, `performance-web`), each loaded on a stated condition | Picking a topic beats picking a book, a synthesis settles conflicting book rules once, and a rule list nobody needed dilutes the ones that matter |
@@ -56,8 +67,8 @@ taken from claudekit-engineer: its license is proprietary.
 | A whole-repo target runs a three-axis audit (system design, performance, security) after one scope-and-budget proposal; approval in the request counts; it runs in the main session because a subagent cannot start subagents | No logic or style axis: with no spec there is no oracle and it is the dearest. A design finding needs a quoted rule and a concrete failure |
 | No speed claim without a number and its source; otherwise "potential impact" | A model reading source cannot see runtime cost |
 | `using-legion` is `disable-model-invocation: true` and the hook strips its frontmatter | The hook already injects it; a listed description invited a second copy |
-| `hooks/guard` asks before secret files and denies broad scans of generated folders; bash builtins only, fails open | A convenience; Claude Code's permission rules stay the boundary |
-| Behavioral evals are the bar: a case passes at 2 of 3 runs, quality graders must beat the no-plugin arm, and a grader is never loosened to pass | Lexical evals do not show that a skill fires or helps |
+| `hooks/guard` asks before secret files and before a broad scan of `dist/` or `build/`, and denies a broad scan of `node_modules`; bash builtins only, fails open; its messages never tell the agent to set `LEGION_GUARD` | A convenience; Claude Code's permission rules stay the boundary. `dist/` and `build/` can be source folders, so the user decides; only the user can switch the guard off |
+| Behavioral evals are the bar: a case is at the bar at a with-plugin mean of 0.66 (2 of 3 runs), outcome graders must not score lower with the plugin than without, and a grader is never loosened to pass | Lexical evals do not show that a skill fires or helps |
 | Six Thinking Hats is a checklist against missed perspectives, not a ritual | The research evidence for the method is thin; B2 in `docs/evals.md` found no clear win either way |
 
 ## Thinking models
@@ -90,7 +101,7 @@ there is content. Legion's own repo ignores all of `.legion/`.
 | `tests/scripts/` | Each `validate.mjs` and `trigger-evals.mjs` rule fails on a copy of the repo with that defect (one table row per rule); `shellcheck.mjs` and `summarize-eval.mjs` behavior | CI, local | 0 |
 | `tests/code-review/` | The findings and coverage-ledger validators of `code-review` | CI, local | 0 |
 | `scripts/trigger-evals.mjs` | Scores prompts against each skill's description plus its router map row. Positives rank their skill #1 (a case may widen `top_k`; at least 90% overall and 75% per skill must be #1); negatives not first and below their owner; no near-duplicate descriptions. Vocabulary only: it does not prove a real model triggers | CI, local | 0 |
-| `tests/hooks/` | `session-start` emits valid JSON with the router; `guard` decides correctly on 49 inputs and runs with no `PATH` | CI, local | 0 |
+| `tests/hooks/` | `session-start` emits valid JSON with the router; `guard` passes 56 checks and runs with no `PATH` | CI, local | 0 |
 | `scripts/shellcheck.mjs` | Hooks and `.sh` files; skipped with a note when shellcheck is missing locally, an error in CI | CI, local | 0 |
 | `claude plugin validate --strict` | Manifests and skills | Local | 0 |
-| `claude plugin eval` (`evals/plugin/`, 46 cases) | Fires, stays quiet, holds under pressure, changes the code, with and without the plugin; per-case results committed under `evals/summaries/` | Local, on demand | about $0.04 a run |
+| `claude plugin eval` (`evals/plugin/`, 48 cases) | Fires, stays quiet, holds under pressure, changes the code, with and without the plugin; every non-routing grader declares `outcome` or `protocol` (`evals/grader-kinds.json`); per-case results committed under `evals/summaries/` | Local, on demand | 0.5 to 1.3 USD for a 3 to 5 run case on sonnet; 7 to 10 USD for a full sonnet suite (see `docs/evals.md`) |
