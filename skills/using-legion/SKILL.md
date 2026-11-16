@@ -62,6 +62,21 @@ brainstorming into one short confirmation and may skip the written plan; a
 trivial change skips the flow. A bug report enters at systematic-debugging,
 whose fix then runs through executing-plans.
 
+## Model tiers
+
+A skill that dispatches a subagent names a tier, never a model. Set `model` from
+this table; a tier never resolves below the model of this session for work whose
+verdict the user relies on.
+
+| Tier | For | `model` |
+|---|---|---|
+| `cheap` | lookups with no judgment: find files, run tests, read logs | `haiku` |
+| `standard` | reading code at volume: finders, hunters, auditors, task reviewers | `sonnet` |
+| `session` | work the main session builds on: implementers, a lone verifier | omit `model`: it inherits this session's |
+| `top` | verdicts: verification at depth, risky-task review, doubt review | `opus`, or a more capable model the Agent tool lists, never below this session's |
+
+If the Agent tool's list changes, keep the tiers and name the alias you chose.
+
 ## Gotchas
 
 - Plugin skills are namespaced: load `legion:executing-plans`, not

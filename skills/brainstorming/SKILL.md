@@ -93,7 +93,7 @@ not as extra passes. Each stops where it no longer changes what gets built.
    [references/adr-format.md](references/adr-format.md).
 10. **Builder check (projects only).** Re-read the doc as a builder who must
     plan from it, or dispatch a fresh, read-only `general-purpose` subagent
-    on `model: "sonnet"` to do it. Answer what the
+    on tier `standard` to do it. Answer what the
     conversation already settled, settle minor gaps yourself and mark them as
     your calls, and bring only the real decisions to the user in one message.
 11. **Get approval, then** call the Skill tool with `legion:writing-plans`.

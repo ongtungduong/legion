@@ -21,7 +21,7 @@ specified exactly, and when the user asked for speed over verification.
    bears on the claim goes in. Too big to hold in one read means split it.
 3. **Doubt.** Write the prompt below to `.legion/doubt-<topic>.md` (add
    `.legion/*`, `!.legion/specs/`, `!.legion/plans/` to `.gitignore` if missing and say so) and dispatch it with the Agent tool: `subagent_type: "general-purpose"` (a
-   fresh context, never `fork`), no worktree (read-only), `model: "opus"`.
+   fresh context, never `fork`), no worktree (read-only), tier `top`.
    Pass the artifact and the contract, never the claim: a reviewer handed
    your conclusion tends to agree with it.
 

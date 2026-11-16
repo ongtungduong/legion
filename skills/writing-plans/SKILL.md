@@ -75,8 +75,8 @@ pins every guess into files, signatures, and tests.
    - cross-task reference: point at the other task's Interfaces block.
 6. **Pre-mortem.** Assume the plan was executed exactly and the
    feature still failed: rejected by the user, broken in production, or
-   unmergeable. Write the three most likely reasons in the plan's
-   `Pre-mortem` section, each naming the component or assumption at fault,
+   unmergeable. Write the three most likely reasons (one or two for a plan
+   of three tasks or fewer) in the plan's `Pre-mortem` section, each naming the component or assumption at fault,
    and give each a countermeasure: a test in its owning task, a Review focus
    line, a reordered task, or a question for the user at hand-off.
 7. **Self-review, then fix inline:**

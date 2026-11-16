@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 # Verifies hooks/guard: asks before secret files are touched, denies broad
-# scans of dependency and build folders, allows everything else, and never
-# blocks on input it cannot read.
+# scans of node_modules, asks before broad scans of dist and build (which can
+# be source folders), allows everything else, and never blocks on input it
+# cannot read.
 set -euo pipefail
 
 REPO_ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
@@ -56,7 +57,7 @@ expect allow "Write mentioning .env in content is allowed" '{"tool_name":"Write"
 expect allow "Bash ls dist is allowed"                 "$(bash_json 'ls dist')"
 expect ask   "Write to .env asks without echoing content" '{"tool_name":"Write","tool_input":{"file_path":"/p/.env","content":"API_KEY=sk_live_TESTONLY123"}}' 'sk_live_TESTONLY123'
 expect ask   "path with an escaped quote still asks"   '{"tool_name":"Read","tool_input":{"file_path":"/p/a\"b/.env"}}'
-expect deny  "Bash find over dist is denied"           "$(bash_json 'find dist -name *.js')"
+expect ask   "Bash find over dist asks"                "$(bash_json 'find dist -name *.js')"
 
 # Review findings: ordinary work must not be blocked.
 expect allow "Grep under an ancestor named build is allowed" '{"tool_name":"Grep","tool_input":{"pattern":"foo","path":"/Users/x/build/app/src"}}'
@@ -89,7 +90,19 @@ expect allow "Bash rg -C 2 for dist in src is allowed" "$(bash_json 'rg -C 2 dis
 expect allow "Bash grep -rn -m 1 for build in scripts is allowed" "$(bash_json 'grep -rn -m 1 build scripts')"
 expect deny  "Bash rg -A 3 foo in node_modules is denied" "$(bash_json 'rg -A 3 foo node_modules')"
 expect allow "Bash fd for the word build is allowed"   "$(bash_json 'fd build')"
-expect deny  "Bash rg --files over dist is denied"     "$(bash_json 'rg --files dist')"
+expect ask   "Bash rg --files over dist asks"          "$(bash_json 'rg --files dist')"
+
+# dist and build can be source folders (a Go cmd/build, a Python build/
+# package): the user decides, the agent is not locked out. node_modules is
+# never source, so it stays denied, and the denial names ways forward the
+# agent can take itself, not a switch only the user can flip.
+expect ask   "Grep in a top-level build folder asks"   '{"tool_name":"Grep","tool_input":{"pattern":"foo","path":"/p/build"}}'
+expect ask   "Grep in a top-level dist folder asks"    '{"tool_name":"Grep","tool_input":{"pattern":"foo","path":"/p/dist"}}'
+expect ask   "Glob over dist asks"                     '{"tool_name":"Glob","tool_input":{"pattern":"dist/**"}}'
+expect ask   "Bash grep -rn in build asks"             "$(bash_json 'grep -rn foo build')"
+expect deny  "a node_modules scan after a dist scan is denied" "$(bash_json 'rg foo dist; rg foo node_modules')"
+expect deny  "the denial does not tell the agent to set LEGION_GUARD" '{"tool_name":"Grep","tool_input":{"pattern":"foo","path":"/p/node_modules"}}' 'Set LEGION_GUARD'
+expect ask   "the dist question does not tell the agent to set LEGION_GUARD" '{"tool_name":"Grep","tool_input":{"pattern":"foo","path":"/p/dist"}}' 'Set LEGION_GUARD'
 
 # Bash builtins only: the hook must work with no PATH at all.
 out="$(printf '%s' "$(read_json /p/.env)" | env PATH=/nonexistent "$BASH" "$HOOK" 2>&1)" || true

@@ -237,6 +237,16 @@ const validateRules = [
   ['skill without a stays-quiet case', (r) => rm(r, quietCase), /skill-creator: no stays-quiet eval case in evals\/plugin\//],
   ['skill without a firing case', (r) => rm(r, 'evals/plugin/skill-creator-fires-on-new-skill'), /skill-creator: no firing eval case in evals\/plugin\//],
   ['firing case whose Skill grader names another skill', (r) => edit(r, 'evals/plugin/skill-creator-fires-on-new-skill/graders/skill-fired.md', (t) => t.replaceAll('skill-creator', 'brainstorming')), /skill-creator: no firing eval case in evals\/plugin\//],
+  // Grader kinds (evals/grader-kinds.json): what each grader's delta is evidence of.
+  ['grader-kinds.json missing', (r) => rm(r, 'evals/grader-kinds.json'), /evals\/grader-kinds\.json is missing/],
+  ['grader-kinds.json with invalid JSON', (r) => write(r, 'evals/grader-kinds.json', '{not json'), /evals\/grader-kinds\.json: invalid JSON/],
+  ['grader with no declared kind', (r) => json(r, 'evals/grader-kinds.json', (j) => { delete j['code-review-fires']['off-by-one']; return j; }), /code-review-fires\/graders\/off-by-one\.md: no kind in evals\/grader-kinds\.json/],
+  ['grader kind that is not outcome or protocol', (r) => json(r, 'evals/grader-kinds.json', (j) => { j['code-review-fires']['off-by-one'] = 'vibes'; return j; }), /code-review-fires\/off-by-one: kind "vibes" is not one of outcome, protocol/],
+  ['kind declared for a grader that does not exist', (r) => json(r, 'evals/grader-kinds.json', (j) => { j['code-review-fires'].ghost = 'outcome'; return j; }), /evals\/grader-kinds\.json: code-review-fires\/ghost names no grader/],
+  ['kind declared for a case that does not exist', (r) => json(r, 'evals/grader-kinds.json', (j) => ({ ...j, 'code-review-ghost': { x: 'outcome' } })), /evals\/grader-kinds\.json: code-review-ghost\/x names no grader/],
+  ['kind declared for a routing grader', (r) => json(r, 'evals/grader-kinds.json', (j) => { j['code-review-fires']['skill-fired'] = 'outcome'; return j; }), /code-review-fires\/skill-fired: a tool_used grader on Skill is a routing grader by type/],
+  // Model tiers: a skill names a tier for a dispatch, never a model.
+  ['skill that pins a model in a dispatch', (r) => edit(r, 'skills/brainstorming/references/grilling.md', (t) => `${t}\nDispatch it on \`model: "opus"\`.\n`), /brainstorming\/references\/grilling\.md:\d+: pins a model \(model: "opus"\); name a tier/],
 ];
 
 for (const [name, mutate, expected] of validateRules) {

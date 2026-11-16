@@ -9,6 +9,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { spawnSync } from 'node:child_process';
 import { ROOT, SKILLS_DIR, TRIGGERS_DIR, ROUTER, listSkills, readSkill, parseFrontmatter, walk, rel } from './lib/skills.mjs';
+import { DECLARED_KINDS, isRoutingGrader, loadGraderKinds } from './lib/grader-kinds.mjs';
 
 const errors = [];
 const warnings = [];
@@ -152,6 +153,12 @@ const casePrefixes = [...modelSkills, 'router'].sort((a, b) => b.length - a.leng
 // The Skill tool input a call to legion:<name> produces, for input_match.
 const skillCall = (name) => JSON.stringify({ skill: `legion:${name}` });
 const cases = { fires: new Set(), quiet: new Set() };
+// Every grader that is not a routing grader declares what its result is
+// evidence of (scripts/lib/grader-kinds.mjs). Without a declared kind a new
+// grader would count as proof that the plugin helps by default.
+const { kinds: graderKinds, error: kindsError } = loadGraderKinds();
+if (kindsError) err(kindsError);
+const gradersSeen = new Map(); // case -> Map(grader name -> is routing)
 if (fs.existsSync(EVALS_DIR)) {
   for (const entry of fs.readdirSync(EVALS_DIR, { withFileTypes: true })) {
     if (!entry.isDirectory() || entry.name === 'results') continue;
@@ -178,6 +185,13 @@ if (fs.existsSync(EVALS_DIR)) {
       const { data, error } = parseFrontmatter(fs.readFileSync(path.join(gradersDir, g), 'utf8'));
       if (error) { err(`${where}/graders/${g}: ${error}`); continue; }
       if (!GRADER_TYPES.has(data.type)) err(`${where}/graders/${g}: grader type "${data.type}" is not one of ${[...GRADER_TYPES].join(', ')}`);
+      const graderName = g.replace(/\.md$/, '');
+      const routing = isRoutingGrader(data);
+      if (!gradersSeen.has(entry.name)) gradersSeen.set(entry.name, new Map());
+      gradersSeen.get(entry.name).set(graderName, routing);
+      if (graderKinds && !routing && graderKinds[entry.name]?.[graderName] === undefined) {
+        err(`${where}/graders/${g}: no kind in evals/grader-kinds.json (outcome: a result an agent without the plugin can also reach; protocol: Legion's own procedure or format)`);
+      }
       let match = null;
       if (data.input_match) {
         try { match = new RegExp(data.input_match); }
@@ -195,10 +209,30 @@ if (fs.existsSync(EVALS_DIR)) {
     if (assertsUsed && !quiet) cases.fires.add(owner);
   }
 }
+for (const [caseName, declared] of Object.entries(graderKinds ?? {})) {
+  for (const [graderName, kind] of Object.entries(declared ?? {})) {
+    const routing = gradersSeen.get(caseName)?.get(graderName);
+    if (routing === undefined) err(`evals/grader-kinds.json: ${caseName}/${graderName} names no grader in evals/plugin/`);
+    else if (routing) err(`evals/grader-kinds.json: ${caseName}/${graderName}: a tool_used grader on Skill is a routing grader by type; remove its entry`);
+    else if (!DECLARED_KINDS.includes(kind)) err(`evals/grader-kinds.json: ${caseName}/${graderName}: kind "${kind}" is not one of ${DECLARED_KINDS.join(', ')}`);
+  }
+}
 for (const name of skills) {
   if (name === ROUTER || readSkill(name)?.data?.['disable-model-invocation'] === 'true') continue;
   if (!cases.fires.has(name)) err(`${name}: no firing eval case in evals/plugin/ (a case named ${name}-<behavior> with a tool_used grader on Skill that matches legion:${name})`);
   if (!cases.quiet.has(name)) err(`${name}: no stays-quiet eval case in evals/plugin/ (a case named ${name}-stays-quiet-<prompt>)`);
+}
+
+// --- Model tiers ------------------------------------------------------------
+// A skill names a tier for a dispatch (cheap, standard, session, top), never a
+// model: a pinned alias caps every later session at the model that was the
+// best one when the line was written. The tier tables map tiers to aliases in
+// backticks, which this rule leaves alone.
+for (const file of walk(SKILLS_DIR, (f) => f.endsWith('.md'))) {
+  fs.readFileSync(file, 'utf8').split('\n').forEach((line, i) => {
+    const pin = line.match(/model:\s*"[A-Za-z0-9.-]+"/);
+    if (pin) err(`${rel(file)}:${i + 1}: pins a model (${pin[0]}); name a tier (cheap, standard, session, top) and let the skill's tier table choose the model`);
+  });
 }
 
 // --- Manifests and hooks ----------------------------------------------------

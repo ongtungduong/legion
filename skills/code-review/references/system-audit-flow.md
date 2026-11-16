@@ -20,7 +20,7 @@ so and offer a diff review or a review scoped to named files.
    merged list leaves the reader unable to tell what was checked for each.
    - **System design and performance:** dispatch the auditors with the
      Agent tool, `subagent_type: "general-purpose"` (a fresh context, never
-     `fork`), no worktree, `model: "sonnet"`, one per axis per partition,
+     `fork`), no worktree, tier `standard`, one per axis per partition,
      all in one message. Each is told to read and follow its reference of
      this skill (absolute path): `references/system-design-audit.md` or
      `references/performance-audit.md`. Give each the scope (paths, entry
@@ -32,7 +32,7 @@ so and offer a diff review or a review scoped to named files.
      its full audit yourself (it dispatches its own hunters and verifiers;
      a subagent cannot start subagents, so it never runs inside an auditor
      subagent). Use the profile and budget from the proposal.
-5. **Verify.** One fresh `opus` verifier per Critical system-design or
+5. **Verify.** One fresh tier `top` verifier per Critical system-design or
    performance candidate, and one for the Important batch. Security keeps
    its own verification phases.
 6. **Report** under `## System design audit`, `## Performance audit`, and

@@ -6,10 +6,11 @@ Rules for anyone, human or agent, changing this repo.
 
 ```
 .claude-plugin/   plugin.json + marketplace.json (versions must match package.json)
-hooks/            hooks.json + session-start (injects skills/using-legion)
+hooks/            hooks.json, session-start (injects skills/using-legion), guard (PreToolUse)
 skills/<name>/    SKILL.md (+ references/, assets/, scripts/) - shipped to users
 evals/triggers/   lexical trigger cases, one JSON per skill
-evals/plugin/     behavioral cases for `claude plugin eval` (prompt.md + graders/)
+evals/plugin/     behavioral cases for `claude plugin eval` (prompt.md + graders/, or case.yaml + fixture.sh)
+evals/grader-kinds.json  every non-routing grader declared `outcome` or `protocol`
 scripts/          repo checks (Node, no dependencies)
 tests/            hook tests (shell), check and validator tests (node:test)
 docs/             architecture, roadmap (human-facing)
@@ -37,8 +38,13 @@ Legion conventions on top of the spec:
 
 - Everything is in English: skill content and docs for humans (`README.md`, `docs/`).
 - Cross-skill instructions say "Call the Skill tool with `legion:<name>`".
-- Subagents start with a fresh context and an explicitly named model.
-- Generated artifacts go under `.legion/`: `specs/` and `plans/` are committed, everything else (`runs/`, scratch) is gitignored.
+- Subagents start with a fresh context and an explicitly named tier
+  (`cheap`, `standard`, `session`, `top`, defined in `skills/using-legion/SKILL.md`),
+  never a model alias: a pinned alias caps later sessions at today's best model.
+- A rule that cannot serve a case needs an exit, stated with its reason. A rule
+  that stops changing outcomes on the newest model is a cut candidate
+  (`skills/skill-creator/references/measuring.md`).
+- Generated artifacts go under `.legion/`: `specs/` and `plans/` are committed in a repo that uses Legion, everything else (`runs/`, scratch) is gitignored. Legion's own repo ignores all of `.legion/`.
 - The router stays light: it never forces a skill onto a question or trivial edit.
 - Nothing under `skills/` may be skill-development material (`test-*.md`,
   `*.scenario.md`, `CREATION-LOG.md`): agents read those folders during real work.
@@ -54,7 +60,7 @@ Legion conventions on top of the spec:
 - [ ] Row in the map in `skills/using-legion/SKILL.md`
 - [ ] Row in the skill table in `README.md`
 - [ ] `evals/triggers/<name>.json` with 5+ positive and 2+ near-miss negative prompts
-- [ ] `evals/plugin/<name>-<behavior>/` and `evals/plugin/<name>-stays-quiet-<prompt>/` cases
+- [ ] `evals/plugin/<name>-<behavior>/` and `evals/plugin/<name>-stays-quiet-<prompt>/` cases, every non-routing grader declared in `evals/grader-kinds.json` (`outcome`: a result an agent without the plugin can also reach; `protocol`: Legion's own format), and an outcome grader that accepts the reviewer's equivalent of a severity label
 - [ ] Provenance in `THIRD_PARTY.md` if adapted from another project
 - [ ] `npm test` and `claude plugin validate . --strict` pass
 

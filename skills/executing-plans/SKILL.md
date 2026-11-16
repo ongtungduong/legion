@@ -30,7 +30,12 @@ take that path once per task; without one, the request is a plan of one task.
    expected reason. A test you never saw fail may pass for reasons unrelated
    to your change. Code written before its test is set aside and rebuilt from
    the test, because adapting it turns test-first into test-after. Only the
-   user grants exceptions (throwaway spike, generated code, pure config).
+   user grants exceptions (a throwaway spike, generated code). A change no
+   test can observe has no seam (a manifest value, a migration, a stylesheet,
+   a prompt): rule on it yourself, ledger `Ruling: no seam - <nearest check>`,
+   name the check that stands in (a dry run, `EXPLAIN`, a lint, a render),
+   run it when you can, and list what stayed unchecked under `Unverified:`.
+   A test that only restates the file is not that check.
 3. **Principles.** Code follows the references loaded with
    `legion:principles`, or for an XS change inside existing code, the
    surrounding code's conventions; `legion:principles` sets the
@@ -195,7 +200,10 @@ path is a guess.
 ## Gotchas
 
 - "The request didn't ask for tests" does not lift the test-first rule: it
-  governs how code gets written, not what was asked.
+  governs how code gets written, not what was asked. "No test fits" is a
+  claim to check, not a way out: a function with a signature has a seam;
+  only a change with nothing to observe from outside, such as a manifest
+  value, has none.
 - A new test that passes on its first run is testing existing behavior or
   nothing; fix the test before writing code. An erroring test (import
   failure, typo) is not RED either.

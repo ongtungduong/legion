@@ -29,11 +29,18 @@ Based on [superpowers](https://github.com/obra/superpowers), with material from
 - **Brainstorming in two methods:** compare approaches (Six Thinking Hats), then
   grill the design in rounds. Glossary terms and ADRs are written here and read
   by later skills.
-- **A guard hook** asks before a tool touches `.env`, keys, or certificates and
-  blocks whole-folder scans of `node_modules`, `dist`, `build`. A convenience,
-  not a security boundary; `LEGION_GUARD=off` disables it.
-- **Measured.** Trigger evals run in CI; behavioral evals (`claude plugin eval`)
-  are logged with model, CLI version, and cost in [docs/evals.md](docs/evals.md).
+- **A floor, not a ceiling.** Subagent dispatches name a tier (`cheap`,
+  `standard`, `session`, `top`) that never resolves below your session's model for
+  work you rely on; test-first has an exit for a change no test can observe; every
+  hard rule states its reason.
+- **A guard hook** asks before a tool touches `.env`, keys, or certificates or
+  scans `dist` or `build` broadly, and blocks whole-folder scans of
+  `node_modules`. A convenience, not a security boundary; start Claude Code with
+  `LEGION_GUARD=off` to disable it.
+- **Measured, and honest about it.** Trigger evals run in CI; behavioral evals
+  (`claude plugin eval`) are logged with model, CLI version, and cost in
+  [docs/evals.md](docs/evals.md), which also says what they do not show: only
+  sonnet and haiku were measured, and a review costs about twice a plain answer.
 
 ## Installation
 

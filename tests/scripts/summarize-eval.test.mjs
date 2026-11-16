@@ -15,12 +15,6 @@ const FIXTURE = path.join(HERE, 'fixtures', 'eval-result.json');
 const dirs = [];
 after(() => { for (const d of dirs) fs.rmSync(d, { recursive: true, force: true }); });
 
-function tempRoot() {
-  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'legion-summarize-'));
-  dirs.push(dir);
-  return dir;
-}
-
 function run(root, ...args) {
   const res = spawnSync('node', [SCRIPT, ...args], { encoding: 'utf8', env: { ...process.env, LEGION_ROOT: root } });
   return { code: res.status, out: `${res.stdout}${res.stderr}` };
@@ -36,8 +30,22 @@ function withModel(root, model) {
   return p;
 }
 
+// What each fixture grader is evidence of; the two tool_used graders on Skill
+// are routing graders by type and are not declared.
+const KINDS = { 'alpha-fires': { quality: 'outcome', 'kept-bar': 'outcome', 'report-line': 'protocol' } };
+
+function tempRoot(kinds = KINDS) {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'legion-summarize-'));
+  dirs.push(dir);
+  if (kinds) {
+    fs.mkdirSync(path.join(dir, 'evals'));
+    fs.writeFileSync(path.join(dir, 'evals', 'grader-kinds.json'), JSON.stringify(kinds));
+  }
+  return dir;
+}
+
 const EXPECTED = {
-  schemaVersion: 1,
+  schemaVersion: 2,
   label: 'full',
   claudeVersion: '9.9.9',
   model: 'sonnet',
@@ -47,23 +55,38 @@ const EXPECTED = {
   judgeCostUsd: 0.03,
   threshold: 0.66,
   bar: 0.66,
-  totals: { cases: 2, passed: 1, atBar: 1, meanDelta: 0.5 },
+  totals: {
+    cases: 2,
+    passed: 1,
+    atBar: 1,
+    meanDelta: 0.5,
+    graders: { outcome: 2, protocol: 1, routing: 2, unclassified: 0 },
+    // quality 2/3 vs 2/3, kept-bar 1/3 vs 3/3: the plugin arm is worse on the
+    // only graders that measure the result, whatever meanDelta says.
+    outcome: { graders: 2, with: 0.5, without: 0.8333, delta: -0.3333, regressions: ['alpha-fires/kept-bar'] },
+    overhead: { cases: 1, cost: 2, turns: 3, seconds: 2 },
+  },
   cases: [
     {
       name: 'alpha-fires',
       runs: 3,
-      with: { passRate: 0.6667, meanScore: 0.8333 },
-      without: { passRate: 0, meanScore: 0.3333 },
+      with: { passRate: 0.6667, meanScore: 0.8333, costUsd: 0.2, turns: 6, seconds: 20 },
+      without: { passRate: 0, meanScore: 0.3333, costUsd: 0.1, turns: 2, seconds: 10 },
       delta: 0.5,
-      graders: { quality: 2, 'skill-fired': 3 },
+      graders: {
+        'kept-bar': { kind: 'outcome', with: 1, without: 3 },
+        quality: { kind: 'outcome', with: 2, without: 2 },
+        'report-line': { kind: 'protocol', with: 3, without: 0 },
+        'skill-fired': { kind: 'routing', with: 3, without: 0 },
+      },
     },
     {
       name: 'zeta-stays-quiet',
       runs: 2,
-      with: { passRate: 0.5, meanScore: 0.5 },
+      with: { passRate: 0.5, meanScore: 0.5, costUsd: 0.1, turns: 3, seconds: 5 },
       without: null,
       delta: null,
-      graders: { 'not-fired': 1 },
+      graders: { 'not-fired': { kind: 'routing', with: 1, without: null } },
     },
   ],
 };
@@ -97,6 +120,17 @@ test('refuses to overwrite a summary unless --force', () => {
   assert.deepEqual(JSON.parse(fs.readFileSync(summaryPath(root, '2030-01-02-full.json'), 'utf8')), EXPECTED);
 });
 
+test('a grader no kind declares is unclassified and never counts as outcome evidence', () => {
+  const root = tempRoot(null);
+  const { code, out } = run(root, FIXTURE, 'full');
+  assert.equal(code, 0, out);
+  assert.match(out, /NOTE {2}3 grader\(s\) have no kind in evals\/grader-kinds\.json/);
+  const s = JSON.parse(fs.readFileSync(summaryPath(root, '2030-01-02-full.json'), 'utf8'));
+  assert.deepEqual(s.totals.graders, { outcome: 0, protocol: 0, routing: 2, unclassified: 3 });
+  assert.deepEqual(s.totals.outcome, { graders: 0, with: null, without: null, delta: null, regressions: [] });
+  assert.equal(s.cases[0].graders.quality.kind, 'unclassified');
+});
+
 test('requires --model when the result does not record one', () => {
   const root = tempRoot();
   const input = withModel(root, null);
@@ -127,5 +161,5 @@ test('fails cleanly on a missing file, invalid JSON, a wrong shape, or a bad lab
     assert.match(out, /^ERROR /m, out);
     assert.doesNotMatch(out, /\n\s+at /, `stack trace for ${args.join(' ')}`);
   }
-  assert.ok(!fs.existsSync(path.join(root, 'evals')), 'nothing written on failure');
+  assert.ok(!fs.existsSync(path.join(root, 'evals', 'summaries')), 'nothing written on failure');
 });

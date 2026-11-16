@@ -5,10 +5,18 @@
 // evidence, and local trace paths. The summary keeps only versions, model,
 // cost, and per-case scores.
 //
+// It also answers the two questions a mean score hides. Does the plugin help?
+// Only outcome graders can say (scripts/lib/grader-kinds.mjs), so their pass
+// rates are reported apart from routing and protocol graders, with every
+// outcome grader the plugin arm lost named under `regressions`. What does it
+// cost? `overhead` is the with-arm's cost, turns, and time as a multiple of
+// the no-plugin arm's.
+//
 //   node scripts/summarize-eval.mjs <result.json> <label> [--model <m>] [--force]
 import fs from 'node:fs';
 import path from 'node:path';
 import { ROOT } from './lib/skills.mjs';
+import { kindOf, loadGraderKinds } from './lib/grader-kinds.mjs';
 
 const USAGE = 'usage: node scripts/summarize-eval.mjs <result.json> <label> [--model <model>] [--force]';
 const fail = (msg) => { console.log(`ERROR ${msg}`); process.exit(1); };
@@ -46,36 +54,74 @@ if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) fail(`${input}: startedAt "${result.start
 const round = (x, places = 4) => (typeof x === 'number' && Number.isFinite(x) ? Number(x.toFixed(places)) : null);
 const mean = (xs) => (xs.length ? xs.reduce((a, b) => a + b, 0) / xs.length : null);
 
+const sum = (xs) => xs.reduce((a, b) => a + b, 0);
+// Mean of a per-run number, over the runs that recorded it.
+const runMean = (runs, key, places) => round(mean(runs.map((r) => r[key]).filter((v) => typeof v === 'number')), places);
+
 function arm(runs) {
   if (!Array.isArray(runs) || !runs.length) return null;
   return {
     passRate: round(mean(runs.map((r) => (r.passed ? 1 : 0)))),
     meanScore: round(mean(runs.map((r) => (typeof r.score === 'number' ? r.score : 0)))),
+    costUsd: runMean(runs, 'costUsd', 4),
+    turns: runMean(runs, 'turns', 2),
+    seconds: runMean(runs, 'durationSeconds', 1),
   };
 }
 
-function graderPasses(runs) {
-  const counts = {};
-  for (const r of runs ?? []) {
-    for (const g of r.graders ?? []) counts[g.name] = (counts[g.name] ?? 0) + (g.passed ? 1 : 0);
-  }
-  return Object.fromEntries(Object.keys(counts).sort().map((k) => [k, counts[k]]));
+// Runs in which the named grader passed, or null when the arm did not run.
+function passes(runs, name) {
+  if (!Array.isArray(runs) || !runs.length) return null;
+  return runs.filter((r) => (r.graders ?? []).some((g) => g.name === name && g.passed)).length;
 }
+
+const { kinds } = loadGraderKinds();
+const kindCounts = { outcome: 0, protocol: 0, routing: 0, unclassified: 0 };
+const outcomeRates = []; // { id, with, without } per outcome grader that ran in both arms
 
 const cases = result.cases
   .map((c) => {
     const withArm = arm(c.arms?.with);
     const withoutArm = arm(c.arms?.without);
+    const runs = c.arms?.with?.length ?? 0;
+    const runsWithout = c.arms?.without?.length ?? 0;
+    const graders = {};
+    for (const g of [...(c.graders ?? [])].sort((a, b) => (a.name < b.name ? -1 : a.name > b.name ? 1 : 0))) {
+      const kind = kindOf(kinds, c.name, g);
+      const entry = { kind, with: passes(c.arms?.with, g.name), without: passes(c.arms?.without, g.name) };
+      graders[g.name] = entry;
+      kindCounts[kind] += 1;
+      if (kind === 'outcome' && entry.with !== null && entry.without !== null) {
+        outcomeRates.push({ id: `${c.name}/${g.name}`, with: entry.with / runs, without: entry.without / runsWithout });
+      }
+    }
     return {
       name: c.name,
-      runs: c.arms?.with?.length ?? 0,
+      runs,
       with: withArm,
       without: withoutArm,
       delta: withArm && withoutArm ? round(withArm.meanScore - withoutArm.meanScore) : null,
-      graders: graderPasses(c.arms?.with),
+      graders,
     };
   })
   .sort((a, b) => (a.name < b.name ? -1 : a.name > b.name ? 1 : 0));
+
+const outcome = {
+  graders: outcomeRates.length,
+  with: round(mean(outcomeRates.map((o) => o.with))),
+  without: round(mean(outcomeRates.map((o) => o.without))),
+  delta: round(mean(outcomeRates.map((o) => o.with - o.without))),
+  regressions: outcomeRates.filter((o) => o.with < o.without).map((o) => o.id).sort(),
+};
+
+// The with-arm as a multiple of the no-plugin arm, over the cases that ran both.
+const paired = cases.filter((c) => c.with && c.without);
+const ratio = (key) => {
+  const both = paired.filter((c) => typeof c.with[key] === 'number' && typeof c.without[key] === 'number');
+  const base = sum(both.map((c) => c.without[key]));
+  return base > 0 ? round(sum(both.map((c) => c.with[key])) / base, 2) : null;
+};
+const overhead = { cases: paired.length, cost: ratio('costUsd'), turns: ratio('turns'), seconds: ratio('seconds') };
 
 // docs/evals.md's bar: a case passes at a mean score of 2 of 3. The CLI compares
 // with 0.67 and fails 2/3 = 0.6667, so its casesPassed undercounts; atBar is
@@ -86,7 +132,7 @@ const judgeCost = result.cases.reduce((sum, c) => sum + [...(c.arms?.with ?? [])
 
 const agg = result.aggregates ?? {};
 const summary = {
-  schemaVersion: 1,
+  schemaVersion: 2,
   label,
   claudeVersion: result.claudeVersion ?? null,
   model,
@@ -101,6 +147,9 @@ const summary = {
     passed: agg.casesPassed ?? null,
     atBar: cases.filter((c) => c.with && c.with.meanScore >= BAR).length,
     meanDelta: round(agg.meanDelta),
+    graders: kindCounts,
+    outcome,
+    overhead,
   },
   cases,
 };
@@ -111,4 +160,6 @@ const out = path.join(outDir, `${date}-${label}.json`);
 if (fs.existsSync(out) && !force) fail(`${path.relative(ROOT, out)} already exists; pass --force to replace it`);
 fs.mkdirSync(outDir, { recursive: true });
 fs.writeFileSync(out, `${JSON.stringify(summary, null, 2)}\n`);
+if (kindCounts.unclassified) console.log(`NOTE  ${kindCounts.unclassified} grader(s) have no kind in evals/grader-kinds.json (a renamed or removed case?); they count toward no outcome figure`);
+if (outcome.regressions.length) console.log(`NOTE  the plugin arm lost ${outcome.regressions.length} outcome grader(s): ${outcome.regressions.join(', ')}`);
 console.log(`summarize-eval: wrote ${path.relative(ROOT, out)} (${cases.length} cases, ${model}, Claude Code ${summary.claudeVersion})`);

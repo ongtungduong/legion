@@ -6,7 +6,7 @@
 
 - [ ] `npm test` passes
 - [ ] `claude plugin validate . --strict` passes
-- [ ] `CHANGELOG.md` has an entry under Unreleased
+- [ ] `CHANGELOG.md` has an entry for the new version (bumped if `skills/`, `hooks/`, or `.claude-plugin/` changed)
 
 If this adds or renames a skill:
 
