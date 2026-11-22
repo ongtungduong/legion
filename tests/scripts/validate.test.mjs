@@ -195,8 +195,8 @@ const validateRules = [
   ['scenario file inside skills/',(r) => write(r, 'skills/brainstorming/a.scenario.md', '# x\n'), /a\.scenario\.md: skill-development material/],
   ['reference to an unknown legion skill', (r) => edit(r, 'README.md', (t) => `${t}\nSee legion:nope.\n`), /README\.md: reference "legion:nope" does not match any skill/],
   ['broken link inside a skill', (r) => edit(r, 'skills/skill-creator/SKILL.md', (t) => `${t}\nSee [x](references/nope.md).\n`), /skill-creator\/SKILL\.md: broken link "references\/nope\.md"/],
-  ['router skill missing', (r) => rm(r, 'skills/router'), /skills\/router is required/],
-  ['router map missing a skill', (r) => edit(r, 'skills/router/SKILL.md', (t) => t.replaceAll('legion:skill-creator', 'legion-skill-creator')), /map does not route to legion:skill-creator/],
+  ['find-skills skill missing', (r) => rm(r, 'skills/find-skills'), /skills\/find-skills is required/],
+  ['find-skills map missing a skill', (r) => edit(r, 'skills/find-skills/SKILL.md', (t) => t.replaceAll('legion:skill-creator', 'legion-skill-creator')), /map does not route to legion:skill-creator/],
   ['README missing', (r) => rm(r, 'README.md'), /README\.md is missing/],
   ['README skill table missing a skill', (r) => edit(r, 'README.md', (t) => t.replaceAll('`skill-creator`', 'skill creator')), /README\.md: skill table does not list `skill-creator`/],
   ['trigger file for no skill', (r) => write(r, 'evals/triggers/ghost.json', '{}\n'), /evals\/triggers\/ghost\.json: no skill named "ghost"/],
@@ -214,7 +214,7 @@ const validateRules = [
   ['grader with unclosed frontmatter', (r) => edit(r, `${quietCase}/graders/not-fired.md`, (t) => t.replace(/^---\n/, '--\n')), /graders\/not-fired\.md: missing or unclosed frontmatter/],
   ['grader of an unknown type', (r) => edit(r, `${quietCase}/graders/not-fired.md`, (t) => t.replace('type: tool_used', 'type: vibes')), /not-fired\.md: grader type "vibes" is not one of/],
   ['grader whose input_match is not a regex', (r) => edit(r, `${quietCase}/graders/not-fired.md`, (t) => t.replace(/^input_match:.*$/m, "input_match: '(['")), /graders\/not-fired\.md: input_match is not a valid regex/],
-  ['eval case named for no skill', (r) => fs.renameSync(path.join(r, quietCase), path.join(r, 'evals/plugin/nobody-stays-quiet-on-x')), /evals\/plugin\/nobody-stays-quiet-on-x: name must start with a skill name or "router-"/],
+  ['eval case named for no skill', (r) => fs.renameSync(path.join(r, quietCase), path.join(r, 'evals/plugin/nobody-stays-quiet-on-x')), /evals\/plugin\/nobody-stays-quiet-on-x: name must start with a skill name or "find-skills-"/],
   ['quiet case that does not assert the skill stayed unused', (r) => edit(r, `${quietCase}/graders/not-fired.md`, (t) => t.replace('max: 0', 'max: 1')), /skill-creator-stays-quiet-on-plan-request: a stays-quiet case needs a tool_used grader on Skill with max: 0 whose input_match matches legion:skill-creator/],
   ['quiet case whose max: 0 grader watches another tool', (r) => edit(r, `${quietCase}/graders/not-fired.md`, (t) => t.replace('tool: Skill', 'tool: Bash')), /skill-creator-stays-quiet-on-plan-request: a stays-quiet case needs a tool_used grader on Skill/],
   ['quiet case whose max: 0 grader names another skill', (r) => edit(r, `${quietCase}/graders/not-fired.md`, (t) => t.replaceAll('skill-creator', 'planning')), /skill-creator-stays-quiet-on-plan-request: a stays-quiet case needs a tool_used grader on Skill/],
@@ -290,9 +290,9 @@ for (const [name, mutate, expected] of triggerRules) {
   });
 }
 
-test('trigger-evals scores the router map row with the description', () => {
+test('trigger-evals scores the find-skills map row with the description', () => {
   const root = copyRepo();
-  edit(root, 'skills/router/SKILL.md', (t) => t.replace('| Creating, editing, or validating a skill |', '| Creating, editing, or validating a skill; quokka zeppelin |'));
+  edit(root, 'skills/find-skills/SKILL.md', (t) => t.replace('| Creating, editing, or validating a skill |', '| Creating, editing, or validating a skill; quokka zeppelin |'));
   triggers(root, 'skill-creator', (j) => ({ ...j, positive: [...j.positive, 'quokka zeppelin'] }));
   const { code, out } = run('trigger-evals.mjs', root);
   assert.equal(code, 0, out);

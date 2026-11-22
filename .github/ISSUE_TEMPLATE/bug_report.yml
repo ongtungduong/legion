@@ -1,5 +1,5 @@
 name: Bug report
-description: A skill, the router, or a hook behaves wrongly
+description: A skill, find-skills, or a hook behaves wrongly
 labels: [bug]
 body:
   - type: textarea

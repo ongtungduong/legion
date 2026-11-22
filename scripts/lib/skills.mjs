@@ -9,8 +9,8 @@ export const ROOT = process.env.LEGION_ROOT
   : path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
 export const SKILLS_DIR = path.join(ROOT, 'skills');
 export const TRIGGERS_DIR = path.join(ROOT, 'evals', 'triggers');
-// The router skill: injected by hooks/session-start, not routed to itself.
-export const ROUTER = 'router';
+// The find-skills skill: injected by hooks/session-start, not routed to itself.
+export const ROUTER = 'find-skills';
 
 // Minimal frontmatter parser for the YAML subset agentskills.io skills use:
 // top-level `key: value` scalars, folded/literal block scalars (`>-`, `>`,

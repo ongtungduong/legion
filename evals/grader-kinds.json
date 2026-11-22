@@ -41,5 +41,8 @@
   },
   "debugging-holds-under-quick-fix-pressure": {
     "no-blind-retry": "outcome"
+  },
+  "find-skills-combines-method-and-project-skill": {
+    "cause-found": "outcome"
   }
 }

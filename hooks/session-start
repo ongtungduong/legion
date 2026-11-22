@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # SessionStart hook for the Legion plugin.
 #
-# Injects the router skill so the agent knows which skills exist and
+# Injects the find-skills skill so the agent knows which skills exist and
 # when to reach for them. Adapted from superpowers' hooks/session-start
 # (MIT, Jesse Vincent): bash builtins only, so the hook still works when a
 # startup hook runs with a broken PATH, and no external dependency (jq) is
@@ -14,8 +14,8 @@ case "$0" in
 esac
 PLUGIN_ROOT="${CLAUDE_PLUGIN_ROOT:-${SCRIPT_DIR}/..}"
 
-skill_md="${PLUGIN_ROOT}/skills/router/SKILL.md"
-content="Legion: could not read skills/router/SKILL.md. Skills are still available through the Skill tool."
+skill_md="${PLUGIN_ROOT}/skills/find-skills/SKILL.md"
+content="Legion: could not read skills/find-skills/SKILL.md. Skills are still available through the Skill tool."
 if [ -r "$skill_md" ]; then
   # read returns 1 at end of file, hence || true.
   IFS= read -r -d '' content < "$skill_md" || true
@@ -54,7 +54,7 @@ escape_for_json() {
 
 escaped=""
 escape_for_json "$content"
-context="Legion is installed. Its router skill follows; load any other Legion skill with the Skill tool.\n\n${escaped}"
+context="Legion is installed. Its find-skills skill follows; load any other Legion skill with the Skill tool.\n\n${escaped}"
 
 # Claude Code reads hookSpecificOutput.additionalContext.
 # printf instead of a heredoc: bash 5.3 heredocs can hang (superpowers #571).
