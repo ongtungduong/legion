@@ -127,7 +127,7 @@ const EVALS_DIR = path.join(ROOT, 'evals', 'plugin');
 // Grader types of `claude plugin eval` (Claude Code 2.1.322 case schema).
 const GRADER_TYPES = new Set(['llm', 'regex', 'tool_used', 'tool_order', 'file_exists', 'baseline']);
 const modelSkills = skills.filter((s) => s !== ROUTER);
-const casePrefixes = [...modelSkills, 'router'].sort((a, b) => b.length - a.length);
+const casePrefixes = [...modelSkills, ROUTER].sort((a, b) => b.length - a.length);
 // The Skill tool input a call to legion:<name> produces, for input_match.
 const skillCall = (name) => JSON.stringify({ skill: `legion:${name}` });
 const cases = { fires: new Set(), quiet: new Set() };
@@ -143,10 +143,10 @@ if (fs.existsSync(EVALS_DIR)) {
     const where = `evals/plugin/${entry.name}`;
     const dir = path.join(EVALS_DIR, entry.name);
     const owner = casePrefixes.find((p) => entry.name.startsWith(`${p}-`));
-    if (!owner) err(`${where}: name must start with a skill name or "router-"`);
+    if (!owner) err(`${where}: name must start with a skill name or "${ROUTER}-"`);
     const quiet = entry.name.includes('-stays-quiet-');
-    // The router's quiet case must cover a call to any skill.
-    const watched = owner === 'router' ? modelSkills : [owner];
+    // The find-skills quiet case must cover a call to any skill.
+    const watched = owner === ROUTER ? modelSkills : [owner];
 
     const promptFile = path.join(dir, 'prompt.md');
     if (fs.existsSync(promptFile)) {

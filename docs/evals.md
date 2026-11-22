@@ -2,11 +2,11 @@
 
 Cases live in `evals/plugin/` (18; `prompt.md` plus `graders/`, and `case.yaml`
 plus `fixture.sh` for a case that scaffolds a project). A case name starts with
-the skill it tests (or `router-`); `-stays-quiet-` in the name means the skill
+the skill it tests (or `find-skills-`); `-stays-quiet-` in the name means the skill
 must not fire. `npm run validate` checks that structure and that every skill has
 a firing case (a `tool_used` grader on `Skill` whose `input_match` matches
 `legion:<skill>`) and a stays-quiet case (the same grader with `max: 0`; the
-router's must match every skill). Raw results (`evals/results/`) stay out of git.
+`find-skills`' must match every skill). Raw results (`evals/results/`) stay out of git.
 Full per-run logs were removed from this file and are in git history.
 
 **Summaries.** After a run, `npm run evals:summarize -- evals/results/<file>.json <label>`

@@ -12,8 +12,10 @@ Based on [superpowers](https://github.com/obra/superpowers), with material from
 
 ## What it does differently
 
-- **A router, not a pipeline.** `router` is injected at session start and picks
-  the skill that fits the work. Questions and trivial edits are answered
+- **Finds the right skill, not a pipeline.** `find-skills` is injected at
+  session start and picks the skill that fits the work, Legion's or any other
+  skill installed on the machine, and combines a Legion method with a
+  specific skill when both apply. Questions and trivial edits are answered
   directly; skills are used alone or chained only when the work calls for it.
 - **Brainstorming in two methods:** compare approaches, then grill the design
   in rounds, for any open-ended topic, through six thinking lenses.
@@ -42,7 +44,7 @@ Based on [superpowers](https://github.com/obra/superpowers), with material from
 
 Or from a shell: `claude plugin marketplace add ongtungduong/legion`, then
 `claude plugin install legion@legion-dev`. Start a new session (or `/clear`):
-the SessionStart hook injects the router and the skills appear as
+the SessionStart hook injects `find-skills` and the skills appear as
 `legion:<name>`.
 
 ```bash
@@ -57,7 +59,7 @@ release bumps it. If superpowers is enabled, disable it
 (`claude plugin disable superpowers@claude-plugins-official`): both inject a
 router and share skill names.
 
-**Upgrading from 0.x:** 1.0.0 renames `using-legion` to `router`,
+**Upgrading from 0.x:** 1.0.0 renames `using-legion` to `find-skills`,
 `writing-plans` to `planning`, and `systematic-debugging` to `debugging`, and
 removes `executing-plans`, `code-review`, and `principles`. See
 [CHANGELOG.md](CHANGELOG.md).
@@ -76,7 +78,7 @@ gitignored. Legion's own repo ignores all of it.
 
 | Skill | Use for |
 |---|---|
-| `router` | Picks the skill for the work; injected at SessionStart |
+| `find-skills` | Finds the best skill for the work, Legion's or any installed; injected at SessionStart |
 | `brainstorming` | Any open-ended topic: intent, approaches, grilling, design doc, thinking lenses |
 | `planning` | A settled goal to a step-by-step plan, ordered by value, with a pre-mortem |
 | `debugging` | Root cause of a problem in any system, with a control against recurrence |
@@ -86,7 +88,7 @@ gitignored. Legion's own repo ignores all of it.
 
 ```bash
 npm test                 # validate + validate:spec + trigger evals + hook, script, and shellcheck tests
-npm run validate         # repo structure: links, router, README, manifests, versions
+npm run validate         # repo structure: links, find-skills map, README, manifests, versions
 npm run validate:spec    # skills against agentskills.io (needs python3)
 npm run evals:triggers   # vocabulary routing (TF-IDF)
 claude plugin validate . --strict

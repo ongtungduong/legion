@@ -9,7 +9,7 @@ copied; the table says what came from where.
 | Legion file(s) | Adapted from |
 |---|---|
 | `hooks/session-start`, `hooks/hooks.json` | superpowers `hooks/session-start` |
-| `skills/router` | superpowers `using-superpowers`, addy `using-agent-skills` |
+| `skills/find-skills` | superpowers `using-superpowers`, addy `using-agent-skills` |
 | `skills/brainstorming` | superpowers `brainstorming`; addy `spec-driven-development` (spec sections, boundaries) |
 | `skills/brainstorming/references/grilling.md` | mattpocock `grilling` |
 | `skills/planning` | superpowers `writing-plans`; addy `planning-and-task-breakdown` (vertical slices, sizing) |

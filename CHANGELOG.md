@@ -7,7 +7,7 @@ skills behind one router, for any kind of work, code included.
 
 Breaking
 
-- Renamed: `using-legion` -> `router` (`legion:router`), `writing-plans` ->
+- Renamed: `using-legion` -> `find-skills` (`legion:find-skills`), `writing-plans` ->
   `planning`, `systematic-debugging` -> `debugging`.
 - Removed: `executing-plans`, `code-review`, `principles`, with their
   references, scripts, evals, trigger files, and tests, and the audit-skeleton
@@ -21,7 +21,7 @@ Breaking
 
 Changed
 
-- `router` picks a skill by kind of work (direction not settled, direction
+- `find-skills` picks a skill by kind of work (direction not settled, direction
   settled and steps needed, cause unknown, skill authoring). There is no default
   flow; a skill offers the next one only when its result is that skill's input.
 - `brainstorming` works on any open-ended topic; its design doc template is
@@ -69,6 +69,11 @@ Added
   Assumptions, Checkpoints, a Serves line per step, and outline milestones.
   Hand-off asks the user's decisions (deferrals, `Not doing`, pre-mortem
   questions, approval) as a selection, with lettered text options elsewhere.
+- `find-skills` weighs every skill the session lists (other plugins, user and
+  project skills), not only Legion's: a specific skill owns the part of the
+  work it names, combines with a Legion method skill when both apply, and the
+  disk is searched for unlisted skills only when the user asks. Eval case
+  `find-skills-combines-method-and-project-skill`.
 - Eval cases `brainstorming-fires-on-open-topic`, `planning-fires-on-settled-goal`,
   `debugging-fires-on-unknown-cause`, and non-software trigger prompts.
 
