@@ -1,101 +1,104 @@
 ---
 name: planning
 description: >-
-  Turns an approved spec or design doc into an implementation plan of
-  vertical-slice tasks, each with exact files, interfaces, failing tests,
-  commands, and expected output, ordered so the first slices deliver most of
-  the value, and stress-tested with a pre-mortem. Use when a spec, design
-  doc, issue, or settled requirements describe multi-step work and the next
-  step is planning, including "break this into tasks", "write the plan", or
-  "how should we implement this", before any code is touched.
+  Turns a settled goal, approved design, or clear requirements into a
+  detailed plan of steps that gets the work done, in any domain: each step
+  with its outcome, concrete actions, owner, dependencies, a done-check that
+  can be verified, and rough effort, ordered so the first steps deliver most
+  of the value, and stress-tested with a pre-mortem. Use when the direction
+  is settled and the next step is laying out how to get there, including
+  "write the plan", "break this into steps or tasks", "how do we get this
+  done", "plan the rollout", or "turn this proposal into a work plan",
+  before the work starts.
 license: MIT
 metadata:
   author: ongtungduong
 ---
 
-# Writing Plans
+# Planning
 
-Write the plan for a capable engineer who has never seen this codebase or
-spec. They will write idiomatic code once they know the exact interface and
-test; what they cannot know is what you decided: files, names, signatures,
-values from the spec, and the tests that prove each task. Write those down,
-and nothing they could decide alone.
+Write the plan for a capable person who has never seen this work or its
+background. They will carry out a step well once they know exactly what it
+must produce and how its completion is checked; what they cannot know is what
+was decided: names, numbers, dates, owners, interfaces, and the checks that
+prove each step. Write those down, and nothing they could decide alone.
 
 ## Workflow
 
-**Gate: an approved design comes first.** If there is no spec, design doc,
-or issue whose intent the user has approved (only a request such as "write
-the plan for X"), call the Skill tool with `legion:brainstorming` and plan
-only after it hands back an approved design. A plan built on guessed intent
-pins every guess into files, signatures, and tests.
+**Gate: a settled direction comes first.** If what to do and why is still
+open (only a request such as "plan X" with no agreed goal or design), call
+the Skill tool with `legion:brainstorming` and plan only after the direction
+is settled. A plan built on guessed intent pins every guess into steps,
+owners, and dates.
 
-1. **Scope check.** If the spec covers several independent subsystems, propose
-   one plan per subsystem; each must yield working, testable software alone.
-2. **Map the files** to create or modify, with one responsibility each. Split
-   by responsibility, not by technical layer; follow existing patterns.
-3. **Slice vertically.** Each task is one complete, testable path through the
-   system (schema + logic + interface for one capability). The first task is
-   the thinnest end-to-end tracer bullet. Size each task; split anything L or
-   larger:
+1. **Scope check.** If the goal covers several independent streams of work,
+   propose one plan per stream; each must deliver something usable alone.
+2. **Map what the work touches:** the deliverables, people or roles,
+   systems, documents, and resources, each with one responsibility. Follow
+   the conventions that already exist where the work happens.
+3. **Slice into steps that each deliver something.** Each step ends in a
+   result someone can check, not in an activity ("draft sent for sign-off",
+   not "work on the draft"). The first step is the thinnest end-to-end pass
+   that proves the approach works. Size each step; split anything large:
 
-   | Size | Files | Example |
+   | Size | Rough effort | Example |
    |---|---|---|
-   | XS | 1 | One validation rule |
-   | S | 1-2 | One endpoint or component |
-   | M | 3-5 | One feature slice |
-   | L, XL | 5+ | Split it |
+   | XS | under an hour | Send one decision for sign-off |
+   | S | up to a day | One document section, one endpoint |
+   | M | a few days | One workstream milestone, one feature slice |
+   | L, XL | a week or more | Split it |
 
-   **Order by value.** After the tracer bullet, put first the slices
-   that deliver most of the spec's goal or retire its biggest risk, and say
-   why in the plan's `Slice order` line. Name the low-value tail and, at
-   hand-off, propose moving it to a later plan; the spec's scope stays until
-   the user agrees.
+   **Order by value.** After the first pass, put first the steps that
+   deliver most of the goal or retire its biggest risk, and say why in the
+   plan's `Order` line. Group steps into milestones. Name the low-value tail
+   and, at hand-off, propose moving it to a later plan; the agreed scope
+   stays until the user agrees.
 
 4. **Write the plan** from [assets/plan-template.md](assets/plan-template.md)
-   into `.legion/plans/YYYY-MM-DD-<topic>.md` (unless the user or repo
-   prefers another place). Copy the spec's project-wide requirements verbatim
-   into Global constraints, and list in Review focus up to five inputs or
-   failure modes the spec implies but never states, each with a test added
-   to the owning task. They are where an implementer following the spec's
-   letter goes wrong, so the final reviewer looks there first.
-5. **Make every step decide exactly one thing:**
-   - test step: the test name and assertions with the spec's exact values;
-   - code step: the exact signature, file, and pinned values (a body only for
-     an algorithm the signature and tests do not determine);
-   - verification step: the command and the output that means it passed;
-   - cross-task reference: point at the other task's Interfaces block.
-6. **Pre-mortem.** Assume the plan was executed exactly and the
-   feature still failed: rejected by the user, broken in production, or
-   unmergeable. Write the three most likely reasons (one or two for a plan
-   of three tasks or fewer) in the plan's `Pre-mortem` section, each naming the component or assumption at fault,
-   and give each a countermeasure: a test in its owning task, a Review focus
-   line, a reordered task, or a question for the user at hand-off.
+   into `.legion/plans/YYYY-MM-DD-<topic>.md` (unless the user or the project
+   prefers another place). Copy the source's work-wide requirements verbatim
+   into Global constraints, and list in Watch points up to five situations
+   the source implies but never states, each with the step that handles it.
+   They are where someone following the letter of the brief goes wrong.
+5. **Make every step decide exactly one thing,** at the precision the work
+   needs: the outcome and its exact values (names, numbers, dates, owners),
+   the actions, and a done-check with what "passed" looks like. For software
+   that means the exact files, interfaces, and the test that proves the step;
+   for other work, the document, decision, or measure that proves it. A
+   reference to another step points at that step's Produces line.
+6. **Pre-mortem.** Assume the plan was carried out exactly and the goal still
+   failed: rejected, late, broken, or unused. Write the three most likely
+   reasons (one or two for a plan of three steps or fewer) in the plan's
+   `Pre-mortem` section, each naming the step, party, or assumption at
+   fault, and give each a countermeasure: a check in its owning step, a
+   Watch point, a reordered step, or a question for the user at hand-off.
 7. **Self-review, then fix inline:**
-   - [ ] every spec requirement maps to a task, and every task's acceptance
-         names the spec requirement it implements;
-   - [ ] no step decides nothing ("handle edge cases", "TBD");
-   - [ ] no step transcribes code its signature and test already determine;
-   - [ ] names and types in later tasks match what earlier tasks produce;
-   - [ ] every file to modify exists at the path written, and every command
-         is one the repo defines (its manifest, Makefile, or CI config), so
-         no step sends the executor after a guess;
-   - [ ] every Review focus line has its test;
+   - [ ] every requirement of the source maps to a step, and every step's
+         done-check names the requirement it serves;
+   - [ ] no step decides nothing ("handle edge cases", "TBD", "coordinate");
+   - [ ] names, numbers, and dates in later steps match what earlier steps
+         produce;
+   - [ ] every file, system, person, or command a step names exists as
+         written, so no step sends the executor after a guess;
+   - [ ] every Watch point has its step;
    - [ ] every pre-mortem reason has a countermeasure in the plan.
-8. **Hand off.** Link the plan and ask the user to review it. In the same message, list
-   the low-value tail you propose to defer and the pre-mortem questions
-   only the user can answer. Do not start implementing
-   until the user has reviewed the plan.
+8. **Hand off.** Link the plan and ask the user to review it. In the same
+   message, list the low-value tail you propose to defer and the pre-mortem
+   questions only the user can answer. Do not start the work until the user
+   has reviewed the plan.
 
 ## Gotchas
 
-- Name drift between tasks (`clearLayers()` in Task 3, `clearFullLayers()` in
-  Task 7) is the most common plan bug; the Interfaces blocks exist to catch it.
-- A plan longer than the code it describes has written the code instead.
-  Replace bodies with signatures and assertions.
-- Horizontal tasks ("all tables", then "all endpoints") cannot be tested until
-  the end, so mistakes surface late.
-- A pre-mortem of generic risks ("bugs", "performance issues") changes
-  nothing. A reason that names no component, and so gets no countermeasure,
+- Name drift between steps ("launch checklist" in step 3, "go-live list" in
+  step 7) is the most common plan bug; the Produces lines exist to catch it.
+- A plan longer than the work it describes has done the work instead.
+  Replace bodies with outcomes and checks.
+- Layered steps ("all research", then "all writing", then "all review")
+  cannot be checked until the end, so mistakes surface late.
+- A pre-mortem of generic risks ("delays", "bugs") changes nothing. A reason
+  that names no step, party, or assumption, and so gets no countermeasure,
   should be replaced with a specific one.
-- Setup, configuration, and docs folded into the task that needs them beat
-  standalone "setup" tasks that no reviewer can meaningfully reject.
+- Setup and preparation folded into the step that needs them beat standalone
+  "setup" steps that no reviewer can meaningfully reject.
+- Owners and dates you do not know are open questions for the user, not
+  values to invent.

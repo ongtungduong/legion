@@ -2,9 +2,10 @@
   "positive": [
     "The spec is approved, write the implementation plan",
     "Break this design doc into small tasks I can execute",
-    "Turn these requirements into a step-by-step implementation plan before we touch code",
-    "Write the implementation plan for this spec and run a pre-mortem on it",
-    "Plan the tasks so the most valuable slices ship first"
+    "We decided to move the office next quarter, write the detailed plan to get it done",
+    "Turn this approved proposal into a step-by-step work plan with owners",
+    "Plan the steps to launch the course we agreed on",
+    "Write the plan for this spec and run a pre-mortem on it"
   ],
   "negative": [
     {
