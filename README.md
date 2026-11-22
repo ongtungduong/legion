@@ -96,10 +96,7 @@ gitignores the rest of `.legion/`. Legion's own repo ignores all of it.
 | `using-legion` | Router, injected at SessionStart |
 | `brainstorming` | Intent, approaches, grilling, design doc, ADRs, glossary |
 | `writing-plans` | Approved spec to vertical-slice tasks, ordered by value, with a pre-mortem |
-| `executing-plans` | All code work, with or without a plan: criteria, TDD, principles, evidence gate; plan runs use a ledger and per-task inline or subagent work |
 | `systematic-debugging` | Bugs, failing or flaky tests, regressions |
-| `code-review` | Diff/PR review, "is this safe?", whole-repo audit, receiving review |
-| `principles` | System design, coding, performance, and security references |
 | `skill-creator` | Creating and validating skills against agentskills.io |
 
 ## Development

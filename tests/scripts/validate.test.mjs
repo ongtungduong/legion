@@ -49,7 +49,7 @@ test('clean copy passes', () => {
 
 test('link out of the skill root fails', () => {
   const root = copyRepo();
-  edit(root, 'skills/principles/references/security.md', (t) => `${t}\nSee [x](../../brainstorming/SKILL.md).\n`);
+  edit(root, 'skills/brainstorming/references/grilling.md', (t) => `${t}\nSee [x](../../skill-creator/SKILL.md).\n`);
   const { code, out } = run('validate.mjs', root);
   assert.equal(code, 1, out);
   assert.match(out, /leaves the skill root/);
@@ -91,26 +91,10 @@ test('action pinned by tag fails', () => {
   assert.match(out, /ci\.yml: actions\/checkout@v6 is not pinned to a commit SHA/);
 });
 
-test('audit skeletons must match', () => {
-  const root = copyRepo();
-  edit(root, 'skills/code-review/references/performance-audit.md', (t) => t.replace('### Not checked', '### Gaps'));
-  const { code, out } = run('validate.mjs', root);
-  assert.equal(code, 1, out);
-  assert.match(out, /audit skeletons differ/);
-});
-
-test('an *-audit.md without a report skeleton fails', () => {
-  const root = copyRepo();
-  fs.writeFileSync(path.join(root, 'skills/code-review/references/x-audit.md'), '# X audit\n');
-  const { code, out } = run('validate.mjs', root);
-  assert.equal(code, 1, out);
-  assert.match(out, /x-audit\.md: no report skeleton/);
-});
-
 // Version-bump rule: the copy has no .git, so these tests make it a git repo,
 // commit it, and tag the commit with the version it carries.
 function git(root, ...args) {
-  const res = spawnSync('git', ['-c', 'user.name=t', '-c', 'user.email=t@t', '-c', 'commit.gpgsign=false', ...args], { cwd: root, encoding: 'utf8' });
+  const res = spawnSync('git', ['-c', 'user.name=t', '-c', 'user.email=t@t', '-c', 'commit.gpgsign=false', '-c', 'tag.gpgsign=false', ...args], { cwd: root, encoding: 'utf8' });
   assert.equal(res.status, 0, res.stderr);
 }
 
@@ -240,11 +224,11 @@ const validateRules = [
   // Grader kinds (evals/grader-kinds.json): what each grader's delta is evidence of.
   ['grader-kinds.json missing', (r) => rm(r, 'evals/grader-kinds.json'), /evals\/grader-kinds\.json is missing/],
   ['grader-kinds.json with invalid JSON', (r) => write(r, 'evals/grader-kinds.json', '{not json'), /evals\/grader-kinds\.json: invalid JSON/],
-  ['grader with no declared kind', (r) => json(r, 'evals/grader-kinds.json', (j) => { delete j['code-review-fires']['off-by-one']; return j; }), /code-review-fires\/graders\/off-by-one\.md: no kind in evals\/grader-kinds\.json/],
-  ['grader kind that is not outcome or protocol', (r) => json(r, 'evals/grader-kinds.json', (j) => { j['code-review-fires']['off-by-one'] = 'vibes'; return j; }), /code-review-fires\/off-by-one: kind "vibes" is not one of outcome, protocol/],
-  ['kind declared for a grader that does not exist', (r) => json(r, 'evals/grader-kinds.json', (j) => { j['code-review-fires'].ghost = 'outcome'; return j; }), /evals\/grader-kinds\.json: code-review-fires\/ghost names no grader/],
-  ['kind declared for a case that does not exist', (r) => json(r, 'evals/grader-kinds.json', (j) => ({ ...j, 'code-review-ghost': { x: 'outcome' } })), /evals\/grader-kinds\.json: code-review-ghost\/x names no grader/],
-  ['kind declared for a routing grader', (r) => json(r, 'evals/grader-kinds.json', (j) => { j['code-review-fires']['skill-fired'] = 'outcome'; return j; }), /code-review-fires\/skill-fired: a tool_used grader on Skill is a routing grader by type/],
+  ['grader with no declared kind', (r) => json(r, 'evals/grader-kinds.json', (j) => { delete j['brainstorming-ab-small-flag']['flip-condition']; return j; }), /brainstorming-ab-small-flag\/graders\/flip-condition\.md: no kind in evals\/grader-kinds\.json/],
+  ['grader kind that is not outcome or protocol', (r) => json(r, 'evals/grader-kinds.json', (j) => { j['brainstorming-ab-small-flag']['flip-condition'] = 'vibes'; return j; }), /brainstorming-ab-small-flag\/flip-condition: kind "vibes" is not one of outcome, protocol/],
+  ['kind declared for a grader that does not exist', (r) => json(r, 'evals/grader-kinds.json', (j) => { j['brainstorming-ab-small-flag'].ghost = 'outcome'; return j; }), /evals\/grader-kinds\.json: brainstorming-ab-small-flag\/ghost names no grader/],
+  ['kind declared for a case that does not exist', (r) => json(r, 'evals/grader-kinds.json', (j) => ({ ...j, 'brainstorming-ghost': { x: 'outcome' } })), /evals\/grader-kinds\.json: brainstorming-ghost\/x names no grader/],
+  ['kind declared for a routing grader', (r) => json(r, 'evals/grader-kinds.json', (j) => { j['brainstorming-ab-small-flag']['skill-fired'] = 'outcome'; return j; }), /brainstorming-ab-small-flag\/skill-fired: a tool_used grader on Skill is a routing grader by type/],
   // Model tiers: a skill names a tier for a dispatch, never a model.
   ['skill that pins a model in a dispatch', (r) => edit(r, 'skills/brainstorming/references/grilling.md', (t) => `${t}\nDispatch it on \`model: "opus"\`.\n`), /brainstorming\/references\/grilling\.md:\d+: pins a model \(model: "opus"\); name a tier/],
 ];
@@ -284,11 +268,11 @@ const triggerRules = [
   ['positive prompt that ranks another skill first', (r) => triggers(r, 'skill-creator', (j) => ({ ...j, positive: [...j.positive, 'The checkout test fails with a TypeError, find out why'] })), /skill-creator: positive ranked #\d+ \(> top 1\): "The checkout test fails/],
   ['negative prompt that ranks the skill first', (r) => triggers(r, 'skill-creator', (j) => ({ ...j, negative: [...j.negative, { prompt: 'Create a new skill and validate its SKILL.md' }] })), /skill-creator: negative prompt ranked this skill #1/],
   ['negative owner that is not a skill', (r) => triggers(r, 'skill-creator', (j) => ({ ...j, negative: [...j.negative, { prompt: 'Review my diff', owner: 'ghost' }] })), /skill-creator: negative owner "ghost" is not a skill/],
-  // Ranks code-review #1, systematic-debugging #2, and the named owner lower.
-  ['negative prompt that ranks the skill above its owner', (r) => triggers(r, 'systematic-debugging', (j) => ({ ...j, negative: [...j.negative, { prompt: 'Review this pull request that fixes a flaky test', owner: 'writing-plans' }] })), /systematic-debugging: negative "Review this pull request that fixes a flaky test" ranks systematic-debugging #2 above its owner writing-plans #\d+/],
-  ['rank-1 rate under the floor', (r) => triggers(r, 'skill-creator', (j) => ({ ...j, positive: [...j.positive, ...Array.from({ length: 12 }, (_, i) => ({ prompt: `Review the diff of pull request ${i}`, top_k: 7 }))] })), /rank-1 rate \d+\.\d% is under the 90% floor/],
+  // Ranks another skill #1, systematic-debugging #2, and the named owner lower.
+  ['negative prompt that ranks the skill above its owner', (r) => triggers(r, 'systematic-debugging', (j) => ({ ...j, negative: [...j.negative, { prompt: 'Help me think through options for fixing the flaky test', owner: 'writing-plans' }] })), /systematic-debugging: negative "Help me think through options for fixing the flaky test" ranks systematic-debugging #2 above its owner writing-plans #\d+/],
+  ['rank-1 rate under the floor', (r) => triggers(r, 'skill-creator', (j) => ({ ...j, positive: [...j.positive, ...Array.from({ length: 12 }, (_, i) => ({ prompt: `The deploy script fails with exit code ${i}, find the cause`, top_k: 7 }))] })), /rank-1 rate \d+\.\d% is under the 90% floor/],
   // Two misses out of seven: the repo-wide rate stays above 90%, this skill's drops under 75%.
-  ['one skill\'s rank-1 rate under the per-skill floor', (r) => triggers(r, 'skill-creator', (j) => ({ ...j, positive: [...j.positive, ...Array.from({ length: 2 }, (_, i) => ({ prompt: `Review the diff of pull request ${i}`, top_k: 7 }))] })), /skill-creator: rank-1 5\/7 \(71\.4%\) is under the 75% per-skill floor/],
+  ['one skill\'s rank-1 rate under the per-skill floor', (r) => triggers(r, 'skill-creator', (j) => ({ ...j, positive: [...j.positive, ...Array.from({ length: 2 }, (_, i) => ({ prompt: `The deploy script fails with exit code ${i}, find the cause`, top_k: 7 }))] })), /skill-creator: rank-1 5\/7 \(71\.4%\) is under the 75% per-skill floor/],
   ['two near-duplicate descriptions', (r) => {
     const src = fs.readFileSync(path.join(r, 'skills/writing-plans/SKILL.md'), 'utf8');
     write(r, 'skills/zz-twin/SKILL.md', src.replace('name: writing-plans', 'name: zz-twin'));

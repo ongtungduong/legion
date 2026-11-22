@@ -8,16 +8,12 @@
   ],
   "negative": [
     {
-      "prompt": "Execute the plan in .legion/plans/2026-11-09-auth.md",
-      "owner": "executing-plans"
-    },
-    {
-      "prompt": "Review the diff since main",
-      "owner": "code-review"
-    },
-    {
       "prompt": "I want to add a reporting feature but I am not sure of the details yet, help me shape it",
       "owner": "brainstorming"
+    },
+    {
+      "prompt": "The deploy script fails with exit code 2, find the cause",
+      "owner": "systematic-debugging"
     }
   ]
 }

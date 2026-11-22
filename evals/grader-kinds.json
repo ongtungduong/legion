@@ -39,107 +39,10 @@
   "brainstorming-records-glossary-term": {
     "glossary-entry": "protocol"
   },
-  "code-review-approves-clean-diff": {
-    "approves": "outcome"
-  },
-  "code-review-fires": {
-    "off-by-one": "outcome",
-    "two-axes": "protocol"
-  },
-  "code-review-flags-n-plus-one": {
-    "flags-n-plus-one": "outcome"
-  },
-  "code-review-flags-n-plus-one-fixture": {
-    "code-left-alone": "outcome",
-    "flags-n-plus-one": "outcome"
-  },
-  "code-review-flags-n-plus-one-hard": {
-    "flags-hidden-n-plus-one": "outcome"
-  },
-  "code-review-flags-unmeasured-speed-claim": {
-    "cache-leak": "outcome",
-    "claim-unsupported": "outcome"
-  },
-  "code-review-flags-unmeasured-speed-claim-hard": {
-    "claim-not-supported": "outcome"
-  },
-  "code-review-proposes-three-axis-audit": {
-    "proposal": "protocol"
-  },
-  "code-review-runs-design-audit": {
-    "audit-format": "protocol",
-    "design-finding": "outcome"
-  },
-  "code-review-runs-system-audit": {
-    "two-audits": "protocol"
-  },
-  "code-review-security-audit-on-system": {
-    "no-secret-echo": "outcome",
-    "report": "outcome"
-  },
-  "executing-plans-batches-queries": {
-    "one-query": "outcome"
-  },
-  "executing-plans-batches-queries-fixture": {
-    "keeps-zero-order-customers": "outcome",
-    "no-query-in-loop": "outcome",
-    "one-query-call": "outcome",
-    "suite-green": "outcome"
-  },
-  "executing-plans-batches-queries-hard": {
-    "batched-within-limits": "outcome"
-  },
-  "executing-plans-cost-on-one-line-fix": {
-    "boundary-fixed": "outcome",
-    "no-doc-files": "outcome",
-    "proportionate": "outcome",
-    "regression-test": "outcome",
-    "suite-green": "outcome"
-  },
-  "executing-plans-fires-on-pasted-bug": {
-    "test-first": "protocol"
-  },
-  "executing-plans-holds-bar-under-pressure": {
-    "bar-held": "outcome"
-  },
-  "executing-plans-holds-bar-under-pressure-fixture": {
-    "assertion-kept": "outcome",
-    "percent-fixed": "outcome",
-    "suite-green": "outcome",
-    "test-not-skipped": "outcome"
-  },
-  "executing-plans-holds-bar-under-pressure-hard": {
-    "bar-held": "outcome"
-  },
-  "executing-plans-loads-security-on-auth-change": {
-    "safe-lookup": "outcome",
-    "security-read": "protocol"
-  },
-  "executing-plans-loads-security-on-auth-change-hard": {
-    "same-site-redirect": "outcome",
-    "security-read": "protocol"
-  },
-  "executing-plans-rules-on-untestable-change": {
-    "ruled-not-stalled": "outcome"
-  },
-  "principles-fires-on-slow-endpoint": {
-    "batched-and-measured": "outcome"
-  },
-  "principles-holds-security-under-pressure": {
-    "confined": "outcome"
-  },
-  "principles-shapes-new-module": {
-    "principles-line": "protocol",
-    "shape": "outcome"
-  },
   "systematic-debugging-fires-on-what-broke": {
     "root-cause": "outcome"
   },
   "systematic-debugging-holds-under-quick-fix-pressure": {
     "no-blind-retry": "outcome"
-  },
-  "writing-plans-records-security-line": {
-    "performance-line": "protocol",
-    "security-line": "protocol"
   }
 }

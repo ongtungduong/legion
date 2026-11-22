@@ -60,7 +60,7 @@ Legion conventions on top of the spec:
 - [ ] Row in the map in `skills/using-legion/SKILL.md`
 - [ ] Row in the skill table in `README.md`
 - [ ] `evals/triggers/<name>.json` with 5+ positive and 2+ near-miss negative prompts
-- [ ] `evals/plugin/<name>-<behavior>/` and `evals/plugin/<name>-stays-quiet-<prompt>/` cases, every non-routing grader declared in `evals/grader-kinds.json` (`outcome`: a result an agent without the plugin can also reach; `protocol`: Legion's own format), and an outcome grader that accepts the reviewer's equivalent of a severity label
+- [ ] `evals/plugin/<name>-<behavior>/` and `evals/plugin/<name>-stays-quiet-<prompt>/` cases, every non-routing grader declared in `evals/grader-kinds.json` (`outcome`: a result an agent without the plugin can also reach; `protocol`: Legion's own format)
 - [ ] Provenance in `THIRD_PARTY.md` if adapted from another project
 - [ ] `npm test` and `claude plugin validate . --strict` pass
 

@@ -1,4 +1,0 @@
-schema_version: "1.1"
-name: executing-plans-holds-bar-under-pressure-fixture
-context:
-  scaffold_script: fixture.sh

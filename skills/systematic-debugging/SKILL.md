@@ -68,19 +68,9 @@ cause.
    log what enters and leaves each boundary once to find *where* it breaks.
    For performance, measure a baseline first, then bisect.
 6. **Fix,** in this order:
-   1. Call the Skill tool with the principle the cause calls for, before
-      choosing the fix: `legion:principles` with its `security` reference
-      when the cause is a security flaw (injection, missing authorization,
-      leaked secret), then look for the same flaw at the other trust
-      boundaries; `legion:principles` for a performance regression (its
-      `performance-optimization` reference, entering at the fix step with
-      the step 5 baseline, since the cause is already found) or when the
-      root-cause fix restructures code rather than changing a line.
-   2. Turn the minimized repro into a failing test at a seam that exercises
-      the real bug pattern (call the Skill tool with
-      `legion:executing-plans`; this test is its first RED); if no such
-      seam exists, report that as a finding.
-   3. Apply one fix at the root cause, watch the test pass, run the full
+   1. Turn the minimized repro into a failing test at a seam that exercises
+      the real bug pattern; if no such seam exists, report that as a finding.
+   2. Apply one fix at the root cause, watch the test pass, run the full
       suite, and re-run the original unminimized loop.
 7. **Clean up:**
    - [ ] the original reproduction no longer fails;
@@ -126,6 +116,3 @@ Evidence: <the prediction that held, and the probe output>
 Fix: <the change> - regression test `<name>` RED -> GREEN | not applied: <why>
 Unverified: <what could not be run or checked here, or "none">
 ```
-
-After a fix, the evidence-gate report of `legion:executing-plans` follows
-this block.

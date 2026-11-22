@@ -33,15 +33,6 @@ pins every guess into files, signatures, and tests.
    one plan per subsystem; each must yield working, testable software alone.
 2. **Map the files** to create or modify, with one responsibility each. Split
    by responsibility, not by technical layer; follow existing patterns.
-   **Choose the design principles** with `legion:principles` (call the
-   Skill tool with it) and record them in the plan's `Design principles` line,
-   so the implementer and the reviewer apply the same standard. Fill the
-   `Security` and `Performance` lines from the spec's `Non-functional`
-   section, or, when the spec has none, from the trigger lists in
-   `legion:executing-plans`; `none` is a decision, so write it only when no
-   trigger matches. They tell the implementer which checklists to load: the
-   `security` reference of `legion:principles` for `Security`, its
-   `performance` reference for `Performance`.
 3. **Slice vertically.** Each task is one complete, testable path through the
    system (schema + logic + interface for one capability). The first task is
    the thinnest end-to-end tracer bullet. Size each task; split anything L or
@@ -90,9 +81,7 @@ pins every guess into files, signatures, and tests.
          no step sends the executor after a guess;
    - [ ] every Review focus line has its test;
    - [ ] every pre-mortem reason has a countermeasure in the plan.
-8. **Hand off.** Link the plan and ask the user to review it. Execution runs
-   under `legion:executing-plans`, which chooses inline or subagent work per
-   task itself; the user may still set the mode. In the same message, list
+8. **Hand off.** Link the plan and ask the user to review it. In the same message, list
    the low-value tail you propose to defer and the pre-mortem questions
    only the user can answer. Do not start implementing
    until the user has reviewed the plan.

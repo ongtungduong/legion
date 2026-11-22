@@ -13,7 +13,7 @@ body:
     id: skill
     attributes:
       label: Skill or hook
-      placeholder: legion:executing-plans, hooks/guard, ...
+      placeholder: legion:debugging, hooks/guard, ...
   - type: input
     id: legion
     attributes:
