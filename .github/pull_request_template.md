@@ -11,7 +11,7 @@
 If this adds or renames a skill:
 
 - [ ] `skills/<name>/` written with `legion:skill-creator`
-- [ ] Row in the map in `skills/using-legion/SKILL.md`
+- [ ] Row in the map in `skills/router/SKILL.md`
 - [ ] Row in the skill table in `README.md`
 - [ ] `evals/triggers/<name>.json` with 5+ positive and 2+ near-miss negative prompts
 - [ ] `evals/plugin/<name>-<behavior>/` and `evals/plugin/<name>-stays-quiet-<prompt>/` cases

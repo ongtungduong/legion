@@ -7,8 +7,8 @@
   "plugins": [
     {
       "name": "legion",
-      "description": "Disciplined engineering workflow for coding agents: clarify intent, plan in vertical slices, build test-first, check security and performance, review on two axes, verify before claiming done.",
-      "version": "0.14.0",
+      "description": "General-purpose working skills for coding agents, routed by kind of work: brainstorm a direction, plan the steps, debug the root cause, create skills.",
+      "version": "1.0.0",
       "source": "./",
       "author": {
         "name": "Ông Tùng Dương"

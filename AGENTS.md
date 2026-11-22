@@ -6,7 +6,7 @@ Rules for anyone, human or agent, changing this repo.
 
 ```
 .claude-plugin/   plugin.json + marketplace.json (versions must match package.json)
-hooks/            hooks.json, session-start (injects skills/using-legion), guard (PreToolUse)
+hooks/            hooks.json, session-start (injects skills/router), guard (PreToolUse)
 skills/<name>/    SKILL.md (+ references/, assets/, scripts/) - shipped to users
 evals/triggers/   lexical trigger cases, one JSON per skill
 evals/plugin/     behavioral cases for `claude plugin eval` (prompt.md + graders/, or case.yaml + fixture.sh)
@@ -36,10 +36,12 @@ Load `legion:skill-creator` and follow its workflow. Every skill conforms to the
 
 Legion conventions on top of the spec:
 
+- Skills are general-purpose: none names a domain (code included) as its
+  default; domain examples belong in evals, not in a skill.
 - Everything is in English: skill content and docs for humans (`README.md`, `docs/`).
 - Cross-skill instructions say "Call the Skill tool with `legion:<name>`".
 - Subagents start with a fresh context and an explicitly named tier
-  (`cheap`, `standard`, `session`, `top`, defined in `skills/using-legion/SKILL.md`),
+  (`cheap`, `standard`, `session`, `top`, defined in `skills/router/SKILL.md`),
   never a model alias: a pinned alias caps later sessions at today's best model.
 - A rule that cannot serve a case needs an exit, stated with its reason. A rule
   that stops changing outcomes on the newest model is a cut candidate
@@ -57,10 +59,10 @@ Legion conventions on top of the spec:
 ## Adding or renaming a skill
 
 - [ ] `skills/<name>/` written with `legion:skill-creator`
-- [ ] Row in the map in `skills/using-legion/SKILL.md`
+- [ ] Row in the map in `skills/router/SKILL.md`
 - [ ] Row in the skill table in `README.md`
 - [ ] `evals/triggers/<name>.json` with 5+ positive and 2+ near-miss negative prompts
-- [ ] `evals/plugin/<name>-<behavior>/` and `evals/plugin/<name>-stays-quiet-<prompt>/` cases, every non-routing grader declared in `evals/grader-kinds.json` (`outcome`: a result an agent without the plugin can also reach; `protocol`: Legion's own format), and an outcome grader that accepts the reviewer's equivalent of a severity label
+- [ ] `evals/plugin/<name>-<behavior>/` and `evals/plugin/<name>-stays-quiet-<prompt>/` cases, every non-routing grader declared in `evals/grader-kinds.json` (`outcome`: a result an agent without the plugin can also reach; `protocol`: Legion's own format)
 - [ ] Provenance in `THIRD_PARTY.md` if adapted from another project
 - [ ] `npm test` and `claude plugin validate . --strict` pass
 

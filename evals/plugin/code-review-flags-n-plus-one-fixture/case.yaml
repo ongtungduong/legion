@@ -1,4 +1,0 @@
-schema_version: "1.1"
-name: code-review-flags-n-plus-one-fixture
-context:
-  scaffold_script: fixture.sh

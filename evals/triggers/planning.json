@@ -1,0 +1,20 @@
+{
+  "positive": [
+    "The spec is approved, write the implementation plan",
+    "Break this design doc into small tasks I can execute",
+    "We decided to move the office next quarter, write the detailed plan to get it done",
+    "Turn this approved proposal into a step-by-step work plan with owners",
+    "Plan the steps to launch the course we agreed on",
+    "Write the plan for this spec and run a pre-mortem on it"
+  ],
+  "negative": [
+    {
+      "prompt": "I want to add a reporting feature but I am not sure of the details yet, help me shape it",
+      "owner": "brainstorming"
+    },
+    {
+      "prompt": "The deploy script fails with exit code 2, find the cause",
+      "owner": "debugging"
+    }
+  ]
+}

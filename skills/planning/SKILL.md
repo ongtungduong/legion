@@ -1,0 +1,104 @@
+---
+name: planning
+description: >-
+  Turns a settled goal, approved design, or clear requirements into a
+  detailed plan of steps that gets the work done, in any domain: each step
+  with its outcome, concrete actions, owner, dependencies, a done-check that
+  can be verified, and rough effort, ordered so the first steps deliver most
+  of the value, and stress-tested with a pre-mortem. Use when the direction
+  is settled and the next step is laying out how to get there, including
+  "write the plan", "break this into steps or tasks", "how do we get this
+  done", "plan the rollout", or "turn this proposal into a work plan",
+  before the work starts.
+license: MIT
+metadata:
+  author: ongtungduong
+---
+
+# Planning
+
+Write the plan for a capable person who has never seen this work or its
+background. They will carry out a step well once they know exactly what it
+must produce and how its completion is checked; what they cannot know is what
+was decided: names, numbers, dates, owners, interfaces, and the checks that
+prove each step. Write those down, and nothing they could decide alone.
+
+## Workflow
+
+**Gate: a settled direction comes first.** If what to do and why is still
+open (only a request such as "plan X" with no agreed goal or design), call
+the Skill tool with `legion:brainstorming` and plan only after the direction
+is settled. A plan built on guessed intent pins every guess into steps,
+owners, and dates.
+
+1. **Scope check.** If the goal covers several independent streams of work,
+   propose one plan per stream; each must deliver something usable alone.
+2. **Map what the work touches:** the deliverables, people or roles,
+   systems, documents, and resources, each with one responsibility. Follow
+   the conventions that already exist where the work happens.
+3. **Slice into steps that each deliver something.** Each step ends in a
+   result someone can check, not in an activity ("draft sent for sign-off",
+   not "work on the draft"). The first step is the thinnest end-to-end pass
+   that proves the approach works. Size each step; split anything large:
+
+   | Size | Rough effort | Example |
+   |---|---|---|
+   | XS | under an hour | Send one decision for sign-off |
+   | S | up to a day | One document section, one endpoint |
+   | M | a few days | One workstream milestone, one feature slice |
+   | L, XL | a week or more | Split it |
+
+   **Order by value.** After the first pass, put first the steps that
+   deliver most of the goal or retire its biggest risk, and say why in the
+   plan's `Order` line. Group steps into milestones. Name the low-value tail
+   and, at hand-off, propose moving it to a later plan; the agreed scope
+   stays until the user agrees.
+
+4. **Write the plan** from [assets/plan-template.md](assets/plan-template.md)
+   into `.legion/plans/YYYY-MM-DD-<topic>.md` (unless the user or the project
+   prefers another place). Copy the source's work-wide requirements verbatim
+   into Global constraints, and list in Watch points up to five situations
+   the source implies but never states, each with the step that handles it.
+   They are where someone following the letter of the brief goes wrong.
+5. **Make every step decide exactly one thing,** at the precision the work
+   needs: the outcome and its exact values (names, numbers, dates, owners),
+   the actions, and a done-check with what "passed" looks like. For software
+   that means the exact files, interfaces, and the test that proves the step;
+   for other work, the document, decision, or measure that proves it. A
+   reference to another step points at that step's Produces line.
+6. **Pre-mortem.** Assume the plan was carried out exactly and the goal still
+   failed: rejected, late, broken, or unused. Write the three most likely
+   reasons (one or two for a plan of three steps or fewer) in the plan's
+   `Pre-mortem` section, each naming the step, party, or assumption at
+   fault, and give each a countermeasure: a check in its owning step, a
+   Watch point, a reordered step, or a question for the user at hand-off.
+7. **Self-review, then fix inline:**
+   - [ ] every requirement of the source maps to a step, and every step's
+         done-check names the requirement it serves;
+   - [ ] no step decides nothing ("handle edge cases", "TBD", "coordinate");
+   - [ ] names, numbers, and dates in later steps match what earlier steps
+         produce;
+   - [ ] every file, system, person, or command a step names exists as
+         written, so no step sends the executor after a guess;
+   - [ ] every Watch point has its step;
+   - [ ] every pre-mortem reason has a countermeasure in the plan.
+8. **Hand off.** Link the plan and ask the user to review it. In the same
+   message, list the low-value tail you propose to defer and the pre-mortem
+   questions only the user can answer. Do not start the work until the user
+   has reviewed the plan.
+
+## Gotchas
+
+- Name drift between steps ("launch checklist" in step 3, "go-live list" in
+  step 7) is the most common plan bug; the Produces lines exist to catch it.
+- A plan longer than the work it describes has done the work instead.
+  Replace bodies with outcomes and checks.
+- Layered steps ("all research", then "all writing", then "all review")
+  cannot be checked until the end, so mistakes surface late.
+- A pre-mortem of generic risks ("delays", "bugs") changes nothing. A reason
+  that names no step, party, or assumption, and so gets no countermeasure,
+  should be replaced with a specific one.
+- Setup and preparation folded into the step that needs them beat standalone
+  "setup" steps that no reviewer can meaningfully reject.
+- Owners and dates you do not know are open questions for the user, not
+  values to invent.

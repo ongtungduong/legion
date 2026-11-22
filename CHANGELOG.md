@@ -1,5 +1,50 @@
 # Changelog
 
+## 1.0.0 - 2026-11-22
+
+Legion is no longer an SDLC workflow. It is a suite of general-purpose working
+skills behind one router, for any kind of work, code included.
+
+Breaking
+
+- Renamed: `using-legion` -> `router` (`legion:router`), `writing-plans` ->
+  `planning`, `systematic-debugging` -> `debugging`.
+- Removed: `executing-plans`, `code-review`, `principles`, with their
+  references, scripts, evals, trigger files, and tests, and the audit-skeleton
+  rule in `npm run validate`.
+- Removed the eval summaries of earlier versions; they measured the old skills
+  and remain in git history.
+- `brainstorming` no longer writes ADRs or `GLOSSARY.md` entries:
+  `references/adr-format.md`, `references/glossary-format.md`, and the
+  `brainstorming-records-glossary-term` eval case are gone. Existing glossaries
+  and decision records are still read as facts.
+
+Changed
+
+- `router` picks a skill by kind of work (direction not settled, direction
+  settled and steps needed, cause unknown, skill authoring). There is no default
+  flow; a skill offers the next one only when its result is that skill's input.
+- `brainstorming` works on any open-ended topic; its design doc template is
+  domain-neutral (`Verification`, `Constraints and risks`).
+- `planning` turns any settled goal into steps, each with an outcome, owner,
+  dependencies, a done-check, and rough effort, grouped into milestones; it ends
+  at the reviewed plan.
+- `debugging` investigates a problem in any system: a reproduction, or a symptom
+  check plus an evidence timeline when the system cannot be re-run; it mitigates
+  first when people are harmed, and ends with a recurrence control that fits the
+  system.
+
+Added
+
+- `brainstorming` thinks through six lenses (first principles, inversion, six
+  hats, systems, second-order, impact vs. effort), with their procedures in
+  `references/lenses.md`, which absorbs `references/six-thinking-hats.md`.
+  Grilling also settles requirements, and asks each round as a selection
+  (`AskUserQuestion` in Claude Code, lettered options as text elsewhere) with
+  the recommendation first.
+- Eval cases `brainstorming-fires-on-open-topic`, `planning-fires-on-settled-goal`,
+  `debugging-fires-on-unknown-cause`, and non-software trigger prompts.
+
 ## 0.14.0 - 2026-11-16
 
 Principle: the harness is a floor under the agent, not a ceiling over it. Each

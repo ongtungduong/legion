@@ -1,5 +1,5 @@
 ---
-description: 'Near miss: the design is approved and the user wants tasks; that is writing-plans, not brainstorming.'
+description: 'Near miss: the design is approved and the user wants tasks; that is planning, not brainstorming.'
 expected_outcome: 'legion:brainstorming is not invoked.'
 max_turns: 10
 allowed_tools: [Read, Glob, Grep, Skill]
