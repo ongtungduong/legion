@@ -37,7 +37,7 @@ The deliberate decisions behind the current design, with their reasons, so nobod
 | Source | Taken | Where |
 |---|---|---|
 | superpowers | Hook and router; brainstorm gate before building; plans with a pre-mortem and self-review | `hooks/`, `router`, `brainstorming`, `planning` |
-| mattpocock | Grilling in rounds; debugging from a feedback loop and the human-in-the-loop script | `brainstorming`, `debugging` |
+| mattpocock | Grilling in rounds; debugging from a feedback loop | `brainstorming`, `debugging` |
 | addyosmani | Spec structure and boundaries; slices and sizes; trigger evals; eval case layout | `brainstorming`, `planning`, `scripts/trigger-evals.mjs`, `evals/plugin/` |
 | duongot-skills | `skill-creator` and its validator | `skills/skill-creator`, `scripts/validate-spec.mjs` |
 
@@ -69,7 +69,7 @@ Each model sits where it changes a decision; there is no separate skill for them
 |---|---|---|---|---|
 | `brainstorming` | Lens table; White and Green hats; grilling tree | Lens table; Black hat; grilling "Wrong if" | Lens table (systems, second-order); grilling branches | Lens table (impact vs. effort); scope cut; grilling order |
 | `planning` | Decided values written down | Pre-mortem (step 6) | Produces lines, dependencies | Step order (step 3) |
-| `debugging` | Facts before hypotheses | Falsifiable predictions | Feedback loops, boundaries between components | Likelihood for the cost of checking |
+| `debugging` | Own lens table: facts vs. assumptions, isolation | Own lens table: falsification | Own lens table: delta, bottom-up, symptom vs. root cause, nothing is obviously fine | Own lens table: bisection, common before rare, contain before fixing |
 | `skill-creator` | What the agent lacks; baseline failures are the spec | Near-miss prompts | n/a | Write only what fixes observed failures |
 
 ## Artifacts

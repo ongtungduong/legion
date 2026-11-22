@@ -16,7 +16,7 @@ copied; the table says what came from where.
 | `evals/plugin/` | addy `evals/plugin` (case layout and grader patterns) |
 | `.github/workflows/ci.yml` | addy `.github/workflows/test-plugin-install.yml` (reduced to `npm test` and shellcheck) |
 | `skills/debugging` | mattpocock `diagnosing-bugs`; superpowers `systematic-debugging` |
-| `skills/debugging/scripts/hitl-loop.sh` | mattpocock `diagnosing-bugs/scripts/hitl-loop.template.sh` (adapted to Claude Code's `!` prefix) |
+| `skills/debugging/assets/postmortem-template.md` | Google SRE Book, "Example Postmortem" (Appendix D): section structure only, wording Legion's own (the book is CC BY-NC-ND 4.0, so no text is copied) |
 | `skills/skill-creator` | Same author: `duongot-skills/skill-creator` (MIT, ongtungduong), `name` renamed to match its directory, then aligned with Legion conventions: folded description, Gotchas, the Claude Code 20,000-byte limit (also a validator warning), and a baseline-first measurement step with `references/measuring.md` |
 | `scripts/validate-spec.mjs` | Wraps `skills/skill-creator/scripts/validate_skill.py` |
 | `scripts/validate.mjs`, `tests/` | superpowers `tests/skill-size`, `tests/skill-layout`; addy `scripts/validate-skills.js` |
