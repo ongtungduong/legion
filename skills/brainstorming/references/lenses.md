@@ -66,7 +66,7 @@ a skipped perspective, not a ritual.
 |---|---|---|
 | Blue (start) | What is being decided, and which one or two criteria decide most of it? | Criteria come from the agreed goals, anti-goals, and constraints; the rest only break ties. |
 | White | What must be true, and what is only assumed? | Run First principles above. For a project, add the Systems map. A decisive unknown becomes a lookup or a question. |
-| Green | Which approaches are worth comparing? | The conventional one, the one rebuilt from White's truths, and any combination. Ideas only, no critique yet. |
+| Green | Which approaches are worth comparing? | At least five before any is judged: doing nothing, reusing or buying, the conventional one, the one rebuilt from White's truths, a reframing of the problem, and any combination. Ideas only, no critique yet; carry the strongest two or three into the table. |
 | Yellow | What share of the goal does each deliver, for what effort? | Benefits tied to the goals. Most of the goal for a fraction of the effort is a candidate even if incomplete. |
 | Black | How does each fail, what does it set off, how reversible is it? | Run Inversion and Second-order on each approach, then migration, maintenance, cost if wrong. A failure that sinks every approach becomes an anti-goal. |
 | Red | How does the user feel about it? | Reactions the user already expressed; if none, ask for a one-line gut reaction. Never invent them. |

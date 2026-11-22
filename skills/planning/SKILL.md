@@ -54,6 +54,13 @@ for its procedure.
 | Adaptive and iterative | Rolling wave | Near work in full detail, far work as milestones detailed later | 3, 5 |
 | Adaptive and iterative | Checkpoints | Short cycles compare actual against plan, with replan triggers named in advance | 3, 5 |
 
+## Plan size
+
+| Size | When | What applies |
+|---|---|---|
+| Small | Up to about five steps, one owner or a fixed team, done within days | Done state, `Not doing`, and the step list. The step order is the critical path; buffer is one line; no rolling wave; the only checkpoint is the end. Pre-mortem: one or two reasons. Template header: Goal, Done state, Source, Not doing; drop the other header fields and the sections that would stay empty |
+| Project | More steps, several owners, outside dependencies, or weeks of work | Everything in this skill and the full template |
+
 ## Workflow
 
 **Gate: a settled direction comes first.** If what to do and why is still
@@ -62,11 +69,17 @@ the Skill tool with `legion:brainstorming` and plan only after the direction
 is settled. A plan built on guessed intent pins every guess into steps,
 owners, and dates.
 
-1. **Scope check.** If the goal covers several independent streams of work,
-   propose one plan per stream; each must deliver something usable alone.
+1. **Scope check and size.** If the goal covers several independent streams
+   of work, propose one plan per stream; each must deliver something usable
+   alone. Then say the plan's size (table above); it sets how much of steps
+   3 to 7 applies. If the work grows mid-plan, step up a size.
 2. **Map what the work touches:** the deliverables, people or roles,
    systems, documents, and resources, each with one responsibility. Follow
-   the conventions that already exist where the work happens.
+   the conventions that already exist where the work happens. Mark the
+   parties outside the doers: who must agree (each approval becomes a step
+   with an owner and a date), who must be told before a change reaches them
+   (the telling goes into the step that makes the change), and who is
+   affected without being asked.
 3. **Work back from the done state**, per
    [references/backward-planning.md](references/backward-planning.md): the
    milestone chain, what is not being done, the critical path, estimates with
@@ -96,16 +109,19 @@ owners, and dates.
    exactly one thing, at the precision the work needs: the outcome and its
    exact values (names, numbers, dates, owners), the actions, and a
    done-check with what "passed" looks like. For software that means the
-   exact files, interfaces, and the test that proves the step; for other
-   work, the document, decision, or measure that proves it. A reference to
+   exact files, interfaces, and the failing test the step starts with and
+   ends green, each step a slice through every layer it touches rather than
+   one layer at a time; for other work, the document, decision, or measure
+   that proves it. A reference to
    another step points at that step's Produces line.
 6. **Pre-mortem.** Assume the plan was carried out exactly and the goal still
-   failed: rejected, late, broken, or unused. Write the three most likely
-   reasons (one or two for a plan of three steps or fewer) in the plan's
-   `Pre-mortem` section, each naming the step, party, or assumption at
-   fault, and give each a countermeasure: a check in its owning step, a
-   Watch point, a reordered step, buffer, or a question for the user at
-   hand-off.
+   failed: rejected, late, broken, or unused. List five or more candidate
+   reasons, each naming the step, party, or assumption at fault, and rate
+   each for likelihood and damage (high, medium, low). Keep the three with
+   the highest likelihood times damage (one or two for a small plan) in the
+   plan's `Pre-mortem` section with their ratings, and give each a
+   countermeasure: a check in its owning step, a Watch point, a reordered
+   step, buffer, or a question for the user at hand-off.
 7. **Self-review, then fix inline:**
    - [ ] every requirement of the source maps to a step or to `Not doing`,
          and every step's done-check names the requirement it serves;
@@ -115,10 +131,13 @@ owners, and dates.
          produce;
    - [ ] every file, system, person, or command a step names exists as
          written, so no step sends the executor after a guess;
-   - [ ] the critical path is marked, its estimates rest on evidence or a
-         stated range, and buffer protects the end date;
-   - [ ] every far milestone has a done criterion and the checkpoint where
-         it gets detailed;
+   - [ ] every estimate names its basis: a source you actually read, or
+         "judgment" with a range;
+   - [ ] every party who must agree or be told appears in a step;
+   - [ ] (project) the critical path is marked, accounts for shared people
+         or resources, and buffer protects the end date;
+   - [ ] (project) every far milestone has a done criterion and the
+         checkpoint where it gets detailed;
    - [ ] every Watch point has its step, and every pre-mortem reason has a
          countermeasure in the plan.
 8. **Hand off.** Link the plan and ask the user to review it. Ask the
@@ -128,8 +147,10 @@ owners, and dates.
    approval itself (approve, or change something). Each question stands
    alone, since the dialog may hide the plan text; put your recommendation
    first, labeled "(Recommended)", with its reason and what it costs in the
-   description. Without a selection tool, ask the same questions as text
-   with lettered options. Do not start the work until the user has approved
+   description. Estimates on the critical path whose basis is "judgment"
+   go in the same call: confirm the range, or the user gives a number from
+   their experience. Without a selection tool, ask the same questions as
+   text with lettered options. Do not start the work until the user has approved
    the plan. When a checkpoint later hits a
    replan trigger, update the plan deliberately: what changed, what moves,
    and the user's agreement.
@@ -148,4 +169,6 @@ owners, and dates.
 - Setup and preparation folded into the step that needs them beat standalone
   "setup" steps that no reviewer can meaningfully reject.
 - Owners and dates you do not know are open questions for the user, not
-  values to invent.
+  values to invent. The same holds for estimates: "from comparable work"
+  written over a number you did not take from a source is an invented
+  value with a citation attached.

@@ -16,13 +16,16 @@ followed.
    complex ones (bottom-up).
 3. **Prove one answer before going deeper.** Run the fastest check that would
    prove it wrong (falsification); locate it by halving the chain or the
-   time since it last worked (bisection), by taking parts away (isolation),
+   time since it last worked (bisection), by taking parts away (minimization),
    one change per try (one variable at a time). When nothing fits, question
    what everyone treats as fine (nothing is obviously fine). An answer
    without evidence stays a hypothesis; never build the next why on it.
 4. **Branch when two answers both hold**, because both were needed or both
    contribute. Follow each branch; a single chain for a failure with two
-   causes leaves one of them in place.
+   causes leaves one of them in place. In an incident, expect branches: the
+   trigger (what set it off) and the latent conditions (what let a routine
+   event turn into a failure) are separate branches, each with its own
+   control.
 5. **At the confirmed cause, change the question.** Up to here the chain asks
    "why did it happen?" (the mechanism; workflow steps 4-5). From the cause
    it asks "why was this possible?": why nothing caught it earlier, which
@@ -54,6 +57,10 @@ The report's `Why chain` line is the one-line summary of this tree.
 
 ## Gotchas
 
+- "Which one is *the* root cause?" often has no answer in a complex failure:
+  remove any one contributing cause and it would not have happened. Report
+  them all; rank them by which control is cheapest and catches most, not by
+  which is "the real one".
 - The first plausible answer feels like the cause. Stopping there treats a
   symptom one level down.
 - A why answered with a remedy ("because we have no retry") skips the

@@ -1,6 +1,7 @@
 # <Topic> Plan
 
-> Steps use `- [ ]` checkboxes.
+> Steps use `- [ ]` checkboxes. A small plan keeps only Goal, Done state,
+> Source, Not doing, the Pre-mortem, and the steps.
 
 **Goal:** <one sentence: the outcome, not the deliverables>
 **Done state:** <what is true on the last day, and how someone else checks it>
@@ -31,15 +32,15 @@ first, each with what a reasonable stakeholder would expect and the step that
 handles it.>
 
 ## Pre-mortem
-<Assume the plan was carried out and the goal failed. Three most likely
-reasons, each with its countermeasure:
-- <reason naming the step, party, or assumption> -> <check in Step N / Watch point / reorder / question for the user>>
+<Assume the plan was carried out and the goal failed. The three reasons with
+the highest likelihood times damage, each with its countermeasure:
+- <reason naming the step, party, or assumption> (likelihood: <H/M/L>, damage: <H/M/L>) -> <check in Step N / Watch point / reorder / question for the user>>
 
 ---
 
 ## Milestone 1: <name>
 
-### Step 1: <outcome>   (Size: S; estimate: <value or range>, from <evidence>)
+### Step 1: <outcome>   (Size: S; estimate: <value or range>, basis: <source read, or "judgment">)
 
 **Serves:** <what this step contributes to the outcome>
 **Owner:** <person or role, or "open question">

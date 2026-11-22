@@ -1,7 +1,7 @@
 # Debugging lenses in depth
 
 The procedure behind each lens in SKILL.md. Run the lens in front of you, not
-all eleven; each stops where it no longer changes the next probe.
+all ten; each stops where it no longer changes the next probe.
 
 ## Evidence
 
@@ -73,10 +73,11 @@ stop treating anything as beyond suspicion.
 - If no known-good point exists, compare against a similar case that works
   instead; the differences are the search space.
 
-### Isolation
+### Minimization
 
 Take away what surrounds the problem to see whether it survives, so the
-search shrinks to what it actually needs.
+search shrinks to what it actually needs. It is for an unordered set with no
+midpoint to bisect; for a path or a history, use Bisection.
 
 1. Start from the failing case with the loop running.
 2. Remove or separate one element at a time (an input, an attachment, a
@@ -135,13 +136,6 @@ the part you suspect.
   cheaply rather than not at all.
 - When a lower level is expensive to check, note it as unverified and come
   back if the levels above hold.
-
-### Symptom vs. root cause
-
-Where the failure shows is rarely where it starts, and fixing where it shows
-makes it return in another form. The procedure is the five-whys chain in
-references/five-whys.md: follow it to a cause the team controls, not to the
-first plausible link.
 
 ## Probability and containment
 

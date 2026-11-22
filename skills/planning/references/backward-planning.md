@@ -18,12 +18,17 @@ every node; this is where they meet.
    request or the source that no milestone needs goes into the plan's `Not
    doing` line, with what it would cost, so the user decides.
 4. **Turn it forward.** Order milestones from today. Mark the critical path,
-   the longest chain of dependent steps, which sets the end date. Within
+   the longest chain of dependent steps, which sets the end date. Check who
+   does each parallel branch: branches that need the same person or
+   resource run one after the other, and that sequence is part of the path. Within
    what dependencies allow, put first the steps that carry most of the value
    or retire the biggest risk (leverage).
 5. **Estimate from evidence** (planning fallacy): each step from past data or
-   comparable work, not the best case; where there is none, say so and use a
-   range. Sum the critical path, then add buffer where it protects the end
+   comparable work, not the best case. Evidence is something you read: the
+   user's or team's numbers, the project's own history (past plans, tickets,
+   change history, delivery dates), or a published figure with its source.
+   Where there is none, write a range with basis "judgment" and ask the user
+   about the ones on the critical path at hand-off. Sum the critical path, then add buffer where it protects the end
    date (at the end of the critical path and before hard dates), not as
    padding hidden in every step.
 6. **Detail to the horizon** (rolling wave): steps in the near horizon get
