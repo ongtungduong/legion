@@ -72,6 +72,9 @@ estimate.
 3. Put attention, buffer, and the strongest owners on the critical path; a
    delay there delays everything, a delay elsewhere may not.
 
+- Dependencies are not the only constraint. Two steps that need the same
+  person, team, or resource cannot run in parallel; a shared resource turns
+  branches into a sequence and lengthens the path.
 - The critical path moves when estimates or dependencies change; re-check it
   at every checkpoint.
 - Waiting (approvals, deliveries, lead times) belongs on the path as steps
@@ -82,8 +85,11 @@ estimate.
 ### Planning fallacy
 
 1. Estimate from what similar work actually took (past records, comparable
-   projects, the people who did it), not from how it should go.
-2. Where no history exists, give a range and say what it rests on.
+   projects, the people who did it), not from how it should go. Name the
+   source you read; your own sense of how long things take is judgment, not
+   history.
+2. Where no history exists, give a range, mark its basis "judgment", and
+   ask the people who will do the work, starting with the critical path.
 3. Check the total against the outside view: how long do plans like this
    usually take, here or elsewhere?
 
@@ -95,9 +101,10 @@ estimate.
 
 1. Assume the plan was carried out and the goal failed badly, well into the
    future.
-2. List the most likely reasons, each naming the step, party, or assumption
-   at fault.
-3. Give each a countermeasure built into the plan now: a check in its step, a
+2. List five or more reasons, each naming the step, party, or assumption at
+   fault, and rate each for likelihood and damage (high, medium, low).
+3. Keep the ones with the highest likelihood times damage. Give each a
+   countermeasure built into the plan now: a check in its step, a
    reordered step, a buffer, a watch point, or a question for the user.
 
 - Generic risks ("delays", "scope creep") change nothing; a reason that names

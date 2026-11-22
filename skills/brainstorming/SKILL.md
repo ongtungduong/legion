@@ -1,9 +1,10 @@
 ---
 name: brainstorming
 description: >-
-  Draws out what the user wants and why on any open-ended topic, compares two
-  or three approaches grounded in what already exists, grills open decisions
-  in rounds, and gets a design doc approved before anything is built. Use whenever the direction of a piece of work is not settled,
+  Draws out what the user wants and why on any open-ended topic, generates a
+  wide field of options before narrowing to the two or three worth comparing,
+  grills open decisions in rounds, and gets a design doc or decision record
+  approved before anything is built. Use whenever the direction of a piece of work is not settled,
   in any domain: something new to build or change (a product, a
   feature, a flow), a strategy, a system, a process, a decision, even when phrased only as "help me think
   this through", "help me shape Y", "brainstorm options for", or "not sure of
@@ -21,8 +22,10 @@ metadata:
 # Brainstorming
 
 Find out what the user wants and why, then run two methods: a **comparison of
-approaches** to choose one, and **grilling** to settle every decision the
-chosen approach leaves open. The result is a design doc the user approves.
+approaches**, generated wide and then narrowed, to choose one, and
+**grilling** to settle every decision the chosen approach leaves open. The
+result is a design doc the user approves, or a decision record when nothing
+is to be built.
 Your belief about what they want is
 usually thinner than it feels; once you know the why, you make the hundred
 unstated decisions the way they would.
@@ -61,8 +64,10 @@ depth, read [references/lenses.md](references/lenses.md) for its procedure.
    until you can explain how things work today. What you read is fact for the
    comparison. Never ask what the material already answers or reopen what the
    user already decided.
-4. **Draw out intent, one question per message**, in the user's words. Until you
-   know the why, ask open questions with no options attached. After that,
+4. **Draw out intent, one question per message**, in the user's words. Ask
+   only what you cannot infer: when the request or the material already
+   shows the why, play it back as your reading (step 5) instead of asking.
+   Until you know the why, ask open questions with no options attached. After that,
    propose concretely with your reason instead of asking. Ground to cover:
    intent and why now, who it is for, goals/non-goals/anti-goals, what exists
    and what was tried. Once the why is known, settle the remaining
@@ -76,9 +81,15 @@ depth, read [references/lenses.md](references/lenses.md) for its procedure.
    effort: propose the first slice, and the rest as non-goals or later steps;
    the user decides. Several independent projects: agree an
    order and brainstorm one at a time. If it grows mid-task, step up a size.
-7. **Choose the approach**, in a message of its own. Lay out two or three
-   real alternatives grounded in what exists (include the one rebuilt from
-   first principles when it differs from the conventional one), give each its
+7. **Choose the approach**, in a message of its own. Diverge before you
+   judge: in your working notes, list at least five candidates before
+   rejecting any, covering doing nothing, reusing or buying what exists, the
+   conventional approach, the one rebuilt from first principles, and one
+   that reframes the problem (solve it earlier, later, elsewhere, or for
+   someone else). The first idea that comes to mind anchors every later
+   one; a wide list is the cheapest guard. Then narrow to two or three
+   real alternatives grounded in what exists, name in one line what else
+   was considered and the fact that ruled it out, and give each its
    benefit for the goal, cost, most likely failure, and what it sets off
    elsewhere, recommend one, and say what fact would flip the recommendation.
    If only one approach is sensible, say why the others fail. When the user
@@ -92,7 +103,12 @@ depth, read [references/lenses.md](references/lenses.md) for its procedure.
 9. **Write the design doc.** Copy [assets/design-doc-template.md](assets/design-doc-template.md)
    to `.legion/specs/YYYY-MM-DD-<topic>-design.md` (unless the user or the
    project prefers another place) and fill it, including the approach
-   comparison and the grilled decisions.
+   comparison and the grilled decisions. When the result is a decision
+   rather than something to build or produce (a choice between options, a
+   strategy call, a yes or no), write a **decision record** in the reply
+   instead: the decision, the options weighed, the deciding points, "Wrong
+   if", every default you chose, and the next step. Save it as a file only
+   if the user wants it on record.
 10. **Builder check (projects only).** Re-read the doc as the person who must
     plan and carry out the work from it, or dispatch a fresh, read-only
     `general-purpose` subagent on tier `standard` to do it. Answer what the
@@ -104,13 +120,14 @@ depth, read [references/lenses.md](references/lenses.md) for its procedure.
 
 | Size | Design doc | Approaches | Grilling |
 |---|---|---|---|
-| Small change | Short: a line or two per section | One line of trade-offs per approach | Only if the user asks or 3+ decisions are open |
-| Project | Full | Full trade-offs for each approach | Rounds until the frontier is empty |
+| Decision only | None: a decision record in the reply | The wide list in notes; full trade-offs for the two or three kept | Until the deciding points are settled |
+| Small change | Short: a line or two per section | The wide list in notes; one line of trade-offs per approach kept | Only if the user asks or 3+ decisions are open |
+| Project | Full | The wide list in notes; full trade-offs for each approach kept | Rounds until the frontier is empty |
 
 ## The approval gate
 
 Nothing gets built or produced until the user approves the design doc, short
-or full. That includes code, deliverables, rollouts, and documents that build
+or full, or confirms the decision record. That includes code, deliverables, rollouts, and documents that build
 on the direction; reading and exploring are fine. The reason: work built on a
 misread intent is the most expensive mistake to undo, and once something
 exists the conversation anchors on it.

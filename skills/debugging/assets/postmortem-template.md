@@ -13,10 +13,11 @@ Who and what was affected, for how long, and how much: people, requests or
 transactions, money, data, service-level targets, people's time. Numbers
 where they exist, with their source.
 
-## Root causes
-The five-whys tree: the confirmed cause and each "why was this possible?"
-link down to the causes the team controls, each with its evidence. Mark any
-link that is not verified.
+## Causes and contributing factors
+The five-whys tree: the trigger, the latent conditions that let it become a
+failure, and each "why was this possible?" link down to the causes the team
+controls, each with its evidence. Keep every branch; a complex failure rarely
+has a single root cause. Mark any link that is not verified.
 
 ## Trigger
 The event or change that set off the latent cause, and when.
@@ -29,7 +30,7 @@ How and when the problem was noticed, by whom or by what, and how it could
 have been noticed sooner.
 
 ## Action items
-Every root cause and every "what went wrong" maps to at least one item.
+Every contributing cause and every "what went wrong" maps to at least one item.
 
 | Action | Type | Owner | Ticket | Due | Status |
 |---|---|---|---|---|---|

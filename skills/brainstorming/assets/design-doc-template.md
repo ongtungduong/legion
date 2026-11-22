@@ -15,7 +15,9 @@ What we are doing, for whom, and why now.
 - What it touches (project only): upstream and downstream of the change
 
 ## Approaches
-The two or three considered, grounded in what exists today.
+The two or three compared, grounded in what exists today.
+
+Also considered: <each other candidate from the wide list, and the fact that ruled it out>
 
 | | A: <name> | B: <name> |
 |---|---|---|

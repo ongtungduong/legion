@@ -1,8 +1,9 @@
 ---
 name: debugging
 description: >-
-  Finds the root cause of a problem in any system (software, infrastructure,
-  data, integrations, or an operational process) by first building a fast
+  Finds the root cause of a problem, or the contributing causes when several
+  line up, in any system (software, infrastructure, data, integrations, or an
+  operational process) by first building a fast
   reproduction or an evidence timeline that shows the failure, then
   minimizing it, ranking falsifiable hypotheses, instrumenting, fixing the
   cause, and adding a control against recurrence. Use when something behaves
@@ -39,7 +40,13 @@ you reach a cause the team controls. When the cause is not obvious at step 4,
 or at step 6, read [references/five-whys.md](references/five-whys.md) and run
 its procedure.
 
-Eleven lenses in four groups. Use each where it changes a hypothesis, a
+The chain is a **why tree**, not a line. A failure in a complex system (an
+incident, an outage, a process breakdown) rarely has one root cause: latent
+conditions and a trigger line up, and each is a contributing cause with its
+own control. Keep every branch that has evidence; pruning the tree to one
+"root cause" for a tidier story leaves the other causes in place.
+
+Ten lenses in four groups. Use each where it changes a hypothesis, a
 probe, or the fix, and drop it where it does not; they are not headings in
 your reply. When a lens needs depth, or the first hypotheses all fail, read
 [references/lenses.md](references/lenses.md) for its procedure.
@@ -49,12 +56,11 @@ your reply. When a lens needs depth, or the first hypotheses all fail, read
 | Evidence | Facts vs. assumptions | Every inference anchors to something observed or measured; what "should" be true, or "worked yesterday", is checked before it carries weight | 2-4 |
 | Evidence | Falsification | The fastest check that would prove each hypothesis wrong, not one that agrees with it; each one ruled out is progress | 4-5 |
 | Evidence | Nothing is obviously fine | When the failure is strange, the simplest and most trusted things get checked too, including what people understood from each other | 4-5 |
-| Isolation | Bisection | Check the midpoint of the chain, or of the time since it last worked; each check rules out half | 4-5 |
-| Isolation | Isolation | Take away surrounding parts one at a time and see whether the problem stays, until only what it needs remains | 3 |
+| Isolation | Bisection | For anything ordered (a path, a history, a timeline): check the midpoint; each check rules out half | 4-5 |
+| Isolation | Minimization | For an unordered set (inputs, settings, parts, participants): take one element away at a time while the problem stays, until only what it needs remains | 3 |
 | Isolation | One variable at a time | One change per try, so the result says which change mattered | 5, 7 |
 | Time and systems | Delta | Something new or different appeared before it started; walk the timeline back from the first sign | 2, 4 |
 | Time and systems | Bottom-up | Confirm the basic conditions before the complex ones; do not jump to the suspect | 5 |
-| Time and systems | Symptom vs. root cause | Where it shows is rarely where it starts; the five-whys chain is followed to the end, not the first plausible link | 4-6 |
 | Probability and containment | Common before rare | Simple, frequent causes are checked before complex, unlikely ones | 4 |
 | Probability and containment | Contain before fixing | While damage is spreading, stop it and preserve the scene first; find the cause after | 1 |
 
@@ -82,12 +88,22 @@ your reply. When a lens needs depth, or the first hypotheses all fail, read
    Tighten it: faster (narrow scope), sharper (assert the user's exact symptom,
    not "it did not crash"), deterministic (pin what varies: time, randomness,
    environment, ordering).
-   **Exit when** you have one command or check, already run and shown with
-   output, that drives the real path, asserts the symptom, gives the same
-   verdict every run (for an intermittent bug, the command repeats the
-   trigger until one invocation fails reliably), and finishes in seconds. If
-   you cannot build one, stop: list what you tried and ask for environment
-   access, a redacted artifact, or permission to add temporary
+   **Exit when** the loop for your kind of system holds, already run and
+   shown with output:
+   - *Re-runnable* (code, a build, a reproducible setup): one command that
+     drives the real path, asserts the symptom, gives the same verdict every
+     run (for an intermittent bug, it repeats the trigger until one
+     invocation fails reliably), and finishes in seconds.
+   - *Evidence timeline* (live system, data, process): a symptom check on
+     current data that shows the symptom in numbers or records (a query, a
+     count, a diff of two copies), cheap enough to re-run after every probe
+     and after the fix, plus a timeline with the first sign, each change in
+     the window with its source, and the affected set.
+   - *Person-triggered*: the checklist gives the same observation each time
+     the user repeats it.
+
+   If you cannot build one, stop: list what you tried and ask for
+   environment access, a redacted artifact, or permission to add temporary
    instrumentation.
 3. **Reproduce and minimize.** Confirm the loop shows the failure the *user*
    described, not a nearby one, then minimize it. For an evidence timeline,
@@ -110,12 +126,12 @@ your reply. When a lens needs depth, or the first hypotheses all fail, read
    performance, measure a baseline first.
 6. **Ask why it was possible.** Once a prediction holds, the confirmed cause
    is where the failure happened. Continue the five-whys chain with "why was
-   this possible?", each answer backed by evidence, until you reach a cause
-   the team controls: a missing check, guard, test, review, alert, or
-   procedure step. A person's mistake is never the last why.
+   this possible?", each answer backed by evidence, until every branch
+   reaches a cause the team controls: a missing check, guard, test, review,
+   alert, or procedure step. A person's mistake is never the last why.
 7. **Fix,** in this order:
    1. Choose the recurrence control that would have caught this earliest,
-      aimed at the last why: a failing test at a seam that exercises the
+      aimed at the last why of each branch: a failing test at a seam that exercises the
       real bug pattern for code; otherwise a check, monitor, alert,
       validation, guard, or a documented step in the procedure. If none can
       be placed, report that as a finding.
@@ -126,7 +142,8 @@ your reply. When a lens needs depth, or the first hypotheses all fail, read
       not part of this fix.
 8. **Clean up:**
    - [ ] the original reproduction or symptom check no longer fails;
-   - [ ] the recurrence control is in place, or its absence is documented;
+   - [ ] each branch's recurrence control is in place, or its absence is
+         documented;
    - [ ] all debug lines and temporary probes are removed;
    - [ ] throwaway harnesses are deleted or clearly marked;
    - [ ] the confirmed cause is recorded where the fix is (commit, PR,
@@ -171,7 +188,8 @@ your reply. When a lens needs depth, or the first hypotheses all fail, read
 ```
 Loop: `<command or check>` -> <output that shows the symptom>
 Cause: <the confirmed cause, at file:line or the exact step, record, or change> | not confirmed: <leading hypothesis and the probe that would settle it>
-Why chain: <cause> <- <why it was possible> <- ... <- <the cause you control>
+Contributing: <each other cause on the why tree, with its evidence> | none
+Why chain: <cause> <- <why it was possible> <- ... <- <the cause you control> (one line per branch)
 Evidence: <the prediction that held, and the probe output>
 Fix: <the change> | not applied: <why>
 Recurrence control: <test, check, monitor, or procedure step> RED -> GREEN | none possible: <why>
