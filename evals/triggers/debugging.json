@@ -4,7 +4,10 @@
     "This endpoint started throwing a 500 error after yesterday's deploy",
     "The test is flaky, it fails about one run in ten",
     "Here is the stack trace, the app crashes on startup",
-    "The search page got three times slower this week"
+    "The search page got three times slower this week",
+    "Orders stopped syncing between two systems since last night, find out why",
+    "Our monthly report numbers no longer match the source data",
+    "Invoices keep getting stuck in the approval process and nobody knows why"
   ],
   "negative": [
     {
