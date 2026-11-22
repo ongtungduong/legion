@@ -36,6 +36,8 @@ Load `legion:skill-creator` and follow its workflow. Every skill conforms to the
 
 Legion conventions on top of the spec:
 
+- Skills are general-purpose: none names a domain (code included) as its
+  default; domain examples belong in evals, not in a skill.
 - Everything is in English: skill content and docs for humans (`README.md`, `docs/`).
 - Cross-skill instructions say "Call the Skill tool with `legion:<name>`".
 - Subagents start with a fresh context and an explicitly named tier

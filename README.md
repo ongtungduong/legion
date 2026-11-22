@@ -1,46 +1,37 @@
 # Legion
 
-A skills plugin for Claude Code. Legion makes the agent work like a disciplined
-engineer: clarify intent before coding, plan in vertical slices, write the test
-first, review on two axes, and say "done" only with evidence.
+A plugin of general-purpose working skills for Claude Code. Legion gives the
+agent a method for the kinds of work that go wrong when improvised: deciding
+what to do, laying out how to get it done, and finding why something broke.
+None of it is tied to software; code is one kind of work among many.
 
 Based on [superpowers](https://github.com/obra/superpowers), with material from
-[addyosmani/agent-skills](https://github.com/addyosmani/agent-skills),
-[mattpocock/skills](https://github.com/mattpocock/skills), and
-[agent-rules-books](https://github.com/ciembor/agent-rules-books). Origins:
+[addyosmani/agent-skills](https://github.com/addyosmani/agent-skills) and
+[mattpocock/skills](https://github.com/mattpocock/skills). Origins:
 [THIRD_PARTY.md](THIRD_PARTY.md), [docs/architecture.md](docs/architecture.md).
 
 ## What it does differently
 
-- **Light router.** Questions and trivial edits are answered directly. A skill
-  loads only when the task matches; once loaded, its hard rules hold.
-- **Spec- and test-driven.** Acceptance criteria first, a failing test before
-  each change, and no "done" without fresh evidence (including a check that no
-  test or lint was weakened).
-- **Design right the first time.** `principles` holds four references (system
-  design, coding, performance, security). Design questions are answered before
-  the first test; the plan names the references, and the reviewer checks their
-  final checklists. Security wins over repo conventions.
-- **Two-axis review.** Spec and Standards are reviewed by separate fresh-context
-  subagents; every finding carries a failure scenario or a quoted rule and is
-  verified independently. A whole-repo target runs an audit on system design,
-  performance, and security after one scope-and-budget proposal.
-- **Debugging starts from a reproduction** that goes red before any hypothesis.
-- **Brainstorming in two methods:** compare approaches (Six Thinking Hats), then
-  grill the design in rounds. Glossary terms and ADRs are written here and read
-  by later skills.
+- **A router, not a pipeline.** `router` is injected at session start and picks
+  the skill that fits the work. Questions and trivial edits are answered
+  directly; skills are used alone or chained only when the work calls for it.
+- **Brainstorming in two methods:** compare approaches, then grill the design
+  in rounds, for any open-ended topic. Glossary terms and ADRs are written here.
+- **Planning** turns a settled goal into steps that each end in a checkable
+  result, ordered by value, with a pre-mortem.
+- **Debugging starts from a loop that shows the failure** (a reproduction, or
+  an evidence timeline for a system you cannot re-run) before any hypothesis,
+  and ends with a control against recurrence.
 - **A floor, not a ceiling.** Subagent dispatches name a tier (`cheap`,
-  `standard`, `session`, `top`) that never resolves below your session's model for
-  work you rely on; test-first has an exit for a change no test can observe; every
-  hard rule states its reason.
+  `standard`, `session`, `top`) that never resolves below your session's model
+  for work you rely on; every hard rule states its reason.
 - **A guard hook** asks before a tool touches `.env`, keys, or certificates or
   scans `dist` or `build` broadly, and blocks whole-folder scans of
   `node_modules`. A convenience, not a security boundary; start Claude Code with
   `LEGION_GUARD=off` to disable it.
 - **Measured, and honest about it.** Trigger evals run in CI; behavioral evals
-  (`claude plugin eval`) are logged with model, CLI version, and cost in
-  [docs/evals.md](docs/evals.md), which also says what they do not show: only
-  sonnet and haiku were measured, and a review costs about twice a plain answer.
+  (`claude plugin eval`) and what they do not show are described in
+  [docs/evals.md](docs/evals.md).
 
 ## Installation
 
@@ -66,37 +57,30 @@ release bumps it. If superpowers is enabled, disable it
 (`claude plugin disable superpowers@claude-plugins-official`): both inject a
 router and share skill names.
 
-## Workflow
+**Upgrading from 0.x:** 1.0.0 renames `using-legion` to `router`,
+`writing-plans` to `planning`, and `systematic-debugging` to `debugging`, and
+removes `executing-plans`, `code-review`, and `principles`. See
+[CHANGELOG.md](CHANGELOG.md).
 
-```
-brainstorming ─▶ planning ─▶ executing-plans ─▶ code-review (final)
-                                        ├─ unexpected failure ─▶ debugging ─▶ back to the task
-                                        └─ spec + TDD + principles + evidence gate in every task,
-                                           inline or subagent per task
-```
-
-The process scales with the work: a small change collapses brainstorming into one
-confirmation, a chore skips the flow. A bug report enters at
-`debugging`; its fix runs through `executing-plans`.
+## Documents
 
 | Document | Location |
 |---|---|
 | Design doc | `.legion/specs/YYYY-MM-DD-<topic>-design.md` |
 | Plan | `.legion/plans/YYYY-MM-DD-<topic>.md` |
-| Plan-run ledger (gitignored) | `.legion/runs/<plan>/progress.md` |
 | Decision records | `docs/adr/NNNN-*.md` |
 
-In your repo the plan workflow keeps `specs/` and `plans/` committed and
-gitignores the rest of `.legion/`. Legion's own repo ignores all of it.
+In your repo `specs/` and `plans/` are committed and the rest of `.legion/` is
+gitignored. Legion's own repo ignores all of it.
 
 ## Skills
 
 | Skill | Use for |
 |---|---|
-| `router` | Router, injected at SessionStart |
-| `brainstorming` | Intent, approaches, grilling, design doc, ADRs, glossary |
-| `planning` | Approved spec to vertical-slice tasks, ordered by value, with a pre-mortem |
-| `debugging` | Bugs, failing or flaky tests, regressions |
+| `router` | Picks the skill for the work; injected at SessionStart |
+| `brainstorming` | Any open-ended topic: intent, approaches, grilling, design doc, ADRs, glossary |
+| `planning` | A settled goal to a step-by-step plan, ordered by value, with a pre-mortem |
+| `debugging` | Root cause of a problem in any system, with a control against recurrence |
 | `skill-creator` | Creating and validating skills against agentskills.io |
 
 ## Development

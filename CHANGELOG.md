@@ -1,5 +1,40 @@
 # Changelog
 
+## 1.0.0 - 2026-11-22
+
+Legion is no longer an SDLC workflow. It is a suite of general-purpose working
+skills behind one router, for any kind of work, code included.
+
+Breaking
+
+- Renamed: `using-legion` -> `router` (`legion:router`), `writing-plans` ->
+  `planning`, `systematic-debugging` -> `debugging`.
+- Removed: `executing-plans`, `code-review`, `principles`, with their
+  references, scripts, evals, trigger files, and tests, and the audit-skeleton
+  rule in `npm run validate`.
+- Removed the eval summaries of earlier versions; they measured the old skills
+  and remain in git history.
+
+Changed
+
+- `router` picks a skill by kind of work (direction not settled, direction
+  settled and steps needed, cause unknown, skill authoring). There is no default
+  flow; a skill offers the next one only when its result is that skill's input.
+- `brainstorming` works on any open-ended topic; its design doc template is
+  domain-neutral (`Verification`, `Constraints and risks`).
+- `planning` turns any settled goal into steps, each with an outcome, owner,
+  dependencies, a done-check, and rough effort, grouped into milestones; it ends
+  at the reviewed plan.
+- `debugging` investigates a problem in any system: a reproduction, or a symptom
+  check plus an evidence timeline when the system cannot be re-run; it mitigates
+  first when people are harmed, and ends with a recurrence control that fits the
+  system.
+
+Added
+
+- Eval cases `brainstorming-fires-on-open-topic`, `planning-fires-on-settled-goal`,
+  `debugging-fires-on-unknown-cause`, and non-software trigger prompts.
+
 ## 0.14.0 - 2026-11-16
 
 Principle: the harness is a floor under the agent, not a ceiling over it. Each
