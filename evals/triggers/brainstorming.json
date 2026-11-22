@@ -14,7 +14,11 @@
     "Record an ADR for choosing event sourcing for orders",
     "We keep saying account and customer interchangeably, which one is right?",
     "Our terminology for shipment versus delivery is fuzzy, let's pin it down",
-    "Add the term Settlement to our GLOSSARY.md"
+    "Add the term Settlement to our GLOSSARY.md",
+    "Help me think through how to grow our newsletter",
+    "Brainstorm options for organizing the team offsite",
+    "I'm not sure how to structure the new onboarding process for hires, help me shape it",
+    "We are deciding whether to open a second store, help me think it through"
   ],
   "negative": [
     {
@@ -24,6 +28,10 @@
     {
       "prompt": "The checkout test is failing with a TypeError, figure out why",
       "owner": "debugging"
+    },
+    {
+      "prompt": "The direction is approved, write the detailed step-by-step plan",
+      "owner": "planning"
     }
   ]
 }

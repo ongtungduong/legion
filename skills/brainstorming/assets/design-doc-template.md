@@ -1,7 +1,7 @@
 # <Topic> Design
 
 ## Intent
-What we are building, for whom, and why now.
+What we are doing, for whom, and why now.
 
 ## Goals / Non-goals / Anti-goals
 - Goals:
@@ -12,10 +12,10 @@ What we are building, for whom, and why now.
 - Goal (no solution words):
 - Must be true: facts (with sources) and hard constraints
 - Assumptions questioned: each one kept (and what forces it), dropped, or asked
-- System touched (project only): upstream and downstream of the change
+- What it touches (project only): upstream and downstream of the change
 
 ## Approaches
-The two or three considered, grounded in the existing code.
+The two or three considered, grounded in what exists today.
 
 | | A: <name> | B: <name> |
 |---|---|---|
@@ -26,22 +26,21 @@ Chosen: <approach>, because <the deciding points>. Wrong if: <the fact that woul
 ## Design
 The parts of the "how" the user decided, as they decided them (including the
 grilling rounds and what would make each wrong), plus your calls and grilling
-defaults marked "(my call)". Name the modules and interfaces touched.
+defaults marked "(my call)". Name the parts, people, systems, or documents
+touched.
 
-## Commands
-Exact build, test, lint, and run commands for this repo.
-
-## Testing strategy
-Which seams get tested and what each test level proves.
+## Verification
+How we will know it worked: the checks, measures, or reviews that prove each
+goal, and who or what runs them.
 
 ## Boundaries
 - Always:
 - Ask first:
 - Never:
 
-## Non-functional
-- Security: <trust boundaries and assets the change touches, or "none">
-- Performance: <budget and hot paths, or "none">
+## Constraints and risks
+The limits that shape the work (budget, time, people, compliance, security,
+privacy, performance) and the main risks with their mitigation, or "none".
 
 ## Success criteria
 Specific, checkable conditions that mean "done".
