@@ -41,7 +41,7 @@ or chained only when the work calls for it.
 
 | Situation | Skill |
 |---|---|
-| Any open-ended topic whose direction is not settled: what to do and why, options and a recommendation, "help me think this through"; "grill me" or stress-test an idea; recording a decision (ADR); fuzzy or contested terms, GLOSSARY.md | `legion:brainstorming` |
+| Any open-ended topic whose direction is not settled: what to do and why, options and a recommendation, "help me think this through"; "grill me" or stress-test an idea; first principles, inversion, six hats, systems, second-order, impact/effort | `legion:brainstorming` |
 | A settled goal, approved design, or clear requirements that need a detailed step-by-step plan to get the work done | `legion:planning` |
 | Something in a system behaves wrongly and the cause is unknown: an error, failure, outage, mismatch, slowdown, or recurring problem; "what broke?", "why is this happening?" | `legion:debugging` |
 | Creating, editing, or validating a skill | `legion:skill-creator` |

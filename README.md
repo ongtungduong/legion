@@ -16,7 +16,7 @@ Based on [superpowers](https://github.com/obra/superpowers), with material from
   the skill that fits the work. Questions and trivial edits are answered
   directly; skills are used alone or chained only when the work calls for it.
 - **Brainstorming in two methods:** compare approaches, then grill the design
-  in rounds, for any open-ended topic. Glossary terms and ADRs are written here.
+  in rounds, for any open-ended topic, through six thinking lenses.
 - **Planning** turns a settled goal into steps that each end in a checkable
   result, ordered by value, with a pre-mortem.
 - **Debugging starts from a loop that shows the failure** (a reproduction, or
@@ -68,7 +68,6 @@ removes `executing-plans`, `code-review`, and `principles`. See
 |---|---|
 | Design doc | `.legion/specs/YYYY-MM-DD-<topic>-design.md` |
 | Plan | `.legion/plans/YYYY-MM-DD-<topic>.md` |
-| Decision records | `docs/adr/NNNN-*.md` |
 
 In your repo `specs/` and `plans/` are committed and the rest of `.legion/` is
 gitignored. Legion's own repo ignores all of it.
@@ -78,7 +77,7 @@ gitignored. Legion's own repo ignores all of it.
 | Skill | Use for |
 |---|---|
 | `router` | Picks the skill for the work; injected at SessionStart |
-| `brainstorming` | Any open-ended topic: intent, approaches, grilling, design doc, ADRs, glossary |
+| `brainstorming` | Any open-ended topic: intent, approaches, grilling, design doc, thinking lenses |
 | `planning` | A settled goal to a step-by-step plan, ordered by value, with a pre-mortem |
 | `debugging` | Root cause of a problem in any system, with a control against recurrence |
 | `skill-creator` | Creating and validating skills against agentskills.io |

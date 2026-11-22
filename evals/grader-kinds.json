@@ -36,9 +36,6 @@
     "real-alternatives": "outcome",
     "recommendation": "outcome"
   },
-  "brainstorming-records-glossary-term": {
-    "glossary-entry": "protocol"
-  },
   "debugging-fires-on-what-broke": {
     "root-cause": "outcome"
   },

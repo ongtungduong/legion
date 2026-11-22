@@ -19,7 +19,10 @@ The two or three considered, grounded in what exists today.
 
 | | A: <name> | B: <name> |
 |---|---|---|
-| Trade-offs | | |
+| Benefit for the goal | | |
+| Effort / cost | | |
+| Most likely failure | | |
+| Sets off elsewhere | | |
 
 Chosen: <approach>, because <the deciding points>. Wrong if: <the fact that would flip it>.
 
@@ -40,7 +43,8 @@ goal, and who or what runs them.
 
 ## Constraints and risks
 The limits that shape the work (budget, time, people, compliance, security,
-privacy, performance) and the main risks with their mitigation, or "none".
+privacy, performance), and each way it could fail with its prevention, or
+"none".
 
 ## Success criteria
 Specific, checkable conditions that mean "done".

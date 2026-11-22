@@ -12,8 +12,6 @@ copied; the table says what came from where.
 | `skills/router` | superpowers `using-superpowers`, addy `using-agent-skills` |
 | `skills/brainstorming` | superpowers `brainstorming`; addy `spec-driven-development` (spec sections, boundaries) |
 | `skills/brainstorming/references/grilling.md` | mattpocock `grilling` |
-| `skills/brainstorming/references/adr-format.md` | mattpocock `ADR-FORMAT.md` |
-| `skills/brainstorming/references/glossary-format.md` | mattpocock `domain-modeling`, `GLOSSARY-FORMAT.md` (condensed from Legion's removed `defining-terms` skill) |
 | `skills/planning` | superpowers `writing-plans`; addy `planning-and-task-breakdown` (vertical slices, sizing) |
 | `evals/plugin/` | addy `evals/plugin` (case layout and grader patterns) |
 | `.github/workflows/ci.yml` | addy `.github/workflows/test-plugin-install.yml` (reduced to `npm test` and shellcheck) |

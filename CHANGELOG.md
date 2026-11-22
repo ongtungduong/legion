@@ -14,6 +14,10 @@ Breaking
   rule in `npm run validate`.
 - Removed the eval summaries of earlier versions; they measured the old skills
   and remain in git history.
+- `brainstorming` no longer writes ADRs or `GLOSSARY.md` entries:
+  `references/adr-format.md`, `references/glossary-format.md`, and the
+  `brainstorming-records-glossary-term` eval case are gone. Existing glossaries
+  and decision records are still read as facts.
 
 Changed
 
@@ -32,6 +36,12 @@ Changed
 
 Added
 
+- `brainstorming` thinks through six lenses (first principles, inversion, six
+  hats, systems, second-order, impact vs. effort), with their procedures in
+  `references/lenses.md`, which absorbs `references/six-thinking-hats.md`.
+  Grilling also settles requirements, and asks each round as a selection
+  (`AskUserQuestion` in Claude Code, lettered options as text elsewhere) with
+  the recommendation first.
 - Eval cases `brainstorming-fires-on-open-topic`, `planning-fires-on-settled-goal`,
   `debugging-fires-on-unknown-cause`, and non-software trigger prompts.
 

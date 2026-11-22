@@ -37,7 +37,7 @@ The deliberate decisions behind the current design, with their reasons, so nobod
 | Source | Taken | Where |
 |---|---|---|
 | superpowers | Hook and router; brainstorm gate before building; plans with a pre-mortem and self-review | `hooks/`, `router`, `brainstorming`, `planning` |
-| mattpocock | Grilling in rounds; `GLOSSARY.md` and ADRs; debugging from a feedback loop and the human-in-the-loop script | `brainstorming`, `debugging` |
+| mattpocock | Grilling in rounds; debugging from a feedback loop and the human-in-the-loop script | `brainstorming`, `debugging` |
 | addyosmani | Spec structure and boundaries; slices and sizes; trigger evals; eval case layout | `brainstorming`, `planning`, `scripts/trigger-evals.mjs`, `evals/plugin/` |
 | duongot-skills | `skill-creator` and its validator | `skills/skill-creator`, `scripts/validate-spec.mjs` |
 
@@ -54,7 +54,7 @@ visual brainstorm companion. Skills removed in 1.0.0 are listed in
 | `planning` ends at the reviewed plan; there is no execution skill | Carrying out the plan is the work itself, by the agent or by people; the plan's done-checks are what keeps it honest |
 | `debugging` builds a loop that shows the failure: a reproduction when the system can be re-run, otherwise a symptom check plus an evidence timeline; the fix ends with a recurrence control that fits the system (test, check, monitor, procedure step) | A live outage or a process problem cannot be re-run, yet the same discipline applies |
 | **Subagents** start fresh (`general-purpose`, never `fork`) with an explicit tier defined once in the router | A pinned alias caps every later session at the model that was best when the line was written; `npm run validate` rejects a pinned `model: "<alias>"` |
-| `brainstorming` owns glossary and ADRs; no separate skill | A skill adds an always-on description and a router row for a rare task |
+| No glossary or ADR writing in `brainstorming`; existing ones are read as facts | Rare tasks the model handles without a format; each cost description and router space |
 | `router` is `disable-model-invocation: true` and the hook strips its frontmatter | The hook already injects it; a listed description invited a second copy |
 | `hooks/guard` asks before secret files and before a broad scan of `dist/` or `build/`, and denies a broad scan of `node_modules`; bash builtins only, fails open; its messages never tell the agent to set `LEGION_GUARD` | A convenience; Claude Code's permission rules stay the boundary. Only the user can switch the guard off |
 | Behavioral evals are the bar: a case is at the bar at a with-plugin mean of 0.66 (2 of 3 runs), outcome graders must not score lower with the plugin than without, and a grader is never loosened to pass | Lexical evals do not show that a skill fires or helps |
@@ -67,7 +67,7 @@ Each model sits where it changes a decision; there is no separate skill for them
 
 | Skill | First principles | Inversion | Systems thinking | Pareto |
 |---|---|---|---|---|
-| `brainstorming` | White and Green hats; grilling tree | Black hat; grilling "Wrong if" | What it touches, second-order effects; grilling branches | Scope cut; Blue and Yellow hats; grilling order |
+| `brainstorming` | Lens table; White and Green hats; grilling tree | Lens table; Black hat; grilling "Wrong if" | Lens table (systems, second-order); grilling branches | Lens table (impact vs. effort); scope cut; grilling order |
 | `planning` | Decided values written down | Pre-mortem (step 6) | Produces lines, dependencies | Step order (step 3) |
 | `debugging` | Facts before hypotheses | Falsifiable predictions | Feedback loops, boundaries between components | Likelihood for the cost of checking |
 | `skill-creator` | What the agent lacks; baseline failures are the spec | Near-miss prompts | n/a | Write only what fixes observed failures |
@@ -75,8 +75,7 @@ Each model sits where it changes a decision; there is no separate skill for them
 ## Artifacts
 
 In a repo using Legion: `.legion/specs/` and `.legion/plans/` are committed;
-everything else in `.legion/` is gitignored. `docs/adr/` exists only when there
-is content. Legion's own repo ignores all of `.legion/`.
+everything else in `.legion/` is gitignored. Legion's own repo ignores all of `.legion/`.
 
 ## Testing
 
