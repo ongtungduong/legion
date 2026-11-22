@@ -189,14 +189,14 @@ const validateRules = [
   ['description that starts with Use', (r) => newSkill(r, 'zz-new', ['name: zz-new', 'description: Use when frobbing. Frobs widgets.']), /skills\/zz-new: description must start with what the skill does/],
   ['SKILL.md at the byte limit', (r) => newSkill(r, 'zz-new', undefined, `# Title\n${'x'.repeat(20000)}\n`), /zz-new\/SKILL\.md is \d+ bytes \(limit < 20000\)/],
   ['SKILL.md without a top-level heading', (r) => newSkill(r, 'zz-new', undefined, 'No heading.\n'), /zz-new\/SKILL\.md: needs a top-level "# Title" heading/],
-  ['skill without a trigger file', (r) => rm(r, 'evals/triggers/writing-plans.json'), /skills\/writing-plans: missing evals\/triggers\/writing-plans\.json/],
+  ['skill without a trigger file', (r) => rm(r, 'evals/triggers/planning.json'), /skills\/planning: missing evals\/triggers\/planning\.json/],
   ['skill-development material inside skills/', (r) => write(r, 'skills/brainstorming/test-pressure.md', '# x\n'), /test-pressure\.md: skill-development material must live under evals\/ or tests\//],
   ['creation log inside skills/', (r) => write(r, 'skills/brainstorming/CREATION-LOG.md', '# x\n'), /CREATION-LOG\.md: skill-development material/],
   ['scenario file inside skills/',(r) => write(r, 'skills/brainstorming/a.scenario.md', '# x\n'), /a\.scenario\.md: skill-development material/],
   ['reference to an unknown legion skill', (r) => edit(r, 'README.md', (t) => `${t}\nSee legion:nope.\n`), /README\.md: reference "legion:nope" does not match any skill/],
   ['broken link inside a skill', (r) => edit(r, 'skills/skill-creator/SKILL.md', (t) => `${t}\nSee [x](references/nope.md).\n`), /skill-creator\/SKILL\.md: broken link "references\/nope\.md"/],
-  ['router skill missing', (r) => rm(r, 'skills/using-legion'), /skills\/using-legion is required/],
-  ['router map missing a skill', (r) => edit(r, 'skills/using-legion/SKILL.md', (t) => t.replaceAll('legion:skill-creator', 'legion-skill-creator')), /map does not route to legion:skill-creator/],
+  ['router skill missing', (r) => rm(r, 'skills/router'), /skills\/router is required/],
+  ['router map missing a skill', (r) => edit(r, 'skills/router/SKILL.md', (t) => t.replaceAll('legion:skill-creator', 'legion-skill-creator')), /map does not route to legion:skill-creator/],
   ['README missing', (r) => rm(r, 'README.md'), /README\.md is missing/],
   ['README skill table missing a skill', (r) => edit(r, 'README.md', (t) => t.replaceAll('`skill-creator`', 'skill creator')), /README\.md: skill table does not list `skill-creator`/],
   ['trigger file for no skill', (r) => write(r, 'evals/triggers/ghost.json', '{}\n'), /evals\/triggers\/ghost\.json: no skill named "ghost"/],
@@ -217,7 +217,7 @@ const validateRules = [
   ['eval case named for no skill', (r) => fs.renameSync(path.join(r, quietCase), path.join(r, 'evals/plugin/nobody-stays-quiet-on-x')), /evals\/plugin\/nobody-stays-quiet-on-x: name must start with a skill name or "router-"/],
   ['quiet case that does not assert the skill stayed unused', (r) => edit(r, `${quietCase}/graders/not-fired.md`, (t) => t.replace('max: 0', 'max: 1')), /skill-creator-stays-quiet-on-plan-request: a stays-quiet case needs a tool_used grader on Skill with max: 0 whose input_match matches legion:skill-creator/],
   ['quiet case whose max: 0 grader watches another tool', (r) => edit(r, `${quietCase}/graders/not-fired.md`, (t) => t.replace('tool: Skill', 'tool: Bash')), /skill-creator-stays-quiet-on-plan-request: a stays-quiet case needs a tool_used grader on Skill/],
-  ['quiet case whose max: 0 grader names another skill', (r) => edit(r, `${quietCase}/graders/not-fired.md`, (t) => t.replaceAll('skill-creator', 'writing-plans')), /skill-creator-stays-quiet-on-plan-request: a stays-quiet case needs a tool_used grader on Skill/],
+  ['quiet case whose max: 0 grader names another skill', (r) => edit(r, `${quietCase}/graders/not-fired.md`, (t) => t.replaceAll('skill-creator', 'planning')), /skill-creator-stays-quiet-on-plan-request: a stays-quiet case needs a tool_used grader on Skill/],
   ['skill without a stays-quiet case', (r) => rm(r, quietCase), /skill-creator: no stays-quiet eval case in evals\/plugin\//],
   ['skill without a firing case', (r) => rm(r, 'evals/plugin/skill-creator-fires-on-new-skill'), /skill-creator: no firing eval case in evals\/plugin\//],
   ['firing case whose Skill grader names another skill', (r) => edit(r, 'evals/plugin/skill-creator-fires-on-new-skill/graders/skill-fired.md', (t) => t.replaceAll('skill-creator', 'brainstorming')), /skill-creator: no firing eval case in evals\/plugin\//],
@@ -262,22 +262,22 @@ test('a SKILL.md over the soft line limit warns but passes', () => {
 
 const triggers = (root, name, fn) => json(root, `evals/triggers/${name}.json`, fn);
 const triggerRules = [
-  ['skill without a trigger file', (r) => rm(r, 'evals/triggers/writing-plans.json'), /writing-plans: missing evals\/triggers\/writing-plans\.json/],
+  ['skill without a trigger file', (r) => rm(r, 'evals/triggers/planning.json'), /planning: missing evals\/triggers\/planning\.json/],
   ['too few positive prompts', (r) => triggers(r, 'skill-creator', (j) => ({ ...j, positive: j.positive.slice(0, 4) })), /skill-creator: needs at least 5 positive prompts/],
   ['too few negative prompts', (r) => triggers(r, 'skill-creator', (j) => ({ ...j, negative: j.negative.slice(0, 1) })), /skill-creator: needs at least 2 negative prompts/],
   ['positive prompt that ranks another skill first', (r) => triggers(r, 'skill-creator', (j) => ({ ...j, positive: [...j.positive, 'The checkout test fails with a TypeError, find out why'] })), /skill-creator: positive ranked #\d+ \(> top 1\): "The checkout test fails/],
   ['negative prompt that ranks the skill first', (r) => triggers(r, 'skill-creator', (j) => ({ ...j, negative: [...j.negative, { prompt: 'Create a new skill and validate its SKILL.md' }] })), /skill-creator: negative prompt ranked this skill #1/],
   ['negative owner that is not a skill', (r) => triggers(r, 'skill-creator', (j) => ({ ...j, negative: [...j.negative, { prompt: 'Review my diff', owner: 'ghost' }] })), /skill-creator: negative owner "ghost" is not a skill/],
-  // Ranks another skill #1, systematic-debugging #2, and the named owner lower.
-  ['negative prompt that ranks the skill above its owner', (r) => triggers(r, 'systematic-debugging', (j) => ({ ...j, negative: [...j.negative, { prompt: 'Help me think through options for fixing the flaky test', owner: 'writing-plans' }] })), /systematic-debugging: negative "Help me think through options for fixing the flaky test" ranks systematic-debugging #2 above its owner writing-plans #\d+/],
+  // Ranks another skill #1, debugging #2, and the named owner lower.
+  ['negative prompt that ranks the skill above its owner', (r) => triggers(r, 'debugging', (j) => ({ ...j, negative: [...j.negative, { prompt: 'Help me think through options for fixing the flaky test', owner: 'planning' }] })), /debugging: negative "Help me think through options for fixing the flaky test" ranks debugging #2 above its owner planning #\d+/],
   ['rank-1 rate under the floor', (r) => triggers(r, 'skill-creator', (j) => ({ ...j, positive: [...j.positive, ...Array.from({ length: 12 }, (_, i) => ({ prompt: `The deploy script fails with exit code ${i}, find the cause`, top_k: 7 }))] })), /rank-1 rate \d+\.\d% is under the 90% floor/],
   // Two misses out of seven: the repo-wide rate stays above 90%, this skill's drops under 75%.
   ['one skill\'s rank-1 rate under the per-skill floor', (r) => triggers(r, 'skill-creator', (j) => ({ ...j, positive: [...j.positive, ...Array.from({ length: 2 }, (_, i) => ({ prompt: `The deploy script fails with exit code ${i}, find the cause`, top_k: 7 }))] })), /skill-creator: rank-1 5\/7 \(71\.4%\) is under the 75% per-skill floor/],
   ['two near-duplicate descriptions', (r) => {
-    const src = fs.readFileSync(path.join(r, 'skills/writing-plans/SKILL.md'), 'utf8');
-    write(r, 'skills/zz-twin/SKILL.md', src.replace('name: writing-plans', 'name: zz-twin'));
-    fs.copyFileSync(path.join(r, 'evals/triggers/writing-plans.json'), path.join(r, 'evals/triggers/zz-twin.json'));
-  }, /descriptions too similar \(\d\.\d\d > 0\.35\): writing-plans \/ zz-twin|descriptions too similar \(\d\.\d\d > 0\.35\): zz-twin \/ writing-plans/],
+    const src = fs.readFileSync(path.join(r, 'skills/planning/SKILL.md'), 'utf8');
+    write(r, 'skills/zz-twin/SKILL.md', src.replace('name: planning', 'name: zz-twin'));
+    fs.copyFileSync(path.join(r, 'evals/triggers/planning.json'), path.join(r, 'evals/triggers/zz-twin.json'));
+  }, /descriptions too similar \(\d\.\d\d > 0\.35\): planning \/ zz-twin|descriptions too similar \(\d\.\d\d > 0\.35\): zz-twin \/ planning/],
 ];
 
 for (const [name, mutate, expected] of triggerRules) {
@@ -292,7 +292,7 @@ for (const [name, mutate, expected] of triggerRules) {
 
 test('trigger-evals scores the router map row with the description', () => {
   const root = copyRepo();
-  edit(root, 'skills/using-legion/SKILL.md', (t) => t.replace('| Creating, editing, or validating a skill |', '| Creating, editing, or validating a skill; quokka zeppelin |'));
+  edit(root, 'skills/router/SKILL.md', (t) => t.replace('| Creating, editing, or validating a skill |', '| Creating, editing, or validating a skill; quokka zeppelin |'));
   triggers(root, 'skill-creator', (j) => ({ ...j, positive: [...j.positive, 'quokka zeppelin'] }));
   const { code, out } = run('trigger-evals.mjs', root);
   assert.equal(code, 0, out);

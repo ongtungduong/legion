@@ -1,6 +1,6 @@
 ---
-description: A pasted diff with a "what broke?" question. Guards the "even when the code is pasted inline and the fix looks obvious" clause of the systematic-debugging description.
-expected_outcome: A diagnosis that the slice end is exclusive, so every page loses a row, grounded in a reproduction (the failing test or a minimal check) before the fix; legion:systematic-debugging is invoked.
+description: A pasted diff with a "what broke?" question. Guards the "even when the code is pasted inline and the fix looks obvious" clause of the debugging description.
+expected_outcome: A diagnosis that the slice end is exclusive, so every page loses a row, grounded in a reproduction (the failing test or a minimal check) before the fix; legion:debugging is invoked.
 max_turns: 12
 allowed_tools: [Read, Glob, Grep, Skill]
 ---

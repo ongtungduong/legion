@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Verifies hooks/session-start emits valid Claude Code SessionStart JSON that
-# carries the using-legion router, and still emits valid JSON when the skill
+# carries the router, and still emits valid JSON when the skill
 # file cannot be read.
 set -euo pipefail
 
@@ -25,16 +25,16 @@ check() { # $1 label, $2 plugin root, $3 substring the context must contain, $4 
   fi
 }
 
-check "injects the using-legion router" "$REPO_ROOT" "# Using Legion"
+check "injects the router" "$REPO_ROOT" "# Legion Router"
 check "router table survives JSON escaping" "$REPO_ROOT" '| Situation | Skill |'
-check "strips the YAML frontmatter" "$REPO_ROOT" "# Using Legion" "disable-model-invocation:"
+check "strips the YAML frontmatter" "$REPO_ROOT" "# Legion Router" "disable-model-invocation:"
 check "falls back cleanly when the skill is missing" "/nonexistent-legion-root" "could not read"
 
 # A router containing control characters must still yield valid JSON.
 fixture="$(mktemp -d)"
 trap 'rm -rf "$fixture"' EXIT
-mkdir -p "$fixture/skills/using-legion"
-printf -- '---\nname: using-legion\n---\n# Using Legion\nbell\x07 ff\x0c vt\x0b end\n' > "$fixture/skills/using-legion/SKILL.md"
+mkdir -p "$fixture/skills/router"
+printf -- '---\nname: router\n---\n# Legion Router\nbell\x07 ff\x0c vt\x0b end\n' > "$fixture/skills/router/SKILL.md"
 check "control characters stay valid JSON" "$fixture" "bell"
 
 exit "$fail"

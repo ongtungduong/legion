@@ -96,7 +96,7 @@ not as extra passes. Each stops where it no longer changes what gets built.
     on tier `standard` to do it. Answer what the
     conversation already settled, settle minor gaps yourself and mark them as
     your calls, and bring only the real decisions to the user in one message.
-11. **Get approval, then** call the Skill tool with `legion:writing-plans`.
+11. **Get approval, then** call the Skill tool with `legion:planning`.
 
 | Size | Design doc | Approaches | Grilling |
 |---|---|---|---|

@@ -1,5 +1,5 @@
 ---
-name: using-legion
+name: router
 description: >-
   Legion's router: which Legion skill fits which task, and the precedence
   between user instructions, skills, and defaults. Injected at session start.
@@ -9,7 +9,7 @@ metadata:
   author: ongtungduong
 ---
 
-# Using Legion
+# Legion Router
 
 Pick the Legion skill a task needs, load it with the Skill tool, and follow
 it. Questions and trivial edits get answered directly, with no skill.
@@ -28,7 +28,7 @@ it. Questions and trivial edits get answered directly, with no skill.
      announcement. "What broke?" or "why does this fail?" is a bug, not a
      question.
    - Matches a row in the map below: load that skill before acting, say so in
-     one line ("Using legion:writing-plans to break this down"), follow it.
+     one line ("Using legion:planning to break this down"), follow it.
    - Unsure: load the skill only if following it would change your next action.
 3. **Keep loaded rules intact.** Routing decides *whether* a skill applies,
    never how strictly. A loaded skill is followed in full.
@@ -38,8 +38,8 @@ it. Questions and trivial edits get answered directly, with no skill.
 | Situation | Skill |
 |---|---|
 | New work or a behavior change whose design is not approved: intent, approaches, design doc; "grill me"; recording an ADR; fuzzy or contested terms, GLOSSARY.md | `legion:brainstorming` |
-| An approved spec needs an implementation plan | `legion:writing-plans` |
-| Bug, failing or flaky test, crash, performance regression | `legion:systematic-debugging` |
+| An approved spec needs an implementation plan | `legion:planning` |
+| Bug, failing or flaky test, crash, performance regression | `legion:debugging` |
 | Creating, editing, or validating a skill | `legion:skill-creator` |
 
 ## Model tiers

@@ -13,7 +13,7 @@
     },
     {
       "prompt": "The deploy script fails with exit code 2, find the cause",
-      "owner": "systematic-debugging"
+      "owner": "debugging"
     }
   ]
 }

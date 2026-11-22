@@ -1,6 +1,6 @@
 ---
-description: 'An approved spec and a request for the plan. writing-plans should fire.'
-expected_outcome: 'legion:writing-plans is invoked; the reply is a plan of tasks with tests.'
+description: 'An approved spec and a request for the plan. planning should fire.'
+expected_outcome: 'legion:planning is invoked; the reply is a plan of tasks with tests.'
 max_turns: 12
 allowed_tools: [Read, Glob, Grep, Skill]
 ---

@@ -1,5 +1,5 @@
 ---
-name: writing-plans
+name: planning
 description: >-
   Turns an approved spec or design doc into an implementation plan of
   vertical-slice tasks, each with exact files, interfaces, failing tests,

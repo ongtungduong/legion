@@ -1,5 +1,5 @@
 ---
-name: systematic-debugging
+name: debugging
 description: >-
   Finds the root cause of a defect by first building a fast reproduction that
   goes red on the bug, then minimizing it, ranking falsifiable hypotheses,

@@ -9,7 +9,7 @@
   "negative": [
     {
       "prompt": "Write the implementation plan for the approved spec",
-      "owner": "writing-plans"
+      "owner": "planning"
     },
     {
       "prompt": "Grill me on my architecture decision",

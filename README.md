@@ -69,15 +69,15 @@ router and share skill names.
 ## Workflow
 
 ```
-brainstorming ─▶ writing-plans ─▶ executing-plans ─▶ code-review (final)
-                                        ├─ unexpected failure ─▶ systematic-debugging ─▶ back to the task
+brainstorming ─▶ planning ─▶ executing-plans ─▶ code-review (final)
+                                        ├─ unexpected failure ─▶ debugging ─▶ back to the task
                                         └─ spec + TDD + principles + evidence gate in every task,
                                            inline or subagent per task
 ```
 
 The process scales with the work: a small change collapses brainstorming into one
 confirmation, a chore skips the flow. A bug report enters at
-`systematic-debugging`; its fix runs through `executing-plans`.
+`debugging`; its fix runs through `executing-plans`.
 
 | Document | Location |
 |---|---|
@@ -93,10 +93,10 @@ gitignores the rest of `.legion/`. Legion's own repo ignores all of it.
 
 | Skill | Use for |
 |---|---|
-| `using-legion` | Router, injected at SessionStart |
+| `router` | Router, injected at SessionStart |
 | `brainstorming` | Intent, approaches, grilling, design doc, ADRs, glossary |
-| `writing-plans` | Approved spec to vertical-slice tasks, ordered by value, with a pre-mortem |
-| `systematic-debugging` | Bugs, failing or flaky tests, regressions |
+| `planning` | Approved spec to vertical-slice tasks, ordered by value, with a pre-mortem |
+| `debugging` | Bugs, failing or flaky tests, regressions |
 | `skill-creator` | Creating and validating skills against agentskills.io |
 
 ## Development

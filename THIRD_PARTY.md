@@ -9,18 +9,18 @@ copied; the table says what came from where.
 | Legion file(s) | Adapted from |
 |---|---|
 | `hooks/session-start`, `hooks/hooks.json` | superpowers `hooks/session-start` |
-| `skills/using-legion` | superpowers `using-superpowers`, addy `using-agent-skills` |
+| `skills/router` | superpowers `using-superpowers`, addy `using-agent-skills` |
 | `skills/brainstorming` | superpowers `brainstorming`; addy `spec-driven-development` (spec sections, boundaries) |
 | `skills/brainstorming/references/grilling.md` | mattpocock `grilling` |
 | `skills/brainstorming/references/adr-format.md` | mattpocock `ADR-FORMAT.md` |
 | `skills/brainstorming/references/glossary-format.md` | mattpocock `domain-modeling`, `GLOSSARY-FORMAT.md` (condensed from Legion's removed `defining-terms` skill) |
-| `skills/writing-plans` | superpowers `writing-plans`; addy `planning-and-task-breakdown` (vertical slices, sizing) |
+| `skills/planning` | superpowers `writing-plans`; addy `planning-and-task-breakdown` (vertical slices, sizing) |
 | `skills/executing-plans` (+ references) | superpowers `executing-plans`, `subagent-driven-development` and its prompts, `test-driven-development`, `verification-before-completion`; mattpocock `tdd` (seams, anti-patterns); addy `constraint-driven-development` (the "guard the bar" checks), `source-driven-development` (version-sensitive APIs) |
 | `skills/executing-plans/references/doubt-review.md` | addy `doubt-driven-development` (condensed) |
 | `evals/plugin/` | addy `evals/plugin` (case layout and grader patterns) |
 | `.github/workflows/ci.yml` | addy `.github/workflows/test-plugin-install.yml` (reduced to `npm test` and shellcheck) |
-| `skills/systematic-debugging` | mattpocock `diagnosing-bugs`; superpowers `systematic-debugging` |
-| `skills/systematic-debugging/scripts/hitl-loop.sh` | mattpocock `diagnosing-bugs/scripts/hitl-loop.template.sh` (adapted to Claude Code's `!` prefix) |
+| `skills/debugging` | mattpocock `diagnosing-bugs`; superpowers `systematic-debugging` |
+| `skills/debugging/scripts/hitl-loop.sh` | mattpocock `diagnosing-bugs/scripts/hitl-loop.template.sh` (adapted to Claude Code's `!` prefix) |
 | `skills/executing-plans/assets/pr-body.md` | mattpocock `pr` (itself credited to Humanlayer `show-me`, Dex Horthy) |
 | `skills/code-review` (+ references) | mattpocock `code-review` (two axes, smell baseline); addy `code-review-and-quality` (severity labels); superpowers `requesting-code-review`, `receiving-code-review`; Claude Code's built-in `/code-review` and the `code-review` plugin of anthropics/claude-plugins-official (Apache-2.0): method only, no text copied (target resolution, review angles: line scan, removed behavior, callers, reuse, simplification, altitude, scoped instruction files; a failure scenario per finding; independent validation of each finding; posting rules); awesome-skills `code-review-skill` (reuse check, quality anti-patterns, leftovers, size note, verdict line), condensed and rewritten |
 | `skills/principles/references/{system-design,coding,coding-existing-code}.md` | agent-rules-books `*/<book>.mini.md` (14 rule sets), rules selected, merged by topic, and rewritten |

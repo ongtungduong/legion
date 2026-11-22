@@ -19,11 +19,11 @@
   "negative": [
     {
       "prompt": "Here is the approved design doc, break it into implementation tasks",
-      "owner": "writing-plans"
+      "owner": "planning"
     },
     {
       "prompt": "The checkout test is failing with a TypeError, figure out why",
-      "owner": "systematic-debugging"
+      "owner": "debugging"
     }
   ]
 }

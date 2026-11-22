@@ -1,7 +1,7 @@
 ---
 type: tool_used
 tool: Skill
-input_match: '"skill"\s*:\s*"(?:legion:)?writing-plans"'
+input_match: '"skill"\s*:\s*"(?:legion:)?debugging"'
 min: 0
 max: 0
 arm: both

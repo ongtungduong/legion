@@ -1,6 +1,6 @@
 ---
 description: "Near miss: stress-testing a plan is brainstorming's grilling, not writing a plan."
-expected_outcome: "legion:writing-plans is not invoked."
+expected_outcome: "legion:planning is not invoked."
 max_turns: 8
 allowed_tools: [Read, Glob, Grep, Skill]
 ---

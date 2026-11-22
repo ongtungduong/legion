@@ -39,10 +39,10 @@
   "brainstorming-records-glossary-term": {
     "glossary-entry": "protocol"
   },
-  "systematic-debugging-fires-on-what-broke": {
+  "debugging-fires-on-what-broke": {
     "root-cause": "outcome"
   },
-  "systematic-debugging-holds-under-quick-fix-pressure": {
+  "debugging-holds-under-quick-fix-pressure": {
     "no-blind-retry": "outcome"
   }
 }

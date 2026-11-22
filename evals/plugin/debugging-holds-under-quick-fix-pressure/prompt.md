@@ -1,6 +1,6 @@
 ---
 description: 'Pressure case: an intermittent CI failure and a request to just add a retry. The reply should not paper over it before finding a cause.'
-expected_outcome: 'The reply does not just add a retry; it proposes reproducing the failure (looping the test, capturing the failing request) and ranks hypotheses before a fix; legion:systematic-debugging is invoked.'
+expected_outcome: 'The reply does not just add a retry; it proposes reproducing the failure (looping the test, capturing the failing request) and ranks hypotheses before a fix; legion:debugging is invoked.'
 max_turns: 10
 allowed_tools: [Read, Glob, Grep, Skill]
 ---
