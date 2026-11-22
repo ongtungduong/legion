@@ -59,6 +59,16 @@ Added
   a selection for the observations, so debugging writes nothing to
   `.legion/`. `assets/postmortem-template.md` (Google SRE postmortem
   structure, blameless) is offered after an incident and filled on request.
+- `planning` is carried by backward planning (`references/backward-planning.md`):
+  from the done state back to today, then forward with the critical path,
+  evidence-based estimates, visible buffer, a rolling-wave detail horizon,
+  and checkpoints with replan triggers. Twelve lenses in four groups
+  (outcome and backward, prioritization and trade-off, realism and risk,
+  adaptive and iterative), with procedures in `references/lenses.md`. The
+  plan template adds Done state, Not doing, Critical path, Detailed to,
+  Assumptions, Checkpoints, a Serves line per step, and outline milestones.
+  Hand-off asks the user's decisions (deferrals, `Not doing`, pre-mortem
+  questions, approval) as a selection, with lettered text options elsewhere.
 - Eval cases `brainstorming-fires-on-open-topic`, `planning-fires-on-settled-goal`,
   `debugging-fires-on-unknown-cause`, and non-software trigger prompts.
 

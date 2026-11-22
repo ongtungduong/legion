@@ -68,7 +68,7 @@ Each model sits where it changes a decision; there is no separate skill for them
 | Skill | First principles | Inversion | Systems thinking | Pareto |
 |---|---|---|---|---|
 | `brainstorming` | Lens table; White and Green hats; grilling tree | Lens table; Black hat; grilling "Wrong if" | Lens table (systems, second-order); grilling branches | Lens table (impact vs. effort); scope cut; grilling order |
-| `planning` | Decided values written down | Pre-mortem (step 6) | Produces lines, dependencies | Step order (step 3) |
+| `planning` | Backward planning from the done state; outcome vs. output; definition of done | Pre-mortem (step 6); planning fallacy | Critical path, dependencies, Produces lines; checkpoints and rolling wave | Leverage, saying no, buffer |
 | `debugging` | Own lens table: facts vs. assumptions, isolation | Own lens table: falsification | Own lens table: delta, bottom-up, symptom vs. root cause, nothing is obviously fine | Own lens table: bisection, common before rare, contain before fixing |
 | `skill-creator` | What the agent lacks; baseline failures are the spec | Near-miss prompts | n/a | Write only what fixes observed failures |
 
