@@ -7,7 +7,9 @@
     "The search page got three times slower this week",
     "Orders stopped syncing between two systems since last night, find out why",
     "Our monthly report numbers no longer match the source data",
-    "Invoices keep getting stuck in the approval process and nobody knows why"
+    "Invoices keep getting stuck in the approval process and nobody knows why",
+    "Run a 5 whys root cause analysis on last night's checkout outage",
+    "Write a postmortem for yesterday's payment outage"
   ],
   "negative": [
     {

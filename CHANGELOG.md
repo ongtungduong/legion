@@ -42,6 +42,23 @@ Added
   Grilling also settles requirements, and asks each round as a selection
   (`AskUserQuestion` in Claude Code, lettered options as text elsewhere) with
   the recommendation first.
+- `debugging` has its own eleven thinking lenses in four groups: evidence
+  (facts vs. assumptions, falsification, nothing is obviously fine),
+  isolation (bisection, isolation, one variable at a time), time and systems
+  (delta, bottom-up, symptom vs. root cause), and probability and
+  containment (common before rare, contain before fixing). Step 1 contains
+  ongoing harm and preserves the scene before anything changes; step 2 pins
+  down the failure's scope. Five whys carries the lenses, as grilling does in
+  `brainstorming`: `references/five-whys.md` builds a why tree from the
+  symptom, proves each link with the lenses, and asks "why was this
+  possible?" after the cause is confirmed so the recurrence control
+  targets a cause the team controls, and reports a `Why chain`. Each lens's
+  procedure is in `references/lenses.md`. The loop catalog by kind of system
+  is gone, its non-obvious rules kept as gotchas. `scripts/hitl-loop.sh` is
+  removed: a failure only a person can trigger gets a numbered checklist and
+  a selection for the observations, so debugging writes nothing to
+  `.legion/`. `assets/postmortem-template.md` (Google SRE postmortem
+  structure, blameless) is offered after an incident and filled on request.
 - Eval cases `brainstorming-fires-on-open-topic`, `planning-fires-on-settled-goal`,
   `debugging-fires-on-unknown-cause`, and non-software trigger prompts.
 
