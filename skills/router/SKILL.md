@@ -1,8 +1,9 @@
 ---
 name: router
 description: >-
-  Legion's router: which Legion skill fits which task, and the precedence
-  between user instructions, skills, and defaults. Injected at session start.
+  Legion's router: which Legion skill fits which piece of work, and the
+  precedence between user instructions, skills, and defaults. Injected at
+  session start.
 license: MIT
 disable-model-invocation: true
 metadata:
@@ -11,35 +12,38 @@ metadata:
 
 # Legion Router
 
-Pick the Legion skill a task needs, load it with the Skill tool, and follow
-it. Questions and trivial edits get answered directly, with no skill.
+Legion is a set of general-purpose working skills, for any kind of work.
+Read what the work is, pick the skill whose method fits it, load it with the
+Skill tool, and follow it. There is no fixed sequence: a skill is used alone
+or chained only when the work calls for it.
 
 ## Workflow
 
 1. **Apply precedence.** The user's instructions (CLAUDE.md, AGENTS.md, direct
    requests) win over any Legion skill; a loaded Legion skill wins over your
-   default habits. A request to skip a safety step ("skip the validation",
-   "just add a retry", "skip the test") still loads the skill: keep the
-   cheap control, say why in one line, and drop it only if the user insists
-   after seeing that.
-2. **Classify the request.**
-   - Question, explanation, or trivial edit that changes no code behavior
-     (typo, comment, docs, formatting): do it directly. No skill, no
-     announcement. "What broke?" or "why does this fail?" is a bug, not a
-     question.
-   - Matches a row in the map below: load that skill before acting, say so in
-     one line ("Using legion:planning to break this down"), follow it.
+   default habits. A request to skip a safety step ("skip the check", "just
+   add a retry") still loads the skill: keep the cheap control, say why in
+   one line, and drop it only if the user insists after seeing that.
+2. **Classify the work.**
+   - Question, explanation, or a trivial edit: do it directly. No skill, no
+     announcement. "What broke?" or "why does this keep happening?" is a
+     problem to investigate, not a question.
+   - Matches a row in the map: load that skill before acting, say so in one
+     line ("Using legion:planning to lay out the steps"), and follow it.
    - Unsure: load the skill only if following it would change your next action.
-3. **Keep loaded rules intact.** Routing decides *whether* a skill applies,
+3. **Chain only on need.** When one skill's result is the input of another
+   (a settled direction that now needs steps, an investigation whose fix is
+   large), offer the next skill; do not run a sequence by default.
+4. **Keep loaded rules intact.** Routing decides *whether* a skill applies,
    never how strictly. A loaded skill is followed in full.
 
 ## Map
 
 | Situation | Skill |
 |---|---|
-| New work or a behavior change whose design is not approved: intent, approaches, design doc; "grill me"; recording an ADR; fuzzy or contested terms, GLOSSARY.md | `legion:brainstorming` |
-| An approved spec needs an implementation plan | `legion:planning` |
-| Bug, failing or flaky test, crash, performance regression | `legion:debugging` |
+| Any open-ended topic whose direction is not settled: what to do and why, options and a recommendation, "help me think this through"; "grill me" or stress-test an idea; recording a decision (ADR); fuzzy or contested terms, GLOSSARY.md | `legion:brainstorming` |
+| A settled goal, approved design, or clear requirements that need a detailed step-by-step plan to get the work done | `legion:planning` |
+| Something in a system behaves wrongly and the cause is unknown: an error, failure, outage, mismatch, slowdown, or recurring problem; "what broke?", "why is this happening?" | `legion:debugging` |
 | Creating, editing, or validating a skill | `legion:skill-creator` |
 
 ## Model tiers
@@ -50,19 +54,20 @@ verdict the user relies on.
 
 | Tier | For | `model` |
 |---|---|---|
-| `cheap` | lookups with no judgment: find files, run tests, read logs | `haiku` |
-| `standard` | reading code at volume: finders, hunters, auditors, task reviewers | `sonnet` |
-| `session` | work the main session builds on: implementers, a lone verifier | omit `model`: it inherits this session's |
-| `top` | verdicts: verification at depth, risky-task review, doubt review | `opus`, or a more capable model the Agent tool lists, never below this session's |
+| `cheap` | lookups with no judgment: find files, run commands, read logs | `haiku` |
+| `standard` | reading material at volume: finders, reviewers, checkers | `sonnet` |
+| `session` | work the main session builds on | omit `model`: it inherits this session's |
+| `top` | verdicts the user relies on: verification at depth | `opus`, or a more capable model the Agent tool lists, never below this session's |
 
 If the Agent tool's list changes, keep the tiers and name the alias you chose.
 
 ## Gotchas
 
-- Plugin skills are namespaced: load `legion:brainstorming`, not
-  `brainstorming`.
+- Plugin skills are namespaced: load `legion:planning`, not `planning`.
 - Skills change between versions. Load the skill instead of working from your
   memory of it.
-- Another workflow plugin (for example superpowers) may inject its own router
-  with skills of the same names. Follow the user's instruction about which to
-  use; without one, use Legion's and mention the overlap once.
+- No domain is the default. Code is one kind of work among many; a strategy,
+  a process, or an operations problem gets the same skills.
+- Another plugin may inject its own router with skills of the same names.
+  Follow the user's instruction about which to use; without one, use Legion's
+  and mention the overlap once.
