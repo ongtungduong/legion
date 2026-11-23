@@ -1,0 +1,4 @@
+schema_version: "1.1"
+name: find-skills-follows-project-skill-choice
+context:
+  scaffold_script: fixture.sh

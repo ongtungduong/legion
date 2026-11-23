@@ -160,7 +160,7 @@ if (fs.existsSync(EVALS_DIR)) {
     if (!graders.length) { err(`${where}: no graders (graders/*.md)`); continue; }
     let assertsUsed = false, assertsUnused = false;
     for (const g of graders) {
-      const { data, error } = parseFrontmatter(fs.readFileSync(path.join(gradersDir, g), 'utf8'));
+      const { data, body, error } = parseFrontmatter(fs.readFileSync(path.join(gradersDir, g), 'utf8'));
       if (error) { err(`${where}/graders/${g}: ${error}`); continue; }
       if (!GRADER_TYPES.has(data.type)) err(`${where}/graders/${g}: grader type "${data.type}" is not one of ${[...GRADER_TYPES].join(', ')}`);
       const graderName = g.replace(/\.md$/, '');
@@ -168,7 +168,24 @@ if (fs.existsSync(EVALS_DIR)) {
       if (!gradersSeen.has(entry.name)) gradersSeen.set(entry.name, new Map());
       gradersSeen.get(entry.name).set(graderName, routing);
       if (graderKinds && !routing && graderKinds[entry.name]?.[graderName] === undefined) {
-        err(`${where}/graders/${g}: no kind in evals/grader-kinds.json (outcome: a result an agent without the plugin can also reach; protocol: Legion's own procedure or format)`);
+        err(`${where}/graders/${g}: no kind in evals/grader-kinds.json (lift: an outcome the plugin should improve; guard: an outcome the baseline reaches too; protocol: Legion's own procedure or format)`);
+      }
+      // The CLI compiles a regex grader with new RegExp(pattern, flags), the
+      // pattern falling back to the body; a pattern that does not compile fails
+      // in both arms and looks like a real result. JavaScript has no inline
+      // flags such as (?i): they go in `flags:`.
+      if (data.type === 'regex') {
+        const pattern = data.pattern ?? body.trim();
+        const flags = data.flags ?? '';
+        if (!pattern) err(`${where}/graders/${g}: regex grader has no pattern`);
+        else if (!/^[dgimsuvy]*$/.test(flags)) err(`${where}/graders/${g}: flags "${flags}" are not JavaScript RegExp flags (d g i m s u v y)`);
+        else {
+          try { new RegExp(pattern, flags); }
+          catch (e) { err(`${where}/graders/${g}: pattern does not compile as a JavaScript RegExp (${e.message})${/^\(\?[a-z]+\)/.test(pattern) ? '; move inline flags such as (?i) to flags:' : ''}`); }
+        }
+      }
+      if ((data.type === 'llm' || data.type === 'baseline') && !(data.criteria ?? body.trim())) {
+        err(`${where}/graders/${g}: ${data.type} grader has no criteria (the body after the frontmatter)`);
       }
       let match = null;
       if (data.input_match) {

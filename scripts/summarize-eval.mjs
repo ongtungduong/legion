@@ -5,18 +5,19 @@
 // evidence, and local trace paths. The summary keeps only versions, model,
 // cost, and per-case scores.
 //
-// It also answers the two questions a mean score hides. Does the plugin help?
-// Only outcome graders can say (scripts/lib/grader-kinds.mjs), so their pass
-// rates are reported apart from routing and protocol graders, with every
-// outcome grader the plugin arm lost named under `regressions`. What does it
-// cost? `overhead` is the with-arm's cost, turns, and time as a multiple of
-// the no-plugin arm's.
+// It also answers the questions a mean score hides. Does the plugin help?
+// Only lift graders can say (scripts/lib/grader-kinds.mjs): `totals.lift` gives
+// their pass rates in both arms, the mean delta with a 95% interval, and the
+// delta per skill. Does it do harm? `totals.guard` gives the outcome graders the
+// baseline should also pass, and `totals.regressions` names every lift or guard
+// grader the plugin arm lost. What does it cost? `overhead` is the with-arm's
+// cost, turns, and time as a multiple of the no-plugin arm's.
 //
 //   node scripts/summarize-eval.mjs <result.json> <label> [--model <m>] [--force]
 import fs from 'node:fs';
 import path from 'node:path';
-import { ROOT } from './lib/skills.mjs';
-import { kindOf, loadGraderKinds } from './lib/grader-kinds.mjs';
+import { ROOT, SKILLS_DIR, listSkills } from './lib/skills.mjs';
+import { OUTCOME_KINDS, kindOf, loadGraderKinds } from './lib/grader-kinds.mjs';
 
 const USAGE = 'usage: node scripts/summarize-eval.mjs <result.json> <label> [--model <model>] [--force]';
 const fail = (msg) => { console.log(`ERROR ${msg}`); process.exit(1); };
@@ -76,8 +77,13 @@ function passes(runs, name) {
 }
 
 const { kinds } = loadGraderKinds();
-const kindCounts = { outcome: 0, protocol: 0, routing: 0, unclassified: 0 };
-const outcomeRates = []; // { id, with, without } per outcome grader that ran in both arms
+const kindCounts = { lift: 0, guard: 0, protocol: 0, routing: 0, unclassified: 0 };
+const outcomeRates = []; // { id, skill, kind, with, without } per lift or guard grader that ran in both arms
+
+// The skill a case tests: the longest skill name its name starts with, else
+// the part before the first dash.
+const skillNames = (fs.existsSync(SKILLS_DIR) ? listSkills() : []).sort((a, b) => b.length - a.length);
+const skillOf = (caseName) => skillNames.find((s) => caseName.startsWith(`${s}-`)) ?? caseName.split('-')[0];
 
 const cases = result.cases
   .map((c) => {
@@ -91,8 +97,8 @@ const cases = result.cases
       const entry = { kind, with: passes(c.arms?.with, g.name), without: passes(c.arms?.without, g.name) };
       graders[g.name] = entry;
       kindCounts[kind] += 1;
-      if (kind === 'outcome' && entry.with !== null && entry.without !== null) {
-        outcomeRates.push({ id: `${c.name}/${g.name}`, with: entry.with / runs, without: entry.without / runsWithout });
+      if (OUTCOME_KINDS.includes(kind) && entry.with !== null && entry.without !== null) {
+        outcomeRates.push({ id: `${c.name}/${g.name}`, skill: skillOf(c.name), kind, with: entry.with / runs, without: entry.without / runsWithout });
       }
     }
     return {
@@ -106,13 +112,36 @@ const cases = result.cases
   })
   .sort((a, b) => (a.name < b.name ? -1 : a.name > b.name ? 1 : 0));
 
-const outcome = {
-  graders: outcomeRates.length,
-  with: round(mean(outcomeRates.map((o) => o.with))),
-  without: round(mean(outcomeRates.map((o) => o.without))),
-  delta: round(mean(outcomeRates.map((o) => o.with - o.without))),
-  regressions: outcomeRates.filter((o) => o.with < o.without).map((o) => o.id).sort(),
-};
+// Two-sided 95% Student t critical values for 1 to 30 degrees of freedom.
+const T95 = [12.706, 4.303, 3.182, 2.776, 2.571, 2.447, 2.365, 2.306, 2.262, 2.228, 2.201, 2.179, 2.16, 2.145, 2.131,
+  2.12, 2.11, 2.101, 2.093, 2.086, 2.08, 2.074, 2.069, 2.064, 2.06, 2.056, 2.052, 2.048, 2.045, 2.042];
+// A 95% interval for the mean of per-grader deltas, clamped to [-1, 1]. Each
+// grader is one unit (its runs are pooled into a rate), so the interval says
+// how far the mean would move with other graders like these. It is optimistic
+// when the graders of one case move together; null under two graders.
+function interval(deltas) {
+  const n = deltas.length;
+  if (n < 2) return null;
+  const m = mean(deltas);
+  const sd = Math.sqrt(deltas.reduce((s, d) => s + (d - m) ** 2, 0) / (n - 1));
+  const half = (T95[n - 2] ?? 1.96) * (sd / Math.sqrt(n));
+  return [round(Math.max(-1, m - half)), round(Math.min(1, m + half))];
+}
+const rateSummary = (rates) => ({
+  graders: rates.length,
+  with: round(mean(rates.map((o) => o.with))),
+  without: round(mean(rates.map((o) => o.without))),
+  delta: round(mean(rates.map((o) => o.with - o.without))),
+});
+const liftRates = outcomeRates.filter((o) => o.kind === 'lift');
+const bySkill = {};
+for (const skill of [...new Set(liftRates.map((o) => o.skill))].sort()) {
+  const rates = liftRates.filter((o) => o.skill === skill);
+  bySkill[skill] = { graders: rates.length, delta: round(mean(rates.map((o) => o.with - o.without))) };
+}
+const lift = { ...rateSummary(liftRates), ci95: interval(liftRates.map((o) => o.with - o.without)), bySkill };
+const guard = rateSummary(outcomeRates.filter((o) => o.kind === 'guard'));
+const regressions = outcomeRates.filter((o) => o.with < o.without).map((o) => o.id).sort();
 
 // The with-arm as a multiple of the no-plugin arm, over the cases that ran both.
 const paired = cases.filter((c) => c.with && c.without);
@@ -132,10 +161,12 @@ const judgeCost = result.cases.reduce((sum, c) => sum + [...(c.arms?.with ?? [])
 
 const agg = result.aggregates ?? {};
 const summary = {
-  schemaVersion: 2,
+  schemaVersion: 3,
   label,
   claudeVersion: result.claudeVersion ?? null,
   model,
+  // The CLI records the judge only when --judge-model was passed; its default is haiku.
+  judgeModel: result.suite?.judgeModel ?? 'haiku',
   startedAt: result.startedAt,
   partial: Boolean(result.partial),
   costUsd: round(result.costUsd, 2), // agent runs only; the CLI leaves judge cost out
@@ -148,7 +179,9 @@ const summary = {
     atBar: cases.filter((c) => c.with && c.with.meanScore >= BAR).length,
     meanDelta: round(agg.meanDelta),
     graders: kindCounts,
-    outcome,
+    lift,
+    guard,
+    regressions,
     overhead,
   },
   cases,
@@ -161,5 +194,6 @@ if (fs.existsSync(out) && !force) fail(`${path.relative(ROOT, out)} already exis
 fs.mkdirSync(outDir, { recursive: true });
 fs.writeFileSync(out, `${JSON.stringify(summary, null, 2)}\n`);
 if (kindCounts.unclassified) console.log(`NOTE  ${kindCounts.unclassified} grader(s) have no kind in evals/grader-kinds.json (a renamed or removed case?); they count toward no outcome figure`);
-if (outcome.regressions.length) console.log(`NOTE  the plugin arm lost ${outcome.regressions.length} outcome grader(s): ${outcome.regressions.join(', ')}`);
+if (lift.graders) console.log(`NOTE  lift delta ${lift.delta} over ${lift.graders} grader(s)${lift.ci95 ? `, 95% interval ${lift.ci95[0]} to ${lift.ci95[1]}` : ''}`);
+if (regressions.length) console.log(`NOTE  the plugin arm lost ${regressions.length} outcome grader(s): ${regressions.join(', ')}`);
 console.log(`summarize-eval: wrote ${path.relative(ROOT, out)} (${cases.length} cases, ${model}, Claude Code ${summary.claudeVersion})`);

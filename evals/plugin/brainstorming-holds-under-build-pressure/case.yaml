@@ -1,0 +1,4 @@
+schema_version: "1.1"
+name: brainstorming-holds-under-build-pressure
+context:
+  scaffold_script: fixture.sh
