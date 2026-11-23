@@ -1,48 +1,71 @@
 {
-  "brainstorming-ab-dominant-reuse": {
-    "flip-condition": "outcome",
-    "no-code": "outcome",
-    "no-files": "outcome",
-    "no-filler-question": "outcome",
-    "proportionate": "outcome",
-    "real-alternatives": "outcome",
-    "recommendation": "outcome"
-  },
   "brainstorming-ab-hidden-conflict": {
-    "conflict-first": "outcome",
-    "flip-condition": "outcome",
-    "no-code": "outcome",
-    "no-files": "outcome",
-    "no-filler-question": "outcome",
-    "proportionate": "outcome",
-    "real-alternatives": "outcome",
-    "recommendation": "outcome"
+    "conflict-first": "lift",
+    "flip-condition": "lift",
+    "no-files": "guard",
+    "recommendation": "lift"
   },
   "brainstorming-ab-small-flag": {
-    "flip-condition": "outcome",
-    "no-code": "outcome",
-    "no-files": "outcome",
-    "no-filler-question": "outcome",
-    "proportionate": "outcome",
-    "real-alternatives": "outcome",
-    "recommendation": "outcome"
+    "flip-condition": "lift",
+    "no-files": "guard",
+    "no-filler-question": "guard",
+    "proportionate": "guard",
+    "recommendation": "guard"
   },
-  "brainstorming-ab-tradeoff-polling": {
-    "flip-condition": "outcome",
-    "no-code": "outcome",
-    "no-files": "outcome",
-    "no-filler-question": "outcome",
-    "proportionate": "outcome",
-    "real-alternatives": "outcome",
-    "recommendation": "outcome"
+  "brainstorming-fires-on-new-feature": {
+    "asks-purpose": "lift"
+  },
+  "brainstorming-fires-on-open-topic": {
+    "asks-purpose": "lift"
+  },
+  "brainstorming-holds-under-build-pressure": {
+    "no-edit": "protocol",
+    "no-write": "protocol",
+    "surfaces-no-accounts": "lift"
+  },
+  "debugging-finds-contributing-causes": {
+    "contributing-causes": "lift",
+    "control-per-cause": "lift"
+  },
+  "debugging-fires-on-unknown-cause": {
+    "asks-what-changed": "lift",
+    "several-candidates": "guard",
+    "shows-it-in-data": "lift"
   },
   "debugging-fires-on-what-broke": {
-    "root-cause": "outcome"
+    "finds-off-by-one": "guard",
+    "report-lines": "protocol",
+    "reproduction-first": "lift"
   },
   "debugging-holds-under-quick-fix-pressure": {
-    "no-blind-retry": "outcome"
+    "no-blind-retry": "lift"
   },
   "find-skills-combines-method-and-project-skill": {
-    "cause-found": "outcome"
+    "cause-found": "guard"
+  },
+  "find-skills-follows-project-skill-choice": {
+    "house-format": "guard"
+  },
+  "find-skills-stays-quiet-on-question": {
+    "direct-answer": "guard"
+  },
+  "find-skills-stays-quiet-on-trivial-edit": {
+    "renamed": "guard"
+  },
+  "planning-fires-on-approved-spec": {
+    "covers-spec": "guard"
+  },
+  "planning-fires-on-settled-goal": {
+    "done-checks": "lift",
+    "no-invented-values": "lift",
+    "pre-mortem": "lift",
+    "worked-back-from-date": "lift"
+  },
+  "planning-holds-on-unsettled-goal": {
+    "asks-goal-first": "lift"
+  },
+  "skill-creator-fires-on-new-skill": {
+    "description-says-when": "lift",
+    "has-frontmatter": "guard"
   }
 }

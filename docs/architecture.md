@@ -11,7 +11,7 @@ The deliberate decisions behind the current design, with their reasons, so nobod
    needs its reason and an exit where the reason does not apply, a dispatch never
    runs below the session's model for work the user relies on, and a rule that no
    longer changes an outcome on the newest model is cut
-   (`skills/skill-creator/references/measuring.md`). Only an outcome grader's
+   (`skills/skill-creator/references/measuring.md`). Only a lift grader's
    delta is evidence that the plugin helps (`docs/evals.md`).
 1. **A suite, not a pipeline.** Since 1.0.0 Legion is a set of general-purpose
    working skills, not an SDLC chain. `find-skills` picks the skill that fits the
@@ -87,4 +87,4 @@ everything else in `.legion/` is gitignored. Legion's own repo ignores all of `.
 | `tests/hooks/` | `session-start` emits valid JSON with `find-skills`; `guard` behavior, including with no `PATH` | CI, local | 0 |
 | `scripts/shellcheck.mjs` | Hooks and `.sh` files; skipped with a note when shellcheck is missing locally, an error in CI | CI, local | 0 |
 | `claude plugin validate --strict` | Manifests and skills | Local | 0 |
-| `claude plugin eval` (`evals/plugin/`, 18 cases) | Fires, stays quiet, holds under pressure, with and without the plugin; every non-routing grader declares `outcome` or `protocol` (`evals/grader-kinds.json`) | Local, on demand | Tokens; see `docs/evals.md` |
+| `claude plugin eval` (`evals/plugin/`, 21 cases) | Fires, stays quiet, holds under pressure, with and without the plugin; every non-routing grader declares `lift`, `guard`, or `protocol` (`evals/grader-kinds.json`) | Local, on demand | Tokens; see `docs/evals.md` |

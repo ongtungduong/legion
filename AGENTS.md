@@ -10,7 +10,7 @@ hooks/            hooks.json, session-start (injects skills/find-skills), guard 
 skills/<name>/    SKILL.md (+ references/, assets/, scripts/) - shipped to users
 evals/triggers/   lexical trigger cases, one JSON per skill
 evals/plugin/     behavioral cases for `claude plugin eval` (prompt.md + graders/, or case.yaml + fixture.sh)
-evals/grader-kinds.json  every non-routing grader declared `outcome` or `protocol`
+evals/grader-kinds.json  every non-routing grader declared `lift`, `guard`, or `protocol`
 scripts/          repo checks (Node, no dependencies)
 tests/            hook tests (shell), check and validator tests (node:test)
 docs/             architecture, roadmap (human-facing)
@@ -62,7 +62,7 @@ Legion conventions on top of the spec:
 - [ ] Row in the map in `skills/find-skills/SKILL.md`
 - [ ] Row in the skill table in `README.md`
 - [ ] `evals/triggers/<name>.json` with 5+ positive and 2+ near-miss negative prompts
-- [ ] `evals/plugin/<name>-<behavior>/` and `evals/plugin/<name>-stays-quiet-<prompt>/` cases, every non-routing grader declared in `evals/grader-kinds.json` (`outcome`: a result an agent without the plugin can also reach; `protocol`: Legion's own format)
+- [ ] `evals/plugin/<name>-<behavior>/` and `evals/plugin/<name>-stays-quiet-<prompt>/` cases, every non-routing grader declared in `evals/grader-kinds.json` before the first run (`lift`: an outcome the plugin should improve; `guard`: an outcome the baseline reaches too; `protocol`: Legion's own format)
 - [ ] Provenance in `THIRD_PARTY.md` if adapted from another project
 - [ ] `npm test` and `claude plugin validate . --strict` pass
 

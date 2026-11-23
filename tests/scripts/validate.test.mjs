@@ -225,10 +225,16 @@ const validateRules = [
   ['grader-kinds.json missing', (r) => rm(r, 'evals/grader-kinds.json'), /evals\/grader-kinds\.json is missing/],
   ['grader-kinds.json with invalid JSON', (r) => write(r, 'evals/grader-kinds.json', '{not json'), /evals\/grader-kinds\.json: invalid JSON/],
   ['grader with no declared kind', (r) => json(r, 'evals/grader-kinds.json', (j) => { delete j['brainstorming-ab-small-flag']['flip-condition']; return j; }), /brainstorming-ab-small-flag\/graders\/flip-condition\.md: no kind in evals\/grader-kinds\.json/],
-  ['grader kind that is not outcome or protocol', (r) => json(r, 'evals/grader-kinds.json', (j) => { j['brainstorming-ab-small-flag']['flip-condition'] = 'vibes'; return j; }), /brainstorming-ab-small-flag\/flip-condition: kind "vibes" is not one of outcome, protocol/],
-  ['kind declared for a grader that does not exist', (r) => json(r, 'evals/grader-kinds.json', (j) => { j['brainstorming-ab-small-flag'].ghost = 'outcome'; return j; }), /evals\/grader-kinds\.json: brainstorming-ab-small-flag\/ghost names no grader/],
-  ['kind declared for a case that does not exist', (r) => json(r, 'evals/grader-kinds.json', (j) => ({ ...j, 'brainstorming-ghost': { x: 'outcome' } })), /evals\/grader-kinds\.json: brainstorming-ghost\/x names no grader/],
-  ['kind declared for a routing grader', (r) => json(r, 'evals/grader-kinds.json', (j) => { j['brainstorming-ab-small-flag']['skill-fired'] = 'outcome'; return j; }), /brainstorming-ab-small-flag\/skill-fired: a tool_used grader on Skill is a routing grader by type/],
+  ['grader kind that is not lift, guard, or protocol', (r) => json(r, 'evals/grader-kinds.json', (j) => { j['brainstorming-ab-small-flag']['flip-condition'] = 'outcome'; return j; }), /brainstorming-ab-small-flag\/flip-condition: kind "outcome" is not one of lift, guard, protocol/],
+  ['kind declared for a grader that does not exist', (r) => json(r, 'evals/grader-kinds.json', (j) => { j['brainstorming-ab-small-flag'].ghost = 'lift'; return j; }), /evals\/grader-kinds\.json: brainstorming-ab-small-flag\/ghost names no grader/],
+  ['kind declared for a case that does not exist', (r) => json(r, 'evals/grader-kinds.json', (j) => ({ ...j, 'brainstorming-ghost': { x: 'lift' } })), /evals\/grader-kinds\.json: brainstorming-ghost\/x names no grader/],
+  ['kind declared for a routing grader', (r) => json(r, 'evals/grader-kinds.json', (j) => { j['brainstorming-ab-small-flag']['skill-fired'] = 'lift'; return j; }), /brainstorming-ab-small-flag\/skill-fired: a tool_used grader on Skill is a routing grader by type/],
+  // Grader bodies: what the CLI compiles or sends to the judge.
+  ['regex grader with inline flags', (r) => edit(r, 'evals/plugin/find-skills-stays-quiet-on-question/graders/direct-answer.md', (t) => t.replace(/^pattern:.*$/m, "pattern: '(?i)exclusive'").replace(/^flags:.*\n/m, '')), /direct-answer\.md: pattern does not compile as a JavaScript RegExp .*; move inline flags such as \(\?i\) to flags:/],
+  ['regex grader with a pattern that does not compile', (r) => edit(r, 'evals/plugin/find-skills-stays-quiet-on-question/graders/direct-answer.md', (t) => t.replace(/^pattern:.*$/m, "pattern: '(['")), /direct-answer\.md: pattern does not compile as a JavaScript RegExp/],
+  ['regex grader with unknown flags', (r) => edit(r, 'evals/plugin/find-skills-stays-quiet-on-question/graders/direct-answer.md', (t) => t.replace(/^flags:.*$/m, 'flags: x')), /direct-answer\.md: flags "x" are not JavaScript RegExp flags/],
+  ['regex grader without a pattern', (r) => write(r, 'evals/plugin/find-skills-stays-quiet-on-question/graders/direct-answer.md', '---\ntype: regex\n---\n'), /direct-answer\.md: regex grader has no pattern/],
+  ['llm grader without criteria', (r) => write(r, 'evals/plugin/brainstorming-ab-small-flag/graders/flip-condition.md', '---\ntype: llm\n---\n'), /flip-condition\.md: llm grader has no criteria/],
   // Model tiers: a skill names a tier for a dispatch, never a model.
   ['skill that pins a model in a dispatch', (r) => edit(r, 'skills/brainstorming/references/grilling.md', (t) => `${t}\nDispatch it on \`model: "opus"\`.\n`), /brainstorming\/references\/grilling\.md:\d+: pins a model \(model: "opus"\); name a tier/],
 ];
@@ -248,6 +254,7 @@ test('a user-invoked skill needs no eval cases', () => {
   edit(root, 'skills/skill-creator/SKILL.md', (t) => t.replace('license: MIT', 'license: MIT\ndisable-model-invocation: true'));
   rm(root, quietCase);
   rm(root, 'evals/plugin/skill-creator-fires-on-new-skill');
+  json(root, 'evals/grader-kinds.json', (j) => { delete j['skill-creator-fires-on-new-skill']; return j; });
   const { code, out } = run('validate.mjs', root);
   assert.equal(code, 0, out);
 });

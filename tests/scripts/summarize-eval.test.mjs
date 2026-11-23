@@ -32,7 +32,7 @@ function withModel(root, model) {
 
 // What each fixture grader is evidence of; the two tool_used graders on Skill
 // are routing graders by type and are not declared.
-const KINDS = { 'alpha-fires': { quality: 'outcome', 'kept-bar': 'outcome', 'report-line': 'protocol' } };
+const KINDS = { 'alpha-fires': { quality: 'lift', 'kept-bar': 'guard', 'report-line': 'protocol' } };
 
 function tempRoot(kinds = KINDS) {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'legion-summarize-'));
@@ -45,10 +45,11 @@ function tempRoot(kinds = KINDS) {
 }
 
 const EXPECTED = {
-  schemaVersion: 2,
+  schemaVersion: 3,
   label: 'full',
   claudeVersion: '9.9.9',
   model: 'sonnet',
+  judgeModel: 'haiku',
   startedAt: '2030-01-02T03:04:05.000Z',
   partial: false,
   costUsd: 1.23,
@@ -60,10 +61,12 @@ const EXPECTED = {
     passed: 1,
     atBar: 1,
     meanDelta: 0.5,
-    graders: { outcome: 2, protocol: 1, routing: 2, unclassified: 0 },
-    // quality 2/3 vs 2/3, kept-bar 1/3 vs 3/3: the plugin arm is worse on the
-    // only graders that measure the result, whatever meanDelta says.
-    outcome: { graders: 2, with: 0.5, without: 0.8333, delta: -0.3333, regressions: ['alpha-fires/kept-bar'] },
+    graders: { lift: 1, guard: 1, protocol: 1, routing: 2, unclassified: 0 },
+    // quality (lift) 2/3 vs 2/3, kept-bar (guard) 1/3 vs 3/3: no lift and a
+    // regression on a guard, whatever meanDelta says.
+    lift: { graders: 1, with: 0.6667, without: 0.6667, delta: 0, ci95: null, bySkill: { alpha: { graders: 1, delta: 0 } } },
+    guard: { graders: 1, with: 0.3333, without: 1, delta: -0.6667 },
+    regressions: ['alpha-fires/kept-bar'],
     overhead: { cases: 1, cost: 2, turns: 3, seconds: 2 },
   },
   cases: [
@@ -74,8 +77,8 @@ const EXPECTED = {
       without: { passRate: 0, meanScore: 0.3333, costUsd: 0.1, turns: 2, seconds: 10 },
       delta: 0.5,
       graders: {
-        'kept-bar': { kind: 'outcome', with: 1, without: 3 },
-        quality: { kind: 'outcome', with: 2, without: 2 },
+        'kept-bar': { kind: 'guard', with: 1, without: 3 },
+        quality: { kind: 'lift', with: 2, without: 2 },
         'report-line': { kind: 'protocol', with: 3, without: 0 },
         'skill-fired': { kind: 'routing', with: 3, without: 0 },
       },
@@ -126,9 +129,31 @@ test('a grader no kind declares is unclassified and never counts as outcome evid
   assert.equal(code, 0, out);
   assert.match(out, /NOTE {2}3 grader\(s\) have no kind in evals\/grader-kinds\.json/);
   const s = JSON.parse(fs.readFileSync(summaryPath(root, '2030-01-02-full.json'), 'utf8'));
-  assert.deepEqual(s.totals.graders, { outcome: 0, protocol: 0, routing: 2, unclassified: 3 });
-  assert.deepEqual(s.totals.outcome, { graders: 0, with: null, without: null, delta: null, regressions: [] });
+  assert.deepEqual(s.totals.graders, { lift: 0, guard: 0, protocol: 0, routing: 2, unclassified: 3 });
+  assert.deepEqual(s.totals.lift, { graders: 0, with: null, without: null, delta: null, ci95: null, bySkill: {} });
+  assert.deepEqual(s.totals.guard, { graders: 0, with: null, without: null, delta: null });
+  assert.deepEqual(s.totals.regressions, []);
   assert.equal(s.cases[0].graders.quality.kind, 'unclassified');
+});
+
+test('lift graders get a 95% interval over their per-grader deltas', () => {
+  const root = tempRoot({ 'alpha-fires': { quality: 'lift', 'kept-bar': 'lift', 'report-line': 'protocol' } });
+  const { code, out } = run(root, FIXTURE, 'full');
+  assert.equal(code, 0, out);
+  const s = JSON.parse(fs.readFileSync(summaryPath(root, '2030-01-02-full.json'), 'utf8'));
+  // Deltas 0 and -0.6667: mean -0.3333, sd 0.4714, t(1) 12.706, so the interval clamps to [-1, 1].
+  assert.deepEqual(s.totals.lift, { graders: 2, with: 0.5, without: 0.8333, delta: -0.3333, ci95: [-1, 1], bySkill: { alpha: { graders: 2, delta: -0.3333 } } });
+  assert.match(out, /NOTE {2}lift delta -0\.3333 over 2 grader\(s\), 95% interval -1 to 1/);
+});
+
+test('records the judge model the result names', () => {
+  const root = tempRoot();
+  const j = JSON.parse(fs.readFileSync(FIXTURE, 'utf8'));
+  j.suite.judgeModel = 'sonnet';
+  const input = path.join(root, 'result.json');
+  fs.writeFileSync(input, JSON.stringify(j));
+  assert.equal(run(root, input, 'full').code, 0);
+  assert.equal(JSON.parse(fs.readFileSync(summaryPath(root, '2030-01-02-full.json'), 'utf8')).judgeModel, 'sonnet');
 });
 
 test('requires --model when the result does not record one', () => {

@@ -5,20 +5,28 @@
 //   protocol  Legion's own procedure or format: a named report line, a
 //             heading, a plugin file that was read, a step order. An agent
 //             that never saw the plugin fails it by construction.
-//   outcome   a result a user who never heard of Legion would still call
-//             better: the bug found, the code correct, the control kept. An
-//             agent without the plugin can pass it.
+//   lift      an outcome the plugin is expected to improve: a result a user
+//             who never heard of Legion would still call better (the cause
+//             found, the question that mattered asked) that the baseline is
+//             expected to miss. Its with-minus-without delta is the evidence
+//             that the plugin helps; a lift grader the baseline also passes
+//             measures nothing and gets a harder prompt or is cut.
+//   guard     an outcome the baseline is expected to reach too (the plain
+//             answer given, the obvious bug found). It shows the plugin does
+//             no harm: only a regression counts, a zero delta is the expected
+//             result.
 //
-// Only an outcome grader's with-minus-without delta shows that the plugin
-// helps; routing and protocol graders show that it runs as designed. Every
-// grader that is not a routing grader declares its kind in
-// evals/grader-kinds.json, so a new grader cannot count as evidence by default.
+// Lift and guard are both outcome graders. The kind is declared before a run,
+// so a result cannot reclassify the grader that produced it. Every grader that
+// is not a routing grader declares its kind in evals/grader-kinds.json, so a
+// new grader cannot count as evidence by default.
 import fs from 'node:fs';
 import path from 'node:path';
 import { ROOT } from './skills.mjs';
 
 export const KINDS_FILE = path.join(ROOT, 'evals', 'grader-kinds.json');
-export const DECLARED_KINDS = ['outcome', 'protocol'];
+export const DECLARED_KINDS = ['lift', 'guard', 'protocol'];
+export const OUTCOME_KINDS = ['lift', 'guard'];
 
 // `tool` is frontmatter in a grader file and `config.tool` in a run result.
 export const isRoutingGrader = (grader) =>
