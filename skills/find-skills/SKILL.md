@@ -29,7 +29,9 @@ for it.
 2. **Classify the work.**
    - Question, explanation, or a trivial edit: do it directly. No skill, no
      announcement. "What broke?" or "why does this keep happening?" is a
-     problem to investigate, not a question.
+     problem to investigate, not a question, even when a pasted diff or error
+     makes the cause look obvious: a cause seen at a glance is a hypothesis
+     until a check shows it, so load the skill before you diagnose.
    - Otherwise, find candidates in step 3.
    - Unsure: load a skill only if following it would change your next action.
 3. **Find the best fit among every listed skill.** Candidates are the map below
@@ -48,7 +50,10 @@ for it.
    - **Two skills for the same job** (another plugin's skill-creator next to
      `legion:skill-creator`): follow the user's instruction; else the one the
      project's docs name; else Legion's for Legion's kinds of work and the
-     more specific one otherwise. Mention the overlap once.
+     more specific one otherwise. Mention the overlap once. A skill the user's
+     or project's instructions name but your list lacks is in
+     `.claude/skills/<name>/SKILL.md`: read it, since naming it is the
+     authorization and the alternative is one they told you not to use.
    - **Skip** skills whose description calls them internal helpers of another
      plugin, and skills that require an environment this session lacks
      (a cloud-only skill in a local session).

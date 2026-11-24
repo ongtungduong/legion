@@ -12,8 +12,8 @@ description: >-
   stopped syncing, data that no longer matches, numbers that look wrong,
   work that gets stuck, something that stopped working or got slow since a
   change, and when asked what broke, why something fails, for a root cause
-  analysis, the 5 whys, or a postmortem, before proposing any fix, even when the code is
-  pasted inline and the fix looks obvious.
+  analysis, the 5 whys, or a postmortem, before proposing any fix, even when the code
+  or a diff is pasted inline, a failing test is named, and the fix looks obvious.
 license: MIT
 metadata:
   author: ongtungduong
@@ -181,12 +181,19 @@ your reply. When a lens needs depth, or the first hypotheses all fail, read
 - Without tools to run anything (a pasted diff, a description of the
   problem, a read-only session), the loop still comes first in the reply: the
   test or check that shows the symptom and what it will show, then the
-  ranked hypotheses, the cause, and the fix, marked unverified.
+  ranked hypotheses, the cause, and the fix, marked unverified. Give it in the
+  output format below, labels and all.
 
 ## Output format
 
+Every reply carries all the labels below, in this order, including a read-only one
+where nothing could be run. Write `none` or `not applicable: <why>` for a line
+with nothing to say, never drop it: a missing line reads as "not checked", and
+a reader looking for the cause finds it in the same place each time. Put
+explanation after the labelled lines, not in place of them.
+
 ```
-Loop: `<command or check>` -> <output that shows the symptom>
+Loop: `<command or check>` -> <output that shows the symptom> | not run: `<the check>` -> <what it will show>
 Cause: <the confirmed cause, at file:line or the exact step, record, or change> | not confirmed: <leading hypothesis and the probe that would settle it>
 Contributing: <each other cause on the why tree, with its evidence> | none
 Why chain: <cause> <- <why it was possible> <- ... <- <the cause you control> (one line per branch)

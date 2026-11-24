@@ -151,5 +151,12 @@ draft or spike the user agreed to.
   decision you defaulted: it goes in the playback.
 - A draft or spike that works is still throwaway. Keeping it is a new request
   that comes back through this skill.
+- Neighbouring items the user mentions as context (the other commands, pages,
+  or teams that have the same gap) are not scope. Recommend for the thing
+  asked, name the rest in one line as a follow-up, and widen only if the user
+  says so: a wider change is one they did not ask to review.
+- A small change gets a short reply: the recommendation, one line per
+  alternative kept, the flip condition. Skip code, a system map, and
+  options the stated facts already rule out.
 - Process choices (where files go, what to read, how to show something) are
   yours. Decide and say so; do not ask.

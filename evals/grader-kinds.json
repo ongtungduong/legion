@@ -1,9 +1,9 @@
 {
   "brainstorming-ab-hidden-conflict": {
-    "conflict-first": "lift",
-    "flip-condition": "lift",
+    "conflict-first": "guard",
+    "flip-condition": "guard",
     "no-files": "guard",
-    "recommendation": "lift"
+    "recommendation": "guard"
   },
   "brainstorming-ab-small-flag": {
     "flip-condition": "lift",
@@ -24,8 +24,8 @@
     "surfaces-no-accounts": "lift"
   },
   "debugging-finds-contributing-causes": {
-    "contributing-causes": "lift",
-    "control-per-cause": "lift"
+    "contributing-causes": "guard",
+    "control-per-cause": "guard"
   },
   "debugging-fires-on-unknown-cause": {
     "asks-what-changed": "lift",
@@ -41,10 +41,12 @@
     "no-blind-retry": "lift"
   },
   "find-skills-combines-method-and-project-skill": {
-    "cause-found": "guard"
+    "cause-found": "guard",
+    "project-skill-fired": "guard"
   },
   "find-skills-follows-project-skill-choice": {
-    "house-format": "guard"
+    "house-format": "guard",
+    "project-skill-fired": "guard"
   },
   "find-skills-stays-quiet-on-question": {
     "direct-answer": "guard"

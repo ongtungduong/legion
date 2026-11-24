@@ -28,7 +28,13 @@ Before writing anything, establish:
 - **When** should it trigger? Collect the phrases and contexts a real user would type.
 - **What context does the agent lack?** Project conventions, specific APIs, non-obvious gotchas, exact command sequences. That is the skill's whole value.
 
-If the conversation contains a worked example ("turn this into a skill"), mine it: the steps that worked, the user's corrections, input/output formats, and context the user had to supply. Ask the user to fill gaps rather than inventing generic filler.
+If the conversation contains a worked example ("turn this into a skill"), mine it: the steps that worked, the user's corrections, input/output formats, and context the user had to supply. When the request
+already says what the skill does, draft first: write the SKILL.md from what
+was given, mark every fact you lack (paths, commands, team conventions) as an
+explicit `TODO:` line instead of inventing generic filler, and ask for those
+facts in the same reply. A draft the user can correct costs less than a
+questionnaire, and nobody may be there to answer one. Ask before drafting
+only when you cannot tell what the skill is for.
 
 ### 2. Measure the baseline
 
