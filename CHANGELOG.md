@@ -1,5 +1,32 @@
 # Changelog
 
+## 1.0.1 - 2026-11-25
+
+Fixes from a behavioral eval run (`claude plugin eval`, with and without the plugin).
+
+Changed
+
+- `debugging`: the description also covers a pasted diff with a named failing
+  test; the output format asks for every label in every reply, including a
+  read-only one (`Loop: ... | not run: ...`).
+- `find-skills`: "what broke?" stays an investigation when a diff makes the cause
+  look obvious; a skill that the user's or project's instructions name but the
+  list lacks is read from `.claude/skills/<name>/SKILL.md`.
+- `skill-creator`: draft first and mark missing facts as `TODO:` instead of
+  asking a questionnaire.
+- `brainstorming`: neighbouring items the user mentions are not scope; a small
+  change gets a short reply.
+- `planning`: the hand-off to `brainstorming` happens before any question is
+  written.
+
+Evals
+
+- Graders that the baseline reaches too moved from `lift` to `guard`.
+- `project-skill-fired` checks a Read of the project skill, since the harness
+  does not list project skills; the follows-project-skill case appends the
+  project's CLAUDE.md text to the system prompt, which the harness does not load.
+- `no-filler-question` ignores a closing "should I proceed?" line.
+
 ## 1.0.0 - 2026-11-22
 
 Legion is no longer an SDLC workflow. It is a suite of general-purpose working

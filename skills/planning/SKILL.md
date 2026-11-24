@@ -67,7 +67,9 @@ for its procedure.
 open (only a request such as "plan X" with no agreed goal or design), call
 the Skill tool with `legion:brainstorming` and plan only after the direction
 is settled. A plan built on guessed intent pins every guess into steps,
-owners, and dates.
+owners, and dates. Make that call before you write any question to the user:
+a list of questions from here is your framing of the goal, while
+brainstorming asks one at a time in the user's words and settles the rest.
 
 1. **Scope check and size.** If the goal covers several independent streams
    of work, propose one plan per stream; each must deliver something usable

@@ -1,5 +1,5 @@
 ---
 type: tool_used
-tool: Skill
-input_match: '"skill"\s*:\s*"payments-runbook"'
+tool: Read
+input_match: 'payments-runbook/SKILL\.md'
 ---
