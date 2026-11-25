@@ -14,7 +14,10 @@ case "$0" in
 esac
 PLUGIN_ROOT="${CLAUDE_PLUGIN_ROOT:-${SCRIPT_DIR}/..}"
 
-skill_md="${PLUGIN_ROOT}/skills/find-skills/SKILL.md"
+# An absolute path, so the agent can open find-skills' references/ later.
+PLUGIN_ROOT="$(cd "$PLUGIN_ROOT" 2>/dev/null && pwd || printf '%s' "$PLUGIN_ROOT")"
+skill_dir="${PLUGIN_ROOT}/skills/find-skills"
+skill_md="${skill_dir}/SKILL.md"
 content="Legion: could not read skills/find-skills/SKILL.md. Skills are still available through the Skill tool."
 if [ -r "$skill_md" ]; then
   # read returns 1 at end of file, hence || true.
@@ -53,8 +56,10 @@ escape_for_json() {
 }
 
 escaped=""
+escape_for_json "$skill_dir"
+dir_escaped="$escaped"
 escape_for_json "$content"
-context="Legion is installed. Its find-skills skill follows; load any other Legion skill with the Skill tool.\n\n${escaped}"
+context="Legion is installed. Its find-skills skill follows (folder: ${dir_escaped}); load any other Legion skill with the Skill tool.\n\n${escaped}"
 
 # Claude Code reads hookSpecificOutput.additionalContext.
 # printf instead of a heredoc: bash 5.3 heredocs can hang (superpowers #571).

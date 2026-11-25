@@ -1,5 +1,49 @@
 # Changelog
 
+## 1.3.0 - 2026-11-25
+
+Includes 1.2.1, which was merged but never tagged.
+
+Changed
+
+- `std-development` (1.2.1): new criteria are built one slice at a time
+  (check red, change green, next), with every Unchanged check pinned first;
+  the spec-blind subagent writes each slice's checks. The turn ends after a
+  spec that needs approval is presented. The final run covers the project's
+  other merge gates, and new warnings or leftover debug output count. One
+  spec per independently shippable capability, with a build-order list.
+  `writing-checks` observes through the caller's interface, not storage. Two
+  eval cases: `std-development-slices-feature-spec` and
+  `std-development-stops-for-spec-approval`.
+- Legion is repositioned: `brainstorming` is the one general-purpose skill;
+  `planning`, `std-development`, `debugging`, `security-audit`, and
+  `skill-creator` serve engineering work (software, infrastructure, data,
+  security). The `planning`, `debugging`, and `std-development` descriptions
+  and bodies drop non-engineering scope (events, offices, business
+  processes); `find-skills` routes a non-engineering plan or problem to
+  `brainstorming` while open and otherwise to no Legion skill; `brainstorming`
+  offers `planning` only for engineering work. `AGENTS.md`, `README.md`,
+  `docs/architecture.md`, and the manifests say the same.
+- `find-skills` is lighter in every session: "Skills on disk" (used only when
+  the user asks for a skill) moved to `references/skills-on-disk.md`, and the
+  session-start hook now names the skill's folder so the reference can be
+  opened.
+- `security-audit` keeps guidance mode lean and gains headroom under the
+  20,000-byte limit (19,860 to about 13,600 bytes): the full-audit setup and
+  planning sections moved to `references/full-audit-setup.md`, read before
+  reconnaissance in full audit mode. Universal execution safety stays in
+  `SKILL.md`, since it applies to both modes.
+- Evals: three new cases with lift graders declared before their first run:
+  `find-skills-combines-std-with-legacy-skill` (the Legion method plus a
+  project legacy-code skill), `debugging-keeps-every-contributing-cause` (the
+  user has already named one culprit), and `skill-creator-fixes-existing-skill`
+  (a review that catches spec and quality defects).
+- Evals: `planning-fires-on-settled-goal`, `planning-holds-on-unsettled-goal`,
+  and `debugging-fires-on-unknown-cause` now use engineering prompts (a
+  Kubernetes move, a cloud migration, a late nightly pipeline). Their former
+  prompts become the near-miss cases `planning-stays-quiet-on-event-plan` and
+  `debugging-stays-quiet-on-business-process`.
+
 ## 1.2.0 - 2026-11-25
 
 Added

@@ -2,8 +2,8 @@
 name: debugging
 description: >-
   Finds the root cause of a problem, or the contributing causes when several
-  line up, in any system (software, infrastructure, data, integrations, or an
-  operational process) by first building a fast
+  line up, in software and the systems around it (code, builds and CI,
+  infrastructure, data pipelines, integrations) by first building a fast
   reproduction or an evidence timeline that shows the failure, then
   minimizing it, ranking falsifiable hypotheses, instrumenting, fixing the
   cause, and adding a control against recurrence. Use when something behaves
@@ -25,7 +25,7 @@ Build a feedback loop that shows this exact failure, then use it to find and
 prove the root cause. With a fast loop, bisection and hypotheses become
 mechanical; without one, reading the system produces stories, and a fix for a
 symptom is a guess that made the symptom go quiet. The method is the same for
-code, infrastructure, data, and processes; only the loop changes.
+code, builds, infrastructure, and data; only the loop changes.
 
 **The rule:** no fix until there is a loop that shows the failure and a
 confirmed cause. Containment is not a fix: when harm is ongoing, contain it
@@ -41,7 +41,7 @@ or at step 6, read [references/five-whys.md](references/five-whys.md) and run
 its procedure.
 
 The chain is a **why tree**, not a line. A failure in a complex system (an
-incident, an outage, a process breakdown) rarely has one root cause: latent
+incident, an outage, a pipeline that keeps failing) rarely has one root cause: latent
 conditions and a trigger line up, and each is a contributing cause with its
 own control. Keep every branch that has evidence; pruning the tree to one
 "root cause" for a tidier story leaves the other causes in place.
@@ -79,7 +79,7 @@ your reply. When a lens needs depth, or the first hypotheses all fail, read
    since when, and for whom; the answers shape the loop. For
    code, default to a failing test at the seam that reaches the bug. For a
    system you cannot re-run on demand (a live outage, a data mismatch, a
-   process that keeps stalling), the loop is a check that shows the symptom on
+   job that keeps stalling), the loop is a check that shows the symptom on
    current data plus an **evidence timeline** of what changed around when it
    started. When only a person can trigger the failure, the loop is a
    numbered checklist of steps for the user plus the observations to report,
@@ -94,7 +94,7 @@ your reply. When a lens needs depth, or the first hypotheses all fail, read
      drives the real path, asserts the symptom, gives the same verdict every
      run (for an intermittent bug, it repeats the trigger until one
      invocation fails reliably), and finishes in seconds.
-   - *Evidence timeline* (live system, data, process): a symptom check on
+   - *Evidence timeline* (live system, data, scheduled jobs): a symptom check on
      current data that shows the symptom in numbers or records (a query, a
      count, a diff of two copies), cheap enough to re-run after every probe
      and after the fix, plus a timeline with the first sign, each change in

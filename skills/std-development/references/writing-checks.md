@@ -99,11 +99,11 @@ whole range when it is cheap, not a few samples.
 - **Data:** a query whose expected result is written down before the change
   (a count, a sum, an empty set of violating rows), or a diff against a copy
   known to be right.
-- **A document or deliverable:** criteria a fresh reader answers yes or no
-  ("every figure cites its source", "the procedure names an owner for each
-  step"). For an important deliverable, give the criteria and the artifact
+- **A technical document (a spec, a runbook, an API reference):** criteria a
+  fresh reader answers yes or no ("every endpoint lists its error codes",
+  "the runbook names an owner for each step"). For an important deliverable, give the criteria and the artifact
   to a reader who did not write it.
-- **A process:** a dry run on a real case with the expected outcome at each
+- **A release or operational procedure:** a dry run on a real case with the expected outcome at each
   step written in advance.
 
 ## Anti-patterns

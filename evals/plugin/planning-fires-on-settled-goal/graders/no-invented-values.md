@@ -2,8 +2,8 @@
 type: llm
 ---
 
-The prompt gives: first customer conference, March, about 200 attendees, one day, in-house team. It gives no budget, city, venue, names, or prices.
+The prompt gives: three web services and a Postgres database on one VM, move to Kubernetes, hosting contract ends March 31, two backend engineers, no outage longer than 10 minutes. It gives no cloud provider, cluster size, budget, tool choices, or names.
 
-PASS if every budget figure, price, venue, city, or person's name in the plan is marked as an assumption or left as an open question for the user, or the plan has none.
+PASS if every cloud provider, managed service, cluster size, budget figure, or person's name in the plan is marked as an assumption or left as an open question for the user, or the plan has none.
 
-FAIL if it states invented specifics (a budget, a venue, a named owner, a ticket price) as if they were agreed facts.
+FAIL if it states invented specifics (a provider, a budget, a named owner, a node count) as if they were agreed facts.

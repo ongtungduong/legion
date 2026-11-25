@@ -1,11 +1,11 @@
 # Legion
 
-A plugin of general-purpose working skills for Claude Code. Legion gives the
-agent a method for the kinds of work that go wrong when improvised: deciding
-what to do, laying out how to get it done, and finding why something broke.
-The working skills are not tied to software; code is one kind of work among
-many. `security-audit` is the one domain skill: a defensive security audit of
-code and systems.
+A plugin of engineering skills for Claude Code. Legion gives the agent a
+method for the kinds of work that go wrong when improvised: deciding what to
+do, laying out how to get it done, building it checks first, finding why
+something broke, and auditing its security. `brainstorming` is the one
+general-purpose skill and works on any open-ended topic; the others serve
+engineering work: software, infrastructure, data, and security.
 
 Based on [superpowers](https://github.com/obra/superpowers), with material from
 [addyosmani/agent-skills](https://github.com/addyosmani/agent-skills) and
@@ -94,9 +94,9 @@ gitignored. Legion's own repo ignores all of it.
 |---|---|
 | `find-skills` | Finds the best skill for the work, Legion's or any installed; injected at SessionStart |
 | `brainstorming` | Any open-ended topic: intent, approaches, grilling, design doc, thinking lenses |
-| `planning` | A settled goal to a step-by-step plan, ordered by value, with a pre-mortem |
+| `planning` | A settled engineering goal to a step-by-step plan, ordered by value, with a pre-mortem |
 | `std-development` | Building to a spec: criteria (new, unchanged, my calls) as checks, red before green, spec kept current |
-| `debugging` | Root cause of a problem in any system, with a control against recurrence |
+| `debugging` | Root cause of a problem in software, infrastructure, or data, with a control against recurrence |
 | `security-audit` | Security guidance, or a full audit: coverage ledger, isolated hunters, independent verifiers, validated findings and reports |
 | `skill-creator` | Creating and validating skills against agentskills.io |
 

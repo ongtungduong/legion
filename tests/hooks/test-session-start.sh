@@ -28,6 +28,7 @@ check() { # $1 label, $2 plugin root, $3 substring the context must contain, $4 
 check "injects find-skills" "$REPO_ROOT" "# Find Skills"
 check "map table survives JSON escaping" "$REPO_ROOT" '| Situation | Skill |'
 check "strips the YAML frontmatter" "$REPO_ROOT" "# Find Skills" "disable-model-invocation:"
+check "names the find-skills folder for its references" "$REPO_ROOT" "(folder: $REPO_ROOT/skills/find-skills)"
 check "falls back cleanly when the skill is missing" "/nonexistent-legion-root" "could not read"
 
 # A find-skills file containing control characters must still yield valid JSON.

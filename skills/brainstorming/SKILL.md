@@ -114,9 +114,11 @@ depth, read [references/lenses.md](references/lenses.md) for its procedure.
     `general-purpose` subagent on tier `standard` to do it. Answer what the
     conversation already settled, settle minor gaps yourself and mark them as
     your calls, and bring only the real decisions to the user in one message.
-11. **Get approval, then** offer the next step. When the work has several
-    steps, offer to call the Skill tool with `legion:planning`; when it is a
-    single action, do it or hand it back as the user prefers.
+11. **Get approval, then** offer the next step. When engineering work has
+    several steps, offer to call the Skill tool with `legion:planning`, which
+    is built for engineering plans; otherwise lay out the next steps in the
+    reply. When it is a single action, do it or hand it back as the user
+    prefers.
 
 | Size | Design doc | Approaches | Grilling |
 |---|---|---|---|

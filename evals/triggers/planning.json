@@ -2,11 +2,11 @@
   "positive": [
     "The spec is approved, write the implementation plan",
     "Break this design doc into small tasks I can execute",
-    "We decided to move the office next quarter, write the detailed plan to get it done",
+    "We decided to upgrade the database to Postgres 16 next quarter, write the detailed plan to get it done",
     "Turn this approved proposal into a step-by-step work plan with owners",
-    "Plan the steps to launch the course we agreed on",
+    "Plan the steps to roll out the new auth service we agreed on",
     "Write the plan for this spec and run a pre-mortem on it",
-    "The launch date is fixed for March 1, plan backward from it and show the critical path"
+    "The release date is fixed for March 1, plan backward from it and show the critical path"
   ],
   "negative": [
     {

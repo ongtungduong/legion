@@ -2,7 +2,8 @@
 name: planning
 description: >-
   Turns a settled goal, approved design, or clear requirements into a
-  detailed plan of steps that gets the work done, in any domain: worked back
+  detailed plan of steps for engineering work (software, infrastructure,
+  data): worked back
   from the done state, each step with its outcome, concrete actions, owner,
   dependencies, a done-check that can be verified, and an evidence-based
   estimate, with the critical path, buffer, and checkpoints marked, ordered
@@ -113,8 +114,9 @@ brainstorming asks one at a time in the user's words and settles the rest.
    done-check with what "passed" looks like. For software that means the
    exact files, interfaces, and the failing test the step starts with and
    ends green, each step a slice through every layer it touches rather than
-   one layer at a time; for other work, the document, decision, or measure
-   that proves it. A reference to
+   one layer at a time; for work that is not code (an infrastructure change,
+   a data migration, a rollout), the command, query, or measure that proves
+   it. A reference to
    another step points at that step's Produces line.
 6. **Pre-mortem.** Assume the plan was carried out exactly and the goal still
    failed: rejected, late, broken, or unused. List five or more candidate
