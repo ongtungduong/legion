@@ -3,11 +3,14 @@
 A plugin of general-purpose working skills for Claude Code. Legion gives the
 agent a method for the kinds of work that go wrong when improvised: deciding
 what to do, laying out how to get it done, and finding why something broke.
-None of it is tied to software; code is one kind of work among many.
+The working skills are not tied to software; code is one kind of work among
+many. `security-audit` is the one domain skill: a defensive security audit of
+code and systems.
 
 Based on [superpowers](https://github.com/obra/superpowers), with material from
 [addyosmani/agent-skills](https://github.com/addyosmani/agent-skills) and
-[mattpocock/skills](https://github.com/mattpocock/skills). Origins:
+[mattpocock/skills](https://github.com/mattpocock/skills), and the security audit
+from [cloudflare/security-audit-skill](https://github.com/cloudflare/security-audit-skill). Origins:
 [THIRD_PARTY.md](THIRD_PARTY.md), [docs/architecture.md](docs/architecture.md).
 
 ## What it does differently
@@ -27,6 +30,13 @@ Based on [superpowers](https://github.com/obra/superpowers), with material from
 - **Debugging starts from a loop that shows the failure** (a reproduction, or
   an evidence timeline for a system you cannot re-run) before any hypothesis,
   and ends with a control against recurrence.
+- **Security audits that separate proof from suspicion.** `security-audit`
+  hunts by a coverage ledger with isolated subagents, gives every candidate to
+  a fresh verifier that tries to disprove it, runs target code only in a
+  sandbox, and reports `confirmed` findings with severity apart from
+  `needs_validation` leads that name the missing fact. Questions get guidance
+  without files; a full audit writes a validated `findings.json` and reports
+  outside the repo.
 - **A floor, not a ceiling.** Subagent dispatches name a tier (`cheap`,
   `standard`, `session`, `top`) that never resolves below your session's model
   for work you rely on; every hard rule states its reason.
@@ -87,6 +97,7 @@ gitignored. Legion's own repo ignores all of it.
 | `planning` | A settled goal to a step-by-step plan, ordered by value, with a pre-mortem |
 | `std-development` | Building to a spec: criteria (new, unchanged, my calls) as checks, red before green, spec kept current |
 | `debugging` | Root cause of a problem in any system, with a control against recurrence |
+| `security-audit` | Security guidance, or a full audit: coverage ledger, isolated hunters, independent verifiers, validated findings and reports |
 | `skill-creator` | Creating and validating skills against agentskills.io |
 
 ## Development
