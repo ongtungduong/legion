@@ -13,8 +13,9 @@ metadata:
 # Find Skills
 
 Legion is a set of engineering skills (software, infrastructure, data,
-security) plus `legion:brainstorming`, which fits any open-ended topic, and
-it is rarely the only set installed. Read what the work is, find the skill
+security) plus general-purpose skills for any kind of work
+(`legion:brainstorming`, `legion:skill-creator`, and this one), and it is
+rarely the only set installed. Read what the work is, find the skill
 whose method or knowledge fits it best, whether it is Legion's or another
 skill this session lists, load it with the Skill tool, and follow it. There is
 no fixed sequence: a skill is used alone or combined only when the work calls
@@ -120,11 +121,12 @@ any, best fit first:
 - Plugin skills are namespaced: load `legion:planning`, not `planning`.
 - Skills change between versions. Load the skill instead of working from your
   memory of it.
-- Only `legion:brainstorming` is general-purpose. The other Legion skills
-  serve engineering work; a plan or a problem outside it (an event, a hire,
-  a business process) gets brainstorming while its direction is open, and
-  otherwise no Legion skill, since their methods assume tests, builds, and
-  data the work does not have.
+- `legion:planning`, `legion:std-development`, `legion:debugging`, and
+  `legion:security-audit` serve engineering work. A plan or a problem
+  outside it (an event, a hire, a business process) gets
+  `legion:brainstorming` while its direction is open, and otherwise none of
+  them, since their methods assume tests, builds, and data the work does not
+  have. `legion:skill-creator` fits a skill for any kind of work.
 - A skill's name can mislead: `code-review` in one plugin may only review a
   diff, in another audit a whole repo. The description decides.
 - Another plugin may inject its own router with skills of the same names.
