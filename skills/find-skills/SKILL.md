@@ -12,7 +12,8 @@ metadata:
 
 # Find Skills
 
-Legion is a set of general-purpose working skills, for any kind of work, and
+Legion is a set of engineering skills (software, infrastructure, data,
+security) plus `legion:brainstorming`, which fits any open-ended topic, and
 it is rarely the only set installed. Read what the work is, find the skill
 whose method or knowledge fits it best, whether it is Legion's or another
 skill this session lists, load it with the Skill tool, and follow it. There is
@@ -68,9 +69,9 @@ for it.
    compose file"), then follow them.
 5. **Search the disk only on request.** When the user asks whether a skill
    exists for something, asks you to find one, or names a skill that is not in
-   your list, look beyond the list as described in Skills on disk below. A
-   routine task never triggers the search:
-   the list already holds every enabled skill.
+   your list, read `references/skills-on-disk.md` in this skill's folder
+   (the session-start note names it) and follow it. A routine task never
+   triggers the search: the list already holds every enabled skill.
 6. **Chain only on need.** When one skill's result is the input of another (a
    settled direction that now needs steps, an investigation whose fix is
    large), offer the next skill; do not run a sequence by default.
@@ -87,27 +88,8 @@ The Legion skills, by kind of work. Any other listed skill is a candidate too.
 | An approved spec, design, or clear requirements for engineering work (a feature, refactor, rollout, infrastructure or data change) that needs a plan of steps ahead of writing code | `legion:planning` |
 | Building to a spec or changing what something does: the new behavior and the behavior that must not change as checks, red before green; "TDD", "tests first" | `legion:std-development` |
 | Security of code or a system: an audit or pen test, "find vulnerabilities", whether something is exploitable, triage or severity of a reported vulnerability | `legion:security-audit` |
-| Something in a system behaves wrongly and the cause is unknown: an error, failure, outage, mismatch, slowdown, or recurring problem; "what broke?", "why is this happening?" | `legion:debugging` |
+| Something in software, infrastructure, or data behaves wrongly and the cause is unknown: an error, failure, outage, mismatch, slowdown, or recurring problem; "what broke?", "why is this happening?" | `legion:debugging` |
 | Creating, editing, or validating a skill | `legion:skill-creator` |
-
-## Skills on disk
-
-Installed skills that your list lacks are either user-invoked
-(only the user can start them, so the model never sees them) or belong to
-a disabled plugin. Read only frontmatter, never whole skill folders:
-
-```bash
-find ~/.claude/skills .claude/skills -maxdepth 2 -name SKILL.md \
-  -exec grep -H -A4 '^description:' {} + 2>/dev/null
-find ~/.claude/plugins/cache -mindepth 3 -maxdepth 3 -type d   # <marketplace>/<plugin>/<version>
-```
-
-In the plugin cache, read only the newest version folder of each plugin; older
-ones stay behind after updates. Report what you found and how to use it: a
-user-invoked skill runs when the user types `/<name>`; a disabled plugin's
-skill needs `claude plugin enable <plugin>@<marketplace>` and a new session.
-Do not read and follow such a skill on your own: it was kept out of your list
-on purpose, by its author or by the user.
 
 ## Model tiers
 
@@ -138,8 +120,11 @@ any, best fit first:
 - Plugin skills are namespaced: load `legion:planning`, not `planning`.
 - Skills change between versions. Load the skill instead of working from your
   memory of it.
-- No domain is the default. Code is one kind of work among many; a strategy,
-  a process, or an operations problem gets the same skills.
+- Only `legion:brainstorming` is general-purpose. The other Legion skills
+  serve engineering work; a plan or a problem outside it (an event, a hire,
+  a business process) gets brainstorming while its direction is open, and
+  otherwise no Legion skill, since their methods assume tests, builds, and
+  data the work does not have.
 - A skill's name can mislead: `code-review` in one plugin may only review a
   diff, in another audit a whole repo. The description decides.
 - Another plugin may inject its own router with skills of the same names.

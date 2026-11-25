@@ -13,16 +13,18 @@ The deliberate decisions behind the current design, with their reasons, so nobod
    longer changes an outcome on the newest model is cut
    (`skills/skill-creator/references/measuring.md`). Only a lift grader's
    delta is evidence that the plugin helps (`docs/evals.md`).
-1. **A suite, not a pipeline.** Since 1.0.0 Legion is a set of general-purpose
-   working skills, not an SDLC chain. `find-skills` picks the skill that fits the
+1. **A suite, not a pipeline.** Since 1.0.0 Legion is a set of working skills,
+   not an SDLC chain. `find-skills` picks the skill that fits the
    work, Legion's or any other installed skill; skills are used alone or chained only when one's result is the next
    one's input.
-2. **General-purpose methods, engineering plans.** `brainstorming`, `std-development`,
-   and `debugging` name no domain as the default: code is one kind of work among
-   strategy, systems, processes, and operations, and domain examples live in
-   evals, never in the skill. `planning` serves engineering work (software,
-   infrastructure, data) and `security-audit` security work: their value is
-   domain facts a general method does not supply.
+2. **One general-purpose skill, the rest for engineering.** Since 1.3.0 only
+   `brainstorming` names no domain as the default: deciding what to do and why
+   is the same method for a strategy, a process, or a feature, and its domain
+   examples live in evals, never in the skill. `planning`, `std-development`,
+   `debugging`, `security-audit`, and `skill-creator` serve engineering work
+   (software, infrastructure, data, security); their methods lean on tests,
+   builds, deploys, and queries, and a generic version of each was weaker at
+   both. They name no single language or stack as the default.
 3. **Light skill finding, not enforcement.** A skill loads only when the work
    matches; a loaded skill is never softened.
 4. **User instructions win** over every skill, except that a first request to

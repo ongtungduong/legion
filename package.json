@@ -2,7 +2,7 @@
   "name": "legion",
   "version": "1.3.0",
   "private": true,
-  "description": "Legion: general-purpose working skills plugin for Claude Code",
+  "description": "Legion: engineering skills plugin for Claude Code, plus general-purpose brainstorming",
   "type": "module",
   "license": "MIT",
   "scripts": {

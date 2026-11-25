@@ -36,10 +36,11 @@ Load `legion:skill-creator` and follow its workflow. Every skill conforms to the
 
 Legion conventions on top of the spec:
 
-- `brainstorming`, `debugging`, and `std-development` are general-purpose:
-  none names a domain (code included) as its default, and domain examples
-  belong in evals, not in the skill. `planning` serves engineering work and
-  `security-audit` security work; their domain facts belong in the skill.
+- `brainstorming` is the one general-purpose skill: it names no domain (code
+  included) as its default, and its domain examples belong in evals. Every
+  other skill serves engineering work (software, infrastructure, data,
+  security): it may name engineering artifacts (tests, builds, deploys,
+  queries) but no single language or stack as its default.
 - Everything is in English: skill content and docs for humans (`README.md`, `docs/`).
 - Cross-skill instructions say "Call the Skill tool with `legion:<name>`".
 - Subagents start with a fresh context and an explicitly named tier

@@ -177,6 +177,9 @@ const newSkill = (root, name, fm = [`name: ${name}`, `description: ${DESC}`, 'li
   write(root, `skills/${name}/SKILL.md`, `---\n${fm.join('\n')}\n---\n${body}`);
 const quietCase = 'evals/plugin/skill-creator-stays-quiet-on-plan-request';
 
+// Every firing case of skill-creator: the two rules below must break all of them.
+const skillCreatorFiringCases = ['skill-creator-fires-on-new-skill', 'skill-creator-fixes-existing-skill'];
+
 const validateRules = [
   ['skill directory without SKILL.md', (r) => fs.mkdirSync(path.join(r, 'skills/zz-empty')), /skills\/zz-empty: missing SKILL\.md/],
   ['unclosed frontmatter', (r) => edit(r, 'skills/skill-creator/SKILL.md', (t) => t.replace(/^---\n/, '--\n')), /skill-creator\/SKILL\.md: missing or unclosed frontmatter/],
@@ -219,8 +222,8 @@ const validateRules = [
   ['quiet case whose max: 0 grader watches another tool', (r) => edit(r, `${quietCase}/graders/not-fired.md`, (t) => t.replace('tool: Skill', 'tool: Bash')), /skill-creator-stays-quiet-on-plan-request: a stays-quiet case needs a tool_used grader on Skill/],
   ['quiet case whose max: 0 grader names another skill', (r) => edit(r, `${quietCase}/graders/not-fired.md`, (t) => t.replaceAll('skill-creator', 'planning')), /skill-creator-stays-quiet-on-plan-request: a stays-quiet case needs a tool_used grader on Skill/],
   ['skill without a stays-quiet case', (r) => rm(r, quietCase), /skill-creator: no stays-quiet eval case in evals\/plugin\//],
-  ['skill without a firing case', (r) => rm(r, 'evals/plugin/skill-creator-fires-on-new-skill'), /skill-creator: no firing eval case in evals\/plugin\//],
-  ['firing case whose Skill grader names another skill', (r) => edit(r, 'evals/plugin/skill-creator-fires-on-new-skill/graders/skill-fired.md', (t) => t.replaceAll('skill-creator', 'brainstorming')), /skill-creator: no firing eval case in evals\/plugin\//],
+  ['skill without a firing case', (r) => { for (const c of skillCreatorFiringCases) rm(r, `evals/plugin/${c}`); }, /skill-creator: no firing eval case in evals\/plugin\//],
+  ['firing case whose Skill grader names another skill', (r) => { for (const c of skillCreatorFiringCases) edit(r, `evals/plugin/${c}/graders/skill-fired.md`, (t) => t.replaceAll('skill-creator', 'brainstorming')); }, /skill-creator: no firing eval case in evals\/plugin\//],
   // Grader kinds (evals/grader-kinds.json): what each grader's delta is evidence of.
   ['grader-kinds.json missing', (r) => rm(r, 'evals/grader-kinds.json'), /evals\/grader-kinds\.json is missing/],
   ['grader-kinds.json with invalid JSON', (r) => write(r, 'evals/grader-kinds.json', '{not json'), /evals\/grader-kinds\.json: invalid JSON/],

@@ -30,8 +30,29 @@ Take an item on only after it has caused a real problem in a working session.
    `brainstorming-holds-under-build-pressure` should write files), and that the
    scaffolded `CLAUDE.md` of `find-skills-follows-project-skill-choice` loads.
 
+5. **Ablate the lens tables.** `brainstorming`, `planning`, and `debugging`
+   carry 28 named lenses, most of them textbook methods the model already
+   knows and most with no grader. After item 1, re-run their lift cases from a
+   copy of the plugin with the lens tables removed; a lens whose removal moves
+   no lift grader goes to the skill's `references/lenses.md`, and only lenses
+   with a measured delta stay in `SKILL.md`. Trigger words in the descriptions
+   ("six hats", "first principles") stay either way: routing is measured
+   separately.
+6. **Trim descriptions near the 1024-character cap** (`brainstorming`,
+   `debugging`, `security-audit`) only after item 1 gives real trigger rates,
+   so a cut does not drop a phrase that fires the skill.
+7. **Check the new cases' first run.** `find-skills-combines-std-with-legacy-skill`
+   grades the project skill as a `Skill` call while
+   `find-skills-combines-method-and-project-skill` grades a `Read` of its
+   `SKILL.md`; confirm which one Claude Code records for a project skill and
+   align both.
+8. **Diff `security-audit` against upstream** (cloudflare
+   `security-audit-skill`, pinned at `c1c8a8c14710` in `THIRD_PARTY.md`) when
+   it tags a new release: the skill is a copy, so upstream fixes do not reach
+   it on their own.
+
 ## Later
 
-5. A user-invoked setup skill (`GLOSSARY.md` and ADR locations); a `handoff`
+9. A user-invoked setup skill (`GLOSSARY.md` and ADR locations); a `handoff`
    skill.
-6. Windows (`run-hook.cmd`) and other harnesses (Codex, Cursor, OpenCode).
+10. Windows (`run-hook.cmd`) and other harnesses (Codex, Cursor, OpenCode).

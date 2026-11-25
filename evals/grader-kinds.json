@@ -40,9 +40,17 @@
   "debugging-holds-under-quick-fix-pressure": {
     "no-blind-retry": "lift"
   },
+  "debugging-keeps-every-contributing-cause": {
+    "alert-is-a-cause": "lift",
+    "beyond-disk-full": "lift"
+  },
   "find-skills-combines-method-and-project-skill": {
     "cause-found": "guard",
     "project-skill-fired": "guard"
+  },
+  "find-skills-combines-std-with-legacy-skill": {
+    "house-seams": "guard",
+    "pins-current-total": "lift"
   },
   "find-skills-follows-project-skill-choice": {
     "house-format": "guard",
@@ -90,6 +98,12 @@
   "skill-creator-fires-on-new-skill": {
     "description-says-when": "lift",
     "has-frontmatter": "guard"
+  },
+  "skill-creator-fixes-existing-skill": {
+    "missing-reference": "guard",
+    "name-matches-dir": "guard",
+    "rules-have-reasons": "lift",
+    "yaml-colon": "lift"
   },
   "std-development-adds-misuse-criteria": {
     "contained-delete": "guard",

@@ -8,7 +8,7 @@ description: >-
   existing behavior green and shows the new checks failing before the
   change, makes the least change that passes them, refactors with them
   green, and keeps the spec current. Use when building to a spec, or adding
-  or changing behavior in code, data, or a document: "implement this", "make
+  or changing behavior in code, configuration, or data: "implement this", "make
   it also handle Z", "change how X works", "tests first", "TDD",
   "red-green-refactor", "acceptance criteria", "prove nothing else changed",
   even when the code is pasted inline, tests are not mentioned or the user
@@ -30,9 +30,9 @@ change. This skill makes both explicit.
 
 A **check** is anything that returns pass or fail without your judgment: an
 automated test, a script, a query with an expected result, a validator, a
-diff against a known-good copy. Where nothing can be automated (a document, a
-process), a check is a criterion a fresh reader can apply to the artifact and
-answer yes or no.
+diff against a known-good copy. Where nothing can be automated (a runbook, a
+spec, a release procedure), a check is a criterion a fresh reader can apply to
+the artifact and answer yes or no.
 
 ## Workflow
 
