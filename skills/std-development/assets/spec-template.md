@@ -28,7 +28,8 @@ Each line is a situation and its expected result, specific enough to check.
 How the criteria are checked and the commands that run them.
 
 - Focused: `<command that runs only the new and touched checks>`
-- Full: `<the project's full check command>`
+- Full: `<the project's full check command, and any other gate it accepts work through>`
+- Slices: <the New criteria in the order they will be built, one at a time>
 
 ## Boundaries
 
