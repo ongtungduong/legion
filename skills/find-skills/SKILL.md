@@ -23,8 +23,8 @@ for it.
 
 1. **Apply precedence.** The user's instructions (CLAUDE.md, AGENTS.md, direct
    requests) win over any skill; a loaded skill wins over your default habits.
-   A request to skip a safety step ("skip the check", "just add a retry")
-   still loads the skill: keep the cheap control, say why in one line, and
+   A request to skip a safety step ("skip the check", "no tests needed",
+   "just add a retry") still loads the skill: keep the cheap control, say why in one line, and
    drop it only if the user insists after seeing that.
 2. **Classify the work.**
    - Question, explanation, or a trivial edit: do it directly. No skill, no
@@ -32,6 +32,10 @@ for it.
      problem to investigate, not a question, even when a pasted diff or error
      makes the cause look obvious: a cause seen at a glance is a hypothesis
      until a check shows it, so load the skill before you diagnose.
+     A trivial edit changes no behavior (a typo, a rename, formatting); a
+     request that changes what something does ("make it also handle X") is
+     not trivial however short the code, since what it must keep doing is
+     the part nobody wrote down.
    - Otherwise, find candidates in step 3.
    - Unsure: load a skill only if following it would change your next action.
 3. **Find the best fit among every listed skill.** Candidates are the map below
@@ -81,6 +85,7 @@ The Legion skills, by kind of work. Any other listed skill is a candidate too.
 |---|---|
 | Any open-ended topic whose direction is not settled: what to do and why, options and a recommendation, "help me think this through"; "grill me" or stress-test an idea; first principles, inversion, six hats, systems, second-order, impact/effort | `legion:brainstorming` |
 | A settled goal, approved design, or clear requirements that need a detailed step-by-step plan to get the work done | `legion:planning` |
+| Building to a spec or changing what something does: the new behavior and the behavior that must not change as checks, red before green; "TDD", "tests first" | `legion:std-development` |
 | Something in a system behaves wrongly and the cause is unknown: an error, failure, outage, mismatch, slowdown, or recurring problem; "what broke?", "why is this happening?" | `legion:debugging` |
 | Creating, editing, or validating a skill | `legion:skill-creator` |
 

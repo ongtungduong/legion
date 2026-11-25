@@ -1,6 +1,6 @@
 # Behavioral evals
 
-Cases live in `evals/plugin/` (21; `prompt.md` plus `graders/`, and `case.yaml`
+Cases live in `evals/plugin/` (25; `prompt.md` plus `graders/`, and `case.yaml`
 plus `fixture.sh` for a case that scaffolds a project). Each skill has a firing
 case, a stays-quiet case, and cases whose lift graders measure what the skill
 is for: the reply asks for the purpose before proposing a format
@@ -72,16 +72,20 @@ toward no outcome figure, and `npm run validate` rejects a new grader that
 declares none.
 
 ```bash
-claude plugin eval . --no-publish --model sonnet --judge-model sonnet --scaffold --allow-tools Write Edit --runs 3 --threshold 0.66 -j 3 --max-cost-usd 20 --json evals/results/<file>.json
+claude plugin eval . --no-publish --model sonnet --judge-model sonnet --scaffold --allow-tools Write Edit "Bash(node:*)" "Bash(npm:*)" --runs 3 --threshold 0.66 -j 3 --max-cost-usd 20 --json evals/results/<file>.json
 ```
 
 `--threshold 0.66` because the CLI compares 2/3 = 0.6667 with 0.67 and fails it;
 `-j 3` because concurrency defaults to 1; `--judge-model sonnet` because the
 default judge is haiku, which the CLI's own authoring guide calls too small for
-rubric graders; `--scaffold` because four cases build their workspace from a
+rubric graders; `--scaffold` because five cases build their workspace from a
 `fixture.sh` this repo wrote; `--allow-tools Write Edit` so the cases that list
-those tools can use them (the scaffolds run in a temp directory). The run is 21
-cases x 3 runs x 2 arms = 126 agent runs plus the judges; a hit ceiling exits 2
+those tools can use them (the scaffolds run in a temp directory), and the two
+`Bash` patterns so `std-development-fires-on-approved-spec` can run
+its tests. The CLI refuses every run that grants `Bash` when it cannot read a
+credentials file it must exclude from the sandbox (`EACCES`); on such a machine
+run that case alone, or drop the `Bash` patterns and read its graders as not run. The run is 25
+cases x 3 runs x 2 arms = 150 agent runs plus the judges; a hit ceiling exits 2
 with partial results, so re-run the missing cases with `--case`. Run it as one line. At 3 runs one run
 moves a score by 0.33: treat a lone +0.33 as noise and re-run at 5. Record the
 model, Claude Code version, and cost for every run.
