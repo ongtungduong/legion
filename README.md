@@ -3,9 +3,9 @@
 A plugin of working skills for Claude Code. Legion gives the agent a
 method for the kinds of work that go wrong when improvised: deciding what to
 do, laying out how to get it done, building it checks first, finding why
-something broke, and auditing its security. Three skills are general-purpose
-and fit any kind of work: `brainstorming`, `find-skills`, and
-`skill-creator`. The others serve engineering work: software,
+something broke, and auditing its security. Four skills are general-purpose
+and fit any kind of work: `brainstorming`, `find-skills`, `skill-creator`,
+and `prompt-optimization`. The others serve engineering work: software,
 infrastructure, data, and security.
 
 Based on [superpowers](https://github.com/obra/superpowers), with material from
@@ -98,6 +98,7 @@ gitignored. Legion's own repo ignores all of it.
 | `find-skills` | General-purpose | Finds the best skill for the work, Legion's or any installed; injected at SessionStart |
 | `brainstorming` | General-purpose | Any open-ended topic: intent, approaches, grilling, design doc, thinking lenses |
 | `skill-creator` | General-purpose | Creating and validating skills against agentskills.io |
+| `prompt-optimization` | General-purpose | User-invoked (`/legion:prompt-optimization <prompt>`): rewrites a rough prompt for Claude per Anthropic's prompting best practices, with every added assumption listed |
 | `planning` | Engineering | An approved spec to an engineering plan read from the repo: dependency-ordered vertical slices, each green, staged rollouts, pre-mortem |
 | `std-development` | Engineering | Building to a spec: criteria (new, unchanged, my calls) as checks, red before green, spec kept current |
 | `debugging` | Engineering | Root cause of a problem in software, infrastructure, or data, with a control against recurrence |

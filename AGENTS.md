@@ -37,7 +37,7 @@ Load `legion:skill-creator` and follow its workflow. Every skill conforms to the
 Legion conventions on top of the spec:
 
 - Every skill serves one of two purposes. **General-purpose**:
-  `brainstorming`, `find-skills`, `skill-creator`; each names no domain (code
+  `brainstorming`, `find-skills`, `skill-creator`, `prompt-optimization`; each names no domain (code
   included) as its default, and its domain examples belong in evals.
   **Engineering** (software, infrastructure, data, security): `planning`,
   `std-development`, `debugging`, `security-audit`; each may name engineering

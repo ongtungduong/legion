@@ -1,5 +1,26 @@
 # Changelog
 
+## 1.4.0 - 2026-11-25
+
+Includes 1.3.1, which was merged but never tagged.
+
+Added
+
+- `prompt-optimization` (general-purpose, user-invoked:
+  `/legion:prompt-optimization <prompt>`): rewrites a rough prompt into a
+  clearer prompt for Claude and returns it ready to paste, without running
+  it. It keeps everything the user asked for, lists every requirement,
+  reason, or scope change it adds as an assumption, removes outdated tricks
+  (prefill, `budget_tokens`, shouted rules, requests to write out
+  reasoning), and adds guardrails and a test plan only for reusable
+  prompts. Its `references/` hold per-model facts for Opus, Sonnet, and
+  Haiku 5.5 with Anthropic's tested system-prompt lines, guardrails
+  (hallucination, consistency, rule holding, untrusted content, prompt
+  leaks), and how to test a reusable prompt, from Anthropic's prompting and
+  test-and-evaluate docs (see `THIRD_PARTY.md`).
+- Behavioral case `prompt-optimization-keeps-user-intent` and trigger
+  prompts for the new skill.
+
 ## 1.3.1 - 2026-11-25
 
 Changed

@@ -18,9 +18,10 @@ The deliberate decisions behind the current design, with their reasons, so nobod
    work, Legion's or any other installed skill; skills are used alone or chained only when one's result is the next
    one's input.
 2. **Two purposes: general-purpose and engineering.** Since 1.3.1
-   `brainstorming`, `find-skills`, and `skill-creator` name no domain as the
-   default: deciding what to do and why, finding the skill that fits, and
-   writing a skill are the same method for a strategy, a process, or a
+   `brainstorming`, `find-skills`, `skill-creator`, and (since 1.4.0)
+   `prompt-optimization` name no domain as the default: deciding what to do
+   and why, finding the skill that fits, writing a skill, and sharpening a
+   prompt are the same method for a strategy, a process, or a
    feature, and their domain examples live in evals, never in the skill.
    `planning`, `std-development`, `debugging`, and `security-audit` serve
    engineering work (software, infrastructure, data, security); their methods
