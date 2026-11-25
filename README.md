@@ -21,6 +21,9 @@ Based on [superpowers](https://github.com/obra/superpowers), with material from
   in rounds, for any open-ended topic, through six thinking lenses.
 - **Planning** turns a settled goal into steps that each end in a checkable
   result, ordered by value, with a pre-mortem.
+- **STD development** (spec- and test-driven) writes what must stay true next to what
+  changes, makes each line a check, and shows the new checks failing before
+  the change.
 - **Debugging starts from a loop that shows the failure** (a reproduction, or
   an evidence timeline for a system you cannot re-run) before any hypothesis,
   and ends with a control against recurrence.
@@ -70,6 +73,7 @@ removes `executing-plans`, `code-review`, and `principles`. See
 |---|---|
 | Design doc | `.legion/specs/YYYY-MM-DD-<topic>-design.md` |
 | Plan | `.legion/plans/YYYY-MM-DD-<topic>.md` |
+| Spec | `.legion/specs/YYYY-MM-DD-<topic>-spec.md` |
 
 In your repo `specs/` and `plans/` are committed and the rest of `.legion/` is
 gitignored. Legion's own repo ignores all of it.
@@ -81,6 +85,7 @@ gitignored. Legion's own repo ignores all of it.
 | `find-skills` | Finds the best skill for the work, Legion's or any installed; injected at SessionStart |
 | `brainstorming` | Any open-ended topic: intent, approaches, grilling, design doc, thinking lenses |
 | `planning` | A settled goal to a step-by-step plan, ordered by value, with a pre-mortem |
+| `std-development` | Building to a spec: criteria (new, unchanged, my calls) as checks, red before green, spec kept current |
 | `debugging` | Root cause of a problem in any system, with a control against recurrence |
 | `skill-creator` | Creating and validating skills against agentskills.io |
 

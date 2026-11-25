@@ -7,8 +7,8 @@
   "plugins": [
     {
       "name": "legion",
-      "description": "General-purpose working skills for coding agents, routed by kind of work: brainstorm a direction, plan the steps, debug the root cause, create skills.",
-      "version": "1.0.1",
+      "description": "General-purpose working skills for coding agents, routed by kind of work: brainstorm a direction, plan the steps, build to a spec checks first, debug the root cause, create skills.",
+      "version": "1.1.0",
       "source": "./",
       "author": {
         "name": "Ông Tùng Dương"

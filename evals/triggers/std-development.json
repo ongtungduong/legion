@@ -1,0 +1,25 @@
+{
+  "positive": [
+    "This spec is approved, please implement it",
+    "Make slugify also handle accented letters, here is the function",
+    "Add decimal hours to parseDuration, write the tests first",
+    "Implement this design doc with TDD, red-green-refactor",
+    "Change how the export rounds totals and build it to the acceptance criteria",
+    "Build the CSV export to these acceptance criteria, tests first",
+    "Update the monthly sales query to also include refunds, and prove nothing else changed"
+  ],
+  "negative": [
+    {
+      "prompt": "Write the implementation plan for the approved spec",
+      "owner": "planning"
+    },
+    {
+      "prompt": "The test is flaky, it fails about one run in ten, find out why",
+      "owner": "debugging"
+    },
+    {
+      "prompt": "I want to add a reporting feature but I am not sure of the details yet, help me shape it",
+      "owner": "brainstorming"
+    }
+  ]
+}

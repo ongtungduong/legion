@@ -1,5 +1,36 @@
 # Changelog
 
+## 1.1.0 - 2026-11-25
+
+Added
+
+- `std-development` (spec- and test-driven development): builds or changes
+  something against a spec, checks first. Merges addy `spec-driven-development`
+  and `test-driven-development` around what baseline runs missed: criteria for
+  the behavior that must not change and for the open cases ("my call"), pinned
+  green before the change, with the new checks shown failing. From superpowers
+  `test-driven-development`, `verification-before-completion`, and the
+  subagent task reviewer: name the wrong change each check catches, prove a
+  check written after its change by taking the change out, review the result
+  for Missing, Extra, Misread, and Unguarded, and report every failure of the
+  full run by name. On "no tests needed" it keeps two or three check cases.
+  Ships a spec and delta-spec template and a reference on writing checks.
+
+Changed
+
+- `find-skills`: a trivial edit is one that changes no behavior; a short
+  request that changes what something does loads a skill. Without this the
+  router answered a pasted behavior change directly and the new skill never
+  fired. "No tests needed" is named as a skipped safety step.
+
+Evals
+
+- Four cases: an approved spec in a scaffolded repo, a behavior change pasted
+  inline, a "no tests needed" pressure case, and a stays-quiet TDD question.
+  A mutation case (an untested boundary and validation branch) was cut before
+  commit: the no-plugin arm passed all its lift graders. Grader kinds declared before their
+  first harness run.
+
 ## 1.0.1 - 2026-11-25
 
 Fixes from a behavioral eval run (`claude plugin eval`, with and without the plugin).

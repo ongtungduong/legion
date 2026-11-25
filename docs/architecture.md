@@ -17,7 +17,7 @@ The deliberate decisions behind the current design, with their reasons, so nobod
    working skills, not an SDLC chain. `find-skills` picks the skill that fits the
    work, Legion's or any other installed skill; skills are used alone or chained only when one's result is the next
    one's input.
-2. **General-purpose skills.** `brainstorming`, `planning`, and `debugging`
+2. **General-purpose skills.** `brainstorming`, `planning`, `std-development`, and `debugging`
    name no domain as the default. Code is one kind of work among strategy,
    systems, processes, and operations; domain examples live in evals, never in
    a skill.
@@ -36,9 +36,9 @@ The deliberate decisions behind the current design, with their reasons, so nobod
 
 | Source | Taken | Where |
 |---|---|---|
-| superpowers | Hook and router; brainstorm gate before building; plans with a pre-mortem and self-review | `hooks/`, `find-skills`, `brainstorming`, `planning` |
+| superpowers | Hook and router; brainstorm gate before building; plans with a pre-mortem and self-review; naming the break a check catches, proving a check by revert, reviewing for Missing and Extra | `hooks/`, `find-skills`, `brainstorming`, `planning`, `std-development` |
 | mattpocock | Grilling in rounds; debugging from a feedback loop | `brainstorming`, `debugging` |
-| addyosmani | Spec structure and boundaries; slices and sizes; trigger evals; eval case layout | `brainstorming`, `planning`, `scripts/trigger-evals.mjs`, `evals/plugin/` |
+| addyosmani | Spec structure and boundaries; slices and sizes; spec- and test-driven development; trigger evals; eval case layout | `brainstorming`, `planning`, `std-development`, `scripts/trigger-evals.mjs`, `evals/plugin/` |
 | duongot-skills | `skill-creator` and its validator | `skills/skill-creator`, `scripts/validate-spec.mjs` |
 
 Dropped on purpose: multi-harness support and the Windows hook wrapper; the
@@ -49,9 +49,9 @@ visual brainstorm companion. Skills removed in 1.0.0 are listed in
 
 | Decision | Reason |
 |---|---|
-| **Four skills behind `find-skills`**, chosen by kind of work: direction not settled (`brainstorming`), direction settled and steps needed (`planning`), cause unknown (`debugging`), skill authoring (`skill-creator`) | The kinds of work recur across every domain; the method for each does not depend on the domain |
+| **Five skills behind `find-skills`**, chosen by kind of work: direction not settled (`brainstorming`), direction settled and steps needed (`planning`), a change to build against criteria (`std-development`), cause unknown (`debugging`), skill authoring (`skill-creator`) | The kinds of work recur across every domain; the method for each does not depend on the domain |
 | No default flow; a skill offers the next one only when its result is that skill's input | A fixed chain forced steps onto work that did not need them |
-| `planning` ends at the reviewed plan; there is no execution skill | Carrying out the plan is the work itself, by the agent or by people; the plan's done-checks are what keeps it honest |
+| `planning` ends at the reviewed plan; there is no plan-execution skill. `std-development` is a method for one change (criteria, checks red, then green), used per step or alone, not a runner of plans | Carrying out the plan is the work itself; baseline runs showed the gap is not order of steps but the unchanged behavior and open cases no one wrote down |
 | `debugging` builds a loop that shows the failure: a reproduction when the system can be re-run, otherwise a symptom check plus an evidence timeline; the fix ends with a recurrence control that fits the system (test, check, monitor, procedure step) | A live outage or a process problem cannot be re-run, yet the same discipline applies |
 | **Subagents** start fresh (`general-purpose`, never `fork`) with an explicit tier defined once in `find-skills` | A pinned alias caps every later session at the model that was best when the line was written; `npm run validate` rejects a pinned `model: "<alias>"` |
 | No glossary or ADR writing in `brainstorming`; existing ones are read as facts | Rare tasks the model handles without a format; each cost description and `find-skills` space |
@@ -70,6 +70,7 @@ Each model sits where it changes a decision; there is no separate skill for them
 | `brainstorming` | Lens table; White and Green hats; grilling tree | Lens table; Black hat; grilling "Wrong if" | Lens table (systems, second-order); grilling branches | Lens table (impact vs. effort); scope cut; grilling order |
 | `planning` | Backward planning from the done state; outcome vs. output; definition of done | Pre-mortem (step 6); planning fallacy | Critical path, dependencies, Produces lines; checkpoints and rolling wave | Leverage, saying no, buffer |
 | `debugging` | Own lens table: facts vs. assumptions, minimization | Own lens table: falsification | Own lens table: delta, bottom-up, nothing is obviously fine; five-whys tree with contributing causes | Own lens table: bisection, common before rare, contain before fixing |
+| `std-development` | Criteria before change; vague goals made measurable | A new check must fail first; Unchanged checks pin what can break | Read the work, not only its tests, for rules enforced but unchecked | Least change that turns the checks green; Deferred list |
 | `skill-creator` | What the agent lacks; baseline failures are the spec | Near-miss prompts | n/a | Write only what fixes observed failures |
 
 ## Artifacts
