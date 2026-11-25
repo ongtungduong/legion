@@ -38,8 +38,9 @@ The deliberate decisions behind the current design, with their reasons, so nobod
 |---|---|---|
 | superpowers | Hook and router; brainstorm gate before building; plans with a pre-mortem and self-review; naming the break a check catches, proving a check by revert, reviewing for Missing and Extra | `hooks/`, `find-skills`, `brainstorming`, `planning`, `std-development` |
 | mattpocock | Grilling in rounds; debugging from a feedback loop | `brainstorming`, `debugging` |
-| addyosmani | Spec structure and boundaries; slices and sizes; spec- and test-driven development; trigger evals; eval case layout | `brainstorming`, `planning`, `std-development`, `scripts/trigger-evals.mjs`, `evals/plugin/` |
+| addyosmani | Spec structure and boundaries; slices and sizes; spec- and test-driven development; misuse criteria and trust-boundary checks; advisory triage and install-script risk; trigger evals; eval case layout | `brainstorming`, `planning`, `std-development`, `security-audit`, `scripts/trigger-evals.mjs`, `evals/plugin/` |
 | duongot-skills | `skill-creator` and its validator | `skills/skill-creator`, `scripts/validate-spec.mjs` |
+| cloudflare | The security audit: guidance and full-audit modes, sandbox rules, coverage ledger, hunting, adversarial validation, findings schema and validators | `skills/security-audit`, `tests/scripts/security-audit/` |
 
 Dropped on purpose: multi-harness support and the Windows hook wrapper; the
 visual brainstorm companion. Skills removed in 1.0.0 are listed in
@@ -50,6 +51,10 @@ visual brainstorm companion. Skills removed in 1.0.0 are listed in
 | Decision | Reason |
 |---|---|
 | **Five skills behind `find-skills`**, chosen by kind of work: direction not settled (`brainstorming`), direction settled and steps needed (`planning`), a change to build against criteria (`std-development`), cause unknown (`debugging`), skill authoring (`skill-creator`) | The kinds of work recur across every domain; the method for each does not depend on the domain |
+| **`security-audit` is the one domain skill**, ported from cloudflare with its procedure intact; it is guidance by default and runs the six-phase audit only on an explicit audit, pen-test, or report request | Its value is domain facts no general method supplies (attack classes, sandbox controls, the findings contract and its validators); `find-skills` ranks a specific skill first for its part. A full audit costs many agent invocations, so it never starts from a question |
+| `security-audit` writes its run outside the target by default (`~/.legion/security-audit/<repo>/run-<N>`), not in `.legion/runs/` | Findings describe exploitable flaws: they stay out of version control and out of reach of sandboxed target code. An in-repo directory is allowed only when the user picks it and version control ignores it |
+| Hardening material is split by kind of work: finding flaws in existing work goes to `security-audit`, building a change that crosses a trust boundary to `std-development` (misuse lines as New criteria, `references/trust-boundaries.md`) | The checks a change needs before it ships and the evidence an audit needs to confirm a flaw are different methods; addy's checklists were cut where they restate what the model knows or would count as findings without a crossed boundary |
+| `security-audit` verifiers run on tier `top`, hunters on `session` | A verifier decides what the user is told is confirmed; a weaker verifier than the hunter it checks turns the independent check into a formality |
 | No default flow; a skill offers the next one only when its result is that skill's input | A fixed chain forced steps onto work that did not need them |
 | `planning` ends at the reviewed plan; there is no plan-execution skill. `std-development` is a method for one change (criteria, checks red, then green), used per step or alone, not a runner of plans | Carrying out the plan is the work itself; baseline runs showed the gap is not order of steps but the unchanged behavior and open cases no one wrote down |
 | `debugging` builds a loop that shows the failure: a reproduction when the system can be re-run, otherwise a symptom check plus an evidence timeline; the fix ends with a recurrence control that fits the system (test, check, monitor, procedure step) | A live outage or a process problem cannot be re-run, yet the same discipline applies |

@@ -1,5 +1,52 @@
 # Changelog
 
+## 1.2.0 - 2026-11-25
+
+Added
+
+- `security-audit`, ported from cloudflare `security-audit-skill` with its
+  procedure intact: guidance mode for focused questions and findings (no
+  files), and a six-phase full audit on an explicit audit, pen-test, or report
+  request: reconnaissance into a deterministic coverage ledger, coverage-led
+  hunting waves with isolated subagents and coverage critics, a fresh verifier
+  per candidate, a schema-validated `findings.json` (`confirmed` with severity,
+  `needs_validation` with the exact missing fact, `rejected`), independent
+  record verification, and target-neutral reports. Target code runs only in an
+  OS-enforced sandbox; nothing live is probed. Fourteen references (core and
+  domain attack classes, phases, budget), the findings schema, and two
+  zero-dependency validators with their tests.
+
+- From addy `security-and-hardening`, split by kind of work. In
+  `security-audit`: reachability triage of package-audit and scanner reports
+  (advisory severity is a ceiling, never `audit fix --force` as the fix),
+  dependency install-time execution and typosquats, destructive operations on
+  derived paths, in-memory rate limiters across instances, and found secrets
+  cited by location only and revoked first. In `std-development`: misuse
+  lines as New criteria when a change takes less-trusted input, "trust
+  follows who wrote a value", a gate to `security-audit` for finding
+  vulnerabilities, and `references/trust-boundaries.md` (STRIDE lens, ask-first
+  changes, and checks for per-resource authorization, derived-path deletes,
+  SSRF, shared-store limits, model output, secrets, and dependencies).
+
+Changed for Legion
+
+- Subagents are fresh `general-purpose` agents on named tiers: reconnaissance
+  and coverage critics `standard`, hunters `session`, verifiers `top`.
+- Runs write to `~/.legion/security-audit/<repo>/run-<N>` by default, outside
+  the target and out of version control.
+- `find-skills`: map row for security audits and vulnerability triage.
+
+Evals
+
+- Four `security-audit` cases: an inline endpoint whose string-built SQL is a decoy (the route
+  admits only digits) and whose real flaw is a missing ownership check; a
+  "quick yes or no" pressure case whose verdict depends on a proxy fact the
+  source does not show; a pasted config with a live-looking key that must
+  not be echoed and must be revoked first; and a stays-quiet CSRF-vs-XSS
+  question.
+- `std-development-adds-misuse-criteria`: a delete-by-name endpoint whose
+  criteria must include traversal, root, and other-user refusals.
+
 ## 1.1.0 - 2026-11-25
 
 Added

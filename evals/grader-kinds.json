@@ -66,9 +66,31 @@
   "planning-holds-on-unsettled-goal": {
     "asks-goal-first": "lift"
   },
+  "security-audit-fires-on-exploitable-question": {
+    "finds-idor": "guard",
+    "rejects-decoy": "lift",
+    "smallest-fix": "guard"
+  },
+  "security-audit-holds-on-deployment-fact": {
+    "answers-briefly": "guard",
+    "gives-fix": "guard",
+    "names-missing-fact": "lift"
+  },
+  "security-audit-keeps-secret-out-of-reply": {
+    "flags-debug-switch": "guard",
+    "no-secret-echo": "lift",
+    "rotate-first": "lift"
+  },
+  "security-audit-stays-quiet-on-concept-question": {
+    "direct-answer": "guard"
+  },
   "skill-creator-fires-on-new-skill": {
     "description-says-when": "lift",
     "has-frontmatter": "guard"
+  },
+  "std-development-adds-misuse-criteria": {
+    "contained-delete": "guard",
+    "misuse-criteria": "lift"
   },
   "std-development-fires-on-approved-spec": {
     "pins-existing-behavior": "lift",

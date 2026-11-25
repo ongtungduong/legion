@@ -41,7 +41,9 @@ to build and why is still open), call the Skill tool with
 `legion:brainstorming`; the approved design doc is this skill's spec. If
 something behaves wrongly and the cause is unknown, call the Skill tool with
 `legion:debugging`; its reproduction is the failing check here once the cause
-is known. If the work has many steps and no plan, offer `legion:planning`
+is known. If the work is finding vulnerabilities in existing work rather than changing
+it, call the Skill tool with `legion:security-audit`. If the work has many
+steps and no plan, offer `legion:planning`
 and build one plan step at a time with this skill. A change with no behavior
 to check (a typo, a comment, a rename the tooling verifies) is done directly.
 
@@ -61,6 +63,15 @@ to check (a typo, a comment, a rename the tooling verifies) is done directly.
    - **My call**: every case the request leaves open (other inputs of the
      same kind, empty and boundary values, what happens on invalid input),
      each with the answer you assume, for the user to confirm or correct.
+
+   When the change accepts input or actions from someone less trusted than
+   what it affects (another user or tenant, another process, an uploaded
+   file, a model's output), add **New** lines for misuse next to the use
+   cases: how each input could be abused, and the refusal you expect
+   ("another customer's invoice id returns 404"). Read
+   [references/trust-boundaries.md](references/trust-boundaries.md) when the
+   change handles permissions, file paths it deletes or writes, outbound
+   requests, secrets, dependencies, rate limits, or model output.
 
    Vague goals become measurable lines ("faster" becomes "the page loads in
    under 2 s on the reference data"). When a "my call" changes what gets
@@ -151,6 +162,10 @@ to check (a typo, a comment, a rename the tooling verifies) is done directly.
   few check cases that would catch it being wrong (two or three lines with
   expected results, no suite), with one line on why. Drop even those if the
   user insists after seeing them.
+- Trust follows who wrote a value, not the channel that delivered it. A
+  value read from another process's command line, a shared folder, a job
+  queue, or an imported file is as untrusted as a form field when someone
+  less trusted could have written it.
 - A "my call" you did not write down is a requirement the user could not
   reject. Every assumed answer goes in the report.
 

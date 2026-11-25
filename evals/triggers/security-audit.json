@@ -1,0 +1,26 @@
+{
+  "positive": [
+    "Security audit this codebase and write the report",
+    "Find security vulnerabilities in ./src",
+    "Pen-test the code of our API service, output to ~/audits/api",
+    "Is this endpoint exploitable? It builds the SQL query from the id parameter",
+    "Review this OAuth callback handler for auth bypass and CSRF",
+    "A scanner flagged SSRF in the image proxy, triage it and rate the severity",
+    "Check our LLM agent's tool calls for prompt injection",
+    "Run another security audit to cover the gaps from the last run"
+  ],
+  "negative": [
+    {
+      "prompt": "The login endpoint returns 500 since yesterday's deploy, find out why",
+      "owner": "debugging"
+    },
+    {
+      "prompt": "Add input validation to the signup form, tests first",
+      "owner": "std-development"
+    },
+    {
+      "prompt": "Write the step-by-step plan to roll out the new authentication service",
+      "owner": "planning"
+    }
+  ]
+}
