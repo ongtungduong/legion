@@ -22,8 +22,10 @@ from [cloudflare/security-audit-skill](https://github.com/cloudflare/security-au
   directly; skills are used alone or chained only when the work calls for it.
 - **Brainstorming in two methods:** compare approaches, then grill the design
   in rounds, for any open-ended topic, through six thinking lenses.
-- **Planning** turns a settled goal into steps that each end in a checkable
-  result, ordered by value, with a pre-mortem.
+- **Planning** turns an approved spec into an engineering plan read from the
+  repo: its own commands, real paths, and deploy style; dependency-ordered
+  vertical slices that each leave the build green; staged rollouts with a
+  rollback where old and new versions coexist; and a pre-mortem.
 - **STD development** (spec- and test-driven) writes what must stay true next to what
   changes, makes each line a check, and shows the new checks failing before
   the change.
@@ -94,7 +96,7 @@ gitignored. Legion's own repo ignores all of it.
 |---|---|
 | `find-skills` | Finds the best skill for the work, Legion's or any installed; injected at SessionStart |
 | `brainstorming` | Any open-ended topic: intent, approaches, grilling, design doc, thinking lenses |
-| `planning` | A settled engineering goal to a step-by-step plan, ordered by value, with a pre-mortem |
+| `planning` | An approved spec to an engineering plan read from the repo: dependency-ordered vertical slices, each green, staged rollouts, pre-mortem |
 | `std-development` | Building to a spec: criteria (new, unchanged, my calls) as checks, red before green, spec kept current |
 | `debugging` | Root cause of a problem in software, infrastructure, or data, with a control against recurrence |
 | `security-audit` | Security guidance, or a full audit: coverage ledger, isolated hunters, independent verifiers, validated findings and reports |

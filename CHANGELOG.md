@@ -6,24 +6,31 @@ Includes 1.2.1, which was merged but never tagged.
 
 Changed
 
-- `std-development` (1.2.1): new criteria are built one slice at a time
-  (check red, change green, next), with every Unchanged check pinned first;
-  the spec-blind subagent writes each slice's checks. The turn ends after a
-  spec that needs approval is presented. The final run covers the project's
-  other merge gates, and new warnings or leftover debug output count. One
-  spec per independently shippable capability, with a build-order list.
-  `writing-checks` observes through the caller's interface, not storage. Two
-  eval cases: `std-development-slices-feature-spec` and
-  `std-development-stops-for-spec-approval`.
 - Legion is repositioned: `brainstorming` is the one general-purpose skill;
   `planning`, `std-development`, `debugging`, `security-audit`, and
   `skill-creator` serve engineering work (software, infrastructure, data,
-  security). The `planning`, `debugging`, and `std-development` descriptions
-  and bodies drop non-engineering scope (events, offices, business
-  processes); `find-skills` routes a non-engineering plan or problem to
-  `brainstorming` while open and otherwise to no Legion skill; `brainstorming`
-  offers `planning` only for engineering work. `AGENTS.md`, `README.md`,
-  `docs/architecture.md`, and the manifests say the same.
+  security). The `debugging` and `std-development` descriptions and bodies
+  drop non-engineering scope (offices, business processes); `find-skills`
+  routes a non-engineering plan or problem to `brainstorming` while open and
+  otherwise to no Legion skill; `brainstorming` offers `planning` only for
+  engineering work. `AGENTS.md`, `README.md`, `docs/architecture.md`, and the
+  manifests say the same.
+- `planning` reads the codebase before planning (the repo's own commands,
+  the closest existing feature as the pattern, the standing bar from its
+  contributing docs and CI, deploy style and consumers, unfinished plans
+  that must not be overwritten), orders steps by dependency with shared
+  contracts first, keeps every step compiling with its checks green, sizes
+  steps by files touched with addy's split rules, marks parallel streams,
+  and places a checkpoint every two or three steps. Steps name their files,
+  the failing test they start from, the verification command, and a
+  rollback. New `references/rollout-safety.md` (expand, migrate, contract;
+  flags; versioned contracts) for changes old and new versions must
+  survive; three engineering lenses (working state, contract first,
+  reversible rollout). Adapted from addy `planning-and-task-breakdown`.
+- `find-skills`: the `planning` row names engineering work, and the
+  `brainstorming` row claims a bare "plan X" whose goal or design was never
+  agreed, since the narrower `planning` row no longer catches it for the
+  gate (`planning-holds-on-unsettled-goal`: 0/3 before the fix, 3/3 after).
 - `find-skills` is lighter in every session: "Skills on disk" (used only when
   the user asks for a skill) moved to `references/skills-on-disk.md`, and the
   session-start hook now names the skill's folder so the reference can be
@@ -33,16 +40,35 @@ Changed
   planning sections moved to `references/full-audit-setup.md`, read before
   reconnaissance in full audit mode. Universal execution safety stays in
   `SKILL.md`, since it applies to both modes.
-- Evals: three new cases with lift graders declared before their first run:
+- `std-development` (1.2.1): new criteria are built one slice at a time
+  (check red, change green, next), with every Unchanged check pinned first;
+  the spec-blind subagent writes each slice's checks. The turn ends after a
+  spec that needs approval is presented. The final run covers the project's
+  other merge gates, and new warnings or leftover debug output count. One
+  spec per independently shippable capability, with a build-order list.
+  `writing-checks` observes through the caller's interface, not storage.
+
+Evals
+
+- New `planning-reads-repo-constraints` (fixture: `npm run check`, rolling
+  deploys, numbered migrations) and `planning-keeps-unfinished-plan`
+  (fixture: an unfinished plan in the file the repo names). The baseline
+  without the plugin passed every grader of the first (3/3) and the
+  overwrite grader of the second (3/3), so those are guards; a step ending
+  red appeared in 1 of 3 baseline runs.
+- `planning-fires-on-settled-goal` (conference) became
+  `planning-stays-quiet-on-event-plan`; `planning-holds-on-unsettled-goal`
+  now asks about a monolith-to-microservices move.
+- `debugging-fires-on-unknown-cause` now uses an engineering prompt (a late
+  nightly pipeline); its former prompt became the near-miss case
+  `debugging-stays-quiet-on-business-process`.
+- Three new cases with lift graders declared before their first run:
   `find-skills-combines-std-with-legacy-skill` (the Legion method plus a
   project legacy-code skill), `debugging-keeps-every-contributing-cause` (the
   user has already named one culprit), and `skill-creator-fixes-existing-skill`
   (a review that catches spec and quality defects).
-- Evals: `planning-fires-on-settled-goal`, `planning-holds-on-unsettled-goal`,
-  and `debugging-fires-on-unknown-cause` now use engineering prompts (a
-  Kubernetes move, a cloud migration, a late nightly pipeline). Their former
-  prompts become the near-miss cases `planning-stays-quiet-on-event-plan` and
-  `debugging-stays-quiet-on-business-process`.
+- 1.2.1: `std-development-slices-feature-spec` and
+  `std-development-stops-for-spec-approval`.
 
 ## 1.2.0 - 2026-11-25
 

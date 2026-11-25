@@ -1,16 +1,16 @@
 # Behavioral evals
 
-Cases live in `evals/plugin/` (37; `prompt.md` plus `graders/`, and `case.yaml`
+Cases live in `evals/plugin/` (38; `prompt.md` plus `graders/`, and `case.yaml`
 plus `fixture.sh` for a case that scaffolds a project). Each skill has a firing
 case, a stays-quiet case, and cases whose lift graders measure what the skill
 is for: the reply asks for the purpose before proposing a format
 (`brainstorming-fires-on-open-topic`), a conflict found by reading the code's
 other callers surfaces before the recommendation (`brainstorming-ab-hidden-conflict`),
 an open decision surfaces before anything is built under pressure
-(`brainstorming-holds-under-build-pressure`), a plan has done-checks, a pre-mortem,
-and is worked back from the date (`planning-fires-on-settled-goal`) and is not
-written for an unsettled goal (`planning-holds-on-unsettled-goal`), planning and
-debugging stay quiet on non-engineering work (`planning-stays-quiet-on-event-plan`,
+(`brainstorming-holds-under-build-pressure`), a plan is not written for an
+unsettled goal (`planning-holds-on-unsettled-goal`) and every step of it ends
+green (`planning-keeps-unfinished-plan`), planning and debugging stay quiet on
+non-engineering work (`planning-stays-quiet-on-event-plan`,
 `debugging-stays-quiet-on-business-process`), every
 contributing cause of an incident gets its own control
 (`debugging-finds-contributing-causes`), and every cause is kept when the user has
@@ -84,14 +84,14 @@ claude plugin eval . --no-publish --model sonnet --judge-model sonnet --scaffold
 `--threshold 0.66` because the CLI compares 2/3 = 0.6667 with 0.67 and fails it;
 `-j 3` because concurrency defaults to 1; `--judge-model sonnet` because the
 default judge is haiku, which the CLI's own authoring guide calls too small for
-rubric graders; `--scaffold` because eight cases build their workspace from a
+rubric graders; `--scaffold` because ten cases build their workspace from a
 `fixture.sh` this repo wrote; `--allow-tools Write Edit` so the cases that list
 those tools can use them (the scaffolds run in a temp directory), and the two
 `Bash` patterns so `std-development-fires-on-approved-spec` can run
 its tests. The CLI refuses every run that grants `Bash` when it cannot read a
 credentials file it must exclude from the sandbox (`EACCES`); on such a machine
-run that case alone, or drop the `Bash` patterns and read its graders as not run. The run is 37
-cases x 3 runs x 2 arms = 222 agent runs plus the judges; a hit ceiling exits 2
+run that case alone, or drop the `Bash` patterns and read its graders as not run. The run is 38
+cases x 3 runs x 2 arms = 228 agent runs plus the judges; a hit ceiling exits 2
 with partial results, so re-run the missing cases with `--case`. Run it as one line. At 3 runs one run
 moves a score by 0.33: treat a lone +0.33 as noise and re-run at 5. Record the
 model, Claude Code version, and cost for every run.
