@@ -77,6 +77,10 @@
     "real-paths": "guard",
     "rolling-deploy-safe": "guard"
   },
+  "prompt-optimization-keeps-user-intent": {
+    "assumptions-listed": "lift",
+    "keeps-contract": "guard"
+  },
   "security-audit-fires-on-exploitable-question": {
     "finds-idor": "guard",
     "rejects-decoy": "lift",
