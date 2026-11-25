@@ -17,14 +17,17 @@ The deliberate decisions behind the current design, with their reasons, so nobod
    not an SDLC chain. `find-skills` picks the skill that fits the
    work, Legion's or any other installed skill; skills are used alone or chained only when one's result is the next
    one's input.
-2. **One general-purpose skill, the rest for engineering.** Since 1.3.0 only
-   `brainstorming` names no domain as the default: deciding what to do and why
-   is the same method for a strategy, a process, or a feature, and its domain
-   examples live in evals, never in the skill. `planning`, `std-development`,
-   `debugging`, `security-audit`, and `skill-creator` serve engineering work
-   (software, infrastructure, data, security); their methods lean on tests,
-   builds, deploys, and queries, and a generic version of each was weaker at
-   both. They name no single language or stack as the default.
+2. **Two purposes: general-purpose and engineering.** Since 1.3.1
+   `brainstorming`, `find-skills`, and `skill-creator` name no domain as the
+   default: deciding what to do and why, finding the skill that fits, and
+   writing a skill are the same method for a strategy, a process, or a
+   feature, and their domain examples live in evals, never in the skill.
+   `planning`, `std-development`, `debugging`, and `security-audit` serve
+   engineering work (software, infrastructure, data, security); their methods
+   lean on tests, builds, deploys, and queries, and a generic version of each
+   was weaker at both. They name no single language or stack as the default.
+   A new skill's purpose is the maintainer's call, asked before it is
+   written.
 3. **Light skill finding, not enforcement.** A skill loads only when the work
    matches; a loaded skill is never softened.
 4. **User instructions win** over every skill, except that a first request to

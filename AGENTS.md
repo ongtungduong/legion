@@ -36,11 +36,13 @@ Load `legion:skill-creator` and follow its workflow. Every skill conforms to the
 
 Legion conventions on top of the spec:
 
-- `brainstorming` is the one general-purpose skill: it names no domain (code
-  included) as its default, and its domain examples belong in evals. Every
-  other skill serves engineering work (software, infrastructure, data,
-  security): it may name engineering artifacts (tests, builds, deploys,
-  queries) but no single language or stack as its default.
+- Every skill serves one of two purposes. **General-purpose**:
+  `brainstorming`, `find-skills`, `skill-creator`; each names no domain (code
+  included) as its default, and its domain examples belong in evals.
+  **Engineering** (software, infrastructure, data, security): `planning`,
+  `std-development`, `debugging`, `security-audit`; each may name engineering
+  artifacts (tests, builds, deploys, queries) but no single language or stack
+  as its default.
 - Everything is in English: skill content and docs for humans (`README.md`, `docs/`).
 - Cross-skill instructions say "Call the Skill tool with `legion:<name>`".
 - Subagents start with a fresh context and an explicitly named tier
@@ -60,6 +62,10 @@ Legion conventions on top of the spec:
   human-facing description.
 
 ## Adding or renaming a skill
+
+- [ ] Its purpose, general-purpose or engineering, confirmed with the
+      maintainer before writing it, never inferred from the draft, and added
+      to the purpose list under "Legion conventions"
 
 - [ ] `skills/<name>/` written with `legion:skill-creator`
 - [ ] Row in the map in `skills/find-skills/SKILL.md`

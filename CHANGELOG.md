@@ -1,5 +1,19 @@
 # Changelog
 
+## 1.3.1 - 2026-11-25
+
+Changed
+
+- Skills now serve one of two purposes. General-purpose: `brainstorming`,
+  `find-skills`, and `skill-creator`. Engineering: `planning`,
+  `std-development`, `debugging`, and `security-audit`. `skill-creator`
+  moves from engineering to general-purpose; `find-skills` names both groups
+  and routes a skill for any kind of work to `skill-creator`. `AGENTS.md`,
+  `README.md`, `docs/architecture.md`, and the manifests say the same; the README skill
+  table gains a Purpose column.
+- `AGENTS.md`: adding a skill starts by confirming its purpose with the
+  maintainer.
+
 ## 1.3.0 - 2026-11-25
 
 Includes 1.2.1, which was merged but never tagged.
