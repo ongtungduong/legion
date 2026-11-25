@@ -1,7 +1,7 @@
 # Planning lenses in depth
 
 The procedure behind each lens in SKILL.md. Run the lens in front of you, not
-all twelve; each stops where it no longer changes a step, an order, or an
+all fifteen; each stops where it no longer changes a step, an order, or an
 estimate.
 
 ## Outcome and backward
@@ -32,12 +32,57 @@ estimate.
 
 1. For every milestone and step, write the condition under which someone else
    would accept it as done, with what "passed" looks like.
-2. Replace activity words ("optimize", "prepare", "research", "coordinate",
+2. Replace activity words ("optimize", "prepare", "refactor", "wire up",
    "improve") with the result and its threshold.
 3. Where a criterion depends on a judgment, name who judges and against what.
+4. Above the per-step criteria sits the project's standing bar (what its
+   contributing docs, agent instructions, and CI require of every change).
+   Copy it once into Global constraints; every step inherits it, so steps
+   do not repeat it.
 
+- Acceptance criteria answer "did we build this?"; the standing bar answers
+  "is it finished to this project's standard?". A step needs both.
 - A done criterion nobody can check is a hope; it surfaces at the end, when it
   is most expensive.
+
+## Engineering
+
+### Working state
+
+1. After every step the system builds, the project's check command passes,
+   and the step could merge and deploy alone.
+2. A step that leaves something broken until a later step lands is
+   reordered (the later part first), split differently, or put behind a
+   flag that keeps the unfinished path off.
+3. Name the command that proves it in the step, taken from the repo, with
+   the expected result.
+
+- "Tests will pass once step 5 is in" means steps 1 to 4 cannot be
+  reviewed, merged, or rolled back on their own.
+
+### Contract first
+
+1. From the dependency graph, find the interfaces several steps share: a
+   schema, types, an API or event shape, a file format, a function
+   signature.
+2. Decide each one in an early, small step whose Produces line states it
+   exactly; later steps build against that line, not against a guess.
+3. After the contract step, slices that only depend on it can run in
+   parallel (separate people, agents, or PRs); mark them.
+
+- Two parallel streams that each "define the API as needed" produce two
+  APIs.
+
+### Reversible rollout
+
+1. For each step, ask what still runs or is still stored in the old shape
+   while the change ships (references/rollout-safety.md).
+2. Where something does, stage the change (expand, migrate, switch,
+   contract) or put it behind a flag, one deploy per stage.
+3. Give each staged step its rollback and the signal that says it is safe
+   to go on.
+
+- Redeploying old code does not undo data written in a new shape.
 
 ## Prioritization and trade-off
 

@@ -12,7 +12,7 @@ copied; the table says what came from where.
 | `skills/find-skills` | superpowers `using-superpowers`, addy `using-agent-skills` |
 | `skills/brainstorming` | superpowers `brainstorming`; addy `spec-driven-development` (spec sections, boundaries) |
 | `skills/brainstorming/references/grilling.md` | mattpocock `grilling` |
-| `skills/planning` | superpowers `writing-plans`; addy `planning-and-task-breakdown` (vertical slices, sizing) |
+| `skills/planning` | superpowers `writing-plans`; addy `planning-and-task-breakdown` (read-only planning, dependency graph, vertical slices, file-count sizing and split rules, checkpoints every few steps, never overwriting an unfinished plan, tracker as task target, parallelization) and its `shared/definition-of-done.md` (the project's standing bar, read from the repo rather than restated) |
 | `evals/plugin/` | addy `evals/plugin` (case layout and grader patterns) |
 | `.github/workflows/ci.yml` | addy `.github/workflows/test-plugin-install.yml` (reduced to `npm test` and shellcheck) |
 | `skills/std-development` | addy `spec-driven-development` (criteria before work, boundaries, Deferred list, delta specs, keeping the spec alive); addy `test-driven-development` (red-green-refactor, discovering the project's commands, test levels, real over mocks, anti-patterns). Merged and rewritten around the Unchanged and My-call criteria that baseline runs missed. superpowers `test-driven-development` and its `writing-good-tests.md` (name the break, mutation pass, change detectors, stand-in rules, hard-to-test as a design signal), `verification-before-completion` (revert to prove a check, every failure reported), `subagent-driven-development/task-reviewer-prompt.md` (Missing, Extra, Misunderstood) |

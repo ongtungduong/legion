@@ -55,16 +55,19 @@
     "renamed": "guard"
   },
   "planning-fires-on-approved-spec": {
-    "covers-spec": "guard"
-  },
-  "planning-fires-on-settled-goal": {
-    "done-checks": "lift",
-    "no-invented-values": "lift",
-    "pre-mortem": "lift",
-    "worked-back-from-date": "lift"
+    "covers-spec": "lift"
   },
   "planning-holds-on-unsettled-goal": {
     "asks-goal-first": "lift"
+  },
+  "planning-keeps-unfinished-plan": {
+    "green-every-step": "lift",
+    "keeps-unfinished-plan": "lift"
+  },
+  "planning-reads-repo-constraints": {
+    "project-check-command": "guard",
+    "real-paths": "guard",
+    "rolling-deploy-safe": "guard"
   },
   "security-audit-fires-on-exploitable-question": {
     "finds-idor": "guard",

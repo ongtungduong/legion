@@ -83,8 +83,8 @@ The Legion skills, by kind of work. Any other listed skill is a candidate too.
 
 | Situation | Skill |
 |---|---|
-| Any open-ended topic whose direction is not settled: what to do and why, options and a recommendation, "help me think this through"; "grill me" or stress-test an idea; first principles, inversion, six hats, systems, second-order, impact/effort | `legion:brainstorming` |
-| A settled goal, approved design, or clear requirements that need a detailed step-by-step plan to get the work done | `legion:planning` |
+| Any open-ended topic, in any domain, whose direction is not settled: what to do and why, including "plan X" when no goal, spec, or design for X was agreed, options and a recommendation, "help me think this through"; "grill me" or stress-test an idea; first principles, inversion, six hats, systems, second-order, impact/effort | `legion:brainstorming` |
+| An approved spec, design, or clear requirements for engineering work (a feature, refactor, rollout, infrastructure or data change) that needs a plan of steps ahead of writing code | `legion:planning` |
 | Building to a spec or changing what something does: the new behavior and the behavior that must not change as checks, red before green; "TDD", "tests first" | `legion:std-development` |
 | Security of code or a system: an audit or pen test, "find vulnerabilities", whether something is exploitable, triage or severity of a reported vulnerability | `legion:security-audit` |
 | Something in a system behaves wrongly and the cause is unknown: an error, failure, outage, mismatch, slowdown, or recurring problem; "what broke?", "why is this happening?" | `legion:debugging` |

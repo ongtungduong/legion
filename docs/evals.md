@@ -1,15 +1,15 @@
 # Behavioral evals
 
-Cases live in `evals/plugin/` (25; `prompt.md` plus `graders/`, and `case.yaml`
+Cases live in `evals/plugin/` (32; `prompt.md` plus `graders/`, and `case.yaml`
 plus `fixture.sh` for a case that scaffolds a project). Each skill has a firing
 case, a stays-quiet case, and cases whose lift graders measure what the skill
 is for: the reply asks for the purpose before proposing a format
 (`brainstorming-fires-on-open-topic`), a conflict found by reading the code's
 other callers surfaces before the recommendation (`brainstorming-ab-hidden-conflict`),
 an open decision surfaces before anything is built under pressure
-(`brainstorming-holds-under-build-pressure`), a plan has done-checks, a pre-mortem,
-and is worked back from the date (`planning-fires-on-settled-goal`) and is not
-written for an unsettled goal (`planning-holds-on-unsettled-goal`), every
+(`brainstorming-holds-under-build-pressure`), a plan is not written for an
+unsettled goal (`planning-holds-on-unsettled-goal`) and every step of it ends
+green (`planning-keeps-unfinished-plan`), every
 contributing cause of an incident gets its own control
 (`debugging-finds-contributing-causes`). `find-skills` has cases for combining a
 method with a project skill, following the project's choice between two skills
