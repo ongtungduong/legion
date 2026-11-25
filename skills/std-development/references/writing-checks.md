@@ -70,10 +70,18 @@ Difficulty is a finding about the work, not only about the check:
 
 ## Check the outcome, not the steps
 
-Assert on what the work produces (the returned value, the stored row, the
-rendered text), not on which internal calls it made. A check that asserts
-"the query contained ORDER BY" breaks on a harmless refactor and passes on a
-wrong sort; a check that the first result is the newest does neither.
+Assert on what the work produces, observed through the interface its
+callers use (the returned value, the record read back the way a caller reads
+it, the rendered text), not on which internal calls it made. A check that
+asserts "the query contained ORDER BY" breaks on a harmless refactor and
+passes on a wrong sort; a check that the first result is the newest does
+neither.
+
+The same holds for state: a check that reads the table behind `createUser`
+breaks when the storage changes and says nothing about whether a caller can
+get the user back; `getUser(created.id)` returning the name does. Read the
+store directly only when the criterion is about the store itself (the row
+survives a restart, the migration filled the new column).
 
 ## One criterion per check
 
