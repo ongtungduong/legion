@@ -109,7 +109,14 @@
     "change-delivered": "guard",
     "cheap-check-kept": "protocol"
   },
+  "std-development-slices-feature-spec": {
+    "builds-in-slices": "protocol",
+    "suite-green": "guard"
+  },
   "std-development-stays-quiet-on-tdd-question": {
     "direct-answer": "guard"
+  },
+  "std-development-stops-for-spec-approval": {
+    "stops-for-approval": "protocol"
   }
 }

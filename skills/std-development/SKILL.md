@@ -79,17 +79,27 @@ to check (a typo, a comment, a rename the tooling verifies) is done directly.
    and proceed. Where the criteria live depends on size (table below); when
    the spec is a file, copy [assets/spec-template.md](assets/spec-template.md),
    which also has the delta form for changing work that already shipped.
-3. **Turn every line into a check, then run them before changing anything.**
-   Read [references/writing-checks.md](references/writing-checks.md) when
+3. **Turn every line into a check: the unchanged ones all at once, the new
+   ones one slice at a time.** Read
+   [references/writing-checks.md](references/writing-checks.md) when
    choosing the level of a check or deciding whether to fake a dependency.
    Before writing each check, name the wrong change to the work that would
    make it fail (a `>` for `>=`, a dropped guard, a default return). A check
    you cannot name one for catches nothing; one that only a deliberate
    redesign would fail (a constant's value, exact wording) catches no bug.
-   - **Unchanged** checks must pass on the current work. One that fails means
+   - **Unchanged** checks come first, all of them, and must pass on the
+     current work before anything changes. They describe behavior that
+     exists, so writing them up front costs nothing. One that fails means
      the work does not behave as you thought: stop and report it before
      changing anything.
-   - **New** checks must fail, for the expected reason (the behavior is
+   - **New** checks (and the "my call" lines) go one criterion at a time
+     when there are several: write the check for the next criterion, run it
+     red, make it green (step 4), then write the next. A batch of new checks
+     written before any of them is built pins the interface you imagine,
+     not the one the first slices produce; the later checks then get bent to
+     fit, or test a shape nobody calls. With a single criterion, the slice
+     is the whole change.
+   - Each new check must fail, for the expected reason (the behavior is
      missing, not a typo in the check). A new check that passes before the
      change proves nothing: fix the check or find out why the behavior
      already exists.
@@ -99,16 +109,19 @@ to check (a typo, a comment, a rename the tooling verifies) is done directly.
      ever agreed with the work.
    - Where nothing can run (code pasted inline, no environment, no access),
      write the checks with their expected results and say they were not run.
-4. **Make the least change that turns the new checks green.** Work one
-   criterion at a time when there are several, running the focused checks
-   after each. Anything the criteria do not ask for is out of scope, however
-   small; an idea that comes up goes to the spec's Deferred list, not into
-   the work.
+4. **Make the least change that turns the current slice's check green**,
+   then run the focused checks so far (every Unchanged check and the new
+   ones already built) before starting the next slice. Anything the criteria
+   do not ask for is out of scope, however small; an idea that comes up goes
+   to the spec's Deferred list, not into the work.
 5. **Refactor with the checks green.** Improve names, remove duplication,
    simplify; run the checks after each step, and change no behavior here.
-6. **Verify and report.** Run the project's full check suite, not only the
-   focused checks. Then review the result against the spec, not against your
-   memory of it:
+6. **Verify and report.** Run the project's full check suite and the other
+   gates it accepts work through (its build, linters, validators, whatever
+   its CI or review runs), not only the focused checks. A new warning in
+   their output is a failure to fix or report, and debug output or
+   temporary scaffolding left in the work is Extra. Then review the result
+   against the spec, not against your memory of it:
    - **Missing:** a criterion with no passing check, or claimed without one.
    - **Extra:** anything the work now does that no criterion asks for.
    - **Misread:** a check that passes but tests a different reading of the
@@ -124,7 +137,13 @@ to check (a typo, a comment, a rename the tooling verifies) is done directly.
 |---|---|---|
 | One behavior change | The three groups in your reply | Proceed; the "my call" lines are the user's to correct |
 | A feature or several changes | A spec file in `.legion/specs/YYYY-MM-DD-<topic>-spec.md` (unless the project keeps specs elsewhere or uses its own spec tool) | The user approves the spec, unless it is an already approved design doc or plan step |
+| Several capabilities, each of which could ship and be checked without the others | One spec per capability, and a short list of them in build order, each after what it depends on | The user approves the list, then each spec as above; offer `legion:planning` when the order needs more than a list |
 | Change to shipped work that has a spec | A delta spec next to the original | Approval as above; after the change ships, fold it into the original spec |
+
+When a spec needs approval, present it with its "my call" lines and end
+the turn; build in a later turn, after the user approves. Building in the
+same turn makes the approval a formality: every "my call" the user would
+have corrected is already in the work.
 
 ## Keeping the spec true
 
@@ -136,8 +155,10 @@ to check (a typo, a comment, a rename the tooling verifies) is done directly.
 - For a feature-sized change, a check written by someone who has not seen
   the implementation tests the spec rather than the code. When that matters,
   dispatch a fresh `general-purpose` subagent on tier `session` with only the
-  spec and the paths to the existing checks, and have it write the new
-  checks; then run them red before changing the work.
+  spec, the criterion of the next slice, and the paths to the existing
+  checks, and have it write that slice's checks; run them red, then build
+  the slice. Continue the same subagent for later slices, so it keeps the
+  spec without ever seeing your implementation.
 
 ## Gotchas
 
