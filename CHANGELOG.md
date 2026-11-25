@@ -1,5 +1,41 @@
 # Changelog
 
+## 1.3.0 - 2026-11-25
+
+Changed
+
+- `planning` serves engineering work only; `brainstorming`, `debugging`, and
+  `std-development` stay general-purpose. A non-engineering plan is left to
+  the model (`planning-stays-quiet-on-event-plan`).
+- `planning` reads the codebase before planning (the repo's own commands,
+  the closest existing feature as the pattern, the standing bar from its
+  contributing docs and CI, deploy style and consumers, unfinished plans
+  that must not be overwritten), orders steps by dependency with shared
+  contracts first, keeps every step compiling with its checks green, sizes
+  steps by files touched with addy's split rules, marks parallel streams,
+  and places a checkpoint every two or three steps. Steps name their files,
+  the failing test they start from, the verification command, and a
+  rollback. New `references/rollout-safety.md` (expand, migrate, contract;
+  flags; versioned contracts) for changes old and new versions must
+  survive; three engineering lenses (working state, contract first,
+  reversible rollout). Adapted from addy `planning-and-task-breakdown`.
+- `find-skills`: the `planning` row names engineering work, and the
+  `brainstorming` row claims a bare "plan X" whose goal or design was never
+  agreed, since the narrower `planning` row no longer catches it for the
+  gate (`planning-holds-on-unsettled-goal`: 0/3 before the fix, 3/3 after).
+
+Evals
+
+- New `planning-reads-repo-constraints` (fixture: `npm run check`, rolling
+  deploys, numbered migrations) and `planning-keeps-unfinished-plan`
+  (fixture: an unfinished plan in the file the repo names). The baseline
+  without the plugin passed every grader of the first (3/3) and the
+  overwrite grader of the second (3/3), so those are guards; a step ending
+  red appeared in 1 of 3 baseline runs.
+- `planning-fires-on-settled-goal` (conference) became
+  `planning-stays-quiet-on-event-plan`; `planning-holds-on-unsettled-goal`
+  now asks about a monolith-to-microservices move.
+
 ## 1.2.0 - 2026-11-25
 
 Added
