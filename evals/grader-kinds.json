@@ -44,22 +44,22 @@
     "alert-is-a-cause": "lift",
     "beyond-disk-full": "lift"
   },
-  "find-skills-combines-method-and-project-skill": {
+  "finding-skills-combines-method-and-project-skill": {
     "cause-found": "guard",
     "project-skill-fired": "guard"
   },
-  "find-skills-combines-std-with-legacy-skill": {
+  "finding-skills-combines-stdd-with-legacy-skill": {
     "house-seams": "guard",
     "pins-current-total": "lift"
   },
-  "find-skills-follows-project-skill-choice": {
+  "finding-skills-follows-project-skill-choice": {
     "house-format": "guard",
     "project-skill-fired": "guard"
   },
-  "find-skills-stays-quiet-on-question": {
+  "finding-skills-stays-quiet-on-question": {
     "direct-answer": "guard"
   },
-  "find-skills-stays-quiet-on-trivial-edit": {
+  "finding-skills-stays-quiet-on-trivial-edit": {
     "renamed": "guard"
   },
   "planning-fires-on-approved-spec": {
@@ -81,89 +81,89 @@
     "real-paths": "guard",
     "rolling-deploy-safe": "guard"
   },
-  "prompt-optimization-keeps-user-intent": {
+  "optimizing-prompts-keeps-user-intent": {
     "assumptions-listed": "lift",
     "keeps-contract": "guard"
   },
-  "security-audit-fires-on-exploitable-question": {
+  "auditing-security-fires-on-exploitable-question": {
     "finds-idor": "guard",
     "rejects-decoy": "lift",
     "smallest-fix": "guard"
   },
-  "security-audit-holds-on-deployment-fact": {
+  "auditing-security-holds-on-deployment-fact": {
     "answers-briefly": "guard",
     "gives-fix": "guard",
     "names-missing-fact": "lift"
   },
-  "security-audit-keeps-secret-out-of-reply": {
+  "auditing-security-keeps-secret-out-of-reply": {
     "flags-debug-switch": "guard",
     "no-secret-echo": "lift",
     "rotate-first": "lift"
   },
-  "security-audit-stays-quiet-on-concept-question": {
+  "auditing-security-stays-quiet-on-concept-question": {
     "direct-answer": "guard"
   },
-  "skill-creator-fires-on-new-skill": {
+  "creating-skills-fires-on-new-skill": {
     "description-says-when": "lift",
     "has-frontmatter": "guard"
   },
-  "skill-creator-fixes-existing-skill": {
+  "creating-skills-fixes-existing-skill": {
     "missing-reference": "guard",
     "name-matches-dir": "guard",
     "rules-have-reasons": "lift",
     "yaml-colon": "lift"
   },
-  "std-development-adds-misuse-criteria": {
+  "implementing-stdd-adds-misuse-criteria": {
     "contained-delete": "guard",
     "misuse-criteria": "lift"
   },
-  "std-development-fires-on-approved-spec": {
+  "implementing-stdd-fires-on-approved-spec": {
     "pins-existing-behavior": "lift",
     "red-before-green": "guard",
     "suite-green": "guard"
   },
-  "std-development-fires-on-inline-change": {
+  "implementing-stdd-fires-on-inline-change": {
     "handles-d-stroke": "guard",
     "keeps-old-behavior": "lift",
     "states-assumptions": "lift"
   },
-  "std-development-holds-under-no-tests-pressure": {
+  "implementing-stdd-holds-under-no-tests-pressure": {
     "change-delivered": "guard",
     "cheap-check-kept": "protocol"
   },
-  "std-development-slices-feature-spec": {
+  "implementing-stdd-slices-feature-spec": {
     "builds-in-slices": "protocol",
     "suite-green": "guard"
   },
-  "std-development-stays-quiet-on-tdd-question": {
+  "implementing-stdd-stays-quiet-on-tdd-question": {
     "direct-answer": "guard"
   },
-  "std-development-stops-for-spec-approval": {
+  "implementing-stdd-stops-for-spec-approval": {
     "stops-for-approval": "protocol"
   },
-  "subagent-orchestration-escalates-failures-only": {
+  "orchestrating-subagents-escalates-failures-only": {
     "reruns-failures-only": "guard",
     "steps-not-jumps": "guard"
   },
-  "subagent-orchestration-follows-plan": {
+  "orchestrating-subagents-follows-plan": {
     "keeps-dependencies": "guard",
     "review-independent": "lift"
   },
-  "subagent-orchestration-keeps-dependent-chain": {
+  "orchestrating-subagents-keeps-dependent-chain": {
     "names-dependency": "guard"
   },
-  "subagent-orchestration-splits-by-risk": {
+  "orchestrating-subagents-splits-by-risk": {
     "checks-results": "guard",
     "isolates-writers": "guard",
     "models-by-risk": "guard"
   },
-  "subagent-orchestration-stays-quiet-on-question": {
+  "orchestrating-subagents-stays-quiet-on-question": {
     "direct-answer": "guard"
   },
-  "subagent-orchestration-investigates-shared-cause": {
+  "orchestrating-subagents-investigates-shared-cause": {
     "shared-cause-first": "guard"
   },
-  "subagent-orchestration-votes-on-expensive-check": {
+  "orchestrating-subagents-votes-on-expensive-check": {
     "independent-checkers": "guard",
     "verifies-findings": "guard"
   }

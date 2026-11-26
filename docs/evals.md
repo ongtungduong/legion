@@ -15,9 +15,9 @@ stays quiet on it (`debugging-stays-quiet-on-business-process`), every
 contributing cause of an incident gets its own control
 (`debugging-finds-contributing-causes`), and every cause is kept when the user has
 already named one culprit (`debugging-keeps-every-contributing-cause`); a
-skill review catches the defects a quick read misses (`skill-creator-fixes-existing-skill`). `find-skills` has cases for combining a
-method with a project skill (`find-skills-combines-method-and-project-skill`, and
-`find-skills-combines-std-with-legacy-skill`, whose lift grader checks that the
+skill review catches the defects a quick read misses (`creating-skills-fixes-existing-skill`). `finding-skills` has cases for combining a
+method with a project skill (`finding-skills-combines-method-and-project-skill`, and
+`finding-skills-combines-stdd-with-legacy-skill`, whose lift grader checks that the
 current behavior is pinned through the project's own seams), following the project's choice between two skills
 for one job, and staying quiet on a question and on a trivial edit.
 A grader is deterministic (`regex`, `tool_used`) when a pattern can decide it and
@@ -33,11 +33,11 @@ real result; write `flags: i`. `Write`, `Edit`, and `Bash` are gated: a case's
 `allowed_tools` offers them only when the run also passes `--allow-tools`, and
 without it a `max: 0` grader on them passes by construction. `npm run validate`
 compiles every regex grader and rejects an `llm` grader with no criteria. A case name starts with
-the skill it tests (or `find-skills-`); `-stays-quiet-` in the name means the skill
+the skill it tests (or `finding-skills-`); `-stays-quiet-` in the name means the skill
 must not fire. `npm run validate` checks that structure and that every skill has
 a firing case (a `tool_used` grader on `Skill` whose `input_match` matches
 `legion:<skill>`) and a stays-quiet case (the same grader with `max: 0`; the
-`find-skills`' must match every skill). Raw results (`evals/results/`) stay out of git.
+`finding-skills`' must match every skill). Raw results (`evals/results/`) stay out of git.
 Full per-run logs were removed from this file and are in git history.
 
 **Summaries.** After a run, `npm run evals:summarize -- evals/results/<file>.json <label>`
@@ -87,7 +87,7 @@ default judge is haiku, which the CLI's own authoring guide calls too small for
 rubric graders; `--scaffold` because ten cases build their workspace from a
 `fixture.sh` this repo wrote; `--allow-tools Write Edit` so the cases that list
 those tools can use them (the scaffolds run in a temp directory), and the two
-`Bash` patterns so `std-development-fires-on-approved-spec` can run
+`Bash` patterns so `implementing-stdd-fires-on-approved-spec` can run
 its tests. The CLI refuses every run that grants `Bash` when it cannot read a
 credentials file it must exclude from the sandbox (`EACCES`); on such a machine
 run that case alone, or drop the `Bash` patterns and read its graders as not run. The run is 38

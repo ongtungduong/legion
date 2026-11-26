@@ -1,0 +1,19 @@
+{
+  "positive": [
+    "Improve this prompt before I paste it into Claude",
+    "Rewrite my system prompt so Claude follows it better",
+    "Make this prompt clearer and more specific for Claude",
+    "Viết lại prompt này cho Claude hiểu tốt hơn",
+    "Turn my rough request into a well-structured prompt with XML tags"
+  ],
+  "negative": [
+    {
+      "prompt": "Turn this prompt into a reusable agent skill",
+      "owner": "creating-skills"
+    },
+    {
+      "prompt": "Help me think through what our support bot should do",
+      "owner": "brainstorming"
+    }
+  ]
+}

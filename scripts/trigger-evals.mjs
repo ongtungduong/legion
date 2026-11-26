@@ -3,7 +3,7 @@
 //
 // Idea from addyosmani/agent-skills (Tier 2): score each prompt against every
 // skill's routing text with TF-IDF cosine similarity. A skill's routing text is
-// its description plus its row in the find-skills map, the two things a session
+// its description plus its row in the finding-skills map, the two things a session
 // sees when it picks a skill.
 //   - every positive prompt must rank its skill #1, unless the case sets a
 //     wider top_k (an explicit, reviewable exception);
@@ -124,7 +124,7 @@ if (positives && rank1 / positives < MIN_RANK1) {
   errors.push(`rank-1 rate ${((100 * rank1) / positives).toFixed(1)}% is under the ${100 * MIN_RANK1}% floor; improve descriptions instead of widening top_k`);
 }
 
-// Distinctness is a property of the descriptions alone: the find-skills map is
+// Distinctness is a property of the descriptions alone: the finding-skills map is
 // shared context and would mask two descriptions that say the same thing.
 const descVecs = Object.fromEntries(skills.map((s) => [s, vector(descs[s])]));
 for (let i = 0; i < skills.length; i++) {

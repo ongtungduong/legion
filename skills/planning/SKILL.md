@@ -210,10 +210,10 @@ needs the cause.
 
    Do not start the work until the user has approved the plan. Then offer
    how to carry it out: when agents will do the tasks, call the Skill tool
-   with `legion:subagent-orchestration`, which takes the plan's tasks as
+   with `legion:orchestrating-subagents`, which takes the plan's tasks as
    its pieces and decides for each whether it runs inline or on a subagent,
    on which tier, and in which parallel group; for a task that builds or
-   changes behavior in software, offer `legion:std-development` for that
+   changes behavior in software, offer `legion:implementing-stdd` for that
    task. When a checkpoint later hits a replan trigger, update the plan
    deliberately: what changed, what moves, and the user's agreement.
 

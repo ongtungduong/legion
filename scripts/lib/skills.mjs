@@ -9,13 +9,13 @@ export const ROOT = process.env.LEGION_ROOT
   : path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
 export const SKILLS_DIR = path.join(ROOT, 'skills');
 export const TRIGGERS_DIR = path.join(ROOT, 'evals', 'triggers');
-// The find-skills skill: injected by hooks/session-start, not routed to itself.
-export const ROUTER = 'find-skills';
+// The finding-skills skill: injected by hooks/session-start, not routed to itself.
+export const ROUTER = 'finding-skills';
 
 // Minimal frontmatter parser for the YAML subset agentskills.io skills use:
 // top-level `key: value` scalars, folded/literal block scalars (`>-`, `>`,
 // `|-`, `|`), and one nested string map (`metadata:`). The authoritative spec
-// check is skills/skill-creator/scripts/validate_skill.py; this parser only
+// check is skills/creating-skills/scripts/validate_skill.py; this parser only
 // needs enough to read names and descriptions for repo-level checks.
 const unquote = (v) =>
   (v.length >= 2 && v[0] === v[v.length - 1] && (v[0] === '"' || v[0] === "'")) ? v.slice(1, -1) : v;

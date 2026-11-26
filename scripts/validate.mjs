@@ -145,7 +145,7 @@ if (fs.existsSync(EVALS_DIR)) {
     const owner = casePrefixes.find((p) => entry.name.startsWith(`${p}-`));
     if (!owner) err(`${where}: name must start with a skill name or "${ROUTER}-"`);
     const quiet = entry.name.includes('-stays-quiet-');
-    // The find-skills quiet case must cover a call to any skill.
+    // The finding-skills quiet case must cover a call to any skill.
     const watched = owner === ROUTER ? modelSkills : [owner];
 
     const promptFile = path.join(dir, 'prompt.md');

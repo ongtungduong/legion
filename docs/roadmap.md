@@ -28,7 +28,7 @@ Take an item on only after it has caused a real problem in a working session.
    the fact. Also confirm on that run that `--allow-tools Write Edit` makes the
    `no-files`, `no-write`, and `no-edit` graders bite (the baseline arm of
    `brainstorming-holds-under-build-pressure` should write files), and that the
-   scaffolded `CLAUDE.md` of `find-skills-follows-project-skill-choice` loads.
+   scaffolded `CLAUDE.md` of `finding-skills-follows-project-skill-choice` loads.
 
 5. **Ablate the lens tables.** `brainstorming`, `planning`, and `debugging`
    carry 28 named lenses, most of them textbook methods the model already
@@ -39,14 +39,14 @@ Take an item on only after it has caused a real problem in a working session.
    ("six hats", "first principles") stay either way: routing is measured
    separately.
 6. **Trim descriptions near the 1024-character cap** (`brainstorming`,
-   `debugging`, `security-audit`) only after item 1 gives real trigger rates,
+   `debugging`, `auditing-security`) only after item 1 gives real trigger rates,
    so a cut does not drop a phrase that fires the skill.
-7. **Check the new cases' first run.** `find-skills-combines-std-with-legacy-skill`
+7. **Check the new cases' first run.** `finding-skills-combines-stdd-with-legacy-skill`
    grades the project skill as a `Skill` call while
-   `find-skills-combines-method-and-project-skill` grades a `Read` of its
+   `finding-skills-combines-method-and-project-skill` grades a `Read` of its
    `SKILL.md`; confirm which one Claude Code records for a project skill and
    align both.
-8. **Diff `security-audit` against upstream** (cloudflare
+8. **Diff `auditing-security` against upstream** (cloudflare
    `security-audit-skill`, pinned at `c1c8a8c14710` in `THIRD_PARTY.md`) when
    it tags a new release: the skill is a copy, so upstream fixes do not reach
    it on their own.
