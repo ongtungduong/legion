@@ -14,7 +14,8 @@ metadata:
 
 Legion is a set of engineering skills (software, infrastructure, data,
 security) plus general-purpose skills for any kind of work
-(`legion:brainstorming`, `legion:skill-creator`, and this one), and it is
+(`legion:brainstorming`, `legion:planning`, `legion:skill-creator`,
+`legion:subagent-orchestration`, and this one), and it is
 rarely the only set installed. Read what the work is, find the skill
 whose method or knowledge fits it best, whether it is Legion's or another
 skill this session lists, load it with the Skill tool, and follow it. There is
@@ -86,11 +87,12 @@ The Legion skills, by kind of work. Any other listed skill is a candidate too.
 | Situation | Skill |
 |---|---|
 | Any open-ended topic, in any domain, whose direction is not settled: what to do and why, including "plan X" when no goal, spec, or design for X was agreed, options and a recommendation, "help me think this through"; "grill me" or stress-test an idea; first principles, inversion, six hats, systems, second-order, impact/effort | `legion:brainstorming` |
-| An approved spec, design, or clear requirements for engineering work (a feature, refactor, rollout, infrastructure or data change) that needs a plan of steps ahead of writing code | `legion:planning` |
+| A settled goal, approved spec or design, or clear requirements, in any domain, that needs breaking into small concrete tasks in dependency order ahead of the work (a feature, refactor, rollout, event, launch, process change) | `legion:planning` |
 | Building to a spec or changing what something does: the new behavior and the behavior that must not change as checks, red before green; "TDD", "tests first" | `legion:std-development` |
 | Security of code or a system: an audit or pen test, "find vulnerabilities", whether something is exploitable, triage or severity of a reported vulnerability | `legion:security-audit` |
 | Something in software, infrastructure, or data behaves wrongly and the cause is unknown: an error, failure, outage, mismatch, slowdown, or recurring problem; "what broke?", "why is this happening?" | `legion:debugging` |
 | Creating, editing, or validating a skill | `legion:skill-creator` |
+| How tasks run once they exist: the tasks of an approved plan, or a fan-out, inline or on subagents, in any domain: "use subagents", "run the plan with agents", delegating verbose reading, dispatching agents together to research, review, or read documents; the model or effort for each agent or step; designing a multi-model agent setup | `legion:subagent-orchestration` |
 
 ## Model tiers
 
@@ -121,12 +123,16 @@ any, best fit first:
 - Plugin skills are namespaced: load `legion:planning`, not `planning`.
 - Skills change between versions. Load the skill instead of working from your
   memory of it.
-- `legion:planning`, `legion:std-development`, `legion:debugging`, and
-  `legion:security-audit` serve engineering work. A plan or a problem
-  outside it (an event, a hire, a business process) gets
-  `legion:brainstorming` while its direction is open, and otherwise none of
-  them, since their methods assume tests, builds, and data the work does not
-  have. `legion:skill-creator` fits a skill for any kind of work.
+- `legion:std-development`, `legion:debugging`, and `legion:security-audit`
+  serve engineering work. A problem outside it (an event, a hire, a
+  business process) gets `legion:brainstorming` while its direction is
+  open, and otherwise none of them, since their methods assume tests,
+  builds, and data the work does not have. `legion:planning`,
+  `legion:subagent-orchestration`, and `legion:skill-creator` fit any kind
+  of work.
+- `legion:planning` breaks the work into tasks; `legion:subagent-orchestration`
+  decides how those tasks run. A request to run an approved plan with agents
+  loads the second, not a new plan.
 - A skill's name can mislead: `code-review` in one plugin may only review a
   diff, in another audit a whole repo. The description decides.
 - Another plugin may inject its own router with skills of the same names.

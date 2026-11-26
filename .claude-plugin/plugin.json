@@ -1,7 +1,7 @@
 {
   "name": "legion",
-  "version": "1.4.0",
-  "description": "Working skills for coding agents, general-purpose (brainstorm, find skills, create skills, improve prompts) and engineering (plan, build to a spec, debug, audit security), routed by kind of work: brainstorm a direction, plan the steps, build to a spec checks first, debug the root cause, audit security, create skills.",
+  "version": "1.5.0",
+  "description": "Working skills for coding agents, general-purpose (brainstorm, find skills, plan tasks, orchestrate subagents, create skills, improve prompts) and engineering (build to a spec, debug, audit security), routed by kind of work: brainstorm a direction, break it into tasks, run them on subagents, build to a spec checks first, debug the root cause, audit security, create skills.",
   "author": {
     "name": "Ông Tùng Dương"
   },

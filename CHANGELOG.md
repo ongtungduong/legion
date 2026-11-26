@@ -1,5 +1,70 @@
 # Changelog
 
+## 1.5.0 - 2026-11-26
+
+Changed
+
+- `planning` is now general-purpose. It breaks a settled goal, in any
+  domain, into small concrete tasks (one doer, one sitting or one agent
+  context, one checkable result), each with Produces, Inputs, Depends on,
+  Parallel with, Scope, and Done when. The repo reading, vertical slices,
+  green-every-step rule, file-count sizes, and deploy safety moved to
+  `references/engineering.md`, read when the work changes software,
+  infrastructure, or data; the Engineering lens group became Execution
+  (working state, shared decisions first, reversible change), and the
+  template uses Checks, Inputs, Scope, and Way back. At hand-off it offers
+  `subagent-orchestration` to run the tasks.
+- `planning-stays-quiet-on-event-plan` became `planning-fires-on-event-plan`.
+- `planning` Gotcha: a situation the source implies is handled inside its
+  task, while something it did not ask for is a hand-off question, not a
+  task. Measured on Sonnet 5.5 (Claude Code 2.1.332, `evals/summaries/`):
+  `planning-fires-on-approved-spec` went from 0/3 (1/3 before 1.5.0) to 3/3
+  with the plugin against 1/3 without; `planning-fires-on-event-plan` 3/3
+  against 0/3 on its task grader; `planning-holds-on-unsettled-goal` 3/3
+  against 0/3; the fixture cases and the grill near miss hold.
+
+Added
+
+- `subagent-orchestration` (general-purpose): decides how the tasks of an
+  approved plan, or the pieces of a fan-out, run on subagents, taking a
+  plan's tasks as its pieces without re-splitting them, assigns each piece a tier and effort by the cost of
+  a wrong answer, writes self-contained briefs with a short return contract
+  (`assets/brief-template.md`), dispatches independent pieces in parallel,
+  verifies every result before use, and escalates by verification, then
+  effort, then model. Its `references/` hold the model-by-task, price, effort,
+  and compatibility facts and the multi-model patterns (lead and workers,
+  executor and advisor, model switching, Claude Code settings, measuring a
+  setup) from Anthropic's model-selection guidance, with orchestration
+  lessons from superpowers, addyosmani, and mattpocock (see `THIRD_PARTY.md`).
+- `find-skills` map row, trigger prompts, and behavioral cases
+  `subagent-orchestration-splits-by-risk`,
+  `subagent-orchestration-keeps-dependent-chain`,
+  `subagent-orchestration-escalates-failures-only`,
+  `subagent-orchestration-follows-plan`, and
+  `subagent-orchestration-stays-quiet-on-question`.
+- Measured on Sonnet 5.5 (Claude Code 2.1.332, `evals/summaries/`): the
+  skill fires on every positive case and stays quiet on the question, but the
+  baseline arm also passed every outcome grader, so all of them are declared
+  `guard`; no lift is shown yet. `keeps-dependent-chain` was rewritten after
+  the first run, whose prompt dictated three parallel agents for disjoint
+  edits and so tested the user's instruction rather than the split.
+- `subagent-orchestration` decides delegation by the shape of the work, from
+  Anthropic's "Building effective agents" and two studies of multi-agent
+  systems (Kim et al., arXiv 2512.08296; Cemri et al., arXiv 2503.13657),
+  summarized with their limits in `references/evidence.md`: do it yourself by
+  default; delegate independent or read-heavy pieces; keep sequential work and
+  one change on one shared state in one agent; vote with independent checkers
+  where a miss is expensive; every brief carries a done condition, a
+  BLOCKED-with-a-question exit, and absolute paths; the main session is the
+  only merge gate and caps review-and-fix rounds. New cases
+  `subagent-orchestration-investigates-shared-cause` and
+  `subagent-orchestration-votes-on-expensive-check`; the baseline passed
+  both, so their graders are `guard`. A run showed `keeps-dependent-chain` at
+  2/3 (a split offered for one rename over disjoint files); the shared-state
+  row now names that case, and the re-run is 3/3. The `models-by-risk`
+  grader now counts the session tier as a named model, which its judge had
+  read as an omitted one.
+
 ## 1.4.0 - 2026-11-25
 
 Includes 1.3.1, which was merged but never tagged.

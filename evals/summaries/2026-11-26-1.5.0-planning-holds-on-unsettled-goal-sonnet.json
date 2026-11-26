@@ -1,0 +1,85 @@
+{
+  "schemaVersion": 3,
+  "label": "1.5.0-planning-holds-on-unsettled-goal-sonnet",
+  "claudeVersion": "2.1.332",
+  "model": "sonnet",
+  "judgeModel": "haiku",
+  "startedAt": "2026-11-26T02:23:52.022Z",
+  "partial": false,
+  "costUsd": 0.33,
+  "judgeCostUsd": 0,
+  "threshold": 0.66,
+  "bar": 0.66,
+  "totals": {
+    "cases": 1,
+    "passed": 1,
+    "atBar": 1,
+    "meanDelta": 1,
+    "graders": {
+      "lift": 1,
+      "guard": 0,
+      "protocol": 0,
+      "routing": 1,
+      "unclassified": 0
+    },
+    "lift": {
+      "graders": 1,
+      "with": 1,
+      "without": 0,
+      "delta": 1,
+      "ci95": null,
+      "bySkill": {
+        "planning": {
+          "graders": 1,
+          "delta": 1
+        }
+      }
+    },
+    "guard": {
+      "graders": 0,
+      "with": null,
+      "without": null,
+      "delta": null
+    },
+    "regressions": [],
+    "overhead": {
+      "cases": 1,
+      "cost": 1.57,
+      "turns": 1.4,
+      "seconds": 0.82
+    }
+  },
+  "cases": [
+    {
+      "name": "planning-holds-on-unsettled-goal",
+      "runs": 3,
+      "with": {
+        "passRate": 1,
+        "meanScore": 1,
+        "costUsd": 0.0663,
+        "turns": 4.67,
+        "seconds": 14.7
+      },
+      "without": {
+        "passRate": 0,
+        "meanScore": 0,
+        "costUsd": 0.0422,
+        "turns": 3.33,
+        "seconds": 18
+      },
+      "delta": 1,
+      "graders": {
+        "asks-goal-first": {
+          "kind": "lift",
+          "with": 3,
+          "without": 0
+        },
+        "hands-to-brainstorming": {
+          "kind": "routing",
+          "with": 3,
+          "without": 0
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,302 @@
+{
+  "schemaVersion": 3,
+  "label": "orchestration-evidence-2",
+  "claudeVersion": "2.1.332",
+  "model": "sonnet",
+  "judgeModel": "haiku",
+  "startedAt": "2026-11-26T03:43:36.615Z",
+  "partial": false,
+  "costUsd": 2.55,
+  "judgeCostUsd": 0.07,
+  "threshold": 0.66,
+  "bar": 0.66,
+  "totals": {
+    "cases": 7,
+    "passed": 6,
+    "atBar": 6,
+    "meanDelta": -0.0185,
+    "graders": {
+      "lift": 3,
+      "guard": 9,
+      "protocol": 0,
+      "routing": 7,
+      "unclassified": 0
+    },
+    "lift": {
+      "graders": 3,
+      "with": 0.6667,
+      "without": 0.4444,
+      "delta": 0.2222,
+      "ci95": [
+        -0.734,
+        1
+      ],
+      "bySkill": {
+        "subagent-orchestration": {
+          "graders": 3,
+          "delta": 0.2222
+        }
+      }
+    },
+    "guard": {
+      "graders": 9,
+      "with": 0.7778,
+      "without": 0.8519,
+      "delta": -0.0741
+    },
+    "regressions": [
+      "subagent-orchestration-keeps-dependent-chain/names-dependency",
+      "subagent-orchestration-splits-by-risk/models-by-risk"
+    ],
+    "overhead": {
+      "cases": 7,
+      "cost": 1.25,
+      "turns": 2.33,
+      "seconds": 1.34
+    }
+  },
+  "cases": [
+    {
+      "name": "subagent-orchestration-escalates-failures-only",
+      "runs": 3,
+      "with": {
+        "passRate": 1,
+        "meanScore": 1,
+        "costUsd": 0.0713,
+        "turns": 3,
+        "seconds": 18
+      },
+      "without": {
+        "passRate": 1,
+        "meanScore": 1,
+        "costUsd": 0.2156,
+        "turns": 3,
+        "seconds": 19.7
+      },
+      "delta": 0,
+      "graders": {
+        "reruns-failures-only": {
+          "kind": "guard",
+          "with": 3,
+          "without": 3
+        },
+        "skill-fired": {
+          "kind": "routing",
+          "with": 3,
+          "without": 0
+        },
+        "steps-not-jumps": {
+          "kind": "guard",
+          "with": 3,
+          "without": 3
+        }
+      }
+    },
+    {
+      "name": "subagent-orchestration-follows-plan",
+      "runs": 3,
+      "with": {
+        "passRate": 1,
+        "meanScore": 1,
+        "costUsd": 0.0806,
+        "turns": 3,
+        "seconds": 28.7
+      },
+      "without": {
+        "passRate": 0.3333,
+        "meanScore": 0.6667,
+        "costUsd": 0.0356,
+        "turns": 1,
+        "seconds": 18
+      },
+      "delta": 0.3333,
+      "graders": {
+        "keeps-dependencies": {
+          "kind": "guard",
+          "with": 3,
+          "without": 3
+        },
+        "review-independent": {
+          "kind": "lift",
+          "with": 3,
+          "without": 1
+        },
+        "skill-fired": {
+          "kind": "routing",
+          "with": 3,
+          "without": 0
+        }
+      }
+    },
+    {
+      "name": "subagent-orchestration-investigates-shared-cause",
+      "runs": 3,
+      "with": {
+        "passRate": 1,
+        "meanScore": 1,
+        "costUsd": 0.0714,
+        "turns": 3,
+        "seconds": 14.7
+      },
+      "without": {
+        "passRate": 1,
+        "meanScore": 1,
+        "costUsd": 0.0304,
+        "turns": 1,
+        "seconds": 11.3
+      },
+      "delta": 0,
+      "graders": {
+        "shared-cause-first": {
+          "kind": "lift",
+          "with": 3,
+          "without": 3
+        },
+        "skill-fired": {
+          "kind": "routing",
+          "with": 3,
+          "without": 0
+        }
+      }
+    },
+    {
+      "name": "subagent-orchestration-keeps-dependent-chain",
+      "runs": 3,
+      "with": {
+        "passRate": 0.6667,
+        "meanScore": 0.6667,
+        "costUsd": 0.0703,
+        "turns": 3,
+        "seconds": 15
+      },
+      "without": {
+        "passRate": 1,
+        "meanScore": 1,
+        "costUsd": 0.027,
+        "turns": 1,
+        "seconds": 9
+      },
+      "delta": -0.3333,
+      "graders": {
+        "names-dependency": {
+          "kind": "guard",
+          "with": 2,
+          "without": 3
+        },
+        "skill-fired": {
+          "kind": "routing",
+          "with": 3,
+          "without": 0
+        }
+      }
+    },
+    {
+      "name": "subagent-orchestration-splits-by-risk",
+      "runs": 3,
+      "with": {
+        "passRate": 0.3333,
+        "meanScore": 0.7778,
+        "costUsd": 0.0866,
+        "turns": 3,
+        "seconds": 33.3
+      },
+      "without": {
+        "passRate": 0.6667,
+        "meanScore": 0.8889,
+        "costUsd": 0.0439,
+        "turns": 1,
+        "seconds": 25
+      },
+      "delta": -0.1111,
+      "graders": {
+        "checks-results": {
+          "kind": "guard",
+          "with": 3,
+          "without": 3
+        },
+        "isolates-writers": {
+          "kind": "guard",
+          "with": 3,
+          "without": 3
+        },
+        "models-by-risk": {
+          "kind": "guard",
+          "with": 1,
+          "without": 2
+        },
+        "skill-fired": {
+          "kind": "routing",
+          "with": 3,
+          "without": 0
+        }
+      }
+    },
+    {
+      "name": "subagent-orchestration-stays-quiet-on-question",
+      "runs": 3,
+      "with": {
+        "passRate": 1,
+        "meanScore": 1,
+        "costUsd": 0.047,
+        "turns": 1,
+        "seconds": 9
+      },
+      "without": {
+        "passRate": 1,
+        "meanScore": 1,
+        "costUsd": 0.0258,
+        "turns": 1,
+        "seconds": 7.7
+      },
+      "delta": 0,
+      "graders": {
+        "direct-answer": {
+          "kind": "guard",
+          "with": 3,
+          "without": 3
+        },
+        "no-orchestration-skill": {
+          "kind": "routing",
+          "with": 3,
+          "without": 3
+        }
+      }
+    },
+    {
+      "name": "subagent-orchestration-votes-on-expensive-check",
+      "runs": 3,
+      "with": {
+        "passRate": 0,
+        "meanScore": 0,
+        "costUsd": 0.0439,
+        "turns": 5,
+        "seconds": 4
+      },
+      "without": {
+        "passRate": 0,
+        "meanScore": 0,
+        "costUsd": 0,
+        "turns": 1,
+        "seconds": 1
+      },
+      "delta": 0,
+      "graders": {
+        "independent-checkers": {
+          "kind": "lift",
+          "with": 0,
+          "without": 0
+        },
+        "skill-fired": {
+          "kind": "routing",
+          "with": 0,
+          "without": 0
+        },
+        "verifies-findings": {
+          "kind": "guard",
+          "with": 0,
+          "without": 0
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,85 @@
+{
+  "schemaVersion": 3,
+  "label": "orchestration-votes-on-expensive-check",
+  "claudeVersion": "2.1.332",
+  "model": "sonnet",
+  "judgeModel": "haiku",
+  "startedAt": "2026-11-26T06:02:03.203Z",
+  "partial": false,
+  "costUsd": 0.43,
+  "judgeCostUsd": 0.01,
+  "threshold": 0.66,
+  "bar": 0.66,
+  "totals": {
+    "cases": 1,
+    "passed": 1,
+    "atBar": 1,
+    "meanDelta": 0.1667,
+    "graders": {
+      "lift": 0,
+      "guard": 2,
+      "protocol": 0,
+      "routing": 1,
+      "unclassified": 0
+    },
+    "lift": {
+      "graders": 0,
+      "with": null,
+      "without": null,
+      "delta": null,
+      "ci95": null,
+      "bySkill": {}
+    },
+    "guard": {
+      "graders": 2,
+      "with": 1,
+      "without": 0.8333,
+      "delta": 0.1667
+    },
+    "regressions": [],
+    "overhead": {
+      "cases": 1,
+      "cost": 2.5,
+      "turns": 5.33,
+      "seconds": 1.62
+    }
+  },
+  "cases": [
+    {
+      "name": "subagent-orchestration-votes-on-expensive-check",
+      "runs": 3,
+      "with": {
+        "passRate": 1,
+        "meanScore": 1,
+        "costUsd": 0.1031,
+        "turns": 5.33,
+        "seconds": 29.7
+      },
+      "without": {
+        "passRate": 0.6667,
+        "meanScore": 0.8333,
+        "costUsd": 0.0413,
+        "turns": 1,
+        "seconds": 18.3
+      },
+      "delta": 0.1667,
+      "graders": {
+        "independent-checkers": {
+          "kind": "guard",
+          "with": 3,
+          "without": 3
+        },
+        "skill-fired": {
+          "kind": "routing",
+          "with": 3,
+          "without": 0
+        },
+        "verifies-findings": {
+          "kind": "guard",
+          "with": 3,
+          "without": 2
+        }
+      }
+    }
+  ]
+}

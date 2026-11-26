@@ -1,0 +1,95 @@
+{
+  "schemaVersion": 3,
+  "label": "1.5.0-planning-keeps-unfinished-plan-sonnet",
+  "claudeVersion": "2.1.332",
+  "model": "sonnet",
+  "judgeModel": "haiku",
+  "startedAt": "2026-11-26T02:28:14.195Z",
+  "partial": false,
+  "costUsd": 0.65,
+  "judgeCostUsd": 0.01,
+  "threshold": 0.66,
+  "bar": 0.66,
+  "totals": {
+    "cases": 1,
+    "passed": 1,
+    "atBar": 1,
+    "meanDelta": -0.1667,
+    "graders": {
+      "lift": 2,
+      "guard": 0,
+      "protocol": 0,
+      "routing": 1,
+      "unclassified": 0
+    },
+    "lift": {
+      "graders": 2,
+      "with": 0.8333,
+      "without": 1,
+      "delta": -0.1667,
+      "ci95": [
+        -1,
+        1
+      ],
+      "bySkill": {
+        "planning": {
+          "graders": 2,
+          "delta": -0.1667
+        }
+      }
+    },
+    "guard": {
+      "graders": 0,
+      "with": null,
+      "without": null,
+      "delta": null
+    },
+    "regressions": [
+      "planning-keeps-unfinished-plan/green-every-step"
+    ],
+    "overhead": {
+      "cases": 1,
+      "cost": 2.67,
+      "turns": 1.43,
+      "seconds": 1.97
+    }
+  },
+  "cases": [
+    {
+      "name": "planning-keeps-unfinished-plan",
+      "runs": 3,
+      "with": {
+        "passRate": 0.6667,
+        "meanScore": 0.8333,
+        "costUsd": 0.1576,
+        "turns": 14.33,
+        "seconds": 46
+      },
+      "without": {
+        "passRate": 1,
+        "meanScore": 1,
+        "costUsd": 0.0591,
+        "turns": 10,
+        "seconds": 23.3
+      },
+      "delta": -0.1667,
+      "graders": {
+        "green-every-step": {
+          "kind": "lift",
+          "with": 2,
+          "without": 3
+        },
+        "keeps-unfinished-plan": {
+          "kind": "lift",
+          "with": 3,
+          "without": 3
+        },
+        "skill-fired": {
+          "kind": "routing",
+          "with": 3,
+          "without": 0
+        }
+      }
+    }
+  ]
+}

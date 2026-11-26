@@ -1,0 +1,90 @@
+{
+  "schemaVersion": 3,
+  "label": "1.5.0-planning-reads-repo-constraints-sonnet",
+  "claudeVersion": "2.1.332",
+  "model": "sonnet",
+  "judgeModel": "haiku",
+  "startedAt": "2026-11-26T02:25:54.109Z",
+  "partial": false,
+  "costUsd": 0.94,
+  "judgeCostUsd": 0.03,
+  "threshold": 0.66,
+  "bar": 0.66,
+  "totals": {
+    "cases": 1,
+    "passed": 1,
+    "atBar": 1,
+    "meanDelta": 0,
+    "graders": {
+      "lift": 0,
+      "guard": 3,
+      "protocol": 0,
+      "routing": 1,
+      "unclassified": 0
+    },
+    "lift": {
+      "graders": 0,
+      "with": null,
+      "without": null,
+      "delta": null,
+      "ci95": null,
+      "bySkill": {}
+    },
+    "guard": {
+      "graders": 3,
+      "with": 1,
+      "without": 1,
+      "delta": 0
+    },
+    "regressions": [],
+    "overhead": {
+      "cases": 1,
+      "cost": 3.27,
+      "turns": 1.81,
+      "seconds": 2.14
+    }
+  },
+  "cases": [
+    {
+      "name": "planning-reads-repo-constraints",
+      "runs": 3,
+      "with": {
+        "passRate": 1,
+        "meanScore": 1,
+        "costUsd": 0.2404,
+        "turns": 16.33,
+        "seconds": 87.3
+      },
+      "without": {
+        "passRate": 1,
+        "meanScore": 1,
+        "costUsd": 0.0735,
+        "turns": 9,
+        "seconds": 40.7
+      },
+      "delta": 0,
+      "graders": {
+        "project-check-command": {
+          "kind": "guard",
+          "with": 3,
+          "without": 3
+        },
+        "real-paths": {
+          "kind": "guard",
+          "with": 3,
+          "without": 3
+        },
+        "rolling-deploy-safe": {
+          "kind": "guard",
+          "with": 3,
+          "without": 3
+        },
+        "skill-fired": {
+          "kind": "routing",
+          "with": 3,
+          "without": 0
+        }
+      }
+    }
+  ]
+}

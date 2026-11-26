@@ -9,9 +9,9 @@ other callers surfaces before the recommendation (`brainstorming-ab-hidden-confl
 an open decision surfaces before anything is built under pressure
 (`brainstorming-holds-under-build-pressure`), a plan is not written for an
 unsettled goal (`planning-holds-on-unsettled-goal`) and every step of it ends
-green (`planning-keeps-unfinished-plan`), planning and debugging stay quiet on
-non-engineering work (`planning-stays-quiet-on-event-plan`,
-`debugging-stays-quiet-on-business-process`), every
+green (`planning-keeps-unfinished-plan`), planning breaks non-engineering work
+into small checkable tasks (`planning-fires-on-event-plan`) while debugging
+stays quiet on it (`debugging-stays-quiet-on-business-process`), every
 contributing cause of an incident gets its own control
 (`debugging-finds-contributing-causes`), and every cause is kept when the user has
 already named one culprit (`debugging-keeps-every-contributing-cause`); a

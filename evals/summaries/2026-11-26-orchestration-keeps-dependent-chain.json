@@ -1,0 +1,80 @@
+{
+  "schemaVersion": 3,
+  "label": "orchestration-keeps-dependent-chain",
+  "claudeVersion": "2.1.332",
+  "model": "sonnet",
+  "judgeModel": "haiku",
+  "startedAt": "2026-11-26T06:02:03.359Z",
+  "partial": false,
+  "costUsd": 0.28,
+  "judgeCostUsd": 0,
+  "threshold": 0.66,
+  "bar": 0.66,
+  "totals": {
+    "cases": 1,
+    "passed": 1,
+    "atBar": 1,
+    "meanDelta": 0,
+    "graders": {
+      "lift": 0,
+      "guard": 1,
+      "protocol": 0,
+      "routing": 1,
+      "unclassified": 0
+    },
+    "lift": {
+      "graders": 0,
+      "with": null,
+      "without": null,
+      "delta": null,
+      "ci95": null,
+      "bySkill": {}
+    },
+    "guard": {
+      "graders": 1,
+      "with": 1,
+      "without": 1,
+      "delta": 0
+    },
+    "regressions": [],
+    "overhead": {
+      "cases": 1,
+      "cost": 2.58,
+      "turns": 3,
+      "seconds": 1.37
+    }
+  },
+  "cases": [
+    {
+      "name": "subagent-orchestration-keeps-dependent-chain",
+      "runs": 3,
+      "with": {
+        "passRate": 1,
+        "meanScore": 1,
+        "costUsd": 0.0678,
+        "turns": 3,
+        "seconds": 13.7
+      },
+      "without": {
+        "passRate": 1,
+        "meanScore": 1,
+        "costUsd": 0.0263,
+        "turns": 1,
+        "seconds": 10
+      },
+      "delta": 0,
+      "graders": {
+        "names-dependency": {
+          "kind": "guard",
+          "with": 3,
+          "without": 3
+        },
+        "skill-fired": {
+          "kind": "routing",
+          "with": 3,
+          "without": 0
+        }
+      }
+    }
+  ]
+}

@@ -3,9 +3,9 @@
 A plugin of working skills for Claude Code. Legion gives the agent a
 method for the kinds of work that go wrong when improvised: deciding what to
 do, laying out how to get it done, building it checks first, finding why
-something broke, and auditing its security. Four skills are general-purpose
-and fit any kind of work: `brainstorming`, `find-skills`, `skill-creator`,
-and `prompt-optimization`. The others serve engineering work: software,
+something broke, and auditing its security. Six skills are general-purpose
+and fit any kind of work: `brainstorming`, `find-skills`, `planning`,
+`skill-creator`, `prompt-optimization`, and `subagent-orchestration`. The others serve engineering work: software,
 infrastructure, data, and security.
 
 Based on [superpowers](https://github.com/obra/superpowers), with material from
@@ -23,10 +23,14 @@ from [cloudflare/security-audit-skill](https://github.com/cloudflare/security-au
   directly; skills are used alone or chained only when the work calls for it.
 - **Brainstorming in two methods:** compare approaches, then grill the design
   in rounds, for any open-ended topic, through six thinking lenses.
-- **Planning** turns an approved spec into an engineering plan read from the
-  repo: its own commands, real paths, and deploy style; dependency-ordered
-  vertical slices that each leave the build green; staged rollouts with a
-  rollback where old and new versions coexist; and a pre-mortem.
+- **Planning, then orchestration.** `planning` breaks a settled goal, in any
+  domain, into small concrete tasks: each with what it produces, its inputs,
+  what it depends on, what may run beside it, and a checkable done line,
+  worked back from the done state with a pre-mortem. For software it reads
+  the repo (commands, real paths, deploy style) and keeps every step green
+  with staged rollouts. `subagent-orchestration` then decides how those
+  tasks run: inline or on subagents, on which tier and effort, in which
+  parallel group, with every result verified.
 - **STD development** (spec- and test-driven) writes what must stay true next to what
   changes, makes each line a check, and shows the new checks failing before
   the change.
@@ -97,9 +101,10 @@ gitignored. Legion's own repo ignores all of it.
 |---|---|---|
 | `find-skills` | General-purpose | Finds the best skill for the work, Legion's or any installed; injected at SessionStart |
 | `brainstorming` | General-purpose | Any open-ended topic: intent, approaches, grilling, design doc, thinking lenses |
+| `planning` | General-purpose | A settled goal to small concrete tasks in dependency order, each with inputs, dependencies, and a done check, worked back from the done state, pre-mortem; for software, read from the repo with each step green and staged rollouts |
 | `skill-creator` | General-purpose | Creating and validating skills against agentskills.io |
 | `prompt-optimization` | General-purpose | User-invoked (`/legion:prompt-optimization <prompt>`): rewrites a rough prompt for Claude per Anthropic's prompting best practices, with every added assumption listed |
-| `planning` | Engineering | An approved spec to an engineering plan read from the repo: dependency-ordered vertical slices, each green, staged rollouts, pre-mortem |
+| `subagent-orchestration` | General-purpose | How tasks run, the tasks of a plan or a fan-out: a tier and effort per piece by the cost of a wrong answer, self-contained briefs, parallel dispatch, verified results, escalation; multi-model setups from Anthropic's model-selection guidance |
 | `std-development` | Engineering | Building to a spec: criteria (new, unchanged, my calls) as checks, red before green, spec kept current |
 | `debugging` | Engineering | Root cause of a problem in software, infrastructure, or data, with a control against recurrence |
 | `security-audit` | Engineering | Security guidance, or a full audit: coverage ledger, isolated hunters, independent verifiers, validated findings and reports |

@@ -1,0 +1,90 @@
+{
+  "schemaVersion": 3,
+  "label": "orchestration-splits-by-risk",
+  "claudeVersion": "2.1.332",
+  "model": "sonnet",
+  "judgeModel": "haiku",
+  "startedAt": "2026-11-26T06:02:03.203Z",
+  "partial": false,
+  "costUsd": 0.4,
+  "judgeCostUsd": 0.02,
+  "threshold": 0.66,
+  "bar": 0.66,
+  "totals": {
+    "cases": 1,
+    "passed": 1,
+    "atBar": 1,
+    "meanDelta": 0,
+    "graders": {
+      "lift": 0,
+      "guard": 3,
+      "protocol": 0,
+      "routing": 1,
+      "unclassified": 0
+    },
+    "lift": {
+      "graders": 0,
+      "with": null,
+      "without": null,
+      "delta": null,
+      "ci95": null,
+      "bySkill": {}
+    },
+    "guard": {
+      "graders": 3,
+      "with": 1,
+      "without": 1,
+      "delta": 0
+    },
+    "regressions": [],
+    "overhead": {
+      "cases": 1,
+      "cost": 1.8,
+      "turns": 3,
+      "seconds": 1.35
+    }
+  },
+  "cases": [
+    {
+      "name": "subagent-orchestration-splits-by-risk",
+      "runs": 3,
+      "with": {
+        "passRate": 1,
+        "meanScore": 1,
+        "costUsd": 0.0862,
+        "turns": 3,
+        "seconds": 32.7
+      },
+      "without": {
+        "passRate": 1,
+        "meanScore": 1,
+        "costUsd": 0.0479,
+        "turns": 1,
+        "seconds": 24.3
+      },
+      "delta": 0,
+      "graders": {
+        "checks-results": {
+          "kind": "guard",
+          "with": 3,
+          "without": 3
+        },
+        "isolates-writers": {
+          "kind": "guard",
+          "with": 3,
+          "without": 3
+        },
+        "models-by-risk": {
+          "kind": "guard",
+          "with": 3,
+          "without": 3
+        },
+        "skill-fired": {
+          "kind": "routing",
+          "with": 3,
+          "without": 0
+        }
+      }
+    }
+  ]
+}
