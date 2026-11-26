@@ -1,5 +1,19 @@
 # Changelog
 
+## 2.0.0 - 2026-11-26
+
+Changed (breaking)
+
+- Every skill is named in gerund form, the work it does. Renamed:
+  `find-skills` to `finding-skills`, `skill-creator` to `creating-skills`,
+  `prompt-optimization` to `optimizing-prompts`, `subagent-orchestration` to
+  `orchestrating-subagents`, `security-audit` to `auditing-security`, and
+  `std-development` to `implementing-stdd` (STDD: Specification & Test-Driven
+  Development). `brainstorming`, `debugging`, and `planning` keep their
+  names. Calls to the old `legion:<name>` no longer resolve; their eval
+  cases and trigger files moved with them. `auditing-security` still writes
+  its runs under `~/.legion/security-audit/`, so earlier runs stay found.
+
 ## 1.5.0 - 2026-11-26
 
 Changed

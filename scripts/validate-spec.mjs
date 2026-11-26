@@ -1,13 +1,13 @@
 #!/usr/bin/env node
-// Runs skill-creator's agentskills.io validator on every skill. Fails on any
-// error and, stricter than the validator itself, on any warning: skill-creator
+// Runs creating-skills' agentskills.io validator on every skill. Fails on any
+// error and, stricter than the validator itself, on any warning: creating-skills
 // says to review every warning before delivering, and in this repo that review
 // ends in a fix.
 import { spawnSync } from 'node:child_process';
 import path from 'node:path';
 import { ROOT, SKILLS_DIR, listSkills } from './lib/skills.mjs';
 
-const validator = path.join(SKILLS_DIR, 'skill-creator', 'scripts', 'validate_skill.py');
+const validator = path.join(SKILLS_DIR, 'creating-skills', 'scripts', 'validate_skill.py');
 let failed = 0;
 for (const name of listSkills()) {
   const run = spawnSync('python3', ['-I', validator, path.join(SKILLS_DIR, name), '--json'], { encoding: 'utf8' });

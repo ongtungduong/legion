@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Verifies hooks/session-start emits valid Claude Code SessionStart JSON that
-# carries find-skills, and still emits valid JSON when the skill
+# carries finding-skills, and still emits valid JSON when the skill
 # file cannot be read.
 set -euo pipefail
 
@@ -25,17 +25,17 @@ check() { # $1 label, $2 plugin root, $3 substring the context must contain, $4 
   fi
 }
 
-check "injects find-skills" "$REPO_ROOT" "# Find Skills"
+check "injects finding-skills" "$REPO_ROOT" "# Finding Skills"
 check "map table survives JSON escaping" "$REPO_ROOT" '| Situation | Skill |'
-check "strips the YAML frontmatter" "$REPO_ROOT" "# Find Skills" "disable-model-invocation:"
-check "names the find-skills folder for its references" "$REPO_ROOT" "(folder: $REPO_ROOT/skills/find-skills)"
+check "strips the YAML frontmatter" "$REPO_ROOT" "# Finding Skills" "disable-model-invocation:"
+check "names the finding-skills folder for its references" "$REPO_ROOT" "(folder: $REPO_ROOT/skills/finding-skills)"
 check "falls back cleanly when the skill is missing" "/nonexistent-legion-root" "could not read"
 
-# A find-skills file containing control characters must still yield valid JSON.
+# A finding-skills file containing control characters must still yield valid JSON.
 fixture="$(mktemp -d)"
 trap 'rm -rf "$fixture"' EXIT
-mkdir -p "$fixture/skills/find-skills"
-printf -- '---\nname: find-skills\n---\n# Find Skills\nbell\x07 ff\x0c vt\x0b end\n' > "$fixture/skills/find-skills/SKILL.md"
+mkdir -p "$fixture/skills/finding-skills"
+printf -- '---\nname: finding-skills\n---\n# Finding Skills\nbell\x07 ff\x0c vt\x0b end\n' > "$fixture/skills/finding-skills/SKILL.md"
 check "control characters stay valid JSON" "$fixture" "bell"
 
 exit "$fail"
