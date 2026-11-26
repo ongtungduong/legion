@@ -7,7 +7,9 @@
     "Plan the rollout of the new billing service so old and new versions can run side by side",
     "Write the plan for this spec and run a pre-mortem on it",
     "The launch date is fixed for March 1, plan backward from it and show the critical path",
-    "Break this feature into tasks that several agents can build in parallel"
+    "Break this feature into tasks that several agents can build in parallel",
+    "Plan our first customer conference backward from the March date",
+    "Break the office move into small tasks with owners and dependencies"
   ],
   "negative": [
     {

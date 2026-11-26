@@ -1,0 +1,21 @@
+{
+  "positive": [
+    "Use subagents to read all these logs and summarize the failures",
+    "Fan out the research across parallel agents and merge the results",
+    "Which model should each agent in my pipeline run on, Haiku or Sonnet?",
+    "Dispatch agents in parallel to review these three documents",
+    "Set up a lead agent with cheaper worker subagents for this migration",
+    "D\u00f9ng subagent ch\u1ea1y song song \u0111\u1ec3 \u0111\u1ecdc t\u00e0i li\u1ec7u r\u1ed3i t\u1ed5ng h\u1ee3p l\u1ea1i",
+    "Run this approved plan with subagents and show how you'll dispatch the tasks"
+  ],
+  "negative": [
+    {
+      "prompt": "Break this approved spec into PRs so several agents can work in parallel",
+      "owner": "planning"
+    },
+    {
+      "prompt": "Why do our parallel worker jobs deadlock after the last deploy?",
+      "owner": "debugging"
+    }
+  ]
+}

@@ -1,0 +1,150 @@
+{
+  "schemaVersion": 3,
+  "label": "subagent-orchestration-1.5.0-sonnet",
+  "claudeVersion": "2.1.332",
+  "model": "sonnet",
+  "judgeModel": "haiku",
+  "startedAt": "2026-11-25T13:50:38.829Z",
+  "partial": false,
+  "costUsd": 0.81,
+  "judgeCostUsd": 0.04,
+  "threshold": 0.66,
+  "bar": 0.66,
+  "totals": {
+    "cases": 3,
+    "passed": 2,
+    "atBar": 2,
+    "meanDelta": -0.1481,
+    "graders": {
+      "lift": 0,
+      "guard": 5,
+      "protocol": 0,
+      "routing": 2,
+      "unclassified": 0
+    },
+    "lift": {
+      "graders": 0,
+      "with": null,
+      "without": null,
+      "delta": null,
+      "ci95": null,
+      "bySkill": {}
+    },
+    "guard": {
+      "graders": 5,
+      "with": 0.8,
+      "without": 0.9333,
+      "delta": -0.1333
+    },
+    "regressions": [
+      "subagent-orchestration-keeps-dependent-chain/names-dependency",
+      "subagent-orchestration-splits-by-risk/models-by-risk"
+    ],
+    "overhead": {
+      "cases": 3,
+      "cost": 1.86,
+      "turns": 1.67,
+      "seconds": 1.29
+    }
+  },
+  "cases": [
+    {
+      "name": "subagent-orchestration-keeps-dependent-chain",
+      "runs": 3,
+      "with": {
+        "passRate": 0.3333,
+        "meanScore": 0.3333,
+        "costUsd": 0.0505,
+        "turns": 1,
+        "seconds": 16
+      },
+      "without": {
+        "passRate": 0.6667,
+        "meanScore": 0.6667,
+        "costUsd": 0.0288,
+        "turns": 1,
+        "seconds": 14
+      },
+      "delta": -0.3334,
+      "graders": {
+        "names-dependency": {
+          "kind": "guard",
+          "with": 1,
+          "without": 2
+        }
+      }
+    },
+    {
+      "name": "subagent-orchestration-splits-by-risk",
+      "runs": 3,
+      "with": {
+        "passRate": 0.6667,
+        "meanScore": 0.8889,
+        "costUsd": 0.0806,
+        "turns": 3,
+        "seconds": 34
+      },
+      "without": {
+        "passRate": 1,
+        "meanScore": 1,
+        "costUsd": 0.0404,
+        "turns": 1,
+        "seconds": 24.3
+      },
+      "delta": -0.1111,
+      "graders": {
+        "checks-results": {
+          "kind": "guard",
+          "with": 3,
+          "without": 3
+        },
+        "isolates-writers": {
+          "kind": "guard",
+          "with": 3,
+          "without": 3
+        },
+        "models-by-risk": {
+          "kind": "guard",
+          "with": 2,
+          "without": 3
+        },
+        "skill-fired": {
+          "kind": "routing",
+          "with": 3,
+          "without": 0
+        }
+      }
+    },
+    {
+      "name": "subagent-orchestration-stays-quiet-on-question",
+      "runs": 3,
+      "with": {
+        "passRate": 1,
+        "meanScore": 1,
+        "costUsd": 0.045,
+        "turns": 1,
+        "seconds": 9.3
+      },
+      "without": {
+        "passRate": 1,
+        "meanScore": 1,
+        "costUsd": 0.0255,
+        "turns": 1,
+        "seconds": 7.7
+      },
+      "delta": 0,
+      "graders": {
+        "direct-answer": {
+          "kind": "guard",
+          "with": 3,
+          "without": 3
+        },
+        "no-orchestration-skill": {
+          "kind": "routing",
+          "with": 3,
+          "without": 3
+        }
+      }
+    }
+  ]
+}

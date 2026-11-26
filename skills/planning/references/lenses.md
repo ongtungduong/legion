@@ -35,8 +35,8 @@ estimate.
 2. Replace activity words ("optimize", "prepare", "refactor", "wire up",
    "improve") with the result and its threshold.
 3. Where a criterion depends on a judgment, name who judges and against what.
-4. Above the per-step criteria sits the project's standing bar (what its
-   contributing docs, agent instructions, and CI require of every change).
+4. Above the per-task criteria sits the standing bar (what the house rules,
+   policies, contributing docs, or CI require of every result).
    Copy it once into Global constraints; every step inherits it, so steps
    do not repeat it.
 
@@ -45,44 +45,50 @@ estimate.
 - A done criterion nobody can check is a hope; it surfaces at the end, when it
   is most expensive.
 
-## Engineering
+## Execution
 
 ### Working state
 
-1. After every step the system builds, the project's check command passes,
-   and the step could merge and deploy alone.
-2. A step that leaves something broken until a later step lands is
-   reordered (the later part first), split differently, or put behind a
-   flag that keeps the unfinished path off.
-3. Name the command that proves it in the step, taken from the repo, with
-   the expected result.
+1. After every task the work is usable and consistent: nothing is left
+   half-changed until a later task lands, and the task could be accepted on
+   its own.
+2. A task that leaves something broken until a later task lands is
+   reordered (the later part first), split differently, or kept out of use
+   until it is whole (for code, behind a flag).
+3. Name the check that proves it in the task, with the expected result.
 
-- "Tests will pass once step 5 is in" means steps 1 to 4 cannot be
-  reviewed, merged, or rolled back on their own.
+- "It will all fit together once task 5 is in" means tasks 1 to 4 cannot be
+  reviewed, accepted, or undone on their own.
+- For code this means the build and checks stay green after every task;
+  `engineering.md` beside this file has the details.
 
-### Contract first
+### Shared decisions first
 
-1. From the dependency graph, find the interfaces several steps share: a
-   schema, types, an API or event shape, a file format, a function
-   signature.
-2. Decide each one in an early, small step whose Produces line states it
-   exactly; later steps build against that line, not against a guess.
-3. After the contract step, slices that only depend on it can run in
-   parallel (separate people, agents, or PRs); mark them.
+1. From the dependency graph, find what several tasks rely on: an
+   interface or file format, a template, a venue and date, a budget line,
+   a naming scheme.
+2. Decide each one in an early, small task whose Produces line states it
+   exactly; later tasks build against that line, not against a guess.
+3. After that task, tasks that only depend on it can run in parallel
+   (separate people or agents); mark them.
 
-- Two parallel streams that each "define the API as needed" produce two
-  APIs.
+- Two parallel streams that each "settle the format as needed" produce two
+  formats.
 
-### Reversible rollout
+### Reversible change
 
-1. For each step, ask what still runs or is still stored in the old shape
-   while the change ships (references/rollout-safety.md).
-2. Where something does, stage the change (expand, migrate, switch,
-   contract) or put it behind a flag, one deploy per stage.
-3. Give each staged step its rollback and the signal that says it is safe
-   to go on.
+1. For each task, ask what cannot be taken back once it is done: data
+   written in a new shape, an interface others use, money paid, a contract
+   signed, an announcement made.
+2. Where something cannot, stage it: the reversible part first, a point to
+   confirm, then the irreversible part (for a schema or API change:
+   expand, migrate, switch, contract, per `rollout-safety.md` beside this
+   file).
+3. Give each staged task its way back or its limit, and the signal that
+   says it is safe to go on.
 
-- Redeploying old code does not undo data written in a new shape.
+- Redeploying old code does not undo data written in a new shape, and a
+  retraction does not undo an announcement.
 
 ## Prioritization and trade-off
 

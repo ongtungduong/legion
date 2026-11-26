@@ -1,0 +1,85 @@
+{
+  "schemaVersion": 3,
+  "label": "1.5.0-approved-sonnet",
+  "claudeVersion": "2.1.332",
+  "model": "sonnet",
+  "judgeModel": "haiku",
+  "startedAt": "2026-11-26T02:31:45.076Z",
+  "partial": false,
+  "costUsd": 0.62,
+  "judgeCostUsd": 0.01,
+  "threshold": 0.66,
+  "bar": 0.66,
+  "totals": {
+    "cases": 1,
+    "passed": 1,
+    "atBar": 1,
+    "meanDelta": 0.6667,
+    "graders": {
+      "lift": 1,
+      "guard": 0,
+      "protocol": 0,
+      "routing": 1,
+      "unclassified": 0
+    },
+    "lift": {
+      "graders": 1,
+      "with": 1,
+      "without": 0.3333,
+      "delta": 0.6667,
+      "ci95": null,
+      "bySkill": {
+        "planning": {
+          "graders": 1,
+          "delta": 0.6667
+        }
+      }
+    },
+    "guard": {
+      "graders": 0,
+      "with": null,
+      "without": null,
+      "delta": null
+    },
+    "regressions": [],
+    "overhead": {
+      "cases": 1,
+      "cost": 4.09,
+      "turns": 2.78,
+      "seconds": 2.53
+    }
+  },
+  "cases": [
+    {
+      "name": "planning-fires-on-approved-spec",
+      "runs": 3,
+      "with": {
+        "passRate": 1,
+        "meanScore": 1,
+        "costUsd": 0.166,
+        "turns": 8.33,
+        "seconds": 55.7
+      },
+      "without": {
+        "passRate": 0.3333,
+        "meanScore": 0.3333,
+        "costUsd": 0.0406,
+        "turns": 3,
+        "seconds": 22
+      },
+      "delta": 0.6667,
+      "graders": {
+        "covers-spec": {
+          "kind": "lift",
+          "with": 3,
+          "without": 1
+        },
+        "skill-fired": {
+          "kind": "routing",
+          "with": 3,
+          "without": 0
+        }
+      }
+    }
+  ]
+}

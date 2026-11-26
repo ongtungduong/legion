@@ -65,6 +65,10 @@
   "planning-fires-on-approved-spec": {
     "covers-spec": "lift"
   },
+  "planning-fires-on-event-plan": {
+    "small-checkable-tasks": "lift",
+    "stages-commitments": "lift"
+  },
   "planning-holds-on-unsettled-goal": {
     "asks-goal-first": "lift"
   },
@@ -136,5 +140,31 @@
   },
   "std-development-stops-for-spec-approval": {
     "stops-for-approval": "protocol"
+  },
+  "subagent-orchestration-escalates-failures-only": {
+    "reruns-failures-only": "guard",
+    "steps-not-jumps": "guard"
+  },
+  "subagent-orchestration-follows-plan": {
+    "keeps-dependencies": "guard",
+    "review-independent": "lift"
+  },
+  "subagent-orchestration-keeps-dependent-chain": {
+    "names-dependency": "guard"
+  },
+  "subagent-orchestration-splits-by-risk": {
+    "checks-results": "guard",
+    "isolates-writers": "guard",
+    "models-by-risk": "guard"
+  },
+  "subagent-orchestration-stays-quiet-on-question": {
+    "direct-answer": "guard"
+  },
+  "subagent-orchestration-investigates-shared-cause": {
+    "shared-cause-first": "guard"
+  },
+  "subagent-orchestration-votes-on-expensive-check": {
+    "independent-checkers": "guard",
+    "verifies-findings": "guard"
   }
 }
