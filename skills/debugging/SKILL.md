@@ -4,16 +4,17 @@ description: >-
   Finds the root cause of a problem, or the contributing causes when several
   line up, in software and the systems around it (code, builds and CI,
   infrastructure, data pipelines, integrations) by first building a fast
-  reproduction or an evidence timeline that shows the failure, then
-  minimizing it, ranking falsifiable hypotheses, instrumenting, fixing the
-  cause, and adding a control against recurrence. Use when something behaves
+  reproduction or an evidence timeline, minimizing it, ranking falsifiable
+  hypotheses, instrumenting, fixing the cause, and adding a control. Use when something behaves
   wrongly and the cause is unknown: a bug, failing or flaky test, crash,
   error message, stack trace, build or CI failure, outage, systems that
   stopped syncing, data that no longer matches, numbers that look wrong,
-  work that gets stuck, something that stopped working or got slow since a
+  jobs that get stuck, something that stopped working or got slow since a
   change, and when asked what broke, why something fails, for a root cause
   analysis, the 5 whys, or a postmortem, before proposing any fix, even when the code
-  or a diff is pasted inline, a failing test is named, and the fix looks obvious.
+  or a diff is pasted inline, the fix looks obvious, or a retry is requested
+  to turn CI green. Not for a business process or team problem with no
+  software, infrastructure, or data system.
 license: MIT
 metadata:
   author: ongtungduong

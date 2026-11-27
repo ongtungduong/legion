@@ -12,7 +12,8 @@ description: >-
   it also handle Z", "change how X works", "tests first", "TDD",
   "red-green-refactor", "acceptance criteria", "prove nothing else changed",
   even when the code is pasted inline, tests are not mentioned or the user
-  says none are needed, and the change looks obvious.
+  says none are needed ("just change it", "skip the tests"), and the change
+  looks obvious.
 license: MIT
 metadata:
   author: ongtungduong
@@ -135,15 +136,17 @@ to check (a typo, a comment, a rename the tooling verifies) is done directly.
 
 | Size | Where the criteria live | Before the change |
 |---|---|---|
-| One behavior change | The three groups in your reply | Proceed; the "my call" lines are the user's to correct |
-| A feature or several changes | A spec file in `.legion/specs/YYYY-MM-DD-<topic>-spec.md` (unless the project keeps specs elsewhere or uses its own spec tool) | The user approves the spec, unless it is an already approved design doc or plan step |
+| One behavior change, no new public interface, no open case that changes what gets built | The three groups in your reply | Proceed; the "my call" lines are the user's to correct |
+| A feature, a new public interface, or several changes | A spec file in `.legion/specs/YYYY-MM-DD-<topic>-spec.md` (unless the project keeps specs elsewhere or uses its own spec tool) | The user approves the spec, unless it is an already approved design doc or plan step |
 | Several capabilities, each of which could ship and be checked without the others | One spec per capability, and a short list of them in build order, each after what it depends on | The user approves the list, then each spec as above; offer `legion:planning` when the order needs more than a list |
 | Change to shipped work that has a spec | A delta spec next to the original | Approval as above; after the change ships, fold it into the original spec |
 
 When a spec needs approval, present it with its "my call" lines and end
 the turn; build in a later turn, after the user approves. Building in the
 same turn makes the approval a formality: every "my call" the user would
-have corrected is already in the work.
+have corrected is already in the work. The stop holds when the session cannot
+write the spec file: put the spec in the reply and end the turn there, since a
+missing tool is no approval.
 
 ## Keeping the spec true
 
