@@ -134,4 +134,6 @@ themselves, often in another session or product.
   inputs, as in [references/testing.md](references/testing.md)
 ````
 
-Omit a section that would be empty.
+Omit a section that would be empty. Read
+[references/example.md](references/example.md) for a filled-in reply when
+unsure how much each section should say.

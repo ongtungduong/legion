@@ -46,28 +46,17 @@ to today, then turn the chain forward, estimate it, and detail it to the
 horizon. Read [references/backward-planning.md](references/backward-planning.md)
 and run its procedure at step 3.
 
-Fifteen lenses in five groups. Use each where it changes a task, the order,
-or an estimate, and drop it where it does not; they are not headings in the
-plan. When a lens needs depth, read [references/lenses.md](references/lenses.md)
-for its procedure.
+Fifteen lenses in five groups: *outcome and backward* (begin with the end,
+outcome vs. output, definition of done), *execution* (working state, shared
+decisions first, reversible change), *prioritization and trade-off* (saying
+no, leverage, critical path), *realism and risk* (planning fallacy,
+pre-mortem, buffer), *adaptive and iterative* (plan as compass, rolling
+wave, checkpoints). Use each where it changes a task, the order, or an
+estimate, and drop it where it does not; they are not headings in the plan.
+Read [references/lenses.md](references/lenses.md) for the table of what each
+lens forces and the steps it applies to, and for its procedure when it needs
+depth.
 
-| Group | Lens | What it forces | Steps |
-|---|---|---|---|
-| Outcome and backward | Begin with the end | The finished state is defined first; milestones are worked back from it | 3 |
-| Outcome and backward | Outcome vs. output | Every task says what it contributes to the outcome; finished tasks are not the goal | 3-4 |
-| Outcome and backward | Definition of done | Every task has a checkable acceptance criterion and clears the standing bar | 2, 4-6 |
-| Execution | Working state | Every task leaves the work usable and consistent, never half-changed until a later task lands | 4 |
-| Execution | Shared decisions first | What several tasks rely on (an interface, a format, a venue, a budget line) is fixed before the tasks that use it | 4 |
-| Execution | Reversible change | A change that cannot be taken back is staged, with a way back and a signal to go on | 5 |
-| Prioritization and trade-off | Saying no | The plan states what it will not do and what each inclusion displaces | 3 |
-| Prioritization and trade-off | Leverage | The tasks that carry most of the value or retire the biggest unknown go first | 4 |
-| Prioritization and trade-off | Critical path | The chain of dependent tasks that sets the end date is marked; parallel streams are named | 3-4 |
-| Realism and risk | Planning fallacy | Estimates come from evidence of similar work, not the best case | 3 |
-| Realism and risk | Pre-mortem | Assume it failed; each likely reason gets a countermeasure built in now | 7 |
-| Realism and risk | Buffer | No plan runs at full capacity; visible buffer protects the end date | 3 |
-| Adaptive and iterative | Plan as compass | Assumptions are written down, so a change is a deliberate replan, not drift | 6, 9 |
-| Adaptive and iterative | Rolling wave | Near work in full detail, far work as milestones detailed later | 3, 6 |
-| Adaptive and iterative | Checkpoints | Every few tasks the whole is checked and actual is compared against plan | 3, 6 |
 
 ## Plan size
 

@@ -44,6 +44,10 @@
     "alert-is-a-cause": "lift",
     "beyond-disk-full": "lift"
   },
+  "debugging-rejects-diff-that-postdates-failure": {
+    "probes-what-changed": "guard",
+    "rejects-the-diff": "guard"
+  },
   "finding-skills-combines-method-and-project-skill": {
     "cause-found": "guard",
     "project-skill-fired": "guard"
