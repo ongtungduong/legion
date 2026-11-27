@@ -8,7 +8,7 @@
     {
       "name": "legion",
       "description": "Working skills for coding agents, general-purpose (brainstorm, find skills, plan tasks, orchestrate subagents, create skills, improve prompts) and engineering (build to a spec, debug, audit security), routed by kind of work: brainstorm a direction, break it into tasks, run them on subagents, build to a spec checks first, debug the root cause, audit security, create skills.",
-      "version": "2.0.1",
+      "version": "2.0.2",
       "source": "./",
       "author": {
         "name": "Ông Tùng Dương"

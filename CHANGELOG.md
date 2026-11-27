@@ -1,5 +1,20 @@
 # Changelog
 
+## 2.0.2 - 2026-11-27
+
+Fixed
+
+- `planning` moves the lens table to `references/lenses.md`: `SKILL.md` was
+  16,003 characters, over OpenClaw's 16,000-character read cap on contexts
+  under 100K tokens.
+
+Added
+
+- Worked examples for `debugging` (`assets/example-reply.md`),
+  `auditing-security` (`assets/example-finding.md`), and `optimizing-prompts`
+  (`references/example.md`), from a SkillEvaluator rubric run that scored
+  Example Quality 5-6 of 10 for those three.
+
 ## 2.0.1 - 2026-11-27
 
 Fixed

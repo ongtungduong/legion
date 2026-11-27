@@ -191,7 +191,9 @@ Every reply carries all the labels below, in this order, including a read-only o
 where nothing could be run. Write `none` or `not applicable: <why>` for a line
 with nothing to say, never drop it: a missing line reads as "not checked", and
 a reader looking for the cause finds it in the same place each time. Put
-explanation after the labelled lines, not in place of them.
+explanation after the labelled lines, not in place of them. Read
+[assets/example-reply.md](assets/example-reply.md) for a filled-in reply when
+unsure how much detail each line needs.
 
 ```
 Loop: `<command or check>` -> <output that shows the symptom> | not run: `<the check>` -> <what it will show>

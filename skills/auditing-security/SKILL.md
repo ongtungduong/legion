@@ -130,5 +130,5 @@ Do not end the run before one of exactly two terminal states: (a) all Phase 6 ar
 
 ## Output format
 
-- **Guidance mode**: answer in the conversation. For each finding give the boundary and result (principal, input, intended control, crossed boundary, affected resource, observed result), the source trace as repository-relative `path:line`, the verdict (`confirmed` with severity, or `needs_validation` with the exact unresolved fact), and the smallest fix.
+- **Guidance mode**: answer in the conversation (read [assets/example-finding.md](assets/example-finding.md) for a filled-in finding). For each finding give the boundary and result (principal, input, intended control, crossed boundary, affected resource, observed result), the source trace as repository-relative `path:line`, the verdict (`confirmed` with severity, or `needs_validation` with the exact unresolved fact), and the smallest fix.
 - **Full audit mode**: the files in `<output-dir>` listed under Write isolation in `references/full-audit-setup.md`, whose sections `references/validation-and-reporting.md` defines. In the conversation, report the output directory, profile and scope, counts by verdict and severity, the top findings, the coverage gaps, and whether both validators passed.
