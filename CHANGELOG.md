@@ -1,5 +1,18 @@
 # Changelog
 
+## 2.0.1 - 2026-11-27
+
+Fixed
+
+- `debugging` no longer fires on a business-process problem with no software,
+  infrastructure, or data system, and covers a request to add a retry to turn
+  CI green.
+- `auditing-security` and `orchestrating-subagents` answer a plain concept
+  question directly instead of loading.
+- `implementing-stdd` keeps the spec-approval stop when the session cannot
+  write the spec file, and treats a new public interface or an open case that
+  changes what gets built as feature-sized.
+
 ## 2.0.0 - 2026-11-26
 
 Changed (breaking)
