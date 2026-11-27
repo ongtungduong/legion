@@ -5,15 +5,16 @@ description: >-
   systems: maps the attack surface and trust boundaries, hunts by a
   deterministic coverage ledger with isolated subagents, gives every candidate
   to a fresh verifier that tries to disprove it, and writes validated
-  findings.json plus REPORT.md with severity, source trace, safe local
-  reproduction, and the smallest fix. Gives focused guidance on specific code
-  or a reported flaw without writing files. Use when asked to security audit
-  or pen-test a codebase, find vulnerabilities, review a service, API, CLI, library, daemon,
-  auth flow, or LLM agent for security, check whether something is exploitable
+  findings.json plus REPORT.md (severity, source trace, safe reproduction,
+  smallest fix). Gives focused guidance on specific code or
+  a reported flaw without writing files. Use when asked to security audit
+  or pen-test a codebase, find vulnerabilities, review a service, API, CLI, library, daemon, auth
+  flow, or LLM agent for security, check if something is exploitable
   (injection, XSS, SSRF, IDOR, auth bypass, path traversal, deserialization,
   prompt injection, supply chain, tenant isolation), triage a reported
   vulnerability or scanner finding, rate its severity, or re-run an audit to
   cover gaps, even when the code is pasted inline and the flaw looks obvious.
+  Not for a general question about a vulnerability class: answer it directly.
 license: MIT
 metadata:
   author: ongtungduong

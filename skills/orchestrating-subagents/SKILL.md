@@ -13,8 +13,8 @@ description: >-
   "dispatch agents concurrently", "delegate the research", "orchestrate
   agents", which model each agent or step runs on, Haiku vs Sonnet vs Opus
   vs Fable, effort levels for agents, defining subagents in .claude/agents,
-  cutting the cost of an agent pipeline, and before dispatching several
-  subagents, even when the split looks obvious.
+  cutting the cost of an agent pipeline, and before dispatching subagents, even when the split looks obvious. Not for a plain question
+  about how subagents work.
 license: MIT
 metadata:
   author: ongtungduong
